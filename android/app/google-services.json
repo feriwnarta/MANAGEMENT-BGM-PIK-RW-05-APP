@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "949444304688",
+    "project_id": "nextgmobileapprw05bgmpik",
+    "storage_bucket": "nextgmobileapprw05bgmpik.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:949444304688:android:462c378077d3431ed3b2f5",
+        "android_client_info": {
+          "package_name": "com.nextg.rw05bgmpik"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "949444304688-ito33llo34vv6fulcmagtrd5re5mbl5p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nextg.rw05bgmpik",
+            "certificate_hash": "80af0f098e75c1ccbc20b4899a4c8b0ee3ae70ab"
+          }
+        },
+        {
+          "client_id": "949444304688-9qkgatskf5e8437l3pdntulr0jc1chr9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAko9Q8YypNtyau7DmCnWRDDTSwA_IChpM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "949444304688-9qkgatskf5e8437l3pdntulr0jc1chr9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
