@@ -353,7 +353,7 @@ class _HomeScreenState extends State<HomeScreen>
             children: [
               Text(
                 'BGM RW O5',
-                style: TextStyle(fontSize: 19.sp, color: Color(0xff485E88)),
+                style: TextStyle(fontSize: 19.sp, color: Color(0xff2094F3)),
               ),
               Padding(
                 padding: EdgeInsets.only(right: 50.w),
@@ -408,7 +408,7 @@ class _HomeScreenState extends State<HomeScreen>
       alignment: Alignment.center,
       child: SizedBox(
         height: 144.h,
-        width: 330.w,
+        width: 340.w,
         child: Card(
           elevation: 10,
           shape:
@@ -464,7 +464,7 @@ class _HomeScreenState extends State<HomeScreen>
                         },
                         child: Container(
                           height: 40.h,
-                          width: 230.w,
+                          width: 242.w,
                           child: Center(
                             child: Text(
                               'Apa yang anda sedang pikirkan ?',

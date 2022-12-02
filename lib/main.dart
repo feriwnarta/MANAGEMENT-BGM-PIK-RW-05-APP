@@ -35,7 +35,7 @@ import 'bloc/count_comment_bloc.dart';
 import 'dart:io';
 import 'lifecyle_manager.dart';
 import './screen/management_screen/management_screen.dart';
-import 'package:sizer/sizer.dart' as s;
+// import 'package:sizer/sizer.dart' as s;
 
 void main() async {
   // runApp(DevicePreview(enabled: !kReleaseMode, builder: (context) => MyApp()));
@@ -121,57 +121,56 @@ class _MyApp extends State<MyApp> {
     initializeDateFormatting('id_ID', null);
 
     return MultiBlocProvider(
-        providers: [
-          BlocProvider<CarouselBloc>(
-            create: (context) => CarouselBloc(0),
+      providers: [
+        BlocProvider<CarouselBloc>(
+          create: (context) => CarouselBloc(0),
+        ),
+        BlocProvider<BillTabColorBloc>(
+          create: (context) => BillTabColorBloc(TabState()),
+        ),
+        BlocProvider<BillRegulerBloc>(
+          create: (context) =>
+              BillRegulerBloc(BillsHistoryModel.getBillsHistory()),
+        ),
+        BlocProvider<PaymentBloc>(
+          create: (context) => PaymentBloc(true),
+        ),
+        BlocProvider<ShimmerLoadingBloc>(
+          create: (context) => ShimmerLoadingBloc(true),
+        ),
+        BlocProvider<CommentBloc>(
+          create: (context) =>
+              CommentBloc(CommentBlocUnitialized())..add(CommentBlocEvent()),
+        ),
+        BlocProvider<CommentCountBloc>(
+          create: (context) =>
+              CommentCountBloc(CommentCountBlocState(countComment: '0')),
+        ),
+        BlocProvider<LikeStatusBloc>(
+          create: (context) => LikeStatusBloc(LikeStatusState(
+              colorButton: Colors.black, isLike: false, numberLike: '0')),
+        ),
+        BlocProvider<GoogleMapBloc>(
+          create: (context) => GoogleMapBloc(GoogleMapState()),
+        ),
+      ],
+      child: ScreenUtilInit(
+        designSize: Size(360, 800),
+        // allowFontScaling: false,
+        minTextAdapt: true,
+        builder: (context, child) => AppLifecycleManager(
+          child: GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            initialRoute: '/',
+            home: SplashView(),
+            theme: ThemeData(
+                fontFamily: 'open sans',
+                scaffoldBackgroundColor:
+                    Colors.white), // set background color theme
           ),
-          BlocProvider<BillTabColorBloc>(
-            create: (context) => BillTabColorBloc(TabState()),
-          ),
-          BlocProvider<BillRegulerBloc>(
-            create: (context) =>
-                BillRegulerBloc(BillsHistoryModel.getBillsHistory()),
-          ),
-          BlocProvider<PaymentBloc>(
-            create: (context) => PaymentBloc(true),
-          ),
-          BlocProvider<ShimmerLoadingBloc>(
-            create: (context) => ShimmerLoadingBloc(true),
-          ),
-          BlocProvider<CommentBloc>(
-            create: (context) =>
-                CommentBloc(CommentBlocUnitialized())..add(CommentBlocEvent()),
-          ),
-          BlocProvider<CommentCountBloc>(
-            create: (context) =>
-                CommentCountBloc(CommentCountBlocState(countComment: '0')),
-          ),
-          BlocProvider<LikeStatusBloc>(
-            create: (context) => LikeStatusBloc(LikeStatusState(
-                colorButton: Colors.black, isLike: false, numberLike: '0')),
-          ),
-          BlocProvider<GoogleMapBloc>(
-            create: (context) => GoogleMapBloc(GoogleMapState()),
-          ),
-        ],
-        child: s.Sizer(
-          builder: (context, orientation, deviceType) => ScreenUtilInit(
-            designSize: Size(360, 800),
-            // allowFontScaling: false,
-            minTextAdapt: true,
-            builder: (context, child) => AppLifecycleManager(
-              child: GetMaterialApp(
-                debugShowCheckedModeBanner: false,
-                initialRoute: '/',
-                home: SplashView(),
-                theme: ThemeData(
-                    fontFamily: 'open sans',
-                    scaffoldBackgroundColor:
-                        Colors.white), // set background color theme
-              ),
-            ),
-          ),
-        ));
+        ),
+      ),
+    );
   }
 }
 
@@ -225,7 +224,7 @@ class _MainAppState extends State<MainApp> {
               boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)]),
           child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
-            iconSize: 6.0.sw,
+            iconSize: 12.sp,
             showSelectedLabels: true,
             showUnselectedLabels: true,
             selectedItemColor: Colors.blue,

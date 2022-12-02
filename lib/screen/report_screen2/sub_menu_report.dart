@@ -124,7 +124,7 @@ class _RadioMenuState extends State<RadioMenu> {
         });
       },
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 10).copyWith(top: 7),
+        margin: EdgeInsets.symmetric(horizontal: 16.w).copyWith(top: 24.h),
         decoration: BoxDecoration(
             border: Border.all(color: widget.colorBorderComplaint),
             borderRadius: BorderRadius.circular(10)),
@@ -148,7 +148,7 @@ class _RadioMenuState extends State<RadioMenu> {
                     });
                   },
                 ),
-                Text('Complaint',
+                Text('Keluhan',
                     style: TextStyle(
                         fontSize: 14.sp, color: widget.colorFontComplaint))
               ],
@@ -183,7 +183,7 @@ class _RadioMenuState extends State<RadioMenu> {
         });
       },
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 10).copyWith(top: 7),
+        margin: EdgeInsets.symmetric(horizontal: 16.w).copyWith(top: 12.h),
         decoration: BoxDecoration(
             border: Border.all(color: widget.colorBorderReq),
             borderRadius: BorderRadius.circular(10)),
@@ -207,7 +207,7 @@ class _RadioMenuState extends State<RadioMenu> {
                     });
                   },
                 ),
-                Text('Request',
+                Text('Permintaan',
                     style:
                         TextStyle(fontSize: 14.sp, color: widget.colorFontReq))
               ],
@@ -219,7 +219,7 @@ class _RadioMenuState extends State<RadioMenu> {
                   style: TextStyle(fontSize: 12.sp, color: widget.colorFontReq),
                 )),
             SizedBox(
-              height: 25.h,
+              height: 15.h,
             )
           ],
         ),
