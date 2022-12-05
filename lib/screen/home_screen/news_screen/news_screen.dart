@@ -1,8 +1,8 @@
 import 'package:aplikasi_rw/screen/report_screen2/view_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sizer/sizer.dart' as z;
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:sizer/sizer.dart' as z;
 
 class NewsScreen extends StatelessWidget {
   final String urlImage, caption, content, writerAndTime;
@@ -16,7 +16,7 @@ class NewsScreen extends StatelessWidget {
         slivers: [
           SliverAppBar(
             brightness: Brightness.dark,
-            expandedHeight: 30.0.h,
+            expandedHeight: 250.h,
             floating: true,
             pinned: true,
             snap: true,
@@ -55,13 +55,16 @@ class NewsScreen extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerRight,
                   child: Container(
-                    padding: EdgeInsets.only(right: 1.5.w, top: 1.0.h),
+                    padding: EdgeInsets.only(right: 10.w, top: 10.h),
                     child: Text(
                       writerAndTime,
                       style:
                           TextStyle(fontFamily: 'Montserrat', fontSize: 9.0.sp),
                     ),
                   ),
+                ),
+                SizedBox(
+                  height: 10.h,
                 ),
                 // caption
                 Container(
@@ -72,9 +75,12 @@ class NewsScreen extends StatelessWidget {
                       textAlign: TextAlign.justify,
                       style: TextStyle(fontFamily: 'poppins'),
                     )),
+                SizedBox(
+                  height: 10.h,
+                ),
 
                 Divider(
-                  thickness: 3,
+                  thickness: 2,
                   indent: 40.0.w,
                   endIndent: 40.0.w,
                 ),
@@ -82,7 +88,7 @@ class NewsScreen extends StatelessWidget {
                 // body
                 Container(
                   margin:
-                      EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 2.7.h),
+                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.7.h),
                   child: Text(
                     content,
                     style: TextStyle(

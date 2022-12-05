@@ -66,15 +66,15 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                     () => Column(
                       children: [
                         SizedBox(
-                          height: 1.5.h,
+                          height: 15.h,
                         ),
                         Center(
                           child: Stack(
                             children: [
                               GestureDetector(
                                 child: Container(
-                                    height: 15.0.h,
-                                    width: 30.0.w,
+                                    height: 70.h,
+                                    width: 70.w,
                                     decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         border: Border.all(color: Colors.blue),
@@ -93,8 +93,8 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                                         bottomImagePicker(context))),
                               ),
                               Positioned(
-                                right: -2.7.w,
-                                bottom: -1.5.h,
+                                right: -14.w,
+                                bottom: -14.h,
                                 child: IconButton(
                                   icon: Icon(
                                     Icons.image,
@@ -106,17 +106,17 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                                         builder: ((builder) =>
                                             bottomImagePicker(context)));
                                   },
-                                  iconSize: 5.0.h,
+                                  iconSize: 20.h,
                                 ),
                               )
                             ],
                           ),
                         ),
                         SizedBox(
-                          height: 3.0.h,
+                          height: 3.h,
                         ),
                         ListTile(
-                          leading: Icon(Icons.person),
+                          leading: Icon(Icons.person, size: 20.h),
                           title: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -124,16 +124,19 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                               Text(
                                 'username',
                                 style: TextStyle(
-                                    color: Colors.grey, fontSize: 10.0.sp),
+                                    color: Colors.grey, fontSize: 10.sp),
                               ),
                               SizedBox(height: 1.0.h),
-                              Text('${loginController.username}'),
+                              Text(
+                                '${loginController.username}',
+                                style: TextStyle(fontSize: 12.sp),
+                              ),
                               SizedBox(height: 1.0.h),
                             ],
                           ),
                           trailing: Icon(
                             FontAwesomeIcons.pen,
-                            size: 2.0.h,
+                            size: 10.h,
                           ),
                           onTap: () => showModalBottomSheet(
                               shape: RoundedRectangleBorder(
@@ -148,7 +151,10 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                           height: 1.0.h,
                         ),
                         ListTile(
-                          leading: Icon(Icons.email),
+                          leading: Icon(
+                            Icons.email,
+                            size: 20.h,
+                          ),
                           title: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -156,16 +162,19 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                               Text(
                                 'email',
                                 style: TextStyle(
-                                    color: Colors.grey, fontSize: 10.0.sp),
+                                    color: Colors.grey, fontSize: 10.sp),
                               ),
                               SizedBox(height: 1.0.h),
-                              Text('${snapshot.data.email}'),
+                              Text(
+                                '${snapshot.data.email}',
+                                style: TextStyle(fontSize: 12.sp),
+                              ),
                               SizedBox(height: 1.0.h),
                             ],
                           ),
                           trailing: Icon(
                             FontAwesomeIcons.pen,
-                            size: 2.0.h,
+                            size: 10.h,
                           ),
                           onTap: () => showModalBottomSheet(
                               shape: RoundedRectangleBorder(
@@ -180,7 +189,10 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                           height: 1.0.h,
                         ),
                         ListTile(
-                          leading: Icon(Icons.phone_android),
+                          leading: Icon(
+                            Icons.phone_android,
+                            size: 20.h,
+                          ),
                           title: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -188,16 +200,19 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                               Text(
                                 'nomor telpon',
                                 style: TextStyle(
-                                    color: Colors.grey, fontSize: 10.0.sp),
+                                    color: Colors.grey, fontSize: 10.sp),
                               ),
                               SizedBox(height: 1.0.h),
-                              Text('${snapshot.data.noPhone}'),
+                              Text(
+                                '${snapshot.data.noPhone}',
+                                style: TextStyle(fontSize: 12.sp),
+                              ),
                               SizedBox(height: 1.0.h),
                             ],
                           ),
                           trailing: Icon(
                             FontAwesomeIcons.pen,
-                            size: 2.0.h,
+                            size: 10.h,
                           ),
                           onTap: () => showModalBottomSheet(
                               shape: RoundedRectangleBorder(

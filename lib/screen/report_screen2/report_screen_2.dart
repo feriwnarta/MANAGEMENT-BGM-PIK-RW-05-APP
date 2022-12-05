@@ -83,142 +83,143 @@ class _ReportScreen2State extends State<ReportScreen2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            backgroundColor: Colors.white,
-            expandedHeight: 120.h,
-            // floating: true,
-            // leadingWidth: 400.w,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Row(children: [
-                SizedBox(
-                  width: 16.w,
-                ),
-                Text(
-                  'Riwayat keluhan',
-                  style: TextStyle(
-                    fontSize: 19.sp,
-                    color: Color(0xff2094F3),
+      body: RefreshIndicator(
+        onRefresh: () async => loadReport(),
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              backgroundColor: Colors.white,
+              expandedHeight: 120.h,
+              // floating: true,
+              // leadingWidth: 400.w,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Row(children: [
+                  SizedBox(
+                    width: 16.w,
                   ),
-                ),
-                SizedBox(
-                  width: 161.w,
-                ),
-                FutureBuilder<List<ReportFinishedModel>>(
-                    future: _future,
-                    builder: (context, snapshot) => (snapshot.hasData)
-                        ? GestureDetector(
-                            onTap: () {
-                              if (snapshot.data != null) {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => FinishedReportScreen(
-                                    report: snapshot.data,
-                                  ),
-                                ));
-                              } else {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => FinishedReportScreen(
-                                    report: [],
-                                  ),
-                                ));
-                              }
-                            },
-                            child: Badge(
-                              badgeColor: Colors.red,
-                              badgeContent: (snapshot.data != null &&
-                                      snapshot.data.isNotEmpty)
-                                  ? Text(
-                                      snapshot.data[0].total,
-                                      style: TextStyle(color: Colors.white),
-                                    )
-                                  : Text(
-                                      '0',
-                                      style: TextStyle(color: Colors.white),
+                  Text(
+                    'Riwayat keluhan',
+                    style: TextStyle(
+                      fontSize: 19.sp,
+                      color: Color(0xff2094F3),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 161.w,
+                  ),
+                  FutureBuilder<List<ReportFinishedModel>>(
+                      future: _future,
+                      builder: (context, snapshot) => (snapshot.hasData)
+                          ? GestureDetector(
+                              onTap: () {
+                                if (snapshot.data != null) {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => FinishedReportScreen(
+                                      report: snapshot.data,
                                     ),
+                                  ));
+                                } else {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => FinishedReportScreen(
+                                      report: [],
+                                    ),
+                                  ));
+                                }
+                              },
+                              child: Badge(
+                                badgeColor: Colors.red,
+                                badgeContent: (snapshot.data != null &&
+                                        snapshot.data.isNotEmpty)
+                                    ? Text(
+                                        snapshot.data[0].total,
+                                        style: TextStyle(color: Colors.white),
+                                      )
+                                    : Text(
+                                        '0',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                position:
+                                    BadgePosition.topEnd(top: -15, end: -10),
+                                child: Icon(
+                                  Icons.notifications,
+                                  color: Colors.black,
+                                ),
+                                animationType: BadgeAnimationType.scale,
+                              ),
+                            )
+                          : Badge(
+                              badgeColor: Colors.red,
+                              badgeContent: Text(
+                                '0',
+                                style: TextStyle(color: Colors.white),
+                              ),
                               position:
-                                  BadgePosition.topEnd(top: -15, end: -10),
+                                  BadgePosition.topEnd(top: -17, end: -17),
                               child: Icon(
                                 Icons.notifications,
-                                color: Colors.black,
+                                color: Color(0xff404040),
                               ),
                               animationType: BadgeAnimationType.scale,
-                            ),
-                          )
-                        : Badge(
-                            badgeColor: Colors.red,
-                            badgeContent: Text(
-                              '0',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            position: BadgePosition.topEnd(top: -17, end: -17),
-                            child: Icon(
-                              Icons.notifications,
-                              color: Color(0xff404040),
-                            ),
-                            animationType: BadgeAnimationType.scale,
+                            )),
+                ]),
+                titlePadding: EdgeInsets.only(top: 17.h),
+                title: SizedBox(
+                  width: 340.w,
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    elevation: 2,
+                    child: TextField(
+                      decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 2.h, horizontal: 12.w),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(6),
+                              borderSide: BorderSide.none),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(6),
+                              borderSide: BorderSide.none),
+                          hintText: 'Nomor Laporan',
+                          suffixIcon: Icon(
+                            Icons.search,
                           )),
-              ]),
-              titlePadding: EdgeInsets.only(top: 17.h),
-              title: SizedBox(
-                width: 340.w,
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  elevation: 2,
-                  child: TextField(
-                    decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 2.h, horizontal: 12.w),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(6),
-                            borderSide: BorderSide.none),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(6),
-                            borderSide: BorderSide.none),
-                        hintText: 'Nomor Laporan',
-                        suffixIcon: Icon(
-                          Icons.search,
-                        )),
-                    style: TextStyle(fontSize: 14.sp),
-                    onChanged: (value) async {
-                      if (value.isNotEmpty) {
-                        reportController.listReport =
-                            await ReportServices.search(value);
-                        // reportController.update();
-                        setState(() {});
-                      } else {
-                        // setState(() {
-                        // reportController.searchReport = null;
-                        // reportController.isLoading = true.obs;
-                        // reportController.listReport.clear();
-                        // reportController.getDataFromDb();
-                        reportController.listReport.clear();
-                        reportController.refresReport().then((value) {
-                          final logger = Logger();
-                          logger.w(reportController.listReport[0].description);
-                          logger.d(reportController.listReport.length);
-                          FocusScope.of(context).requestFocus(FocusNode());
+                      style: TextStyle(fontSize: 14.sp),
+                      onChanged: (value) async {
+                        if (value.isNotEmpty) {
+                          reportController.listReport =
+                              await ReportServices.search(value);
+                          // reportController.update();
                           setState(() {});
-                        });
-                        // });
-                      }
-                    },
+                        } else {
+                          // setState(() {
+                          // reportController.searchReport = null;
+                          // reportController.isLoading = true.obs;
+                          // reportController.listReport.clear();
+                          // reportController.getDataFromDb();
+                          reportController.listReport.clear();
+                          reportController.refresReport().then((value) {
+                            final logger = Logger();
+                            logger
+                                .w(reportController.listReport[0].description);
+                            logger.d(reportController.listReport.length);
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            setState(() {});
+                          });
+                          // });
+                        }
+                      },
+                    ),
                   ),
                 ),
+                expandedTitleScale: 1.0,
+                // expandedTitleScale: 20,
               ),
-              expandedTitleScale: 1.0,
-              // expandedTitleScale: 20,
             ),
-          ),
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                RefreshIndicator(
-                  key: refreshIndicatorKey,
-                  onRefresh: () async => loadReport(),
-                  child: NotificationListener<ScrollNotification>(
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  NotificationListener<ScrollNotification>(
                     onNotification: (notification) {
                       if (notification.metrics.maxScrollExtent >
                               notification.metrics.pixels &&
@@ -243,7 +244,8 @@ class _ReportScreen2State extends State<ReportScreen2> {
                                     .isLoading.value)
                                 ? ListView.builder(
                                     shrinkWrap: true,
-                                    itemCount: 5,
+                                    itemCount: 7,
+                                    padding: EdgeInsets.zero,
                                     itemBuilder: (context, index) =>
                                         ShimmerReport(),
                                   )
@@ -424,11 +426,11 @@ class _ReportScreen2State extends State<ReportScreen2> {
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          )
-        ],
+                ],
+              ),
+            )
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         mini: true,
@@ -862,8 +864,8 @@ class _ReportScreen2State extends State<ReportScreen2> {
 
   Future loadReport() async {
     // await Future.delayed(Duration(seconds: 1));
-    final logger = Logger();
-    logger.e('user adalah kami');
+    // final logger = Logger();
+    // logger.e('user adalah kami');
     // bloc.add(ReportEventRefresh());
     reportController.refresReport();
     reportController.update();
@@ -878,97 +880,92 @@ class ShimmerReport extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 2.0.h),
-            Shimmer.fromColors(
-                baseColor: Colors.grey[300],
-                highlightColor: Colors.grey[200],
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(10)),
-                  width: 25.0.w,
-                  height: 13.0.h,
-                  margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                )),
-          ],
-        ),
-        // shimmer title
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 1.0.h),
-            Shimmer.fromColors(
-                baseColor: Colors.grey[300],
-                highlightColor: Colors.grey[200],
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(10)),
-                  width: 30.0.w,
-                  height: 2.0.h,
-                )),
-            SizedBox(
-              height: 1.0.h,
-            ),
-            Shimmer.fromColors(
-                baseColor: Colors.grey[300],
-                highlightColor: Colors.grey[200],
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(10)),
-                  width: 60.0.w,
-                  height: 2.0.h,
-                )),
-            SizedBox(
-              height: 1.0.h,
-            ),
-            Shimmer.fromColors(
-                baseColor: Colors.grey[300],
-                highlightColor: Colors.grey[200],
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(10)),
-                  width: 30.0.w,
-                  height: 2.0.h,
-                )),
-            SizedBox(
-              height: 1.0.h,
-            ),
-            Shimmer.fromColors(
-                baseColor: Colors.grey[300],
-                highlightColor: Colors.grey[200],
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(10)),
-                  width: 40.0.w,
-                  height: 2.0.h,
-                )),
-            Row(
-              children: [
-                SizedBox(width: 46.0.w),
-                Shimmer.fromColors(
-                    baseColor: Colors.grey[300],
-                    highlightColor: Colors.grey[200],
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(7)),
-                      width: 17.0.w,
-                      height: 3.0.h,
-                    )),
-              ],
-            ),
-          ],
-        )
-      ],
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      child: Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 2.0.h),
+              Shimmer.fromColors(
+                  baseColor: Colors.grey[300],
+                  highlightColor: Colors.grey[200],
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(10)),
+                    width: 70.w,
+                    height: 70.h,
+                    // margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                  )),
+            ],
+          ),
+          // shimmer title
+          SizedBox(
+            width: 16.w,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 1.0.h),
+              Row(
+                children: [
+                  Shimmer.fromColors(
+                      baseColor: Colors.grey[300],
+                      highlightColor: Colors.grey[200],
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(10)),
+                        width: 100.w,
+                        height: 12.h,
+                      )),
+                  SizedBox(
+                    width: 34.w,
+                  ),
+                  Shimmer.fromColors(
+                      baseColor: Colors.grey[300],
+                      highlightColor: Colors.grey[200],
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(10)),
+                        width: 78.w,
+                        height: 12.h,
+                      )),
+                ],
+              ),
+              SizedBox(
+                height: 4.h,
+              ),
+              Shimmer.fromColors(
+                  baseColor: Colors.grey[300],
+                  highlightColor: Colors.grey[200],
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(10)),
+                    width: 150.w,
+                    height: 12.h,
+                  )),
+              SizedBox(
+                height: 4.h,
+              ),
+              Shimmer.fromColors(
+                  baseColor: Colors.grey[300],
+                  highlightColor: Colors.grey[200],
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(10)),
+                    width: 75.w,
+                    height: 12.h,
+                  )),
+            ],
+          )
+        ],
+      ),
     );
   }
 }

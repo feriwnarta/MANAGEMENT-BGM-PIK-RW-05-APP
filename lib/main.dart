@@ -13,6 +13,7 @@ import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/model/bills_history_model.dart';
 import 'package:aplikasi_rw/screen/bills_screen/bills_screen.dart';
 import 'package:aplikasi_rw/screen/home_screen/home_screen.dart';
+import 'package:aplikasi_rw/screen/report_screen2/new_google_maps_screen.dart';
 import 'package:aplikasi_rw/screen/report_screen2/report_screen_2.dart';
 import 'package:aplikasi_rw/screen/splash_screen/SplashView.dart';
 import 'package:aplikasi_rw/screen/user_screen/change_data_user.dart';
@@ -163,6 +164,7 @@ class _MyApp extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             initialRoute: '/',
             home: SplashView(),
+            // home: NewGoogleMaps(),
             theme: ThemeData(
                 fontFamily: 'open sans',
                 scaffoldBackgroundColor:
@@ -298,7 +300,7 @@ class _MainAppState extends State<MainApp> {
                       ),
                     ),
                     SizedBox(
-                      height: 15.sh,
+                      height: 15.h,
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 10, bottom: 10),

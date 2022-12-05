@@ -306,7 +306,7 @@ class _HomeScreenState extends State<HomeScreen>
                   ),
                 )
           : SizedBox(
-              height: 183.h,
+              height: 121.78.h,
               child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: 5,
@@ -314,7 +314,7 @@ class _HomeScreenState extends State<HomeScreen>
                 // padding: EdgeInsets.only(right: 2.0.w),
                 physics: ScrollPhysics(),
                 itemBuilder: (context, index) => Container(
-                  height: 121.78.h,
+                  // height: 20.h,
                   width: 156.w,
                   margin: EdgeInsets.symmetric(horizontal: 3.w),
                   decoration:

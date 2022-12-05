@@ -87,6 +87,8 @@ class _SplashViewState extends State<SplashView> {
     }
 
     String idUser = await UserSecureStorage.getIdUser();
+    final logger = Logger();
+    logger.e(idUser);
 
     if (idUser != null) {
       String url =
@@ -97,11 +99,13 @@ class _SplashViewState extends State<SplashView> {
         "device_name": deviceName,
         "device_identifier": identifier
       };
+      logger.w(data);
       var response = await http.post(Uri.parse(url), body: jsonEncode(data));
 
       if (response.statusCode >= 200 && response.statusCode <= 399) {
         var message = jsonDecode(response.body);
         if (message == 'FAILL') {
+          logger.e(message);
           return 'FAILL';
         } else {
           return 'OKE';
@@ -119,15 +123,19 @@ class _SplashViewState extends State<SplashView> {
     } else {
       String status = await UserSecureStorage.getStatus();
       String message = 'OKE';
+      final logger = Logger();
       if (status == 'user') {
         message = await checkLoginActive();
+        // logger.e(message);
       }
-      if (message.isCaseInsensitiveContainsAny('OKE')) {
+      if (message.isCaseInsensitiveContainsAny('OKE') ||
+          message.isCaseInsensitiveContainsAny('RELOG')) {
+        logger.e(status);
         _loginController.connect();
+        await checkOtpWhenExit();
         await _loginController.checkLogin();
         await checkAccess();
         await checkMaintenance();
-        await checkOtpWhenExit();
       } else if (message.isCaseInsensitiveContainsAny('FAILL')) {
         _loginController.logout();
         Get.snackbar('message', 'your account has been logged out');
@@ -136,17 +144,22 @@ class _SplashViewState extends State<SplashView> {
   }
 
   Future<void> checkOtpWhenExit() async {
-    String status = await FlutterSecureStorage().read(key: 'successotp');
+    final storage = FlutterSecureStorage();
+    String status = await storage.read(key: 'successotp');
+    final logger = Logger();
+    logger.e('testterrr');
 
     if (status != null) {
       if (status.isCaseInsensitiveContainsAny('false')) {
-        String noIpl = await FlutterSecureStorage().read(key: 'noipl');
-        String email = await FlutterSecureStorage().read(key: 'email');
-        String noTelp = await FlutterSecureStorage().read(key: 'notelp');
+        String noIpl = await storage.read(key: 'noipl');
+        String email = await storage.read(key: 'email');
+        String noTelp = await storage.read(key: 'notelp');
         _loginController.otpWhenExit = true.obs;
         _loginController.email = email.obs;
         _loginController.noIpl = noIpl.obs;
         _loginController.noTelp = noTelp.obs;
+        final logger = Logger();
+        logger.e(_loginController.email.value);
       }
     }
   }
@@ -166,6 +179,7 @@ class _SplashViewState extends State<SplashView> {
       if (response.statusCode >= 200 && response.statusCode <= 399) {
         var message = jsonDecode(response.body);
         final logger = Logger();
+        logger.e(idUser);
         if (message.toString() != 'E001' && message.toString() != 'E002') {
           logger.i(message['warga']);
           if (message['warga'] == '1') {

@@ -103,7 +103,7 @@ class _RadioMenuState extends State<RadioMenu> {
             // } else if (widget.menuRequest == SubMenu.Request) {
             //   Get.snackbar('Message', 'On Progress', overlayBlur: 2);
             // }
-            Get.to(AddComplaint());
+            Get.to(() => AddComplaint());
           },
         )
       ],

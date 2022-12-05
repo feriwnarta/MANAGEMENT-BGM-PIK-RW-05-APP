@@ -98,6 +98,12 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     } else {
       controllerIpl = TextEditingController();
     }
+
+    final storage = FlutterSecureStorage();
+    storage.read(key: 'successotp').then((value) {
+      final logger = Logger();
+      logger.e(value);
+    });
   }
 
   @override
@@ -383,17 +389,18 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
             // shape: RoundedRectangleBorder(
             //     borderRadius: BorderRadius.circular(20)),
             style: TextButton.styleFrom(
-              foregroundColor: Colors.blue,
+              backgroundColor: Colors.blue,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
             ),
             onPressed: () async {
               // registerController.toSucces = false.obs;
               registerController.resetController();
-              await FlutterSecureStorage().delete(key: 'successotp');
-              await FlutterSecureStorage().delete(key: 'noipl');
-              await FlutterSecureStorage().delete(key: 'email');
-              await FlutterSecureStorage().delete(key: 'notelp');
+              // final storage = FlutterSecureStorage();
+              // await storage.delete(key: 'successotp');
+              // await storage.delete(key: 'noipl');
+              // await storage.delete(key: 'email');
+              // await storage.delete(key: 'notelp');
               // bloc.add(UserLogOut());
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
@@ -497,7 +504,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    foregroundColor: Colors.lightBlue[400],
+                    backgroundColor: Colors.lightBlue[400],
                   ),
                   onPressed: () {
                     if (_formKeyCreatePassword.currentState.validate()) {
@@ -537,25 +544,28 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
             SizedBox(
               height: 8.h,
             ),
-            RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                text: 'Masukan OTP yang dikirim ke ',
-                style: TextStyle(fontSize: 12.sp, color: Colors.grey),
-                children: <TextSpan>[
-                  TextSpan(
-                      text: (registerController.methodVerifChose.value
-                              .isCaseInsensitiveContainsAny('EMAIL'))
-                          ? '$email'
-                          : (registerController.methodVerifChose.value
-                                  .isCaseInsensitiveContainsAny('SMS'))
-                              ? 'SMS $noTelp'
-                              : 'WhatsApp $noTelp',
-                      style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black)),
-                ],
+            SizedBox(
+              width: 300.w,
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  text: 'Masukan OTP yang dikirim ke ',
+                  style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: (registerController.methodVerifChose.value
+                                .isCaseInsensitiveContainsAny('EMAIL'))
+                            ? '$email'
+                            : (registerController.methodVerifChose.value
+                                    .isCaseInsensitiveContainsAny('SMS'))
+                                ? 'SMS $noTelp'
+                                : 'WhatsApp $noTelp',
+                        style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black)),
+                  ],
+                ),
               ),
             )
           ],
@@ -1189,7 +1199,16 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
           Navigator.of(context).pop();
           registerController.resetController();
           registerController.toSucces = true.obs;
-          print(registerController.toSucces.value);
+          // registerController.resetController();
+          final storage = FlutterSecureStorage();
+          await storage.delete(key: 'successotp');
+          await storage.delete(key: 'noipl');
+          await storage.delete(key: 'email');
+          await storage.delete(key: 'notelp');
+          final logger = Logger();
+          storage.read(key: 'successotp').then((value) {
+            logger.e(value);
+          });
           setState(() {});
         } else if (response.body.contains('FAILL')) {
           Navigator.of(context).pop();
@@ -1358,19 +1377,28 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
 
           Navigator.of(context).pop();
           if (message == 'success') {
-            registerController.toOtpVerif = false.obs;
-            registerController.toOtp = true.obs;
-            registerController.methodVerifChose = methodChose.obs;
-            countDownController.countDown(
-                iplOrEmail: (controllerIpl.text.isEmpty)
-                    ? controllerUsername.text
-                    : controllerIpl.text);
-            // registerController.update();
-            // registerController.update();
-            setState(() {});
-            final logger = Logger();
-            logger.d(registerController.toOtp.value);
-            logger.i(message);
+            if (!registerController.otpWhenExit.value) {
+              registerController.toOtpVerif = false.obs;
+              registerController.toOtp = true.obs;
+              registerController.methodVerifChose = methodChose.obs;
+              countDownController.countDown(
+                  iplOrEmail: (controllerIpl.text.isEmpty)
+                      ? controllerUsername.text
+                      : controllerIpl.text);
+              // registerController.update();
+              // registerController.update();
+              setState(() {});
+              final logger = Logger();
+              logger.d(registerController.toOtp.value);
+              logger.i(message);
+            } else {
+              registerController.toOtp = true.obs;
+              registerController.methodVerifChose = methodChose.obs;
+              countDownController.countDown(
+                  iplOrEmail: (controllerIpl.text.isEmpty)
+                      ? controllerUsername.text
+                      : controllerIpl.text);
+            }
           } else if (message == 'wa number not found') {
             buildShowDialogAnimation(
                 'Whatsapp number not found, please use another option',
@@ -1655,15 +1683,20 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
       request.fields['email'] = email;
       request.fields['no_telp'] = noTelp;
       request.send().then((value) {
-        http.Response.fromStream(value).then((value) {
+        http.Response.fromStream(value).then((value) async {
           String message = json.decode(value.body);
           if (message != null && message.isNotEmpty) {
             if (message == 'success') {
               Navigator.of(context).pop();
-              FlutterSecureStorage().write(key: 'successotp', value: 'false');
-              FlutterSecureStorage().write(key: 'noipl', value: noIpl);
-              FlutterSecureStorage().write(key: 'email', value: email);
-              FlutterSecureStorage().write(key: 'notelp', value: noTelp);
+              final storage = new FlutterSecureStorage();
+              // FlutterSecureStorage().write(key: 'successotp', value: 'false');
+              // FlutterSecureStorage().write(key: 'noipl', value: noIpl);
+              // FlutterSecureStorage().write(key: 'email', value: email);
+              // FlutterSecureStorage().write(key: 'notelp', value: noTelp);
+              await storage.write(key: 'successotp', value: 'false');
+              await storage.write(key: 'noipl', value: noIpl);
+              await storage.write(key: 'email', value: email);
+              await storage.write(key: 'notelp', value: noTelp);
               registerController.toOtpVerif = true.obs;
               setState(() {});
               // buat password

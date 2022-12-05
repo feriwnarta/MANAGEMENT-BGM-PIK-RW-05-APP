@@ -940,8 +940,8 @@ class _StepperRwState extends State<StepperRw> {
                                 onTap: () {
                                   FocusScope.of(context).unfocus();
                                   fToast.removeCustomToast();
-                                  Get.to<Map<String, dynamic>>(NewGoogleMaps())
-                                      .then((value) {
+                                  Get.to<Map<String, dynamic>>(
+                                      () => NewGoogleMaps()).then((value) {
                                     String address = value['data'];
                                     selectLoc.update((val) {
                                       selectLoc = address.obs;
