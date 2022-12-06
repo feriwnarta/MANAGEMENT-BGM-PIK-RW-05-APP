@@ -54,6 +54,9 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
   @override
   void dispose() {
     controllerStatus.dispose();
+    writeStatusController.deleteImage();
+    Navigator.of(context).pop();
+    Get.delete<StatusUserController>();
     Get.delete<WriteStatusController>();
     super.dispose();
   }
@@ -61,24 +64,23 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
   Widget build(BuildContext context) {
     appBar = AppBar(
       brightness: Brightness.light,
-      leading: IconButton(
-        icon: Icon(
-          Icons.clear_rounded,
-          color: Colors.white,
-          size: 4.h,
-        ),
-        onPressed: () {
-          writeStatusController.deleteImage();
-          Navigator.of(context).pop();
-          Get.delete<StatusUserController>();
-        },
-      ),
+      // leading: IconButton(
+      //   icon: Icon(
+      //     Icons.clear_rounded,
+      //     color: Colors.white,
+      //     size: 20.h,
+      //   ),
+      //   onPressed: () {
+      //     writeStatusController.deleteImage();
+      //     Navigator.of(context).pop();
+      //     Get.delete<StatusUserController>();
+      //   },
+      // ),
       backgroundColor: Colors.lightBlue,
       title: Text('Buat Postingan',
           style: TextStyle(
-              fontSize: 14.0.sp,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'saira condensed')),
+            fontSize: 14.sp,
+          )),
     );
 
     return Scaffold(
@@ -96,14 +98,14 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
                             bottom: BorderSide(color: Colors.grey[200]))),
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: 1.0.w, vertical: 1.0.h),
+                          horizontal: 10.w, vertical: 10.h),
                       child: Column(
                         children: [
                           Row(
                             children: [
                               // avatar
                               CircleAvatar(
-                                radius: 3.5.h,
+                                radius: 20.h,
                                 backgroundImage: CachedNetworkImageProvider(
                                     '${ServerApp.url}${controllerLogin.urlProfile}'),
                               ),
@@ -113,7 +115,7 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
                                 child: IconButton(
                                   icon: Icon(
                                     Icons.image,
-                                    size: 4.0.h,
+                                    size: 20.h,
                                     color: Colors.green[400],
                                   ),
                                   onPressed: () {
@@ -155,16 +157,29 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
   ElevatedButton buttonPosting(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          minimumSize: Size.fromHeight(7.0.h),
-          foregroundColor: Colors.lightBlue,
+          minimumSize: Size.fromHeight(20.h),
+          backgroundColor: Colors.green,
           // onPrimary: Colors.white,
           textStyle: TextStyle(fontSize: 13.0.sp, fontWeight: FontWeight.bold)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.only(left: 10),
-            child: Text('Posting'),
+          SizedBox(
+            height: 10.h,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 10.h),
+                child: Text(
+                  'Posting',
+                  style: TextStyle(color: Colors.white),
+                ),
+              )
+            ],
+          ),
+          SizedBox(
+            height: 10.h,
           )
         ],
       ),
@@ -223,23 +238,35 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
   ElevatedButton buttonPilihGambar(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        minimumSize: Size.fromHeight(6.0.h),
-        foregroundColor: Colors.white,
+        minimumSize: Size.fromHeight(20.h),
+        backgroundColor: Colors.lightBlue,
         // onPrimary: Colors.green // splash color
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+      child: Column(
         children: [
-          Icon(
-            Icons.image_outlined,
-            color: Colors.green[700],
+          SizedBox(
+            height: 10.h,
           ),
-          Padding(
-            padding: EdgeInsets.only(left: 1.0.w),
-            child: Text(
-              'Pilih gambar',
-              style: TextStyle(color: Colors.grey[600], fontSize: 11.0.sp),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Icon(
+                Icons.image_outlined,
+                color: Colors.white,
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  left: 10.w,
+                ),
+                child: Text(
+                  'Pilih gambar',
+                  style: TextStyle(color: Colors.white, fontSize: 11.0.sp),
+                ),
+              )
+            ],
+          ),
+          SizedBox(
+            height: 10.h,
           )
         ],
       ),
@@ -301,7 +328,7 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
   // sebelumnya pake sizebox
   Padding textFieldTulisStatus() {
     return Padding(
-      padding: EdgeInsets.only(left: 1.0.w),
+      padding: EdgeInsets.only(left: 10.w),
       child: TextField(
         controller: controllerStatus,
         maxLines: 10,
@@ -315,7 +342,7 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
 
   Padding headerName() {
     return Padding(
-      padding: EdgeInsets.only(left: 1.5.w),
+      padding: EdgeInsets.only(left: 10.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -336,7 +363,7 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
   Widget bottomImagePicker(BuildContext context) => Container(
         margin: EdgeInsets.only(top: 20),
         width: MediaQuery.of(context).size.width,
-        height: 18.0.h,
+        height: 100.h,
         child: Column(
           children: [
             Text(

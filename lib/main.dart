@@ -28,6 +28,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -68,6 +69,7 @@ void main() async {
   SecurityContext.defaultContext
       .setTrustedCertificatesBytes(data.buffer.asUint8List());
   runApp(MyApp());
+  configLoading();
 
   // runApp(
   //   ShowCaseWidget(
@@ -84,6 +86,23 @@ void main() async {
   //     },
   //   ),
   // );
+}
+
+void configLoading() {
+  EasyLoading.instance
+    ..displayDuration = const Duration(milliseconds: 2000)
+    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..loadingStyle = EasyLoadingStyle.dark
+    ..indicatorSize = 45.0
+    ..radius = 10.0
+    ..progressColor = Colors.yellow
+    ..backgroundColor = Colors.green
+    ..indicatorColor = Colors.yellow
+    ..textColor = Colors.yellow
+    ..maskColor = Colors.blue.withOpacity(0.5)
+    ..userInteractions = true
+    ..dismissOnTap = false;
+  // ..customAnimation = CustomAnimation();
 }
 
 class MyApp extends StatefulWidget {
@@ -166,9 +185,8 @@ class _MyApp extends State<MyApp> {
             home: SplashView(),
             // home: NewGoogleMaps(),
             theme: ThemeData(
-                fontFamily: 'open sans',
-                scaffoldBackgroundColor:
-                    Colors.white), // set background color theme
+                fontFamily: 'open sans', scaffoldBackgroundColor: Colors.white),
+            builder: EasyLoading.init(), // set background color theme
           ),
         ),
       ),

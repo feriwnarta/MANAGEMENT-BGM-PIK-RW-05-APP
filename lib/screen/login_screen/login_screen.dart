@@ -16,6 +16,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
@@ -1141,42 +1142,64 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     }
 
     try {
-      buildShowDialogAnimation(
-          '', '', 'assets/animation/loading-plane.json', 100);
+      // buildShowDialogAnimation(
+      //     '', '', 'assets/animation/loading-plane.json', 100);
+      EasyLoading.show(status: 'loading');
       http.Response response =
           await http.post(Uri.parse(url), body: json.encode(data));
       print('response ${response.body}');
       if (response.body != null && response.body.isNotEmpty) {
         if (response.body.contains('email terkirim')) {
-          Navigator.of(context).pop();
-          buildShowDialogAnimation('Mengirim ulang kode OTP ke email sukses',
-              'OKE', 'assets/animation/succes-animation.json', 100);
+          // Navigator.of(context).pop();
+          EasyLoading.dismiss();
+          EasyLoading.showSuccess(
+            'Mengirim ulang kode OTP ke email sukses',
+            dismissOnTap: true,
+          );
+          EasyLoading.dismiss();
+          // buildShowDialogAnimation('Mengirim ulang kode OTP ke email sukses',
+          //     'OKE', 'assets/animation/succes-animation.json', 100);
           setState(() {});
         } else if (response.body.contains('success kirim otp wa')) {
-          Navigator.of(context).pop();
-          buildShowDialogAnimation('Mengirim ulang kode OTP ke whatsapp sukses',
-              'OKE', 'assets/animation/succes-animation.json', 100);
+          EasyLoading.dismiss();
+          EasyLoading.showSuccess(
+            'Mengirim ulang kode OTP ke whatsapp sukses',
+            dismissOnTap: true,
+          );
+          // Navigator.of(context).pop();
+          // buildShowDialogAnimation('Mengirim ulang kode OTP ke whatsapp sukses',
+          //     'OKE', 'assets/animation/succes-animation.json', 100);
           setState(() {});
         } else if (response.body.contains('no ipl tidak ada')) {
-          Navigator.of(context).pop();
-          buildShowDialogAnimation('Nomor IPL tidak ditemukan', 'OKE',
-              'assets/animation/error-animation.json', 100);
+          // Navigator.of(context).pop();
+          EasyLoading.dismiss();
+          EasyLoading.showError('Nomor IPL tidak ditemukan');
+          // buildShowDialogAnimation('Nomor IPL tidak ditemukan', 'OKE',
+          //     'assets/animation/error-animation.json', 100);
           setState(() {});
         } else {
-          Navigator.of(context).pop();
-          buildShowDialogAnimation(
-              'Ada yang salah, silahkan hubungi administrator',
-              'OKE',
-              'assets/animation/error-animation.json',
-              15.0);
+          // Navigator.of(context).pop();
+          EasyLoading.dismiss();
+          EasyLoading.show(status: 'ada yang salah, silahkan hubungi admin');
+          // buildShowDialogAnimation(
+          //     'Ada yang salah, silahkan hubungi administrator',
+          //     'OKE',
+          //     'assets/animation/error-animation.json',
+          //     15.0);
         }
       }
     } on io.SocketException {
-      buildShowDialogAnimation(
-          'No Internet', 'OKE', 'assets/animation/error-animation.json', 15.0);
+      EasyLoading.dismiss();
+      EasyLoading.showError('No internet');
+      EasyLoading.dismiss();
+      // buildShowDialogAnimation(
+      //     'No Internet', 'OKE', 'assets/animation/error-animation.json', 15.0);
     } on io.HttpException {
-      buildShowDialogAnimation(
-          'Server Error', 'OKE', 'assets/animation/error-animation.json', 15.0);
+      EasyLoading.dismiss();
+      EasyLoading.showError('Server error');
+      EasyLoading.dismiss();
+      // buildShowDialogAnimation(
+      //     'Server Error', 'OKE', 'assets/animation/error-animation.json', 15.0);
     }
   }
 
@@ -1191,14 +1214,16 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     }
 
     try {
-      buildShowDialogAnimation(
-          '', '', 'assets/animation/loading-plane.json', 2.0.h);
+      // buildShowDialogAnimation(
+      //     '', '', 'assets/animation/loading-plane.json', 2.0.h);
+      EasyLoading.show(status: 'loading');
       http.Response response =
           await http.post(Uri.parse(url), body: json.encode(data));
       print('response ${response.body}');
       if (response.body != null && response.body.isNotEmpty) {
         if (response.body.contains('OKE')) {
-          Navigator.of(context).pop();
+          // Navigator.of(context).pop();
+          EasyLoading.dismiss();
           registerController.resetController();
           registerController.toSucces = true.obs;
           registerController.update();
@@ -1215,25 +1240,36 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
           });
           // setState(() {});
         } else if (response.body.contains('FAILL')) {
-          Navigator.of(context).pop();
-          buildShowDialogAnimation(
-              'Password can\'t create, Please Contact Administrator',
-              'OKE',
-              'assets/animation/error-animation.json',
-              15.0);
+          // Navigator.of(context).pop();
+          EasyLoading.dismiss();
+          EasyLoading.showError(
+              'password tidak bisa dibuat, tolong hubungi admin',
+              dismissOnTap: true);
+          // buildShowDialogAnimation(
+          //     'Password can\'t create, Please Contact Administrator',
+          //     'OKE',
+          //     'assets/animation/error-animation.json',
+          //     15.0);
           setState(() {});
         } else {
-          Navigator.of(context).pop();
-          buildShowDialogAnimation('Somethine Went Wrong', 'OKE',
-              'assets/animation/error-animation.json', 15.0);
+          // Navigator.of(context).pop();
+          EasyLoading.dismiss();
+          EasyLoading.showError(
+            'ada sesuatu yang salah, tolong hubungi admin',
+            dismissOnTap: true,
+          );
+          // buildShowDialogAnimation('Somethine Went Wrong', 'OKE',
+          //     'assets/animation/error-animation.json', 15.0);
         }
       }
     } on io.SocketException {
-      buildShowDialogAnimation(
-          'No Internet', 'OKE', 'assets/animation/error-animation.json', 15.0);
+      // buildShowDialogAnimation(
+      //     'No Internet', 'OKE', 'assets/animation/error-animation.json', 15.0);
+      EasyLoading.showError('No internet', dismissOnTap: true);
     } on io.HttpException {
-      buildShowDialogAnimation(
-          'Server Error', 'OKE', 'assets/animation/error-animation.json', 15.0);
+      EasyLoading.showError('Server error', dismissOnTap: true);
+      // buildShowDialogAnimation(
+      //     'Server Error', 'OKE', 'assets/animation/error-animation.json', 15.0);
     }
   }
 
@@ -1250,8 +1286,9 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     logger.d(otpKey);
     logger.d(controllerUsername.text);
     try {
-      buildShowDialogAnimation(
-          '', '', 'assets/animation/loading-plane.json', 2.0.h);
+      // buildShowDialogAnimation(
+      //     '', '', 'assets/animation/loading-plane.json', 2.0.h);
+      EasyLoading.show(status: 'loading');
       http.Response response =
           await http.post(Uri.parse(url), body: json.encode(data));
       print('response ${response.body}');
@@ -1265,27 +1302,34 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
             // countDownController.reset();
             countDownController.reset();
             if (idUser.isNotEmpty) {
-              Navigator.of(context).pop();
+              // Navigator.of(context).pop();
+              EasyLoading.dismiss();
               registerController.resetController();
               registerController.update();
               Get.offAll(SplashView());
             }
           } else {
-            Navigator.of(context).pop();
+            // Navigator.of(context).pop();
+            EasyLoading.dismiss();
             registerController.isEmpty = false.obs;
             registerController.toPassword = true.obs;
             setState(() {});
           }
         } else if (response.body.contains('FAILL')) {
-          Navigator.of(context).pop();
+          // Navigator.of(context).pop();
+          EasyLoading.dismiss();
           registerController.isEmpty = false.obs;
           registerController.isWrong = true.obs;
           errorController.add(ErrorAnimationType.shake);
           setState(() {});
         } else {
-          Navigator.of(context).pop();
-          buildShowDialogAnimation('Somethine Went Wrong', 'OKE',
-              'assets/animation/error-animation.json', 15.0);
+          // Navigator.of(context).pop();
+          EasyLoading.dismiss();
+          EasyLoading.showError(
+              'Ada sesuatu yang salah, silahkan hubungi admin',
+              dismissOnTap: true);
+          // buildShowDialogAnimation('Somethine Went Wrong', 'OKE',
+          //     'assets/animation/error-animation.json', 15.0);
         }
       }
     } on io.SocketException {
@@ -1303,14 +1347,16 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     logger.e('email services di klik');
     await SendOtpServices.sendOtpGmail(email: email, noTelp: noTelp)
         .then((request) {
-      buildShowDialogAnimation(
-          '', '', 'assets/animation/loading-plane.json', 100);
+      // buildShowDialogAnimation(
+      //     '', '', 'assets/animation/loading-plane.json', 100);
+      EasyLoading.show(status: 'loading');
       request.send().then((streamResponse) {
         http.Response.fromStream(streamResponse).then((response) {
           String message = jsonDecode(response.body);
           if (message == 'success') {
             logger.e('succes kirim otp gmail $email, $noTelp, $message');
-            Navigator.of(context).pop();
+            // Navigator.of(context).pop();
+            EasyLoading.dismiss();
             registerController.toOtpVerif = false.obs;
             registerController.toOtp = true.obs;
             registerController.methodVerifChose = methodChose.obs;
@@ -1324,14 +1370,22 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
           } else if (message == 'format email wrong') {
             // format email wrong
             // print('email tidak ada atau ada kesalahan penulisan');
-            buildShowDialogAnimation('email format does not match', 'OKE',
-                'assets/animation/error-animation.json', 15.0);
+            // buildShowDialogAnimation('email format does not match', 'OKE',
+            //     'assets/animation/error-animation.json', 15.0);
+            EasyLoading.showError(
+              'email tidak ada atau ada kesalahan penulisan',
+              dismissOnTap: true,
+            );
           } else {
-            buildShowDialogAnimation(
-                'Email otp is in error, please use another option',
-                'OK',
-                'assets/animation/error-animation.json',
-                2.0.h);
+            // buildShowDialogAnimation(
+            //     'Email otp is in error, please use another option',
+            //     'OK',
+            //     'assets/animation/error-animation.json',
+            //     2.0.h);
+            EasyLoading.showError(
+              'Email OTP error, tolong gunakan pilihan lain',
+              dismissOnTap: true,
+            );
           }
         });
       });
@@ -1371,13 +1425,15 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
           emailServices(email, noTelp, methodChose);
           // countDownController.count = 60.obs;
         } else if (methodChose.isCaseInsensitiveContainsAny('WHATSAPP')) {
-          buildShowDialogAnimation(
-              '', '', 'assets/animation/loading-plane.json', 100);
+          // buildShowDialogAnimation(
+          //     '', '', 'assets/animation/loading-plane.json', 100);
+          EasyLoading.show(status: 'loading');
           String message = await SendOtpServices.sendOtpWhatsapp(
               email: email, noTelp: noTelp);
 
-          Navigator.of(context).pop();
+          // Navigator.of(context).pop();
           if (message == 'success') {
+            EasyLoading.dismiss();
             if (!registerController.toOtpVerif.value) {
               registerController.toOtpVerif = false.obs;
               registerController.toOtp = true.obs;
@@ -1511,23 +1567,28 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
 
     if (_formKeyLogin.currentState.validate()) {
       try {
-        buildShowDialogAnimation(
-            '', '', 'assets/animation/loading-plane.json', 100.h);
+        // buildShowDialogAnimation(
+        //     '', '', 'assets/animation/loading-plane.json', 100.h);
+        EasyLoading.show(status: 'loading');
 
         // response = await http.post(url, body: json.encode(data));
         response = await http.post(Uri.parse(url), body: json.encode(data));
 
         if (response.statusCode >= 400) {
-          buildShowDialogAnimation('Error During login', 'OKE',
-              'assets/animation/error-animation.json', 15.0);
+          EasyLoading.showError('Server error, tolong hubungin admin',
+              dismissOnTap: true);
+          // buildShowDialogAnimation('Error During login', 'OKE',
+          //     'assets/animation/error-animation.json', 15.0);
         }
 
         print(response.body);
         if (response.body.isNotEmpty) {
           message = jsonDecode(response.body);
           if (message != 'login failed') {
+            EasyLoading.dismiss();
             if (message['active_user'] == true) {
-              Navigator.of(context).pop();
+              // Navigator.of(context).pop();
+              EasyLoading.dismiss();
               await buildShowDialogAnimation(
                   'kami mendeteksi adanya login diperangkat baru, login diperangkat lain akan otomatis keluar',
                   'OKE',
@@ -1541,7 +1602,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
             // if (idUser.isNotEmpty) {
             idUser = message['id_user'];
             status = message['status'];
-            Navigator.of(context).pop();
+            // Navigator.of(context).pop();
             loginController.loginCitizen();
             // Get.offAll(SplashView());
             registerController.toOtpVerif = true.obs;
@@ -1673,16 +1734,13 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
   }
 
   Future userRegister(String noIpl, String email, String noTelp) async {
-    buildShowDialogAnimation(
-        '', '', 'assets/animation/loading-plane.json', 2.0.h);
-    /**
-     * !!!!!!!! sengaja dimatikan karena api wablas tidak bisa
-     */
-    // String result = await checkNumberPhone(noTelp);
-    // final logger = Logger();
-    // logger.w(result);
+    // buildShowDialogAnimation(
+    //     '', '', 'assets/animation/loading-plane.json', 2.0.h);
+    EasyLoading.show(status: 'loading', dismissOnTap: false);
 
-    String result = 'FOUND';
+    String result = await checkNumberPhone(noTelp);
+    final logger = Logger();
+    logger.w(result);
 
     if (result == 'FOUND') {
       String url = '${ServerApp.url}src/login/register.php';
@@ -1695,7 +1753,8 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
           String message = json.decode(value.body);
           if (message != null && message.isNotEmpty) {
             if (message == 'success') {
-              Navigator.of(context).pop();
+              // Navigator.of(context).pop();
+              EasyLoading.dismiss();
               final storage = new FlutterSecureStorage();
               // FlutterSecureStorage().write(key: 'successotp', value: 'false');
               // FlutterSecureStorage().write(key: 'noipl', value: noIpl);
@@ -1710,29 +1769,54 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
               // buat password
             } else if (message == 'no_ipl tidak ada') {
               // warning ipl tidak terdaftar disiter
-              Navigator.of(context).pop();
-              buildShowDialogAnimation('Nomor IPL tidak ada', 'OKE',
-                  'assets/animation/error-animation.json', 2.0.h);
+              // Navigator.of(context).pop();
+              EasyLoading.dismiss();
+              EasyLoading.showError(
+                'Nomor IPL tidak ada',
+                dismissOnTap: true,
+              );
+              // buildShowDialogAnimation('Nomor IPL tidak ada', 'OKE',
+              //     'assets/animation/error-animation.json', 2.0.h);
             } else if (message == 'ipl exist') {
               // ipl sudah pernah register disistem
-              Navigator.of(context).pop();
-              buildShowDialogAnimation('Nomor IPL ini sudah digunakan', 'OKE',
-                  'assets/animation/error-animation.json', 2.0.h);
+              // Navigator.of(context).pop();
+              EasyLoading.dismiss();
+              EasyLoading.showError(
+                'Nomor IPL ini sudah digunakan',
+                dismissOnTap: true,
+              );
+              // buildShowDialogAnimation('Nomor IPL ini sudah digunakan', 'OKE',
+              //     'assets/animation/error-animation.json', 2.0.h);
             } else if (message == 'email exist') {
-              Navigator.of(context).pop();
-              buildShowDialogAnimation('Email ini sudah digunakan', 'OKE',
-                  'assets/animation/error-animation.json', 2.0.h);
+              // Navigator.of(context).pop();
+              EasyLoading.dismiss();
+              EasyLoading.showError(
+                'Email ini sudah digunakan',
+                dismissOnTap: true,
+              );
+              // buildShowDialogAnimation('Email ini sudah digunakan', 'OKE',
+              //     'assets/animation/error-animation.json', 2.0.h);
             } else if (message == 'phone number exist') {
-              Navigator.of(context).pop();
-              buildShowDialogAnimation('Nomor telpon ini sudah digunakan',
-                  'OKE', 'assets/animation/error-animation.json', 2.0.h);
+              // Navigator.of(context).pop();
+              EasyLoading.dismiss();
+              EasyLoading.showError(
+                'Nomor telpon ini sudah digunakan',
+                dismissOnTap: true,
+              );
+              // buildShowDialogAnimation('Nomor telpon ini sudah digunakan',
+              //     'OKE', 'assets/animation/error-animation.json', 2.0.h);
             } else {
-              Navigator.of(context).pop();
-              buildShowDialogAnimation(
-                  'Ada proses yang salah ${message}, Hubungi admin',
-                  'OKE',
-                  'assets/animation/error-animation.json',
-                  2.0.h);
+              // Navigator.of(context).pop();
+              EasyLoading.dismiss();
+              EasyLoading.showError(
+                'Ada proses yang salah $message, hubungi Admin',
+                dismissOnTap: true,
+              );
+              // buildShowDialogAnimation(
+              //     'Ada proses yang salah ${message}, Hubungi admin',
+              //     'OKE',
+              //     'assets/animation/error-animation.json',
+              //     2.0.h);
             }
           }
         });
