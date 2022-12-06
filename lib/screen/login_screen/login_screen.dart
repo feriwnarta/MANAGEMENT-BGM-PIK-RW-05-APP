@@ -93,6 +93,8 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     super.initState();
     if (email != null && noTelp != null) {
       if (email.isNotEmpty && noTelp.isNotEmpty) {
+        final logger = Logger();
+        logger.e('email ga kosong');
         registerController.otpWhenExit = true.obs;
       }
     } else {
@@ -102,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     final storage = FlutterSecureStorage();
     storage.read(key: 'successotp').then((value) {
       final logger = Logger();
-      logger.e(value);
+      logger.e(registerController.otpWhenExit.value);
     });
   }
 
@@ -1199,7 +1201,9 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
           Navigator.of(context).pop();
           registerController.resetController();
           registerController.toSucces = true.obs;
+          registerController.update();
           // registerController.resetController();
+          // email
           final storage = FlutterSecureStorage();
           await storage.delete(key: 'successotp');
           await storage.delete(key: 'noipl');
@@ -1209,7 +1213,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
           storage.read(key: 'successotp').then((value) {
             logger.e(value);
           });
-          setState(() {});
+          // setState(() {});
         } else if (response.body.contains('FAILL')) {
           Navigator.of(context).pop();
           buildShowDialogAnimation(
@@ -1242,11 +1246,9 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     } else {
       data = {'iplOrEmail': controllerIpl.text, 'otp': otpKey};
     }
-
     final logger = Logger();
     logger.d(otpKey);
     logger.d(controllerUsername.text);
-
     try {
       buildShowDialogAnimation(
           '', '', 'assets/animation/loading-plane.json', 2.0.h);
@@ -1265,7 +1267,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
             if (idUser.isNotEmpty) {
               Navigator.of(context).pop();
               registerController.resetController();
-
+              registerController.update();
               Get.offAll(SplashView());
             }
           } else {
@@ -1295,7 +1297,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     }
   }
 
-  /// method yang digunakan untuk mengirim otp email
   Future<void> emailServices(
       String email, String noTelp, String methodChose) async {
     final logger = Logger();
@@ -1377,7 +1378,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
 
           Navigator.of(context).pop();
           if (message == 'success') {
-            if (!registerController.otpWhenExit.value) {
+            if (!registerController.toOtpVerif.value) {
               registerController.toOtpVerif = false.obs;
               registerController.toOtp = true.obs;
               registerController.methodVerifChose = methodChose.obs;
@@ -1386,18 +1387,20 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                       ? controllerUsername.text
                       : controllerIpl.text);
               // registerController.update();
-              // registerController.update();
-              setState(() {});
+              registerController.update();
+              // setState(() {});
               final logger = Logger();
               logger.d(registerController.toOtp.value);
               logger.i(message);
             } else {
+              registerController.toOtpVerif = false.obs;
               registerController.toOtp = true.obs;
               registerController.methodVerifChose = methodChose.obs;
               countDownController.countDown(
                   iplOrEmail: (controllerIpl.text.isEmpty)
                       ? controllerUsername.text
                       : controllerIpl.text);
+              registerController.update();
             }
           } else if (message == 'wa number not found') {
             buildShowDialogAnimation(
@@ -1672,9 +1675,14 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
   Future userRegister(String noIpl, String email, String noTelp) async {
     buildShowDialogAnimation(
         '', '', 'assets/animation/loading-plane.json', 2.0.h);
-    String result = await checkNumberPhone(noTelp);
-    final logger = Logger();
-    logger.w(result);
+    /**
+     * !!!!!!!! sengaja dimatikan karena api wablas tidak bisa
+     */
+    // String result = await checkNumberPhone(noTelp);
+    // final logger = Logger();
+    // logger.w(result);
+
+    String result = 'FOUND';
 
     if (result == 'FOUND') {
       String url = '${ServerApp.url}src/login/register.php';
