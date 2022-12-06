@@ -4,10 +4,11 @@ import 'package:aplikasi_rw/model/comment_model.dart';
 import 'package:aplikasi_rw/services/add_comment_services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_getx_widget.dart';
-import 'package:sizer/sizer.dart' as sw;
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:sizer/sizer.dart' as sw;
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 //ignore: must_be_immutable
 class CommentScreen extends StatefulWidget {
@@ -25,7 +26,7 @@ class _CommentScreenState extends State<CommentScreen> {
   bool _isValidate = false;
   CommentUserController commentController;
   ScrollController scrollcontroller = ScrollController();
-  StatusUserController statusController = Get.find<StatusUserController>();
+  StatusUserController statusController;
 
   void onScroll() {
     if (scrollcontroller.position.maxScrollExtent ==
@@ -44,6 +45,7 @@ class _CommentScreenState extends State<CommentScreen> {
   void initState() {
     super.initState();
     commentController = Get.put(CommentUserController());
+    statusController = Get.find<StatusUserController>();
   }
 
   @override
@@ -58,31 +60,36 @@ class _CommentScreenState extends State<CommentScreen> {
     return SafeArea(
       bottom: true,
       child: Container(
-        padding: EdgeInsets.all(0.6.h),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-        height: 60.0.h,
+        // padding: EdgeInsets.all(0.6.h),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20), color: Colors.white),
+        height: 350.h,
         child: WillPopScope(
           onWillPop: () async {
             commentController.listComment = <CommentModel>[].obs;
             return true;
           },
           child: Scaffold(
+            backgroundColor: Colors.transparent,
             appBar: PreferredSize(
-              preferredSize: Size.fromHeight(5.0.h),
+              preferredSize: Size.fromHeight(50.h),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
-                      width: 10.0.w,
+                      width: 50.0.w,
                     ),
                     Text(
                       // '${CommentModel.getAllComment().length} Comment',
-                      'comment',
+                      'komentar',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 12.0.sp),
                     ),
                     IconButton(
-                      icon: Icon(Icons.clear_rounded),
+                      icon: Icon(
+                        Icons.clear_rounded,
+                        size: 20.h,
+                      ),
                       onPressed: () {
                         commentController.listComment = <CommentModel>[].obs;
                         commentController.isMaxReached = false.obs;
@@ -93,7 +100,7 @@ class _CommentScreenState extends State<CommentScreen> {
             ),
             body: Stack(children: [
               Container(
-                  height: 47.0.h,
+                  height: 250.0.h,
                   child: GetX<CommentUserController>(
                     initState: (state) =>
                         commentController.getComment(idStatus: widget.idStatus),
@@ -142,7 +149,7 @@ class _CommentScreenState extends State<CommentScreen> {
                         } else {
                           return Center(
                               child: Text(
-                            'No comment',
+                            'tidak ada komentar',
                             style: TextStyle(fontSize: 13.sp),
                           ));
                         }
@@ -153,7 +160,7 @@ class _CommentScreenState extends State<CommentScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
-                    height: 7.0.h,
+                    height: 40.0.h,
                     padding: EdgeInsets.symmetric(vertical: 5),
                     decoration: BoxDecoration(color: Colors.white, boxShadow: [
                       BoxShadow(
@@ -165,9 +172,10 @@ class _CommentScreenState extends State<CommentScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SizedBox(
-                          width: 83.0.w,
+                          width: 310.0.w,
                           child: TextField(
                             controller: controllerWriteStatus,
+                            textAlign: TextAlign.left,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
@@ -179,6 +187,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                 filled: true,
                                 fillColor: Colors.grey[200],
                                 hintText: 'write status',
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 10.h, horizontal: 10.w),
                                 errorText: (_isValidate)
                                     ? 'comment can\'t be empty'
                                     : null),
@@ -190,23 +200,29 @@ class _CommentScreenState extends State<CommentScreen> {
                           child: IconButton(
                               icon: Icon(
                                 Icons.arrow_forward,
-                                size: 4.0.h,
+                                size: 20.h,
                               ),
                               onPressed: () async {
+                                EasyLoading.show(status: 'loading');
                                 String m = await AddCommentServices.addComment(
                                     widget.idStatus,
                                     controllerWriteStatus.text,
                                     context);
                                 if (m.isCaseInsensitiveContainsAny('SUCCESS')) {
+                                  EasyLoading.dismiss();
                                   commentController
                                       .refreshComment(widget.idStatus);
                                   await statusController.refreshStatus();
-                                  Navigator.of(context).pop();
+                                  // Navigator.of(context).pop();
                                 } else {
-                                  Get.snackbar(
-                                      'message', 'gagal mengirim komen',
-                                      snackPosition: SnackPosition.BOTTOM);
-                                  Navigator.of(context).pop();
+                                  EasyLoading.dismiss();
+                                  EasyLoading.showError(
+                                    'gagal mengirim komen',
+                                  );
+                                  // Get.snackbar(
+                                  //     'message', 'gagal mengirim komen',
+                                  //     snackPosition: SnackPosition.BOTTOM);
+                                  // Navigator.of(context).pop();
                                 }
                                 controllerWriteStatus.text = '';
                                 FocusScope.of(context)
@@ -232,7 +248,7 @@ class _CommentScreenState extends State<CommentScreen> {
         ListTile(
           leading: CircleAvatar(
             backgroundImage: CachedNetworkImageProvider(urlUserComment),
-            radius: 3.5.h,
+            radius: 20.h,
           ),
           title: Text(
             userName,
@@ -243,7 +259,7 @@ class _CommentScreenState extends State<CommentScreen> {
         Row(
           children: [
             SizedBox(
-              width: 5.0.w,
+              width: 15.w,
             ),
             Expanded(
               child: Text(

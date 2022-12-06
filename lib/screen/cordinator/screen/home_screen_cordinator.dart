@@ -60,8 +60,11 @@ class HomeScreenCordinator extends StatelessWidget {
         },
         items: [
           BottomNavigationBarItem(
-              icon: SvgPicture.asset('assets/img/image-svg/home.svg'),
-              label: 'Home'),
+            icon: SvgPicture.asset(
+              'assets/img/image-svg/home.svg',
+            ),
+            label: 'Home',
+          ),
           BottomNavigationBarItem(
               icon:
                   SvgPicture.asset('assets/img/image-svg/complaint-white.svg'),

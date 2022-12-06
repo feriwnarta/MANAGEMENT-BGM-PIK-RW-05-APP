@@ -6,6 +6,7 @@ import 'package:aplikasi_rw/services/chart_worker/get_pie_chart_worker.dart';
 import 'package:aplikasi_rw/services/chart_worker/total_manpower_services.dart';
 import 'package:aplikasi_rw/services/chart_worker/update_chart_worker.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -27,10 +28,12 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
   @override
   initState() {
     super.initState();
+    final logger = Logger();
+    logger.e('clicked');
     setState(() {
-      widget.futureLineChart = GetChartWorkerServices.getChart();
-      widget.futurePieChart = PieChartServices.getPie();
-      widget.futureBarChart = TotalManPowerServices.getManPower();
+      // widget.futureLineChart = GetChartWorkerServices.getChart();
+      // widget.futurePieChart = PieChartServices.getPie();
+      // widget.futureBarChart = TotalManPowerServices.getManPower();
     });
   }
 
@@ -53,7 +56,8 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
               children: [
                 SizedBox(height: 16.h),
                 FutureBuilder<Map<String, dynamic>>(
-                    future: widget.futureLineChart,
+                    // future: widget.futureLineChart,
+                    future: GetChartWorkerServices.getChart(),
                     builder: (context, snapshot) =>
                         (snapshot.connectionState == ConnectionState.done)
                             ? lineChart(snapshot)
@@ -68,7 +72,8 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
                                 baseColor: Colors.grey[300],
                                 highlightColor: Colors.grey[200])),
                 FutureBuilder<Map<String, dynamic>>(
-                    future: widget.futurePieChart,
+                    // future: widget.futurePieChart,
+                    future: PieChartServices.getPie(),
                     builder: (context, snapshot) =>
                         (snapshot.connectionState == ConnectionState.done)
                             ? pieChart(snapshot)
@@ -84,7 +89,7 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
                                 baseColor: Colors.grey[300],
                                 highlightColor: Colors.grey[200])),
                 FutureBuilder(
-                    future: widget.futureBarChart,
+                    future: TotalManPowerServices.getManPower(),
                     builder: (context, snapshot) =>
                         (snapshot.connectionState == ConnectionState.done)
                             ? barChart(snapshot)
@@ -241,7 +246,7 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
                           Text(
                             '${snapshot.data['total_laporan']} Laporan',
                             style: TextStyle(
-                                fontSize: 14.sp,
+                                fontSize: 12.sp,
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold),
                           )
@@ -256,7 +261,7 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
                           Text(
                             '${snapshot.data['laporan_belum_dikerjakan']} Belum Dikerjakan',
                             style: TextStyle(
-                                fontSize: 14.sp,
+                                fontSize: 12.sp,
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold),
                           )
@@ -269,7 +274,9 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
                           ),
                           SizedBox(width: 8.w),
                           Text(
-                              '${snapshot.data['laporan_sedang_dikerjakan']} Sedang dikerjakan')
+                            '${snapshot.data['laporan_sedang_dikerjakan']} Sedang dikerjakan',
+                            style: TextStyle(fontSize: 12.sp),
+                          )
                         ],
                       ),
                       Row(

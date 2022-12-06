@@ -9,6 +9,7 @@ import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart' as sidio;
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
@@ -42,7 +43,7 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
     // controllerPostingStatus = Get.put(StatusUserController());
     controllerLogin = Get.put(UserLoginController());
     writeStatusController = Get.put(WriteStatusController());
-    // dio = sidio.Dio();
+    dio = sidio.Dio();
     // dio.interceptors.add(RetryOnConnectionChangeInterceptor(
     //   requestRetrier: DioConnectivityRequestRetrier(
     //     dio: dio,
@@ -55,7 +56,7 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
   void dispose() {
     controllerStatus.dispose();
     writeStatusController.deleteImage();
-    Navigator.of(context).pop();
+    // Navigator.of(context).pop();
     Get.delete<StatusUserController>();
     Get.delete<WriteStatusController>();
     super.dispose();
@@ -76,7 +77,7 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
       //     Get.delete<StatusUserController>();
       //   },
       // ),
-      backgroundColor: Colors.lightBlue,
+
       title: Text('Buat Postingan',
           style: TextStyle(
             fontSize: 14.sp,
@@ -208,15 +209,18 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
             'foto_profile': '${controllerLogin.urlProfile}',
             'caption': controllerStatus.text,
           });
-          showLoading(context);
+          // showLoading(context);
+          EasyLoading.show(status: 'loading');
           String message = await StatusUserServices.sendStatus(formData, dio);
           if (message != null && message.isNotEmpty) {
             controllerPostingStatus.addStatus();
             Get.delete<WriteStatusController>();
             FocusScope.of(context).requestFocus(FocusNode());
-            Navigator.of(context)
-              ..pop()
-              ..pop();
+            EasyLoading.showToast('terkirim',
+                dismissOnTap: true,
+                toastPosition: EasyLoadingToastPosition.bottom);
+            EasyLoading.dismiss();
+            Navigator.of(context)..pop();
           }
         } else {
           Get.snackbar(
@@ -239,7 +243,7 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         minimumSize: Size.fromHeight(20.h),
-        backgroundColor: Colors.lightBlue,
+        backgroundColor: Colors.blue,
         // onPrimary: Colors.green // splash color
       ),
       child: Column(

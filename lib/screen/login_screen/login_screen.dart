@@ -1581,7 +1581,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
           //     'assets/animation/error-animation.json', 15.0);
         }
 
-        print(response.body);
+        logger.e(response.body);
         if (response.body.isNotEmpty) {
           message = jsonDecode(response.body);
           if (message != 'login failed') {
@@ -1663,7 +1663,9 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
 
                 // jika login gagal / username atau password salah
                 if (message == 'login_kontraktor_failed') {
-                  Navigator.of(context).pop();
+                  // Navigator.of(context).pop();
+                  EasyLoading.showError('Nomor IPL / email / password salah',
+                      dismissOnTap: true);
                   // buildShowDialogAnimation('IPL number / email / passwod wrong',
                   //     'OKE', 'assets/animation/error-animation.json', 15.0);
                   setState(() {
@@ -1679,33 +1681,46 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                   String idUser = await UserSecureStorage.getIdUser();
                   if (idUser.isNotEmpty) {
                     print('login kontraktor');
-                    Navigator.of(context).pop();
+                    // Navigator.of(context).pop();
+                    EasyLoading.dismiss();
                     loginController.loginContractor();
                     Get.offAll(SplashView());
                   }
                 }
               } else {
-                Navigator.of(context).pop();
-                buildShowDialogAnimation('Http Response Error', 'OKE',
-                    'assets/animation/error-animation.json', 15.0);
+                // Navigator.of(context).pop();
+                EasyLoading.dismiss();
+                EasyLoading.showError('Response Error, tolong hubungi admin',
+                    dismissOnTap: true);
+                // buildShowDialogAnimation('Http Response Error', 'OKE',
+                //     'assets/animation/error-animation.json', 15.0);
               }
             }
           } else {
-            Navigator.of(context).pop();
-            buildShowDialogAnimation('Nomor IPL atau email salah', 'OKE',
-                'assets/animation/error-animation.json', 15.0);
+            // Navigator.of(context).pop();
+            EasyLoading.dismiss();
+            EasyLoading.showError('Nomor IPL atau email salah',
+                dismissOnTap: true);
+            // buildShowDialogAnimation('Nomor IPL atau email salah', 'OKE',
+            //     'assets/animation/error-animation.json', 15.0);
           }
         } else {
-          Navigator.of(context).pop();
-          buildShowDialogAnimation('Http Response Error', 'OKE',
-              'assets/animation/error-animation.json', 15.0);
+          // Navigator.of(context).pop();
+          EasyLoading.dismiss();
+          EasyLoading.showError('Response Error, tolong hubungi admin',
+              dismissOnTap: true);
+          // buildShowDialogAnimation('Http Response Error', 'OKE',
+          //     'assets/animation/error-animation.json', 15.0);
         }
       } on io.SocketException {
-        buildShowDialogAnimation('Tidak ada internet', 'OKE',
-            'assets/animation/error-animation.json', 15.0);
+        EasyLoading.showError('Tidak ada internet', dismissOnTap: true);
+        // buildShowDialogAnimation('Tidak ada internet', 'OKE',
+        //     'assets/animation/error-animation.json', 15.0);
       } on io.HttpException {
-        buildShowDialogAnimation('Server sedang error', 'OKE',
-            'assets/animation/error-animation.json', 15.0);
+        EasyLoading.showError('Server error, tolong hubungin admin',
+            dismissOnTap: true);
+        // buildShowDialogAnimation('Server sedang error', 'OKE',
+        //     'assets/animation/error-animation.json', 15.0);
       }
     }
   }

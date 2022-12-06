@@ -2,6 +2,7 @@ import 'package:aplikasi_rw/screen/loading_send_screen.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -19,7 +20,8 @@ class AddCommentServices {
     String url = '${ServerApp.url}src/status/comment/add_comment.php';
     var data = {'id_user': idUser, 'id_status': idStatus, 'comment': comment};
 
-    showLoading(context);
+    // showLoading(context);
+    // EasyLoading.show(status: 'loading');
     var response = await http.post(Uri.parse(url), body: jsonEncode(data));
     if (response.statusCode == 200) {
       String m = jsonDecode(response.body);
