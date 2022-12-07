@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>949444304688-3jjqsi3l1phdpc0akco40ev8bc5ko6mf.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.949444304688-3jjqsi3l1phdpc0akco40ev8bc5ko6mf</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>949444304688-ito33llo34vv6fulcmagtrd5re5mbl5p.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDYTrNX6VhtjHWnb5LmCdhGovTe6ShekFs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>949444304688</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.nextg.rw05bgmpik</string>
+	<key>PROJECT_ID</key>
+	<string>nextgmobileapprw05bgmpik</string>
+	<key>STORAGE_BUCKET</key>
+	<string>nextgmobileapprw05bgmpik.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:949444304688:ios:24cece94726dea1cd3b2f5</string>
+</dict>
+</plist>

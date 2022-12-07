@@ -33,18 +33,36 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:logger/logger.dart';
 import 'bloc/count_comment_bloc.dart';
 import 'dart:io';
 import 'lifecyle_manager.dart';
 import './screen/management_screen/management_screen.dart';
 // import 'package:sizer/sizer.dart' as s;
+import 'firebase_options.dart';
 
 void main() async {
   // runApp(DevicePreview(enabled: !kReleaseMode, builder: (context) => MyApp()));
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
-  await Firebase.initializeApp();
-  // FirebaseMessaging m = FirebaseMessaging.instance;
+  if (Platform.isIOS) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } else {
+    await Firebase.initializeApp();
+  }
+
+  FirebaseMessaging m = FirebaseMessaging.instance;
+  FirebaseMessaging.onMessage.listen((event) {
+    final logger = Logger();
+    logger.w(event.messageId);
+  });
+
+  FirebaseMessaging.onMessageOpenedApp.listen((event) {
+    final logger = Logger();
+    logger.w(event.messageId);
+  });
   // m.configure(
   //   onMessage: (message) async {
   //     print('onn messagasdasde $message');
@@ -60,7 +78,25 @@ void main() async {
 
   // })
 
-  // m.getToken().then((token) => print(token));
+  m.getToken().then((token) => print(token));
+
+  NotificationSettings settings = await m.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+
+  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+    print('User granted permission');
+  } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    print('User granted provisional permission');
+  } else {
+    print('User declined or has not accepted permission');
+  }
 
   // m.requestNotificationPermissions(
   //     const IosNotificationSettings(sound: true, badge: true, alert: true));

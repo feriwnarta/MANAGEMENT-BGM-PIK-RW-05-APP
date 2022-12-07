@@ -1525,10 +1525,10 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     var message, response;
 
     // firebase init
-    // FirebaseMessaging messaging = FirebaseMessaging.instance;
-    // String userToken = await messaging.getToken();
-    // ! SAMPLE USER TOKEN FIREBASE PERLU DIPERBAIKI
-    String userToken = "asdjasjdhbkj1234";
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    String userToken = await messaging.getToken();
+
+    // String userToken = "asdjasjdhbkj1234";
 
     // cek device info
     var deviceInfoPlugin = DeviceInfoPlugin();
@@ -1588,7 +1588,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
           //     'assets/animation/error-animation.json', 15.0);
         }
 
-        logger.  e(response.body);
+        logger.e(response.body);
         if (response.body.isNotEmpty) {
           message = jsonDecode(response.body);
           if (message != 'login failed') {
