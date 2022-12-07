@@ -245,6 +245,7 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
                           SizedBox(width: 8.w),
                           Text(
                             '${snapshot.data['total_laporan']} Laporan',
+                            overflow: TextOverflow.clip,
                             style: TextStyle(
                                 fontSize: 12.sp,
                                 color: Colors.grey,

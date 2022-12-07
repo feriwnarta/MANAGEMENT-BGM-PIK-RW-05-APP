@@ -1459,17 +1459,24 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
               registerController.update();
             }
           } else if (message == 'wa number not found') {
-            buildShowDialogAnimation(
-                'Whatsapp number not found, please use another option',
-                'OK',
-                'assets/animation/error-animation.json',
-                2.0.h);
+            // buildShowDialogAnimation(
+            //     'Whatsapp number not found, please use another option',
+            //     'OK',
+            //     'assets/animation/error-animation.json',
+            //     2.0.h);
+            EasyLoading.showError(
+                'Nomor whatsapp tidak ditemukan, tolong gunakan pilihan otp lain',
+                dismissOnTap: true);
           } else {
-            buildShowDialogAnimation(
-                'Whatsapp otp is in error, please use another option',
-                'OK',
-                'assets/animation/error-animation.json',
-                2.0.h);
+            // buildShowDialogAnimation(
+            //     'Whatsapp otp is in error, please use another option',
+            //     'OK',
+            //     'assets/animation/error-animation.json',
+            //     2.0.h);
+            EasyLoading.showError(
+              'Whatsapp OTP sedang error, tolong gunakan pilihan otp lain',
+              dismissOnTap: true,
+            );
             print('$message');
           }
         }
@@ -1581,7 +1588,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
           //     'assets/animation/error-animation.json', 15.0);
         }
 
-        logger.e(response.body);
+        logger.  e(response.body);
         if (response.body.isNotEmpty) {
           message = jsonDecode(response.body);
           if (message != 'login failed') {
@@ -1593,7 +1600,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                   'kami mendeteksi adanya login diperangkat baru, login diperangkat lain akan otomatis keluar',
                   'OKE',
                   'assets/animation/warning-circle-animation.json',
-                  15.0);
+                  15.0.h);
             }
 
             // await UserSecureStorage.setIdUser(message['id_user']);
@@ -1635,6 +1642,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                 // messaging.getToken().then((token) {
                 //   saveToken(username: controllerUsername.text, token: token);
                 // });
+                EasyLoading.dismiss();
                 loginController.loginCordinator();
                 Get.offAll(SplashView());
               }
@@ -1664,8 +1672,9 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                 // jika login gagal / username atau password salah
                 if (message == 'login_kontraktor_failed') {
                   // Navigator.of(context).pop();
-                  EasyLoading.showError('Nomor IPL / email / password salah',
-                      dismissOnTap: true);
+                  EasyLoading.dismiss();
+                  // EasyLoading.showError('Nomor IPL / email / password salah',
+                  //     dismissOnTap: true);
                   // buildShowDialogAnimation('IPL number / email / passwod wrong',
                   //     'OKE', 'assets/animation/error-animation.json', 15.0);
                   setState(() {
@@ -1699,8 +1708,8 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
           } else {
             // Navigator.of(context).pop();
             EasyLoading.dismiss();
-            EasyLoading.showError('Nomor IPL atau email salah',
-                dismissOnTap: true);
+            // EasyLoading.showError('Nomor IPL atau email salah',
+            //     dismissOnTap: true);
             // buildShowDialogAnimation('Nomor IPL atau email salah', 'OKE',
             //     'assets/animation/error-animation.json', 15.0);
           }
@@ -1849,30 +1858,34 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              title,
-              style: TextStyle(fontSize: 12.0.sp),
-            ),
-            insetPadding: EdgeInsets.all(10.0.h),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            content: LottieBuilder.asset(
-              urlAsset,
-              height: size.h,
-              width: size.w,
-              fit: BoxFit.contain,
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text(btnMessage),
-                onPressed: () {
-                  setState(() {
-                    Navigator.of(context).pop();
-                  });
-                },
+          return SizedBox(
+            width: 70.w,
+            height: 70.h,
+            child: AlertDialog(
+              title: Text(
+                title,
+                style: TextStyle(fontSize: 12.0.sp),
               ),
-            ],
+              insetPadding: EdgeInsets.all(10.0.h),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              content: LottieBuilder.asset(
+                urlAsset,
+                height: 70.h,
+                width: 70.w,
+                fit: BoxFit.contain,
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text(btnMessage),
+                  onPressed: () {
+                    setState(() {
+                      Navigator.of(context).pop();
+                    });
+                  },
+                ),
+              ],
+            ),
           );
         });
   }

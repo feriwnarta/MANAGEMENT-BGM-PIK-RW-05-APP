@@ -43,6 +43,7 @@ void main() async {
   // runApp(DevicePreview(enabled: !kReleaseMode, builder: (context) => MyApp()));
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
+  await Firebase.initializeApp();
   // FirebaseMessaging m = FirebaseMessaging.instance;
   // m.configure(
   //   onMessage: (message) async {

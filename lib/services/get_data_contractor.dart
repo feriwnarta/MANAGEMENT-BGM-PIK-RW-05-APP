@@ -13,7 +13,7 @@ class GetDataContractor {
       var result = jsonDecode(response.body);
       var list = result['job_complaint'] as List;
       List<String> job;
-      list.map((e) => job.add(e));
+      job = list.map((e) => e as String).toList();
       ContractorModel model = ContractorModel(
           idContractor: result['id_contractor'],
           nameContractor: result['name_contractor'],

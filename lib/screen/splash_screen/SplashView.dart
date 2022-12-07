@@ -99,6 +99,7 @@ class _SplashViewState extends State<SplashView> {
         "device_name": deviceName,
         "device_identifier": identifier
       };
+      
       logger.w(data);
       var response = await http.post(Uri.parse(url), body: jsonEncode(data));
 
