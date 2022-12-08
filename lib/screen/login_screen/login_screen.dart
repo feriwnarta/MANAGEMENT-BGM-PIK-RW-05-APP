@@ -1859,8 +1859,8 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
         context: context,
         builder: (BuildContext context) {
           return SizedBox(
-            width: 70.w,
-            height: 70.h,
+            width: 100.w,
+            height: 100.h,
             child: AlertDialog(
               title: Text(
                 title,
@@ -1871,8 +1871,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                   borderRadius: BorderRadius.circular(20)),
               content: LottieBuilder.asset(
                 urlAsset,
-                height: 70.h,
-                width: 70.w,
                 fit: BoxFit.contain,
               ),
               actions: <Widget>[

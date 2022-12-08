@@ -41,28 +41,36 @@ import './screen/management_screen/management_screen.dart';
 // import 'package:sizer/sizer.dart' as s;
 import 'firebase_options.dart';
 
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  print("Handling a background message: ${message.messageId}");
+}
+
 void main() async {
   // runApp(DevicePreview(enabled: !kReleaseMode, builder: (context) => MyApp()));
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
-  if (Platform.isIOS) {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-  } else {
-    await Firebase.initializeApp();
-  }
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  final token = await FirebaseMessaging.instance.getToken();
+  final logger = Logger();
+  logger.e(token);
 
   FirebaseMessaging m = FirebaseMessaging.instance;
   FirebaseMessaging.onMessage.listen((event) {
     final logger = Logger();
     logger.w(event.messageId);
   });
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  FirebaseMessaging.onMessageOpenedApp.listen((event) {
-    final logger = Logger();
-    logger.w(event.messageId);
-  });
   // m.configure(
   //   onMessage: (message) async {
   //     print('onn messagasdasde $message');
