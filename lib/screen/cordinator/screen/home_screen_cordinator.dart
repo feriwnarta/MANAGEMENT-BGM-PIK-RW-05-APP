@@ -1,6 +1,7 @@
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/screen/cordinator/screen/absen_screen/insert_absen.dart';
 import 'package:aplikasi_rw/screen/cordinator/screen/complaint_screen/complaint_screen.dart';
+import 'package:aplikasi_rw/screen/cordinator/screen/user_worker_screen.dart';
 import 'package:aplikasi_rw/screen/cordinator/widget/HomeListOfCard.dart';
 import 'package:aplikasi_rw/services/chart_worker/update_chart_worker.dart';
 import 'package:badges/badges.dart';
@@ -42,7 +43,7 @@ class HomeScreenCordinator extends StatelessWidget {
           Container(
             child: Center(child: Text('On Progress')),
           ),
-          // UserWorker()
+          UserWorker()
         ], index: controller._index.value),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -75,6 +76,13 @@ class HomeScreenCordinator extends StatelessWidget {
           BottomNavigationBarItem(
             icon: SvgPicture.asset('assets/img/image-svg/laporan.svg'),
             label: 'Laporan',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.settings,
+              size: 20.h,
+            ),
+            label: 'Pengaturan',
           ),
         ],
       ),

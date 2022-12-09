@@ -20,6 +20,7 @@ import 'package:aplikasi_rw/screen/user_screen/change_data_user.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/check_session.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -49,6 +50,14 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  AwesomeNotifications().createNotification(
+      content: NotificationContent(
+          id: 10,
+          channelKey: 'basic_channel',
+          title: '${message.notification.title}',
+          body: '${message.notification.body}',
+          actionType: ActionType.Default));
+
   print("Handling a background message: ${message.messageId}");
 }
 
@@ -60,15 +69,48 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  AwesomeNotifications().initialize(
+      // set the icon to null if you want to use the default app icon
+      'resource://drawable/launcher_icon',
+      [
+        NotificationChannel(
+          channelGroupKey: 'basic_channel_group',
+          channelKey: 'basic_channel',
+          channelName: 'Basic notifications',
+          channelDescription: 'Notification channel for basic tests',
+          defaultColor: Colors.white,
+          ledColor: Colors.white,
+          channelShowBadge: true,
+          playSound: true,
+        )
+      ],
+      // Channel groups are only visual and are not required
+      channelGroups: [
+        NotificationChannelGroup(
+            channelGroupKey: 'basic_channel_group',
+            channelGroupName: 'Basic group')
+      ],
+      debug: false);
+
   final token = await FirebaseMessaging.instance.getToken();
   final logger = Logger();
   logger.e(token);
 
   FirebaseMessaging m = FirebaseMessaging.instance;
+
   FirebaseMessaging.onMessage.listen((event) {
     final logger = Logger();
     logger.w(event.messageId);
+
+    AwesomeNotifications().createNotification(
+        content: NotificationContent(
+            id: 10,
+            channelKey: 'basic_channel',
+            title: '${event.notification.title}',
+            body: '${event.notification.body}',
+            actionType: ActionType.Default));
   });
+
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   // m.configure(
