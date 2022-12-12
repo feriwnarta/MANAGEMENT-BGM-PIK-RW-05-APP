@@ -13,6 +13,7 @@ import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/model/bills_history_model.dart';
 import 'package:aplikasi_rw/screen/bills_screen/bills_screen.dart';
 import 'package:aplikasi_rw/screen/home_screen/home_screen.dart';
+import 'package:aplikasi_rw/screen/payment_ipl_history/payment_ipl_history.dart';
 import 'package:aplikasi_rw/screen/report_screen2/new_google_maps_screen.dart';
 import 'package:aplikasi_rw/screen/report_screen2/report_screen_2.dart';
 import 'package:aplikasi_rw/screen/splash_screen/SplashView.dart';
@@ -308,7 +309,7 @@ class _MainAppState extends State<MainApp> {
       ),
       ReportScreen2(),
       // BillScreen(),
-      Container()
+      PaymentIplHistory()
       // PaymentScreen()
     ];
 

@@ -16,6 +16,18 @@ class UserSecureStorage {
     }
   }
 
+  static Future setKeyValue({String key, String value}) async {
+    await _STORAGE.write(key: key, value: value);
+  }
+
+  static Future<String> readKey({String key}) async {
+    return await _STORAGE.read(key: key);
+  }
+
+  static Future deleteKey({String key}) async {
+    await _STORAGE.delete(key: key);
+  }
+
   static Future setStatusLogin(String status) async =>
       await _STORAGE.write(key: _KEYSTATUSUSER, value: status);
   static Future<String> getStatus() async =>

@@ -1069,10 +1069,15 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                       hintStyle: TextStyle(fontSize: 14.sp),
                       border: UnderlineInputBorder()),
                   validator: (value) {
+                    print('${ValidationForm.isValidPhone(value)}');
                     if (value.isEmpty) {
                       return 'Nomor telpon tidak boleh kosong';
                     } else {
-                      return null;
+                      if (ValidationForm.isValidPhone(value)) {
+                        return null;
+                      } else {
+                        return 'Nomor yang anda masukan tidak valid';
+                      }
                     }
                   },
                 ),
@@ -1295,9 +1300,15 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
       if (response.body != null && response.body.isNotEmpty) {
         if (response.body.contains('OKE')) {
           // jika otp dari login berhasil
+          logger.e(response.body);
           if (registerController.fromLogin.value) {
+            var rs = jsonDecode(response.body);
             await UserSecureStorage.setIdUser(this.idUser);
             await UserSecureStorage.setStatusLogin(this.status);
+            await UserSecureStorage.setKeyValue(
+              key: 'noIpl',
+              value: rs['no_ipl'],
+            );
             String idUser = await UserSecureStorage.getIdUser();
             // countDownController.reset();
             countDownController.reset();
@@ -1762,94 +1773,87 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     //     '', '', 'assets/animation/loading-plane.json', 2.0.h);
     EasyLoading.show(status: 'loading', dismissOnTap: false);
 
-    String result = await checkNumberPhone(noTelp);
-    final logger = Logger();
-    logger.w(result);
+    // ! DEPRECATED
+    // String result = await checkNumberPhone(noTelp);
 
-    if (result == 'FOUND') {
-      String url = '${ServerApp.url}src/login/register.php';
-      var request = http.MultipartRequest('POST', Uri.parse(url));
-      request.fields['no_ipl'] = noIpl;
-      request.fields['email'] = email;
-      request.fields['no_telp'] = noTelp;
-      request.send().then((value) {
-        http.Response.fromStream(value).then((value) async {
-          String message = json.decode(value.body);
-          if (message != null && message.isNotEmpty) {
-            if (message == 'success') {
-              // Navigator.of(context).pop();
-              EasyLoading.dismiss();
-              final storage = new FlutterSecureStorage();
-              // FlutterSecureStorage().write(key: 'successotp', value: 'false');
-              // FlutterSecureStorage().write(key: 'noipl', value: noIpl);
-              // FlutterSecureStorage().write(key: 'email', value: email);
-              // FlutterSecureStorage().write(key: 'notelp', value: noTelp);
-              await storage.write(key: 'successotp', value: 'false');
-              await storage.write(key: 'noipl', value: noIpl);
-              await storage.write(key: 'email', value: email);
-              await storage.write(key: 'notelp', value: noTelp);
-              registerController.toOtpVerif = true.obs;
-              setState(() {});
-              // buat password
-            } else if (message == 'no_ipl tidak ada') {
-              // warning ipl tidak terdaftar disiter
-              // Navigator.of(context).pop();
-              EasyLoading.dismiss();
-              EasyLoading.showError(
-                'Nomor IPL tidak ada',
-                dismissOnTap: true,
-              );
-              // buildShowDialogAnimation('Nomor IPL tidak ada', 'OKE',
-              //     'assets/animation/error-animation.json', 2.0.h);
-            } else if (message == 'ipl exist') {
-              // ipl sudah pernah register disistem
-              // Navigator.of(context).pop();
-              EasyLoading.dismiss();
-              EasyLoading.showError(
-                'Nomor IPL ini sudah digunakan',
-                dismissOnTap: true,
-              );
-              // buildShowDialogAnimation('Nomor IPL ini sudah digunakan', 'OKE',
-              //     'assets/animation/error-animation.json', 2.0.h);
-            } else if (message == 'email exist') {
-              // Navigator.of(context).pop();
-              EasyLoading.dismiss();
-              EasyLoading.showError(
-                'Email ini sudah digunakan',
-                dismissOnTap: true,
-              );
-              // buildShowDialogAnimation('Email ini sudah digunakan', 'OKE',
-              //     'assets/animation/error-animation.json', 2.0.h);
-            } else if (message == 'phone number exist') {
-              // Navigator.of(context).pop();
-              EasyLoading.dismiss();
-              EasyLoading.showError(
-                'Nomor telpon ini sudah digunakan',
-                dismissOnTap: true,
-              );
-              // buildShowDialogAnimation('Nomor telpon ini sudah digunakan',
-              //     'OKE', 'assets/animation/error-animation.json', 2.0.h);
-            } else {
-              // Navigator.of(context).pop();
-              EasyLoading.dismiss();
-              EasyLoading.showError(
-                'Ada proses yang salah $message, hubungi Admin',
-                dismissOnTap: true,
-              );
-              // buildShowDialogAnimation(
-              //     'Ada proses yang salah ${message}, Hubungi admin',
-              //     'OKE',
-              //     'assets/animation/error-animation.json',
-              //     2.0.h);
-            }
+    String url = '${ServerApp.url}src/login/register.php';
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    request.fields['no_ipl'] = noIpl;
+    request.fields['email'] = email;
+    request.fields['no_telp'] = noTelp;
+    request.send().then((value) {
+      http.Response.fromStream(value).then((value) async {
+        String message = json.decode(value.body);
+        if (message != null && message.isNotEmpty) {
+          if (message == 'success') {
+            // Navigator.of(context).pop();
+            EasyLoading.dismiss();
+            final storage = new FlutterSecureStorage();
+            // FlutterSecureStorage().write(key: 'successotp', value: 'false');
+            // FlutterSecureStorage().write(key: 'noipl', value: noIpl);
+            // FlutterSecureStorage().write(key: 'email', value: email);
+            // FlutterSecureStorage().write(key: 'notelp', value: noTelp);
+            await storage.write(key: 'successotp', value: 'false');
+            await storage.write(key: 'noipl', value: noIpl);
+            await storage.write(key: 'email', value: email);
+            await storage.write(key: 'notelp', value: noTelp);
+            registerController.toOtpVerif = true.obs;
+            setState(() {});
+            // buat password
+          } else if (message == 'no_ipl tidak ada') {
+            // warning ipl tidak terdaftar disiter
+            // Navigator.of(context).pop();
+            EasyLoading.dismiss();
+            EasyLoading.showError(
+              'Nomor IPL tidak ada',
+              dismissOnTap: true,
+            );
+            // buildShowDialogAnimation('Nomor IPL tidak ada', 'OKE',
+            //     'assets/animation/error-animation.json', 2.0.h);
+          } else if (message == 'ipl exist') {
+            // ipl sudah pernah register disistem
+            // Navigator.of(context).pop();
+            EasyLoading.dismiss();
+            EasyLoading.showError(
+              'Nomor IPL ini sudah digunakan',
+              dismissOnTap: true,
+            );
+            // buildShowDialogAnimation('Nomor IPL ini sudah digunakan', 'OKE',
+            //     'assets/animation/error-animation.json', 2.0.h);
+          } else if (message == 'email exist') {
+            // Navigator.of(context).pop();
+            EasyLoading.dismiss();
+            EasyLoading.showError(
+              'Email ini sudah digunakan',
+              dismissOnTap: true,
+            );
+            // buildShowDialogAnimation('Email ini sudah digunakan', 'OKE',
+            //     'assets/animation/error-animation.json', 2.0.h);
+          } else if (message == 'phone number exist') {
+            // Navigator.of(context).pop();
+            EasyLoading.dismiss();
+            EasyLoading.showError(
+              'Nomor telpon ini sudah digunakan',
+              dismissOnTap: true,
+            );
+            // buildShowDialogAnimation('Nomor telpon ini sudah digunakan',
+            //     'OKE', 'assets/animation/error-animation.json', 2.0.h);
+          } else {
+            // Navigator.of(context).pop();
+            EasyLoading.dismiss();
+            EasyLoading.showError(
+              'Ada proses yang salah $message, hubungi Admin',
+              dismissOnTap: true,
+            );
+            // buildShowDialogAnimation(
+            //     'Ada proses yang salah ${message}, Hubungi admin',
+            //     'OKE',
+            //     'assets/animation/error-animation.json',
+            //     2.0.h);
           }
-        });
+        }
       });
-    } else {
-      Navigator.of(context).pop();
-      buildShowDialogAnimation('Nomor telpon tidak benar', 'OKE',
-          'assets/animation/error-animation.json', 2.0.h);
-    }
+    });
   }
 
   Future buildShowDialogAnimation(
@@ -1859,8 +1863,8 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
         context: context,
         builder: (BuildContext context) {
           return SizedBox(
-            width: 100.w,
-            height: 100.h,
+            width: 20.w,
+            height: 20.h,
             child: AlertDialog(
               title: Text(
                 title,

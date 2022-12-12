@@ -17,7 +17,7 @@ class ValidationForm {
   }
 
   static bool isValidPhone(String phoneNumber) {
-    final phoneRegExp = RegExp(r"^\+?0[0-9]{10}$");
+    final phoneRegExp = RegExp(r"^(?:[+0]8)?[0-9]{11}$");
     return phoneRegExp.hasMatch(phoneNumber);
   }
 
