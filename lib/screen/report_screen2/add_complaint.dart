@@ -4,6 +4,7 @@ import 'package:aplikasi_rw/controller/indexscreen_home_controller.dart';
 import 'package:aplikasi_rw/controller/report_user_controller.dart';
 import 'package:aplikasi_rw/model/category_model.dart';
 import 'package:aplikasi_rw/screen/report_screen2/controller/write_page_controller.dart';
+import 'package:aplikasi_rw/screen/report_screen2/google_maps_screen.dart';
 import 'package:aplikasi_rw/screen/report_screen2/new_google_maps_screen.dart';
 import 'package:aplikasi_rw/services/category_services.dart';
 import 'package:aplikasi_rw/services/klasifikasi_category_services.dart';
@@ -942,24 +943,24 @@ class _StepperRwState extends State<StepperRw> {
                                   fToast.removeCustomToast();
                                   Get.to<Map<String, dynamic>>(
                                       () => NewGoogleMaps()).then((value) {
-                                    String address = value['data'];
-                                    selectLoc.update((val) {
-                                      selectLoc = address.obs;
-                                    });
+                                    if (value != null) {
+                                      String address = value['data'];
+                                      selectLoc.update((val) {
+                                        selectLoc = address.obs;
+                                      });
+                                      showToast();
 
-                                    showToast();
-
-                                    String latitude =
-                                        value['latitude'].toString();
-                                    String longitude =
-                                        value['longitude'].toString();
-                                    controllerWrite.address = address.obs;
-                                    controllerWrite.latitude = latitude.obs;
-                                    controllerWrite.longitude = longitude.obs;
-
-                                    logger.w(controllerWrite.latitude.value);
-                                    logger.w(controllerWrite.longitude.value);
-                                    logger.w(controllerWrite.address.value);
+                                      String latitude =
+                                          value['latitude'].toString();
+                                      String longitude =
+                                          value['longitude'].toString();
+                                      controllerWrite.address = address.obs;
+                                      controllerWrite.latitude = latitude.obs;
+                                      controllerWrite.longitude = longitude.obs;
+                                      logger.w(controllerWrite.latitude.value);
+                                      logger.w(controllerWrite.longitude.value);
+                                      logger.w(controllerWrite.address.value);
+                                    }
                                   });
                                 },
                               ),

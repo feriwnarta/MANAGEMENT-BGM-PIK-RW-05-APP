@@ -29,7 +29,7 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
   AppBar appBar;
   // field untuk data user
   final TextEditingController controllerStatus = TextEditingController();
-  var pickedFile;
+  XFile pickedFile;
   StatusUserController controllerPostingStatus =
       Get.put(StatusUserController());
   var controllerLogin;
@@ -54,10 +54,10 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
 
   @override
   void dispose() {
-    controllerStatus.dispose();
+    // controllerStatus.dispose();
     writeStatusController.deleteImage();
     // Navigator.of(context).pop();
-    Get.delete<StatusUserController>();
+    // Get.delete<StatusUserController>();
     Get.delete<WriteStatusController>();
     super.dispose();
   }
@@ -290,17 +290,19 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
           // width: mediaSizeWidth,
           color: Colors.white,
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: EdgeInsets.only(left: 2.0.w),
                 child: Image(
                   alignment: Alignment.topLeft,
                   repeat: ImageRepeat.noRepeat,
+                  fit: BoxFit.cover,
                   image: (writeStatusController.pickedFile.value != null)
                       ? FileImage(File(writeStatusController.pickedFile.value))
                       : AssetImage(''),
-                  height: 8.0.h,
-                  width: 20.0.w,
+                  height: 100.h,
+                  width: 200.w,
                 ),
               ),
 
@@ -410,9 +412,10 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
 
   void getImage(ImageSource source) async {
     pickedFile = await _picker.pickImage(source: source, imageQuality: 50);
+    RxString path = pickedFile.path.obs;
 
     if (pickedFile != null) {
-      writeStatusController.addImage(true.obs, pickedFile.path.obs);
+      writeStatusController.addImage(true.obs, path);
       logger.i('PATH' + writeStatusController.pickedFile.value);
       writeStatusController.update();
     }

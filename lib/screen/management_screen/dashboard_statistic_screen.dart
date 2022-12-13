@@ -20,7 +20,7 @@ class _DashboardStatisticState extends State<DashboardStatistic> {
   initState() {
     super.initState();
     // Enable hybrid composition.
-    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+    if (Platform.isAndroid) WebView.platform = AndroidWebView();
   }
 
   @override

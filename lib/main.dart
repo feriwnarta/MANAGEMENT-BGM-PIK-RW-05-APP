@@ -273,7 +273,11 @@ class _MyApp extends State<MyApp> {
             home: SplashView(),
             // home: NewGoogleMaps(),
             theme: ThemeData(
-                fontFamily: 'open sans', scaffoldBackgroundColor: Colors.white),
+                appBarTheme: AppBarTheme(
+                  systemOverlayStyle: SystemUiOverlayStyle.dark,
+                ),
+                fontFamily: 'open sans',
+                scaffoldBackgroundColor: Colors.white),
             builder: EasyLoading.init(), // set background color theme
           ),
         ),

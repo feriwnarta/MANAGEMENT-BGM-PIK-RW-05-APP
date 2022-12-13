@@ -1547,15 +1547,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     // var deviceVersion;
     var identifier;
 
-    // Dio dio = Dio();
-
-    // dio.interceptors.add(RetryOnConnectionChangeInterceptor(
-    //   requestRetrier: DioConnectivityRequestRetrier(
-    //     dio: dio,
-    //     connectivity: Connectivity(),
-    //   ),
-    // ));
-
     final logger = Logger();
     logger.w('s');
 
@@ -1607,11 +1598,14 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
             if (message['active_user'] == true) {
               // Navigator.of(context).pop();
               EasyLoading.dismiss();
-              await buildShowDialogAnimation(
-                  'kami mendeteksi adanya login diperangkat baru, login diperangkat lain akan otomatis keluar',
-                  'OKE',
-                  'assets/animation/warning-circle-animation.json',
-                  15.0.h);
+              EasyLoading.showInfo(
+                'kami mendeteksi adanya login diperangkat baru, login diperangkat lain akan otomatis keluar',
+              );
+              // await buildShowDialogAnimation(
+              //     'kami mendeteksi adanya login diperangkat baru, login diperangkat lain akan otomatis keluar',
+              //     'OKE',
+              //     'assets/animation/warning-circle-animation.json',
+              //     15.0.h);
             }
 
             // await UserSecureStorage.setIdUser(message['id_user']);

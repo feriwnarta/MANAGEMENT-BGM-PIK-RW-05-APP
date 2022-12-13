@@ -2,6 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<!-- Permission options for the `camera` group -->	
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Aplikasi membutuhkan ijin galeri untuk menambahkan gambar</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Aplikasi membutuhkan ijin kamera untuk menambahkan foto</string>
+	<key>io.flutter.embedded_views_previce</key>
+	<true/>
+	<!-- Permission options for the `location` group -->
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Aplikasi membutuhkan ijin lokasi untuk mengambil lokasi laporan</string>
+    <key>NSLocationUsageDescription</key>
+    <string>Perangkat lama membutuhkan lokasi</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>

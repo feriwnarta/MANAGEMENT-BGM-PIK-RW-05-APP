@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:aplikasi_rw/bloc/google_map_bloc.dart';
 import 'package:aplikasi_rw/model/user_location.dart';
 import 'package:flutter/material.dart';
@@ -22,13 +23,13 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
   LocationServices userLocation;
   Completer<GoogleMapController> _controller = Completer();
   GoogleMapController googleMapController;
-  final markers = Set<Marker>();
+  final markers = Set<Marker>().obs;
   MarkerId markerId = MarkerId('1');
   RxString jalan = "".obs;
   String address;
   RxDouble deflatitude, deflongitude;
   RxDouble latitude = 0.0.obs, longitude = 0.0.obs;
-  GoogleMapBloc bloc;
+  // GoogleMapBloc bloc;
   GoogleMapsPlaces _places;
 
   RxList<PlacesSearchResult> nearbyPlaces;
@@ -36,8 +37,13 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
   @override
   void initState() {
     super.initState();
-    _places =
-        GoogleMapsPlaces(apiKey: 'AIzaSyDbZjwizgtMKuRhgruNqb4eBg2jQzuQjFE');
+    if (Platform.isAndroid) {
+      _places =
+          GoogleMapsPlaces(apiKey: 'AIzaSyDbZjwizgtMKuRhgruNqb4eBg2jQzuQjFE');
+    } else if (Platform.isIOS) {
+      _places =
+          GoogleMapsPlaces(apiKey: 'AIzaSyAprQJ0_yPDIrLRJKB-nXDh9EdITtxTdcY');
+    }
     userLocation = LocationServices();
     nearbyPlaces = <PlacesSearchResult>[].obs;
   }
@@ -45,13 +51,13 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
   @override
   void dispose() {
     userLocation.disponse();
-    bloc.close();
+    // bloc.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    bloc = BlocProvider.of<GoogleMapBloc>(context);
+    // bloc = BlocProvider.of<GoogleMapBloc>(context);
     return StreamBuilder<UserLocation>(
         stream: userLocation.locationStream,
         builder: (context, snapshot) {
@@ -63,37 +69,47 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
               ),
             ),
             body: (snapshot.hasData)
-                ? BlocBuilder<GoogleMapBloc, GoogleMapState>(
-                    builder: (context, state) => Stack(
-                      children: [
-                        SafeArea(
-                          child: GoogleMap(
+                ? Stack(
+                    children: [
+                      SafeArea(
+                        child: Obx(
+                          () => GoogleMap(
                             myLocationEnabled: false,
                             myLocationButtonEnabled: false,
                             zoomControlsEnabled: false,
                             compassEnabled: false,
-                            markers: markers,
+                            markers: markers.value,
                             mapType: MapType.normal,
                             onCameraMove: (position) async {
-                              setState(() {
-                                markers.add(Marker(
-                                    markerId: markerId,
-                                    position: position.target));
-                              });
+                              // setState(() {
+                              markers.add(Marker(
+                                  markerId: markerId,
+                                  position: position.target));
+                              // });
+
+                              List<Address> address;
                               if (latitude.value == 0.0 &&
                                   longitude.value == 0.0) {
-                                var address = await Geocoder.google(
-                                        'AIzaSyDbZjwizgtMKuRhgruNqb4eBg2jQzuQjFE')
-                                    .findAddressesFromCoordinates(Coordinates(
-                                        position.target.latitude,
-                                        position.target.longitude));
+                                if (Platform.isAndroid) {
+                                  address = await Geocoder.google(
+                                          'AIzaSyDbZjwizgtMKuRhgruNqb4eBg2jQzuQjFE')
+                                      .findAddressesFromCoordinates(Coordinates(
+                                          position.target.latitude,
+                                          position.target.longitude));
+                                } else if (Platform.isIOS) {
+                                  address = await Geocoder.google(
+                                          'AIzaSyAprQJ0_yPDIrLRJKB-nXDh9EdITtxTdcY')
+                                      .findAddressesFromCoordinates(Coordinates(
+                                          position.target.latitude,
+                                          position.target.longitude));
+                                }
 
-                                bloc.add(
-                                  GoogleMapEvent(
-                                      latitude: position.target.latitude,
-                                      longitude: position.target.longitude,
-                                      address: address.first.addressLine),
-                                );
+                                // bloc.add(
+                                //   GoogleMapEvent(
+                                //       latitude: position.target.latitude,
+                                //       longitude: position.target.longitude,
+                                //       address: address.first.addressLine),
+                                // );
 
                                 jalan.update((val) {
                                   jalan = address.first.addressLine.obs;
@@ -118,16 +134,18 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
                                 tilt: 0,
                                 zoom: 15.151926040649414),
                             onMapCreated: (GoogleMapController controller) {
-                              setState(() {
-                                markers.add(Marker(
-                                    markerId: markerId,
-                                    position: LatLng(snapshot.data.latitude,
-                                        snapshot.data.longitude),
-                                    infoWindow:
-                                        InfoWindow(title: 'Lokasi anda')));
-                              });
-                              Geocoder.google(
-                                      'AIzaSyDbZjwizgtMKuRhgruNqb4eBg2jQzuQjFE')
+                              // setState(() {
+                              markers.add(Marker(
+                                  markerId: markerId,
+                                  position: LatLng(snapshot.data.latitude,
+                                      snapshot.data.longitude),
+                                  infoWindow:
+                                      InfoWindow(title: 'Lokasi anda')));
+                              // });
+
+                              Geocoder.google((Platform.isAndroid)
+                                      ? 'AIzaSyDbZjwizgtMKuRhgruNqb4eBg2jQzuQjFE'
+                                      : 'AIzaSyAprQJ0_yPDIrLRJKB-nXDh9EdITtxTdcY')
                                   .findAddressesFromCoordinates(Coordinates(
                                       snapshot.data.latitude,
                                       snapshot.data.longitude))
@@ -141,6 +159,7 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
                                   jalan = value.first.addressLine.obs;
                                 });
                               });
+
                               var latlng = LatLng(snapshot.data.latitude,
                                   snapshot.data.longitude);
                               getNearbyPlaces(latlng);
@@ -150,182 +169,179 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
                             },
                           ),
                         ),
-                        GestureDetector(
-                          child: Container(
-                            width: 328.w,
-                            height: 36.h,
-                            margin: EdgeInsets.only(
-                              top: 24.h,
-                              left: 16.w,
-                            ),
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(6),
-                                boxShadow: [
-                                  BoxShadow(color: Colors.grey, blurRadius: 2),
-                                ]),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Cari lokasi',
-                                  style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: Color(0xff757575)),
-                                ),
-                                SvgPicture.asset(
-                                  'assets/img/image-svg/search-maps.svg',
-                                ),
-                              ],
-                            ),
+                      ),
+                      GestureDetector(
+                        child: Container(
+                          width: 328.w,
+                          height: 36.h,
+                          margin: EdgeInsets.only(
+                            top: 24.h,
+                            left: 16.w,
                           ),
-                          onTap: () async {
-                            Prediction p = await PlacesAutocomplete.show(
-                                context: context,
-                                mode: Mode.overlay,
-                                language: 'id',
-                                apiKey:
-                                    'AIzaSyDbZjwizgtMKuRhgruNqb4eBg2jQzuQjFE');
-                            displayPrediction(prediction: p);
-                          },
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(6),
+                              boxShadow: [
+                                BoxShadow(color: Colors.grey, blurRadius: 2),
+                              ]),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Cari lokasi',
+                                style: TextStyle(
+                                    fontSize: 14.sp, color: Color(0xff757575)),
+                              ),
+                              SvgPicture.asset(
+                                'assets/img/image-svg/search-maps.svg',
+                              ),
+                            ],
+                          ),
                         ),
-                        Align(
-                            alignment: Alignment(0.9, 0.5),
-                            child: TextButton.icon(
-                                style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  foregroundColor: Color(0xff2094F3),
+                        onTap: () async {
+                          Prediction p = await PlacesAutocomplete.show(
+                              context: context,
+                              mode: Mode.overlay,
+                              language: 'id',
+                              apiKey: (Platform.isAndroid)
+                                  ? 'AIzaSyDbZjwizgtMKuRhgruNqb4eBg2jQzuQjFE'
+                                  : 'AIzaSyAprQJ0_yPDIrLRJKB-nXDh9EdITtxTdcY');
+                          displayPrediction(prediction: p);
+                        },
+                      ),
+                      Align(
+                          alignment: Alignment(0.9, 0.5),
+                          child: TextButton.icon(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
                                 ),
-                                onPressed: () {
-                                  _goToUserCurrentLocation(
-                                      snapshot.data.latitude,
-                                      snapshot.data.longitude);
+                                foregroundColor: Color(0xff2094F3),
+                              ),
+                              onPressed: () {
+                                _goToUserCurrentLocation(snapshot.data.latitude,
+                                    snapshot.data.longitude);
+                              },
+                              icon: SvgPicture.asset(
+                                  'assets/img/image-svg/coordinate.svg'),
+                              label: Text(
+                                'Lokasi terkini',
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  color: Colors.white,
+                                ),
+                              ))),
+                      Obx(
+                        () => SlidingUpPanel(
+                          minHeight: 150.h,
+                          panel: Column(
+                            children: [
+                              SizedBox(height: 16.h),
+                              Container(
+                                width: 40.w,
+                                height: 4.h,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffE0E0E0),
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 16.h,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.back(result: {
+                                    'data': jalan.value,
+                                    'latitude': deflatitude.value,
+                                    'longitude': deflongitude.value,
+                                  });
                                 },
-                                icon: SvgPicture.asset(
-                                    'assets/img/image-svg/coordinate.svg'),
-                                label: Text(
-                                  'Lokasi terkini',
-                                  style: TextStyle(
-                                    fontSize: 10.sp,
-                                    color: Colors.white,
-                                  ),
-                                ))),
-                        Obx(
-                          () => SlidingUpPanel(
-                            minHeight: 150.h,
-                            panel: Column(
-                              children: [
-                                SizedBox(height: 16.h),
-                                Container(
-                                  width: 40.w,
-                                  height: 4.h,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xffE0E0E0),
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 16.h,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.back(result: {
-                                      'data': jalan.value,
-                                      'latitude': deflatitude.value,
-                                      'longitude': deflongitude.value,
-                                    });
-                                  },
-                                  child: Container(
-                                    width: double.infinity,
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 16.w),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                            'assets/img/image-svg/location-maps.svg'),
-                                        SizedBox(width: 4.w),
-                                        Expanded(
-                                            child: Text(
-                                          '${jalan.value}',
-                                          style: TextStyle(
-                                              fontSize: 12.sp,
-                                              color: Color(0xff2094F3)),
-                                        ))
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 11.h,
-                                ),
-                                Container(
-                                  color: Color(0xffF5F5F5),
+                                child: Container(
                                   width: double.infinity,
-                                  padding:
-                                      EdgeInsets.only(top: 4.h, left: 48.w),
-                                  height: 24.h,
-                                  child: Text(
-                                    'Tempat terdekat',
-                                    style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: Color(0xff9E9E9E)),
+                                  margin:
+                                      EdgeInsets.symmetric(horizontal: 16.w),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                          'assets/img/image-svg/location-maps.svg'),
+                                      SizedBox(width: 4.w),
+                                      Expanded(
+                                          child: Text(
+                                        '${jalan.value}',
+                                        style: TextStyle(
+                                            fontSize: 12.sp,
+                                            color: Color(0xff2094F3)),
+                                      ))
+                                    ],
                                   ),
                                 ),
-                                ListView.builder(
-                                  itemCount: (nearbyPlaces.length == 0)
-                                      ? nearbyPlaces.length
-                                      : 11,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) => Container(
-                                    width: double.infinity,
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 16.w),
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          height: 8,
+                              ),
+                              SizedBox(
+                                height: 11.h,
+                              ),
+                              Container(
+                                color: Color(0xffF5F5F5),
+                                width: double.infinity,
+                                padding: EdgeInsets.only(top: 4.h, left: 48.w),
+                                height: 24.h,
+                                child: Text(
+                                  'Tempat terdekat',
+                                  style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: Color(0xff9E9E9E)),
+                                ),
+                              ),
+                              ListView.builder(
+                                itemCount: (nearbyPlaces.length == 0)
+                                    ? nearbyPlaces.length
+                                    : 11,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) => Container(
+                                  width: double.infinity,
+                                  margin:
+                                      EdgeInsets.symmetric(horizontal: 16.w),
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 8,
+                                      ),
+                                      GestureDetector(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            SvgPicture.asset(
+                                              'assets/img/image-svg/unselected-maps.svg',
+                                            ),
+                                            SizedBox(width: 4.w),
+                                            Expanded(
+                                                child: Text(
+                                              '${nearbyPlaces[index].name} ',
+                                              style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  color: Color(0xff9E9E9E)),
+                                            ))
+                                          ],
                                         ),
-                                        GestureDetector(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              SvgPicture.asset(
-                                                'assets/img/image-svg/unselected-maps.svg',
-                                              ),
-                                              SizedBox(width: 4.w),
-                                              Expanded(
-                                                  child: Text(
-                                                '${nearbyPlaces[index].name} ',
-                                                style: TextStyle(
-                                                    fontSize: 12.sp,
-                                                    color: Color(0xff9E9E9E)),
-                                              ))
-                                            ],
-                                          ),
-                                          onTap: () {
-                                            displayPrediction(
-                                                placeId:
-                                                    '${nearbyPlaces[index].placeId}');
-                                          },
-                                        ),
-                                      ],
-                                    ),
+                                        onTap: () {
+                                          displayPrediction(
+                                              placeId:
+                                                  '${nearbyPlaces[index].placeId}');
+                                        },
+                                      ),
+                                    ],
                                   ),
-                                )
-                              ],
-                            ),
-                            borderRadius:
-                                BorderRadius.vertical(top: Radius.circular(8)),
+                                ),
+                              )
+                            ],
                           ),
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(8)),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   )
                 : Center(
                     child: CircularProgressIndicator(),
@@ -356,9 +372,10 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
       double lat = detail.result.geometry.location.lat;
       double lng = detail.result.geometry.location.lng;
 
-      var address =
-          await Geocoder.google('AIzaSyDbZjwizgtMKuRhgruNqb4eBg2jQzuQjFE')
-              .findAddressesFromCoordinates(Coordinates(lat, lng));
+      var address = await Geocoder.google((Platform.isAndroid)
+              ? 'AIzaSyDbZjwizgtMKuRhgruNqb4eBg2jQzuQjFE'
+              : 'AIzaSyAprQJ0_yPDIrLRJKB-nXDh9EdITtxTdcY')
+          .findAddressesFromCoordinates(Coordinates(lat, lng));
       var latlng = LatLng(lat, lng);
 
       latitude.update((val) {
@@ -368,26 +385,28 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
         longitude = lng.obs;
       });
 
-      setState(() {
-        markers.add(Marker(markerId: markerId, position: latlng));
-        googleMapController
-            .animateCamera(CameraUpdate.newLatLng(latlng))
-            .then((value) {
-          latitude.update((val) {
-            latitude = 0.0.obs;
-          });
-          longitude.update((val) {
-            longitude = 0.0.obs;
-          });
+      // setState(() {
+      markers.add(Marker(markerId: markerId, position: latlng));
+      googleMapController
+          .animateCamera(CameraUpdate.newLatLng(latlng))
+          .then((value) {
+        latitude.update((val) {
+          latitude = 0.0.obs;
+        });
+        longitude.update((val) {
+          longitude = 0.0.obs;
         });
       });
+      // });
 
-      Geocoder.google('AIzaSyDbZjwizgtMKuRhgruNqb4eBg2jQzuQjFE')
-          .findAddressesFromCoordinates(Coordinates(lat, lng))
-          .then((value) {
-        bloc.add(GoogleMapEvent(
-            latitude: lat, longitude: lng, address: address.first.addressLine));
-      });
+      // Geocoder.google((Platform.isAndroid)
+      //         ? 'AIzaSyDbZjwizgtMKuRhgruNqb4eBg2jQzuQjFE'
+      //         : 'AIzaSyAprQJ0_yPDIrLRJKB-nXDh9EdITtxTdcY')
+      //     .findAddressesFromCoordinates(Coordinates(lat, lng))
+      //     .then((value) {
+      //   bloc.add(GoogleMapEvent(
+      //       latitude: lat, longitude: lng, address: address.first.addressLine));
+      // });
 
       getNearbyPlaces(latlng);
     }
@@ -403,13 +422,15 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
         zoom: 19.151926040649414)));
 
     var coordinates = new Coordinates(latitude, longitude);
-    Geocoder.google('AIzaSyDbZjwizgtMKuRhgruNqb4eBg2jQzuQjFE')
+    Geocoder.google((Platform.isAndroid)
+            ? 'AIzaSyDbZjwizgtMKuRhgruNqb4eBg2jQzuQjFE'
+            : 'AIzaSyAprQJ0_yPDIrLRJKB-nXDh9EdITtxTdcY')
         .findAddressesFromCoordinates(coordinates)
         .then((value) => print('${value.first.addressLine}'));
   }
 
   void getNearbyPlaces(LatLng center) async {
-    final location = Location(lat : center.latitude, lng: center.longitude);
+    final location = Location(lat: center.latitude, lng: center.longitude);
     final result = await _places.searchNearbyWithRadius(location, 2500);
 
     // setState(() {
