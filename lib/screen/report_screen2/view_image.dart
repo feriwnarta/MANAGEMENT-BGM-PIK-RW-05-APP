@@ -27,7 +27,7 @@ class ViewImage extends StatelessWidget {
             child: CachedNetworkImage(
               imageUrl: urlImage,
               width: double.infinity,
-              height: 55.0.h,
+              height: 500.h,
               fit: BoxFit.cover,
             ),
           ),

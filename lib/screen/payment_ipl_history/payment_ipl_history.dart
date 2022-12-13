@@ -1,7 +1,6 @@
 import 'package:aplikasi_rw/model/payment_ipl_history_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:logger/logger.dart';
 import '../../services/payment_ipl_history_services/payment_ipl_history_services.dart';
 
 class PaymentIplHistory extends StatefulWidget {
@@ -12,9 +11,12 @@ class PaymentIplHistory extends StatefulWidget {
 }
 
 class _PaymentIplHistoryState extends State<PaymentIplHistory> {
+  var _future;
+
   @override
   void initState() {
     super.initState();
+    _future = HistoryPaymentIplServices.getLastPayment();
   }
 
   @override
@@ -23,31 +25,36 @@ class _PaymentIplHistoryState extends State<PaymentIplHistory> {
       appBar: AppBar(
         title: Text('Riwayat Pembayaran IPL'),
       ),
-      body: Container(
-        child: FutureBuilder<List<PaymentIplHistoryModel>>(
-            future: HistoryPaymentIplServices.getLastPayment(),
-            builder: (context, snapshot) => (snapshot.hasData)
-                ? (snapshot.data.isEmpty)
-                    ? Center(
-                        child: Text(
-                          'Fitur ini hanya dimiliki oleh warga',
-                          style: TextStyle(fontSize: 12.sp),
-                        ),
-                      )
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: snapshot.data.length,
-                        physics: ScrollPhysics(),
-                        itemBuilder: (context, index) => CardHistoryPaymentIpl(
-                          jumlahTagihan: snapshot.data[index].jumlahTagihan,
-                          noIpl: snapshot.data[index].nomorIpl,
-                          statusPembayaran:
-                              snapshot.data[index].statusPembayaran,
-                          tanggalPembayaran:
-                              snapshot.data[index].tanggalPembayaran,
-                        ),
-                      )
-                : Center(child: CircularProgressIndicator())),
+      body: RefreshIndicator(
+        onRefresh: () async =>
+            _future = await HistoryPaymentIplServices.getLastPayment(),
+        child: Container(
+          child: FutureBuilder<List<PaymentIplHistoryModel>>(
+              future: _future,
+              builder: (context, snapshot) => (snapshot.hasData)
+                  ? (snapshot.data.isEmpty)
+                      ? Center(
+                          child: Text(
+                            'Fitur ini hanya dimiliki oleh warga',
+                            style: TextStyle(fontSize: 12.sp),
+                          ),
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data.length,
+                          physics: ScrollPhysics(),
+                          itemBuilder: (context, index) =>
+                              CardHistoryPaymentIpl(
+                            jumlahTagihan: snapshot.data[index].jumlahTagihan,
+                            noIpl: snapshot.data[index].nomorIpl,
+                            statusPembayaran:
+                                snapshot.data[index].statusPembayaran,
+                            tanggalPembayaran:
+                                snapshot.data[index].tanggalPembayaran,
+                          ),
+                        )
+                  : Center(child: CircularProgressIndicator())),
+        ),
       ),
     );
   }

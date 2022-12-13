@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:aplikasi_rw/controller/indexscreen_home_controller.dart';
 import 'package:aplikasi_rw/controller/report_user_controller.dart';
@@ -13,6 +14,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart' as sidio;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -104,7 +106,7 @@ class _StepperRwState extends State<StepperRw> {
     fToast = FToast();
     fToast.init(context);
     widget.duration = Duration(hours: 1);
-    // dio = sidio.Dio();
+    dio = sidio.Dio();
     // dio.interceptors.add(RetryOnConnectionChangeInterceptor(
     //   requestRetrier: DioConnectivityRequestRetrier(
     //     dio: dio,
@@ -124,6 +126,8 @@ class _StepperRwState extends State<StepperRw> {
   dispose() {
     widget.duration = Duration(seconds: 0);
     fToast.removeCustomToast();
+    Get.delete<StepperController>();
+    Get.delete<WritePageController>();
     super.dispose();
   }
 
@@ -141,6 +145,7 @@ class _StepperRwState extends State<StepperRw> {
           isSelected.value = false;
           return false;
         } else {
+          imagePath.value = '';
           return true;
         }
       },
@@ -207,10 +212,8 @@ class _StepperRwState extends State<StepperRw> {
                               ),
                               child: (imagePath.value.isEmpty)
                                   ? SizedBox()
-                                  : Image.asset(
-                                      imagePath.value,
-                                      fit: BoxFit.cover,
-                                    ),
+                                  : Image(
+                                      image: FileImage(File(imagePath.value))),
                             ),
                             SizedBox(height: 16.h),
                             Container(
@@ -304,7 +307,7 @@ class _StepperRwState extends State<StepperRw> {
                                                           SizedBox(
                                                             width: 150.w,
                                                             child: Text(
-                                                              '${selectDate.value}aaaaa',
+                                                              '${selectDate.value}',
                                                               style: TextStyle(
                                                                 color: Color(
                                                                     0xff9E9E9E),
@@ -365,7 +368,7 @@ class _StepperRwState extends State<StepperRw> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50),
                           ),
-                          foregroundColor: Color(0xff2094F3),
+                          backgroundColor: Color(0xff2094F3),
                         ),
                         onPressed: () async {
                           /**
@@ -411,17 +414,13 @@ class _StepperRwState extends State<StepperRw> {
                             'id_user': idUser,
                             'type': controllerWrite.type.value
                           });
-                          showLoading(context);
+                          // showLoading(context);
+                          EasyLoading.show(status: 'mengirim');
                           var response = await dio.post(uri, data: formData);
                           String m = jsonDecode(response.data);
                           if (m != null && m.isNotEmpty) {
-                            Navigator.of(context).pop();
-                            buildShowDialogAnimation(
-                                'Laporan Berhasil Dikirim',
-                                '',
-                                'assets/animation/succes-animation.json',
-                                100.h);
-                            await Future.delayed(Duration(milliseconds: 1350));
+                            EasyLoading.dismiss();
+                            EasyLoading.showToast('Laporan terkirim');
                             final indexHome =
                                 Get.put(IndexScreenHomeController());
                             final reportController =
@@ -1047,7 +1046,7 @@ class _StepperRwState extends State<StepperRw> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50),
                 ),
-                foregroundColor: Color(0xff2094F3),
+                backgroundColor: Color(0xff2094F3),
               ),
               onPressed: () {
                 // steperController.index.value++;
@@ -1211,9 +1210,11 @@ class _StepperRwState extends State<StepperRw> {
   }
 
   Future getImage(ImageSource source) async {
-    var pickedFile = await _picker.getImage(source: source, imageQuality: 50);
+    var pickedFile = await _picker.pickImage(source: source, imageQuality: 50);
     if (pickedFile != null) {
-      imagePath = pickedFile.path.obs;
+      imagePath.value = pickedFile.path;
+      final logger = Logger();
+      logger.d(imagePath.value);
     }
   }
 

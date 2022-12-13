@@ -412,9 +412,9 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
 
   void getImage(ImageSource source) async {
     pickedFile = await _picker.pickImage(source: source, imageQuality: 50);
-    RxString path = pickedFile.path.obs;
 
     if (pickedFile != null) {
+      RxString path = pickedFile.path.obs;
       writeStatusController.addImage(true.obs, path);
       logger.i('PATH' + writeStatusController.pickedFile.value);
       writeStatusController.update();
