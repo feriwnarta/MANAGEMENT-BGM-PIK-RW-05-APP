@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 class WritePageController extends GetxController {
   TextEditingController controllerTitleReport = TextEditingController();
-  TextEditingController controllerContentReport = TextEditingController();
+  TextEditingController controllerContentReport =
+      TextEditingController(text: '');
   RxString date = ''.obs;
   RxString address = ''.obs;
   RxString latitude = ''.obs;

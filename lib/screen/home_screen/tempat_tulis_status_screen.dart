@@ -8,6 +8,7 @@ import 'package:aplikasi_rw/services/status_user_services.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart' as sidio;
+import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http_parser/http_parser.dart';
@@ -44,6 +45,7 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
     controllerLogin = Get.put(UserLoginController());
     writeStatusController = Get.put(WriteStatusController());
     dio = sidio.Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
     // dio.interceptors.add(RetryOnConnectionChangeInterceptor(
     //   requestRetrier: DioConnectivityRequestRetrier(
     //     dio: dio,
@@ -80,7 +82,7 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
 
       title: Text('Buat Postingan',
           style: TextStyle(
-            fontSize: 14.sp,
+            fontSize: 17.sp,
           )),
     );
 
@@ -158,14 +160,14 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
   ElevatedButton buttonPosting(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          minimumSize: Size.fromHeight(20.h),
+          minimumSize: Size.fromHeight(30.h),
           backgroundColor: Colors.green,
           // onPrimary: Colors.white,
           textStyle: TextStyle(fontSize: 13.0.sp, fontWeight: FontWeight.bold)),
       child: Column(
         children: [
           SizedBox(
-            height: 10.h,
+            height: 15.h,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -174,13 +176,13 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
                 padding: EdgeInsets.only(left: 10.h),
                 child: Text(
                   'Posting',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontSize: 14.sp),
                 ),
               )
             ],
           ),
           SizedBox(
-            height: 10.h,
+            height: 15.h,
           )
         ],
       ),
@@ -264,7 +266,7 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
                 ),
                 child: Text(
                   'Pilih gambar',
-                  style: TextStyle(color: Colors.white, fontSize: 11.0.sp),
+                  style: TextStyle(color: Colors.white, fontSize: 14.0.sp),
                 ),
               )
             ],
@@ -341,7 +343,7 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
         decoration: InputDecoration(
             border: InputBorder.none,
             hintText: 'Apa yang anda pikirkan ?',
-            hintStyle: TextStyle(fontSize: 11.0.sp)),
+            hintStyle: TextStyle(fontSize: 14.0.sp)),
       ),
     );
   }
@@ -357,7 +359,7 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
             children: [
               Text(
                 '${controllerLogin.username}',
-                style: TextStyle(fontFamily: 'poppins', fontSize: 10.0.sp),
+                style: TextStyle(fontFamily: 'poppins', fontSize: 14.sp),
               ),
             ],
           ),

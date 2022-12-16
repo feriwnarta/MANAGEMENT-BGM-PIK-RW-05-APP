@@ -1,8 +1,10 @@
+import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:logger/logger.dart';
 
 import '../server-app.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:dio/dio.dart';
 
 class KlasifikasiCategory {
   String name, idCategoryDetail;
@@ -33,12 +35,13 @@ class KlasifikasiCategoryServices {
 
   static Future<List<KlasifikasiCategory>> getKlasifikasiCategory2(
       String idCategory) async {
+    Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
     String url = '${ServerApp.url}src/category/klasifikasi_category.php';
     var data = {'id_category': idCategory};
 
-    http.Response response =
-        await http.post(Uri.parse(url), body: jsonEncode(data));
-    var obj = jsonDecode(response.body) as List;
+    var response = await dio.post(url, data: jsonEncode(data));
+    var obj = jsonDecode(response.data) as List;
     final logger = Logger();
     logger.e(obj);
 

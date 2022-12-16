@@ -1,8 +1,10 @@
 import 'package:aplikasi_rw/model/ReportModel.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
+import 'package:dio_smart_retry/dio_smart_retry.dart';
 import '../server-app.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:dio/dio.dart';
 
 class ReportFinishedModel {
   String total;
@@ -13,14 +15,16 @@ class ReportFinishedModel {
 
 class ReportFinishedServices {
   static Future<List<ReportFinishedModel>> getDataApi() async {
+    Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
     String idUser = await UserSecureStorage.getIdUser();
     var data = {'id_user': idUser};
     String apiUrl = '${ServerApp.url}/src/report/report_finished.php';
     // ambil data dari api
-    var apiResult = await http.post(Uri.parse(apiUrl), body: json.encode(data));
+    var apiResult = await dio.post(apiUrl, data: json.encode(data));
     // ubah jadi json dan casting ke list
     List<ReportModel> listReportModel = [];
-    var jsonObject = json.decode(apiResult.body) as List;
+    var jsonObject = json.decode(apiResult.data) as List;
     return jsonObject.map<ReportFinishedModel>((item) {
       listReportModel.add(ReportModel(
           noTicket: item['no_ticket'].toString(),

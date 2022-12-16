@@ -234,107 +234,146 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
                               ))),
                       Obx(
                         () => SlidingUpPanel(
-                          minHeight: 150.h,
+                          color: Colors.transparent,
+                          boxShadow: null,
+                          minHeight: 170.h,
                           panel: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              SizedBox(height: 16.h),
-                              Container(
-                                width: 40.w,
-                                height: 4.h,
-                                decoration: BoxDecoration(
-                                  color: Color(0xffE0E0E0),
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 16.h,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Get.back(result: {
-                                    'data': jalan.value,
-                                    'latitude': deflatitude.value,
-                                    'longitude': deflongitude.value,
-                                  });
-                                },
-                                child: Container(
-                                  width: double.infinity,
-                                  margin:
-                                      EdgeInsets.symmetric(horizontal: 16.w),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SvgPicture.asset(
-                                          'assets/img/image-svg/location-maps.svg'),
-                                      SizedBox(width: 4.w),
-                                      Expanded(
-                                          child: Text(
-                                        '${jalan.value}',
-                                        style: TextStyle(
-                                            fontSize: 12.sp,
-                                            color: Color(0xff2094F3)),
-                                      ))
-                                    ],
+                              Padding(
+                                padding: EdgeInsets.only(right: 10.w),
+                                child: TextButton.icon(
+                                  onPressed: () {
+                                    _goToUserCurrentLocation(
+                                        snapshot.data.latitude,
+                                        snapshot.data.longitude);
+                                  },
+                                  icon: Icon(
+                                    Icons.location_on,
+                                    color: Colors.white,
+                                  ),
+                                  label: Text(
+                                    'Lokasi terkini',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: Colors.blue,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                height: 11.h,
-                              ),
                               Container(
-                                color: Color(0xffF5F5F5),
-                                width: double.infinity,
-                                padding: EdgeInsets.only(top: 4.h, left: 48.w),
-                                height: 24.h,
-                                child: Text(
-                                  'Tempat terdekat',
-                                  style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: Color(0xff9E9E9E)),
-                                ),
-                              ),
-                              ListView.builder(
-                                itemCount: (nearbyPlaces.length == 0)
-                                    ? nearbyPlaces.length
-                                    : 11,
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) => Container(
-                                  width: double.infinity,
-                                  margin:
-                                      EdgeInsets.symmetric(horizontal: 16.w),
-                                  child: Column(
-                                    children: [
-                                      SizedBox(
-                                        height: 8,
+                                color: Colors.white,
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 16.h),
+                                    Container(
+                                      width: 40.w,
+                                      height: 4.h,
+                                      decoration: BoxDecoration(
+                                        color: Color(0xffE0E0E0),
+                                        borderRadius:
+                                            BorderRadius.circular(100),
                                       ),
-                                      GestureDetector(
+                                    ),
+                                    SizedBox(
+                                      height: 16.h,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Get.back(result: {
+                                          'data': jalan.value,
+                                          'latitude': deflatitude.value,
+                                          'longitude': deflongitude.value,
+                                        });
+                                      },
+                                      child: Container(
+                                        width: double.infinity,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 16.w),
                                         child: Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                              MainAxisAlignment.center,
                                           children: [
                                             SvgPicture.asset(
-                                              'assets/img/image-svg/unselected-maps.svg',
-                                            ),
+                                                'assets/img/image-svg/location-maps.svg'),
                                             SizedBox(width: 4.w),
                                             Expanded(
                                                 child: Text(
-                                              '${nearbyPlaces[index].name} ',
+                                              '${jalan.value}',
                                               style: TextStyle(
                                                   fontSize: 12.sp,
-                                                  color: Color(0xff9E9E9E)),
+                                                  color: Color(0xff2094F3)),
                                             ))
                                           ],
                                         ),
-                                        onTap: () {
-                                          displayPrediction(
-                                              placeId:
-                                                  '${nearbyPlaces[index].placeId}');
-                                        },
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                    SizedBox(
+                                      height: 11.h,
+                                    ),
+                                    Container(
+                                      color: Color(0xffF5F5F5),
+                                      width: double.infinity,
+                                      padding:
+                                          EdgeInsets.only(top: 4.h, left: 48.w),
+                                      height: 24.h,
+                                      child: Text(
+                                        'Tempat terdekat',
+                                        style: TextStyle(
+                                            fontSize: 12.sp,
+                                            color: Color(0xff9E9E9E)),
+                                      ),
+                                    ),
+                                    ListView.builder(
+                                      itemCount: (nearbyPlaces.length == 0)
+                                          ? nearbyPlaces.length
+                                          : 11,
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) =>
+                                          Container(
+                                        width: double.infinity,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 16.w),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                            GestureDetector(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    'assets/img/image-svg/unselected-maps.svg',
+                                                  ),
+                                                  SizedBox(width: 4.w),
+                                                  Expanded(
+                                                      child: Text(
+                                                    '${nearbyPlaces[index].name} ',
+                                                    style: TextStyle(
+                                                        fontSize: 12.sp,
+                                                        color:
+                                                            Color(0xff9E9E9E)),
+                                                  ))
+                                                ],
+                                              ),
+                                              onTap: () {
+                                                displayPrediction(
+                                                    placeId:
+                                                        '${nearbyPlaces[index].placeId}');
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 ),
-                              )
+                              ),
                             ],
                           ),
                           borderRadius:
@@ -419,7 +458,7 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
         bearing: 192.8334901395799,
         target: LatLng(latitude, longitude),
         tilt: 0,
-        zoom: 19.151926040649414)));
+        zoom: 15.151926040649414)));
 
     var coordinates = new Coordinates(latitude, longitude);
     Geocoder.google((Platform.isAndroid)

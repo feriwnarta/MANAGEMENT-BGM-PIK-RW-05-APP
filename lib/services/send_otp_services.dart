@@ -1,36 +1,31 @@
 import 'package:aplikasi_rw/server-app.dart';
+import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 class SendOtpServices {
   static Future<String> sendOtpWhatsapp({String noTelp, String email}) async {
+    Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
     String url = '${ServerApp.url}src/login/otp/otp_whatsapp.php';
+    var formData = FormData.fromMap({'no_telp': noTelp, 'email': email});
 
-    var request = http.MultipartRequest('POST', Uri.parse(url));
-    request.fields['no_telp'] = noTelp;
-    request.fields['email'] = email;
-    var response = await request.send();
-    var streamResponse = await http.Response.fromStream(response);
+    var request = await dio.post(url, data: formData);
 
-    String message = jsonDecode(streamResponse.body);
+    String message = jsonDecode(request.data);
     return message;
   }
 
-  static Future<http.MultipartRequest> sendOtpGmail(
-      {String noTelp, String email}) async {
+  static Future<String> sendOtpGmail({String noTelp, String email}) async {
     String url = '${ServerApp.url}src/login/otp/otp_gmail.php';
 
-    var request = http.MultipartRequest('POST', Uri.parse(url));
-    request.fields['no_telp'] = noTelp;
-    request.fields['email'] = email;
-    return request;
-    // request.send().then((value) {
-    //   http.Response.fromStream(value).then((message) {
-    //     String result = jsonDecode(message.body);
-    //     print('RESPONSE RESULT :: $result');
-    //     return result;
-    //   });
-    //   return value;
-    // });
+    Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
+
+    var formData = FormData.fromMap({'no_telp': noTelp, 'email': email});
+
+    var request = await dio.post(url, data: formData);
+    return jsonDecode(request.data);
   }
 }

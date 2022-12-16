@@ -1,33 +1,43 @@
+import 'package:aplikasi_rw/screen/report_screen2/add_complaint.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/state_manager.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class CameraComplaint extends StatefulWidget {
-  const CameraComplaint({Key key}) : super(key: key);
+  CameraComplaint({Key key, this.toast}) : super(key: key);
 
+  Function toast;
   @override
   State<CameraComplaint> createState() => _CameraComplaintState();
 }
 
 class _CameraComplaintState extends State<CameraComplaint> {
   CameraController _cameraController;
+  XFile picture;
 
   final logger = Logger();
 
   int selectedCameraIndex;
   List<CameraDescription> cameras;
 
+  RxString statusCapture = 'false'.obs;
+  StepperController stepperController;
+
   @override
   initState() {
     super.initState();
+    stepperController = Get.put(StepperController());
     WidgetsBinding.instance.addPostFrameCallback((_) {
       availableCameras().then((value) {
         if (value.length > 0) {
           cameras = value;
           selectedCameraIndex = 0;
           initCamera(cameras[0]);
+          logger.d(value);
         } else {
           logger.i('tidak ada kamera');
         }
@@ -74,8 +84,13 @@ class _CameraComplaintState extends State<CameraComplaint> {
 
   void onCapture() async {
     if (cameras.isNotEmpty && cameras != null) {
-      XFile picture = await _cameraController.takePicture();
-      logger.i(picture.path);
+      picture = await _cameraController.takePicture();
+      statusCapture = 'true'.obs;
+      logger.i(statusCapture.value);
+      // Get.back(result: {'pathImage': picture.path});
+      stepperController.index.value = 2;
+      stepperController.imagePath.value = picture.path;
+      widget.toast();
     }
   }
 
@@ -96,11 +111,16 @@ class _CameraComplaintState extends State<CameraComplaint> {
   }
 
   void onSwitchCamera() {
-    selectedCameraIndex =
-        selectedCameraIndex < cameras.length - 1 ? selectedCameraIndex++ : 0;
+    selectedCameraIndex = selectedCameraIndex < cameras.length - 1 ? 1 : 0;
     CameraDescription selectedCameras = cameras[selectedCameraIndex];
-    // logger.e('$cameras');
+    logger.e(selectedCameraIndex);
+    logger.e(cameras.length);
     initCamera(selectedCameras);
+  }
+
+  void reCaputre() {
+    statusCapture.value = 'false';
+    _cameraController.initialize();
   }
 
   Future<void> initCamera(CameraDescription desc) async {
@@ -117,6 +137,7 @@ class _CameraComplaintState extends State<CameraComplaint> {
       });
 
       await _cameraController.initialize();
+      _cameraController.setFlashMode(FlashMode.off);
     } catch (e) {
       logger.e(e);
     }
@@ -126,12 +147,9 @@ class _CameraComplaintState extends State<CameraComplaint> {
     if (_cameraController == null || !_cameraController.value.isInitialized) {
       return Text('loading');
     } else {
-      return Transform.scale(
-        scaleY: 1.5,
-        child: AspectRatio(
-          aspectRatio: _cameraController.value.aspectRatio,
-          child: CameraPreview(_cameraController),
-        ),
+      return AspectRatio(
+        aspectRatio: _cameraController.value.aspectRatio,
+        child: CameraPreview(_cameraController),
       );
     }
   }
@@ -139,16 +157,13 @@ class _CameraComplaintState extends State<CameraComplaint> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.red,
       child: Column(
         children: [
           SizedBox(
-            height: 100.h,
+            height: 500.h,
+            child: cameraPreview(),
           ),
-          cameraPreview(),
-          SizedBox(
-            height: 50.h,
-          ),
+
           Container(
             color: Colors.white,
             child: Column(
@@ -171,7 +186,60 @@ class _CameraComplaintState extends State<CameraComplaint> {
                 ),
               ],
             ),
-          )
+          ),
+
+          // Obx(() => (statusCapture.value == 'true')
+          //     ? Container(
+          //         margin: EdgeInsets.symmetric(horizontal: 16.w),
+          //         child: Row(
+          //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //           children: [
+          //             SizedBox(
+          //               width: 97.w,
+          //               child: TextButton(
+          //                 onPressed: reCaputre,
+          //                 child: Text(
+          //                   'Ulangi',
+          //                   style: TextStyle(
+          //                     color: Colors.white,
+          //                     fontSize: 14.sp,
+          //                   ),
+          //                 ),
+          //                 style: TextButton.styleFrom(
+          //                   backgroundColor: Color(0xff2094F3),
+          //                   shape: RoundedRectangleBorder(
+          //                     borderRadius: BorderRadius.circular(50),
+          //                   ),
+          //                 ),
+          //               ),
+          //             ),
+          //             SizedBox(
+          //               width: 97.w,
+          //               child: TextButton(
+          //                 onPressed: () {
+          //                   if (picture != null) {
+          //                     widget.nextStep(picture.path);
+          //                   }
+          //                 },
+          //                 child: Text(
+          //                   'Lanjutkan',
+          //                   style: TextStyle(
+          //                     color: Colors.white,
+          //                     fontSize: 14.sp,
+          //                   ),
+          //                 ),
+          //                 style: TextButton.styleFrom(
+          //                   backgroundColor: Color(0xff2094F3),
+          //                   shape: RoundedRectangleBorder(
+          //                     borderRadius: BorderRadius.circular(50),
+          //                   ),
+          //                 ),
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       )
+          //     : Spacer())
         ],
       ),
     );

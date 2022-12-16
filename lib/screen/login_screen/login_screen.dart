@@ -1356,51 +1356,43 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
       String email, String noTelp, String methodChose) async {
     final logger = Logger();
     logger.e('email services di klik');
-    await SendOtpServices.sendOtpGmail(email: email, noTelp: noTelp)
-        .then((request) {
+    EasyLoading.show(status: 'loading');
+    String message =
+        await SendOtpServices.sendOtpGmail(email: email, noTelp: noTelp);
+    if (message == 'success') {
+      logger.e('succes kirim otp gmail $email, $noTelp, $message');
+      // Navigator.of(context).pop();
+      EasyLoading.dismiss();
+      registerController.toOtpVerif = false.obs;
+      registerController.toOtp = true.obs;
+      registerController.methodVerifChose = methodChose.obs;
+      registerController.update();
+      countDownController.countDown(
+          iplOrEmail: (controllerIpl.text.isEmpty)
+              ? controllerUsername.text
+              : controllerIpl.text);
+      // print('${registerController.toOtp.value}');
+      // setState(() {});
+    } else if (message == 'format email wrong') {
+      // format email wrong
+      // print('email tidak ada atau ada kesalahan penulisan');
+      // buildShowDialogAnimation('email format does not match', 'OKE',
+      //     'assets/animation/error-animation.json', 15.0);
+      EasyLoading.showError(
+        'email tidak ada atau ada kesalahan penulisan',
+        dismissOnTap: true,
+      );
+    } else {
       // buildShowDialogAnimation(
-      //     '', '', 'assets/animation/loading-plane.json', 100);
-      EasyLoading.show(status: 'loading');
-      request.send().then((streamResponse) {
-        http.Response.fromStream(streamResponse).then((response) {
-          String message = jsonDecode(response.body);
-          if (message == 'success') {
-            logger.e('succes kirim otp gmail $email, $noTelp, $message');
-            // Navigator.of(context).pop();
-            EasyLoading.dismiss();
-            registerController.toOtpVerif = false.obs;
-            registerController.toOtp = true.obs;
-            registerController.methodVerifChose = methodChose.obs;
-            registerController.update();
-            countDownController.countDown(
-                iplOrEmail: (controllerIpl.text.isEmpty)
-                    ? controllerUsername.text
-                    : controllerIpl.text);
-            // print('${registerController.toOtp.value}');
-            // setState(() {});
-          } else if (message == 'format email wrong') {
-            // format email wrong
-            // print('email tidak ada atau ada kesalahan penulisan');
-            // buildShowDialogAnimation('email format does not match', 'OKE',
-            //     'assets/animation/error-animation.json', 15.0);
-            EasyLoading.showError(
-              'email tidak ada atau ada kesalahan penulisan',
-              dismissOnTap: true,
-            );
-          } else {
-            // buildShowDialogAnimation(
-            //     'Email otp is in error, please use another option',
-            //     'OK',
-            //     'assets/animation/error-animation.json',
-            //     2.0.h);
-            EasyLoading.showError(
-              'Email OTP error, tolong gunakan pilihan lain',
-              dismissOnTap: true,
-            );
-          }
-        });
-      });
-    });
+      //     'Email otp is in error, please use another option',
+      //     'OK',
+      //     'assets/animation/error-animation.json',
+      //     2.0.h);
+      EasyLoading.showError(
+        'Email OTP error, tolong gunakan pilihan lain',
+        dismissOnTap: true,
+      );
+    }
   }
 
   /// method yang digunakan untuk mengirim otp whatsapp

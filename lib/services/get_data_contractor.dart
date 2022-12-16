@@ -1,16 +1,20 @@
 import 'dart:convert';
 import 'package:aplikasi_rw/model/contractor_model.dart';
+import 'package:dio_smart_retry/dio_smart_retry.dart';
 import '../server-app.dart';
 import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 class GetDataContractor {
   static Future<ContractorModel> getDataContractor(String idContractor) async {
+    Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
     String url = '${ServerApp.url}src/contractor/contractor.php';
     var data = {"id_contractor": idContractor};
-    var response = await http.post(Uri.parse(url), body: jsonEncode(data));
+    var response = await dio.post(url, data: jsonEncode(data));
 
-    if (response.statusCode >= 200 && response.body.isNotEmpty) {
-      var result = jsonDecode(response.body);
+    if (response.statusCode >= 200 && response.data.isNotEmpty) {
+      var result = jsonDecode(response.data);
       var list = result['job_complaint'] as List;
       List<String> job;
       job = list.map((e) => e as String).toList();

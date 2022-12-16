@@ -1,39 +1,52 @@
 import 'package:aplikasi_rw/model/status_user_model.dart';
 import 'package:dio/dio.dart' as sidio;
+import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:dio/dio.dart';
 
 import '../server-app.dart';
 
 class StatusUserServices extends StatusUserModel {
-  static Future<http.MultipartRequest> sendDataStatus(
+  static Future<String> sendDataStatus(
       {String idUser,
       String imgPath,
       String username,
       String foto_profile,
       String caption}) async {
-    String uri = '${ServerApp.url}src/status/add_status.php';
-    var request = http.MultipartRequest('POST', Uri.parse(uri));
+    Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
 
-    print(idUser);
-    print(imgPath);
-    print(username);
-    print(foto_profile);
-    print(caption);
+    String uri = '${ServerApp.url}src/status/add_status.php';
+    var data = {};
 
     if (imgPath != null && imgPath.isNotEmpty) {
       if (imgPath != 'no_image') {
-        var pic = await http.MultipartFile.fromPath('status_image', imgPath);
-        request.files.add(pic);
+        data.addEntries({
+          'status_image':
+              await MultipartFile.fromFileSync(imgPath, filename: imgPath)
+        }.entries);
+        // var pic = await http.MultipartFile.fromPath('status_image', imgPath);
+        // request.files.add(pic);
       } else {
-        request.fields['status_image'] = imgPath;
+        // request.fields['status_image'] = imgPath;
+        data.addEntries({'status_image': imgPath}.entries);
       }
-      request.fields['id_user'] = idUser;
-      request.fields['username'] = username;
-      request.fields['foto_profile'] = foto_profile;
-      request.fields['caption'] = caption;
+      data.addAll({
+        'id_user': idUser,
+        'username': username,
+        'foto_profile': foto_profile,
+        'caption': caption
+      });
 
-      return request;
+      var request = await dio.post(uri, data: data);
+
+      // request.fields['id_user'] = idUser;
+      // request.fields['username'] = username;
+      // request.fields['foto_profile'] = foto_profile;
+      // request.fields['caption'] = caption;
+
+      return request.data;
 
       // await request.send().then((value) {
       //   http.Response.fromStream(value).then((value) {
@@ -43,25 +56,19 @@ class StatusUserServices extends StatusUserModel {
       // });
 
     }
-    return request;
   }
 
   static Future<List<StatusUserModel>> getDataApi(
       String idUser, int start, int limit) async {
-    // sidio.Dio dio = sidio.Dio();
-    // dio.interceptors.add(RetryOnConnectionChangeInterceptor(
-    //   requestRetrier: DioConnectivityRequestRetrier(
-    //     dio: dio,
-    //     connectivity: Connectivity(),
-    //   ),
-    // ));
+    Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
 
     var data = {'id_user': idUser, 'start': start, 'limit': limit};
     String apiUrl = '${ServerApp.url}src/status/status.php';
     // ambil data dari api
-    var apiResult = await http.post(Uri.parse(apiUrl), body: json.encode(data));
+    var apiResult = await dio.post(apiUrl, data: json.encode(data));
     // ubah jadi json dan casting ke list
-    var jsonObject = json.decode(apiResult.body) as List;
+    var jsonObject = json.decode(apiResult.data) as List;
     return jsonObject
         .map<StatusUserModel>((item) => StatusUserModel(
             userName: item['username'],

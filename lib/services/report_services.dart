@@ -2,13 +2,17 @@ import 'dart:io';
 
 import 'package:aplikasi_rw/model/ReportModel.dart';
 import 'package:aplikasi_rw/server-app.dart';
+import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:dio/dio.dart';
 
 class ReportServices extends ReportModel {
   static Future<List<ReportModel>> getDataApi(
       String idUser, int start, int limit) async {
     // Dio dio = Dio();
+    Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
 
     // dio.interceptors.add(RetryOnConnectionChangeInterceptor(
     //   requestRetrier: DioConnectivityRequestRetrier(
@@ -21,11 +25,10 @@ class ReportServices extends ReportModel {
     String apiUrl = '${ServerApp.url}/src/report/report.php';
     // ambil data dari api
     try {
-      var apiResult =
-          await http.post(Uri.parse(apiUrl), body: json.encode(data));
+      var apiResult = await dio.post(apiUrl, data: json.encode(data));
       // ubah jadi json dan casting ke list
       if (apiResult.statusCode >= 200 && apiResult.statusCode <= 299) {
-        var jsonObject = json.decode(apiResult.body) as List;
+        var jsonObject = json.decode(apiResult.data) as List;
 
         return jsonObject
             .map<ReportModel>((item) => ReportModel(
