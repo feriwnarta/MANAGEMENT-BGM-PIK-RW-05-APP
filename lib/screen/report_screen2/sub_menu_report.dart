@@ -1,3 +1,4 @@
+import 'package:aplikasi_rw/screen/cordinator/screen/complaint_screen/widget/camera_complaint.dart';
 import 'package:aplikasi_rw/screen/report_screen2/add_complaint.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -103,7 +104,8 @@ class _RadioMenuState extends State<RadioMenu> {
             // } else if (widget.menuRequest == SubMenu.Request) {
             //   Get.snackbar('Message', 'On Progress', overlayBlur: 2);
             // }
-            Get.to(() => AddComplaint());
+            // Get.to(() => AddComplaint());
+            Get.to(() => CameraComplaint());
           },
         )
       ],

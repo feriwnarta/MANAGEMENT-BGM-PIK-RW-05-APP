@@ -7,6 +7,7 @@ import 'package:aplikasi_rw/services/location_services.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocoder/geocoder.dart';
@@ -23,6 +24,7 @@ class AbsenController extends GetxController {
   RxString day = ''.obs;
   RxString jamMasuk = ''.obs;
   RxString jamKeluar = ''.obs;
+  RxString status = 'false'.obs;
 }
 
 class InsertAbsen extends StatefulWidget {
@@ -142,6 +144,8 @@ class _InsertAbsenState extends State<InsertAbsen> {
 
   String getFormatDate() {
     DateTime dateTime = DateTime.now();
+    final logger = Logger();
+    logger.i(dateTime);
     if (dateTime.hour < 10) {
       if (dateTime.minute < 10) {
         return '0${dateTime.hour} : 0${dateTime.minute}';
@@ -192,6 +196,10 @@ class _InsertAbsenState extends State<InsertAbsen> {
           _absenController.jamMasuk = getFormatDate().obs;
           _absenController.update();
           await sendAbsen();
+          _absenController.status.value = 'true';
+          _absenController.update();
+          final logger = Logger();
+          logger.e(_absenController.status.value);
         });
         await Future.delayed(Duration(seconds: 1));
         Navigator.of(context).pop();
@@ -221,13 +229,8 @@ class _InsertAbsenState extends State<InsertAbsen> {
 
       if (message['status'] == 'SUDAH PULANG') {
         // await Future.delayed(Duration(milliseconds: 500));
-        Get.off(HomeScreenCordinator());
-        Get.snackbar('message', 'Anda sudah pulang',
-            colorText: Colors.white,
-            backgroundColor: Colors.orange[400],
-            barBlur: 1,
-            isDismissible: false,
-            overlayBlur: 2);
+        Navigator.of(context).pop();
+        EasyLoading.showInfo('Anda sudah melakukan absen pulang hari ini');
       }
     }
   }
@@ -243,129 +246,136 @@ class _InsertAbsenState extends State<InsertAbsen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: GetBuilder<AbsenController>(
-            builder: (controller) => Column(
-              children: [
-                Center(
-                    child: Column(
-                  children: [
-                    SizedBox(
-                      height: 64.h,
-                    ),
-                    Text(
-                      '${controller.date.value}',
-                      style: TextStyle(
-                        fontSize: 40.sp,
-                      ),
-                    ),
-                    Text(
-                      '${controller.day.value}',
-                      style: TextStyle(fontSize: 16.sp, color: Colors.grey),
-                    ),
-                  ],
-                )),
-                SizedBox(
-                  height: 48.h,
-                ),
-                (controller.jamKeluar.value.isEmpty)
-                    ? SvgPicture.asset('assets/img/image-svg/absen_masuk.svg')
-                    : SvgPicture.asset('assets/img/image-svg/absen_keluar.svg'),
-                SizedBox(height: 32.h),
-                SizedBox(
-                  width: 279.w,
-                  child: Center(
-                    child: TextButton.icon(
-                      onPressed: null,
-                      icon: SvgPicture.asset(
-                          'assets/img/image-svg/location-2.svg'),
-                      label: GetBuilder<AbsenController>(
-                        builder: (controller) => Expanded(
-                            child: Text(
-                          controller.locationNow.value,
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color: Colors.grey,
-                          ),
+              builder: (controller) => (controller.status.value == 'true')
+                  ? Column(
+                      children: [
+                        Center(
+                            child: Column(
+                          children: [
+                            SizedBox(
+                              height: 64.h,
+                            ),
+                            Text(
+                              '${controller.date.value}',
+                              style: TextStyle(
+                                fontSize: 40.sp,
+                              ),
+                            ),
+                            Text(
+                              '${controller.day.value}',
+                              style: TextStyle(
+                                  fontSize: 16.sp, color: Colors.grey),
+                            ),
+                          ],
                         )),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 16.h),
-                (controller.imagePath.value.isEmpty)
-                    ? TextButton.icon(
-                        onPressed: () async {
-                          await getImage(ImageSource.camera);
-                        },
-                        icon:
-                            SvgPicture.asset('assets/img/image-svg/camera.svg'),
-                        label: Text(
-                          'Foto Lokasi',
-                          style: TextStyle(fontSize: 14.sp, color: Colors.grey),
+                        SizedBox(
+                          height: 48.h,
                         ),
-                      )
-                    : Container(
-                        width: 156.w,
-                        height: 156.h,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            image: DecorationImage(
-                                image:
-                                    FileImage(File(controller.imagePath.value)),
-                                fit: BoxFit.cover,
-                                repeat: ImageRepeat.noRepeat)),
-                      ),
-                GetBuilder<AbsenController>(
-                  builder: (controller) => (controller.imagePath.isEmpty)
-                      ? SizedBox(height: 149.h)
-                      : SizedBox(height: 25.h),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
-                      children: [
-                        SvgPicture.asset('assets/img/image-svg/clock_in.svg'),
-                        (controller.jamMasuk.isEmpty)
-                            ? Text(
-                                '-- : --',
-                                style: TextStyle(fontSize: 12.sp),
-                              )
-                            : Text(
-                                '${controller.jamMasuk.value}',
-                                style: TextStyle(fontSize: 12.sp),
-                              ),
-                        Text(
-                          'Jam masuk',
-                          style: TextStyle(fontSize: 10.sp),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      width: 108.w,
-                    ),
-                    Column(
-                      children: [
-                        SvgPicture.asset('assets/img/image-svg/clock_out.svg'),
                         (controller.jamKeluar.value.isEmpty)
-                            ? Text(
-                                '-- : --',
-                                style: TextStyle(fontSize: 12.sp),
-                              )
-                            : Text(
-                                '${controller.jamKeluar.value}',
-                                style: TextStyle(fontSize: 12.sp),
+                            ? SvgPicture.asset(
+                                'assets/img/image-svg/absen_masuk.svg')
+                            : SvgPicture.asset(
+                                'assets/img/image-svg/absen_keluar.svg'),
+                        SizedBox(height: 32.h),
+                        SizedBox(
+                          width: 279.w,
+                          child: Center(
+                            child: TextButton.icon(
+                              onPressed: null,
+                              icon: SvgPicture.asset(
+                                  'assets/img/image-svg/location-2.svg'),
+                              label: GetBuilder<AbsenController>(
+                                builder: (controller) => Text(
+                                  controller.locationNow.value,
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: Colors.grey,
+                                  ),
+                                ),
                               ),
-                        Text(
-                          'Jam keluar',
-                          style: TextStyle(fontSize: 10.sp),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 16.h),
+                        (controller.imagePath.value.isEmpty)
+                            ? TextButton.icon(
+                                onPressed: () async {
+                                  await getImage(ImageSource.camera);
+                                },
+                                icon: SvgPicture.asset(
+                                    'assets/img/image-svg/camera.svg'),
+                                label: Text(
+                                  'Foto Lokasi',
+                                  style: TextStyle(
+                                      fontSize: 14.sp, color: Colors.grey),
+                                ),
+                              )
+                            : Container(
+                                width: 156.w,
+                                height: 156.h,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    image: DecorationImage(
+                                        image: FileImage(
+                                            File(controller.imagePath.value)),
+                                        fit: BoxFit.cover,
+                                        repeat: ImageRepeat.noRepeat)),
+                              ),
+                        GetBuilder<AbsenController>(
+                          builder: (controller) =>
+                              (controller.imagePath.isEmpty)
+                                  ? SizedBox(height: 149.h)
+                                  : SizedBox(height: 25.h),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(
+                              children: [
+                                SvgPicture.asset(
+                                    'assets/img/image-svg/clock_in.svg'),
+                                (controller.jamMasuk.isEmpty)
+                                    ? Text(
+                                        '-- : --',
+                                        style: TextStyle(fontSize: 12.sp),
+                                      )
+                                    : Text(
+                                        '${controller.jamMasuk.value}',
+                                        style: TextStyle(fontSize: 12.sp),
+                                      ),
+                                Text(
+                                  'Jam masuk',
+                                  style: TextStyle(fontSize: 10.sp),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              width: 108.w,
+                            ),
+                            Column(
+                              children: [
+                                SvgPicture.asset(
+                                    'assets/img/image-svg/clock_out.svg'),
+                                (controller.jamKeluar.value.isEmpty)
+                                    ? Text(
+                                        '-- : --',
+                                        style: TextStyle(fontSize: 12.sp),
+                                      )
+                                    : Text(
+                                        '${controller.jamKeluar.value}',
+                                        style: TextStyle(fontSize: 12.sp),
+                                      ),
+                                Text(
+                                  'Jam keluar',
+                                  style: TextStyle(fontSize: 10.sp),
+                                )
+                              ],
+                            )
+                          ],
                         )
                       ],
                     )
-                  ],
-                )
-              ],
-            ),
-          ),
+                  : Center(child: CircularProgressIndicator())),
         ),
       ),
     );

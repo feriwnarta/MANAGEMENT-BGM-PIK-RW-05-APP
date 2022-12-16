@@ -2,6 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<!-- Permission for acces camera using camera package -->
+	<key>NSCameraUsageDescription</key>
+	<string>Aplikasi membutuhkan ijin kamera untuk untuk membuat complaint</string>
 	<!-- Permission options for the `camera` group -->	
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Aplikasi membutuhkan ijin galeri untuk menambahkan gambar</string>

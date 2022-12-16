@@ -40,9 +40,6 @@ class HomeScreenCordinator extends StatelessWidget {
           Container(
             child: Center(child: Text('On Progress')),
           ),
-          Container(
-            child: Center(child: Text('On Progress')),
-          ),
           UserWorker()
         ], index: controller._index.value),
       ),
@@ -70,9 +67,9 @@ class HomeScreenCordinator extends StatelessWidget {
               icon:
                   SvgPicture.asset('assets/img/image-svg/complaint-white.svg'),
               label: 'Complaint'),
-          BottomNavigationBarItem(
-              icon: SvgPicture.asset('assets/img/image-svg/request.svg'),
-              label: 'Request'),
+          // BottomNavigationBarItem(
+          //     icon: SvgPicture.asset('assets/img/image-svg/request.svg'),
+          //     label: 'Request'),
           BottomNavigationBarItem(
             icon: SvgPicture.asset('assets/img/image-svg/laporan.svg'),
             label: 'Laporan',
