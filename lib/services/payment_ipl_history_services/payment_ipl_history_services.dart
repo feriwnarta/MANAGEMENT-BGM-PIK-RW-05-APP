@@ -4,6 +4,7 @@ import 'package:aplikasi_rw/model/payment_ipl_history_model.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:logger/logger.dart';
 
 class HistoryPaymentIplServices {
@@ -13,6 +14,7 @@ class HistoryPaymentIplServices {
     String idUser = await UserSecureStorage.getIdUser();
     String noIpl = await UserSecureStorage.readKey(key: 'noIpl');
     Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
     var data = {'no_ipl': noIpl, 'id_user': idUser};
     var response = await dio.post(url, data: data);
     if (response.statusCode >= 200 && response.statusCode <= 399) {
