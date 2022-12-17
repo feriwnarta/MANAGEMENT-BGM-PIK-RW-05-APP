@@ -4,8 +4,13 @@ import 'dart:io' as io;
 import 'package:aplikasi_rw/controller/register_controller.dart';
 import 'package:aplikasi_rw/controller/resend_otp_countdown_controller.dart';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
-import 'package:aplikasi_rw/screen/login_screen/validate/validate_email_and_password.dart';
-import 'package:aplikasi_rw/screen/splash_screen/SplashView.dart';
+import 'package:aplikasi_rw/modules/authentication/controllers/auth_controller.dart';
+import 'package:aplikasi_rw/modules/authentication/validate/validate_email_and_password.dart';
+import 'package:aplikasi_rw/modules/authentication/widget/header_logo.dart';
+import 'package:aplikasi_rw/modules/authentication/widget/method_verification.dart';
+import 'package:aplikasi_rw/modules/authentication/widget/otp.dart';
+import 'package:aplikasi_rw/modules/authentication/widget/register_login_form.dart';
+import 'package:aplikasi_rw/routes/app_routes.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/send_otp_services.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
@@ -13,7 +18,6 @@ import 'package:async/async.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -46,28 +50,17 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
   bool _isObscure = true;
   bool _isObscure2 = true;
   Color buttonLoginRegister = Colors.lightBlue[400];
-  TextEditingController controllerUsername = TextEditingController();
-  TextEditingController controllerPassword = TextEditingController();
-
   TextEditingController controllerIpl;
-  TextEditingController controllerEmail = TextEditingController();
-  TextEditingController controllerNoTelp = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController num1 = TextEditingController();
-  TextEditingController num2 = TextEditingController();
-  TextEditingController num3 = TextEditingController();
-  TextEditingController num4 = TextEditingController(text: '\u200b');
-  TextEditingController num5 = TextEditingController();
-  TextEditingController num6 = TextEditingController();
 
   // UserLoadingBloc bloc;
 
   String otpKey;
   bool isLogin = true;
-  final registerController = Get.put(RegisterController());
   final _scaffoldkey = new GlobalKey<ScaffoldState>();
+  final registerController = Get.put(RegisterController());
   final loginController = Get.put(UserLoginController());
   final countDownController = Get.put(CountDownController());
+  final authController = Get.put(AuthController());
 
   bool passwordWrong = false;
   String email, noTelp;
@@ -111,21 +104,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
 
   @override
   void dispose() {
-    controllerUsername.clear();
-    controllerPassword.clear();
     controllerIpl.clear();
-    controllerEmail.clear();
-    controllerNoTelp.clear();
-    _passwordController.clear();
-    num1.clear();
-    num2.clear();
-    num3.clear();
-    num4.clear();
-    num5.clear();
-    num6.clear();
-    // bloc.close();
-
-    Get.delete<RegisterController>();
     super.dispose();
   }
 
@@ -135,18 +114,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
       key: _scaffoldkey,
       body: Stack(
         children: [
-          Container(
-            height: 302.h,
-            decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.only(bottomLeft: Radius.circular(30)),
-                image: DecorationImage(
-                  image: AssetImage('assets/img/background-login-rw.png'),
-                  alignment: Alignment.center,
-                  fit: BoxFit.fill,
-                  repeat: ImageRepeat.noRepeat,
-                )),
-          ),
+          HeaderLogo(),
           Center(
             child: SingleChildScrollView(
               child: SizedBox(
@@ -163,16 +131,34 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                         } else if (registerController.toSucces.value) {
                           return createPasswordSucces();
                         } else if (registerController.toOtp.value) {
-                          return otp(context);
+                          return Otp(
+                            controllerIpl: controllerIpl,
+                            email: email,
+                            errorController: errorController,
+                            noTelp: noTelp,
+                            otpKey: otpKey,
+                            resendOtp: resendOtp,
+                            validateOtp: validateOtp,
+                          );
                         } else if (registerController.toOtpVerif.value) {
-                          return methodVerification(
-                              controllerEmail.text, controllerNoTelp.text);
+                          // return methodVerification(
+                          //     authController.controllerEmail.text,
+                          //     authController.controllerNoTelp.text);
+                          return MethodVerification(
+                            email: email,
+                            noTelp: noTelp,
+                            cardMethodVerification: cardMethodVerification,
+                          );
                         } else if (registerController.toResetPassword.value) {
-                          if (controllerUsername.text.isNotEmpty &&
+                          if (authController.controllerUsername.text.isNotEmpty &&
                               registerController.iplOrEmailValid.value ==
                                   false &&
                               isIplSuccess == true) {
-                            return methodVerification(email, noTelp);
+                            return MethodVerification(
+                              email: email,
+                              noTelp: noTelp,
+                              cardMethodVerification: cardMethodVerification,
+                            );
                           } else {
                             return Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -208,7 +194,8 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 16.w),
                                           child: TextFormField(
-                                            controller: controllerUsername,
+                                            controller: authController
+                                                .controllerUsername,
                                             keyboardType:
                                                 TextInputType.emailAddress,
                                             decoration: InputDecoration(
@@ -257,10 +244,14 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                                                               Duration(
                                                                   seconds: 1),
                                                               () async {
-                                                if (controllerUsername
-                                                    .text.isNotEmpty) {
+                                                if (authController
+                                                    .controllerUsername
+                                                    .text
+                                                    .isNotEmpty) {
                                                   await checkEmailIpl(
-                                                      controllerUsername.text);
+                                                      authController
+                                                          .controllerUsername
+                                                          .text);
                                                   await cancelableOperation
                                                       .cancel();
                                                   setState(() {});
@@ -295,9 +286,28 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                                 ]);
                           }
                         } else if (registerController.otpWhenExit.value) {
-                          return methodVerification(email, noTelp);
+                          return MethodVerification(
+                            email: email,
+                            noTelp: noTelp,
+                            cardMethodVerification: cardMethodVerification,
+                          );
                         } else {
-                          return registerAndLoginForm();
+                          return RegisterLoginForm(
+                            authController: authController,
+                            cancelableOperation: cancelableOperation,
+                            checkEmailIpl: checkEmailIpl,
+                            controllerIpl: controllerIpl,
+                            email: email,
+                            formKeyLogin: _formKeyLogin,
+                            formKeyRegister: _formKeyRegister,
+                            isLogin: isLogin,
+                            isObscure: _isObscure,
+                            noTelp: noTelp,
+                            passwordWrong: passwordWrong,
+                            registerController: registerController,
+                            userLogin: userLogin,
+                            userRegister: userRegister,
+                          );
                         }
                       },
                     )),
@@ -306,67 +316,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
           )
         ],
       ),
-    );
-  }
-
-  Column methodVerification(String email, String noTelp) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(
-          height: 32.h,
-        ),
-        Image(
-          image: AssetImage('assets/img/logo_rw.png'),
-          width: 80.w,
-          height: 94.h,
-        ),
-        SizedBox(
-          height: 36.h,
-        ),
-        Text('Pilih Metode Verifikasi',
-            style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.w700,
-            )),
-        SizedBox(height: 8.h),
-        SizedBox(
-          width: 236.w,
-          child: Text(
-            'Pilih salah satu metode dibawah ini untuk mendapatkan kode verifikasi',
-            style: TextStyle(
-              fontSize: 12.sp,
-              color: Color(0xff9E9E9E),
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        SizedBox(height: 24.h),
-        cardMethodVerification(
-            subtitle: noTelp,
-            icon: 'assets/img/image-svg/sms.svg',
-            title: 'SMS ke',
-            methodChose: 'SMS',
-            email: email,
-            noTelp: noTelp),
-        SizedBox(height: 8.h),
-        cardMethodVerification(
-            subtitle: noTelp,
-            icon: 'assets/img/image-svg/whatsapp-verif.svg',
-            title: 'Whatsapp ke',
-            methodChose: 'WHATSAPP',
-            email: email,
-            noTelp: noTelp),
-        SizedBox(height: 8.h),
-        cardMethodVerification(
-            subtitle: email,
-            icon: 'assets/img/image-svg/email-verif.svg',
-            title: 'Email ke',
-            methodChose: 'EMAIL',
-            email: email,
-            noTelp: noTelp),
-        SizedBox(height: 106.h)
-      ],
     );
   }
 
@@ -442,7 +391,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: TextFormField(
               keyboardType: TextInputType.visiblePassword,
-              controller: _passwordController,
+              controller: authController.passwordController,
               obscureText: _isObscure2,
               decoration: InputDecoration(
                   icon: SvgPicture.asset('assets/img/image-svg/key.svg'),
@@ -511,7 +460,8 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                   ),
                   onPressed: () {
                     if (_formKeyCreatePassword.currentState.validate()) {
-                      insertPassword(password: _passwordController.text);
+                      insertPassword(
+                          password: authController.passwordController.text);
                     }
                   },
                   child: Text('Buat Kata Sandi',
@@ -525,461 +475,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
           ),
         )
       ],
-    );
-  }
-
-  Column otp(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 56.h,
-        ),
-        SvgPicture.asset('assets/img/image-svg/otp.svg'),
-        SizedBox(
-          height: 16.h,
-        ),
-        Column(
-          children: [
-            Text(
-              'OTP Verifikasi',
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
-            ),
-            SizedBox(
-              height: 8.h,
-            ),
-            SizedBox(
-              width: 300.w,
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  text: 'Masukan OTP yang dikirim ke ',
-                  style: TextStyle(fontSize: 12.sp, color: Colors.grey),
-                  children: <TextSpan>[
-                    TextSpan(
-                        text: (registerController.methodVerifChose.value
-                                .isCaseInsensitiveContainsAny('EMAIL'))
-                            ? '$email'
-                            : (registerController.methodVerifChose.value
-                                    .isCaseInsensitiveContainsAny('SMS'))
-                                ? 'SMS $noTelp'
-                                : 'WhatsApp $noTelp',
-                        style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black)),
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
-        SizedBox(height: 18.h),
-        Obx(() {
-          if (registerController.isEmpty.value) {
-            return Text(
-              'OTP yang kamu masukan kosong',
-              style: TextStyle(fontSize: 11.sp, color: Colors.red),
-            );
-          } else if (registerController.isWrong.value) {
-            return Text(
-              'OTP yang kamu masukan salah. silahkan coba lagi.',
-              style: TextStyle(fontSize: 11.sp, color: Colors.red),
-            );
-          } else {
-            return Text(
-              'OTP yang kamu masukan salah. silahkan coba lagi.',
-              style: TextStyle(fontSize: 11.sp, color: Colors.white),
-            );
-          }
-        }),
-        SizedBox(height: 16.h),
-        SizedBox(
-          width: 237.w,
-          child: PinCodeTextField(
-            appContext: context,
-            length: 6,
-            obscureText: false,
-            animationType: AnimationType.scale,
-            keyboardType: TextInputType.number,
-            pinTheme: PinTheme(
-              shape: PinCodeFieldShape.underline,
-              fieldHeight: 38.h,
-              fieldWidth: 19.w,
-              inactiveColor: Color(0xff9E9E9E),
-            ),
-            errorAnimationController: errorController,
-            // animationDuration: Duration(milliseconds: 300),
-            backgroundColor: Colors.white,
-            enableActiveFill: false,
-            onCompleted: (v) {
-              validateOtp(otpKey: v);
-              // countDownController.reset();
-            },
-
-            onChanged: (value) {},
-            autoFocus: true,
-            enablePinAutofill: false,
-            beforeTextPaste: (text) {
-              return false;
-            },
-          ),
-        ),
-        SizedBox(height: 44.h),
-        Obx(
-          () => (countDownController.count.value != 0)
-              ? RichText(
-                  text: TextSpan(
-                    text: 'Tidak menerima OTP ? ',
-                    style: TextStyle(fontSize: 12.sp, color: Colors.grey),
-                    children: [
-                      TextSpan(
-                        text:
-                            '00 :${(countDownController.count.value < 10) ? 0 : ''}${countDownController.count.value}',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700, color: Colors.blue),
-                      ),
-                    ],
-                  ),
-                )
-              : RichText(
-                  text: TextSpan(
-                    text: 'Tidak menerima OTP ',
-                    style: TextStyle(fontSize: 12.sp, color: Colors.grey),
-                    children: [
-                      TextSpan(
-                          text: ' Kirim ulang OTP',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700, color: Colors.blue),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              countDownController.reset();
-
-                              final logger = Logger();
-                              logger.w(countDownController.count.value);
-
-                              resendOtp(
-                                  noIpl: controllerIpl.text,
-                                  status: registerController
-                                      .methodVerifChose.value);
-
-                              countDownController.countDown(
-                                  iplOrEmail: (controllerIpl.text.isEmpty)
-                                      ? controllerUsername.text
-                                      : controllerIpl.text);
-
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: (registerController
-                                                  .methodVerifChose.value ==
-                                              'EMAIL')
-                                          ? Text(
-                                              'Kirim ulang OTP baru ke $email')
-                                          : (registerController
-                                                      .methodVerifChose.value ==
-                                                  'WHATSAPP')
-                                              ? Text(
-                                                  'Kirim ulang OTP baru ke $noTelp')
-                                              : Text(
-                                                  'Kirim ulang OTP baru ke $noTelp')));
-                            }),
-                    ],
-                  ),
-                ),
-        ),
-        SizedBox(height: 32.h),
-        SizedBox(
-          height: 40.h,
-          width: 293.w,
-          child: TextButton(
-            style: TextButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              backgroundColor: Color(0xff2094F3),
-            ),
-            onPressed: () {
-              if (otpKey != null && otpKey.length == 6) {
-                validateOtp();
-
-                // countDownController.reset();
-                // final logger = Logger();
-                // logger.w(countDownController.count.value);
-                // print('verify');
-              } else {
-                // otp length not validate
-                registerController.isEmpty = true.obs;
-                setState(() {});
-              }
-            },
-            child: Text('Verifikasi dan Proses',
-                style: TextStyle(color: Colors.white, fontSize: 14.sp)),
-          ),
-        ),
-        SizedBox(height: 16.h),
-        Obx(() => (countDownController.count.value == 0)
-            ? TextButton(
-                child: Text('Pilih cara lain untuk mengirim OTP ?',
-                    style: TextStyle(
-                      color: Color(0xff2094F3),
-                      fontSize: 12.sp,
-                    )),
-                onPressed: (countDownController.count.value == 0)
-                    ? () {
-                        registerController.toOtp = false.obs;
-                        registerController.otpWhenExit = true.obs;
-                        registerController.isWrong = false.obs;
-                        registerController.isEmpty = false.obs;
-
-                        registerController.update();
-                      }
-                    : null,
-              )
-            : SizedBox()),
-        SizedBox(height: 41.h)
-      ],
-    );
-  }
-
-  Column registerAndLoginForm() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          height: 32.h,
-        ),
-        Image(
-          image: AssetImage('assets/img/logo_rw.png'),
-          width: 80.w,
-          height: 94.h,
-        ),
-        SizedBox(
-          height: 32.h,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              height: 40.h,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey[400]),
-                  borderRadius: BorderRadius.circular(20)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      backgroundColor:
-                          (isLogin) ? Colors.lightBlue[400] : Colors.white,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 6.h, horizontal: 16.w),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        isLogin = true;
-                      });
-                    },
-                    child: Text(
-                      'Masuk',
-                      style: TextStyle(
-                          color:
-                              (isLogin) ? Colors.white : Colors.lightBlue[400],
-                          fontSize: 14.sp),
-                    ),
-                  ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      backgroundColor:
-                          (!isLogin) ? Colors.lightBlue[400] : Colors.white,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 6.h, horizontal: 16.w),
-                    ),
-                    onPressed: () {
-                      // Navigator.of(context)
-                      //     .push(MaterialPageRoute(
-                      //   builder: (context) => RegisterScreen(),
-                      // ));
-                      setState(() {
-                        isLogin = false;
-                      });
-                    },
-                    child: Text('Daftar',
-                        style: TextStyle(
-                            color: (isLogin)
-                                ? Colors.lightBlue[400]
-                                : Colors.white,
-                            fontSize: 14.sp)),
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-        // (formLoginOrRegister)
-        SizedBox(height: 48.h),
-        (isLogin) ? buildFormLogin() : buildFormRegister(),
-        SizedBox(
-          height: 2.h,
-        )
-      ],
-    );
-  }
-
-  Obx buildFormLogin() {
-    return Obx(
-      () => Form(
-        key: _formKeyLogin,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: TextFormField(
-                controller: controllerUsername,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  errorText: !registerController.iplOrEmailValid.value
-                      ? null
-                      : 'Nomor email / ipl anda salah',
-                  icon: SvgPicture.asset('assets/img/image-svg/user-login.svg'),
-                  hintText: 'Masukan email / nomor IPL',
-                  hintStyle: TextStyle(fontSize: 14.sp),
-                  border: UnderlineInputBorder(),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                        color: (registerController.iplOrEmailSucces.value)
-                            ? Colors.blue
-                            : Colors.grey),
-                  ),
-                  suffixIcon: (!registerController.iplOrEmailValid.value)
-                      ? (registerController.iplOrEmailSucces.value)
-                          ? SvgPicture.asset(
-                              'assets/img/image-svg/success.svg',
-                            )
-                          : null
-                      : GestureDetector(
-                          child: SvgPicture.asset(
-                            'assets/img/image-svg/close.svg',
-                          ),
-                          onTap: () {
-                            controllerUsername.text = '';
-                            registerController.iplOrEmailValid = false.obs;
-                            registerController.iplOrEmailSucces = false.obs;
-                            setState(() {});
-                          },
-                        ),
-                  suffixIconConstraints:
-                      BoxConstraints(minHeight: 5.h, minWidth: 5.w),
-                ),
-                validator: (value) {
-                  if (value != null && value.length >= 5) {
-                    return null;
-                  } else {
-                    return 'Nomor ipl anda tidak boleh kosong dan harus sesuai';
-                  }
-                },
-                onChanged: (value) async {
-                  cancelableOperation = CancelableOperation.fromFuture(
-                      Future.delayed(Duration(seconds: 1), () async {
-                    if (controllerUsername.text.isNotEmpty) {
-                      await checkEmailIpl(controllerUsername.text);
-                      await cancelableOperation.cancel();
-                      setState(() {});
-                    } else {
-                      registerController.iplOrEmailValid = false.obs;
-                      registerController.iplOrEmailSucces = false.obs;
-                      setState(() {});
-                    }
-                  }));
-                },
-              ),
-            ),
-            SizedBox(height: 32.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Column(
-                children: [
-                  TextFormField(
-                    keyboardType: TextInputType.visiblePassword,
-                    obscureText: _isObscure,
-                    controller: controllerPassword,
-                    decoration: InputDecoration(
-                        icon: SvgPicture.asset('assets/img/image-svg/key.svg'),
-                        suffixIcon: IconButton(
-                          icon: Icon((_isObscure)
-                              ? Icons.visibility_off_outlined
-                              : Icons.visibility),
-                          onPressed: () {
-                            setState(() {
-                              _isObscure = !_isObscure;
-                            });
-                          },
-                        ),
-                        errorText:
-                            (passwordWrong) ? 'Kata sandi anda salah !' : null,
-                        hintText: 'Masukan kata sandi',
-                        hintStyle: TextStyle(fontSize: 14.sp),
-                        border: UnderlineInputBorder()),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Kata sandi tidak boleh kosong';
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                  SizedBox(height: 8.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        child: Text('Lupa kata sandi ?',
-                            style: TextStyle(fontSize: 14.sp)),
-                        onPressed: () {
-                          registerController.toResetPassword = true.obs;
-                          setState(() {});
-                        },
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 32.h),
-            SizedBox(
-              height: 40.h,
-              width: 293.w,
-              child: TextButton(
-                child: Text(
-                  'Masuk',
-                  style: TextStyle(color: Colors.white, fontSize: 11.0.sp),
-                ),
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.lightBlue[400],
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                ),
-                onPressed: () async {
-                  // await userLogin();
-                  if (_formKeyLogin.currentState.validate()) {
-                    await userLogin();
-                    final logger = Logger();
-                    logger.d('clicked');
-                  }
-                  // final logger = Logger();
-                  // logger.w('test');
-                },
-              ),
-            ),
-            SizedBox(
-              height: 66.h,
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -1003,117 +498,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     } catch (exception) {
       throw Exception(exception.toString());
     }
-  }
-
-  Form buildFormRegister() {
-    return Form(
-      key: _formKeyRegister,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: TextFormField(
-              controller: controllerIpl,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                  icon: SvgPicture.asset('assets/img/image-svg/user-login.svg'),
-                  hintText: 'Masukan nomor IPL',
-                  hintStyle: TextStyle(fontSize: 14.sp),
-                  border: UnderlineInputBorder()),
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Nomor IPL tidak boleh kosong';
-                } else {
-                  return null;
-                }
-              },
-            ),
-          ),
-          SizedBox(height: 32.h),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              children: [
-                TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  controller: controllerEmail,
-                  decoration: InputDecoration(
-                      icon: SvgPicture.asset('assets/img/image-svg/email.svg'),
-                      hintText: 'Masukan Email',
-                      hintStyle: TextStyle(fontSize: 14.sp),
-                      border: UnderlineInputBorder()),
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Email tidak boleh kosong';
-                    } else {
-                      return null;
-                    }
-                  },
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 32.h),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              children: [
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  controller: controllerNoTelp,
-                  decoration: InputDecoration(
-                      icon: SvgPicture.asset(
-                          'assets/img/image-svg/handphone.svg'),
-                      hintText: 'Masukan nomor telpon',
-                      hintStyle: TextStyle(fontSize: 14.sp),
-                      border: UnderlineInputBorder()),
-                  validator: (value) {
-                    print('${ValidationForm.isValidPhone(value)}');
-                    if (value.isEmpty) {
-                      return 'Nomor telpon tidak boleh kosong';
-                    } else {
-                      if (ValidationForm.isValidPhone(value)) {
-                        return null;
-                      } else {
-                        return 'Nomor yang anda masukan tidak valid';
-                      }
-                    }
-                  },
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 42.h),
-          SizedBox(
-            width: 293.w,
-            height: 40.h,
-            child: TextButton(
-              child: Text(
-                'Daftar',
-                style: TextStyle(color: Colors.white, fontSize: 11.0.sp),
-              ),
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.lightBlue[400],
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-              ),
-              onPressed: () {
-                if (_formKeyRegister.currentState.validate()) {
-                  userRegister(controllerIpl.text, controllerEmail.text,
-                      controllerNoTelp.text);
-                  setState(() {
-                    email = controllerEmail.text;
-                    noTelp = controllerNoTelp.text;
-                  });
-                }
-              },
-            ),
-          ),
-          SizedBox(height: 40.h)
-        ],
-      ),
-    );
   }
 
   Future<String> checkNumberPhone(String phone) async {
@@ -1143,7 +527,10 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     if (controllerIpl.text.isNotEmpty) {
       data = {'noIplOrEmail': controllerIpl.text, 'status': status};
     } else {
-      data = {'noIplOrEmail': controllerUsername.text, 'status': status};
+      data = {
+        'noIplOrEmail': authController.controllerUsername.text,
+        'status': status
+      };
     }
 
     try {
@@ -1215,7 +602,10 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     if (controllerIpl.text.isNotEmpty) {
       data = {'noIplOrEmail': controllerIpl.text, 'password': password};
     } else {
-      data = {'noIplOrEmail': controllerUsername.text, 'password': password};
+      data = {
+        'noIplOrEmail': authController.controllerUsername.text,
+        'password': password
+      };
     }
 
     try {
@@ -1283,13 +673,16 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
 
     var data;
     if (controllerIpl.text.isEmpty) {
-      data = {'iplOrEmail': controllerUsername.text, 'otp': otpKey};
+      data = {
+        'iplOrEmail': authController.controllerUsername.text,
+        'otp': otpKey
+      };
     } else {
       data = {'iplOrEmail': controllerIpl.text, 'otp': otpKey};
     }
     final logger = Logger();
     logger.d(otpKey);
-    logger.d(controllerUsername.text);
+    logger.d(authController.controllerUsername.text);
     try {
       // buildShowDialogAnimation(
       //     '', '', 'assets/animation/loading-plane.json', 2.0.h);
@@ -1317,7 +710,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
               EasyLoading.dismiss();
               registerController.resetController();
               registerController.update();
-              Get.offAll(SplashView());
+              Get.offAllNamed(RouteName.home);
             }
           } else {
             // Navigator.of(context).pop();
@@ -1369,7 +762,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
       registerController.update();
       countDownController.countDown(
           iplOrEmail: (controllerIpl.text.isEmpty)
-              ? controllerUsername.text
+              ? authController.controllerUsername.text
               : controllerIpl.text);
       // print('${registerController.toOtp.value}');
       // setState(() {});
@@ -1443,7 +836,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
               registerController.methodVerifChose = methodChose.obs;
               countDownController.countDown(
                   iplOrEmail: (controllerIpl.text.isEmpty)
-                      ? controllerUsername.text
+                      ? authController.controllerUsername.text
                       : controllerIpl.text);
               // registerController.update();
               registerController.update();
@@ -1457,7 +850,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
               registerController.methodVerifChose = methodChose.obs;
               countDownController.countDown(
                   iplOrEmail: (controllerIpl.text.isEmpty)
-                      ? controllerUsername.text
+                      ? authController.controllerUsername.text
                       : controllerIpl.text);
               registerController.update();
             }
@@ -1559,8 +952,8 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     }
 
     var data = {
-      'usernameOrIpl': controllerUsername.text,
-      'password': controllerPassword.text,
+      'usernameOrIpl': authController.controllerUsername.text,
+      'password': authController.controllerPassword.text,
       'token': userToken,
       'device_name': deviceName,
       'device_identifier': identifier
@@ -1611,16 +1004,16 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
             // Get.offAll(SplashView());
             registerController.toOtpVerif = true.obs;
             registerController.fromLogin = true.obs;
-            controllerEmail.text = message['email'];
-            controllerNoTelp.text = message['no_telp'];
+            authController.controllerEmail.text = message['email'];
+            authController.controllerNoTelp.text = message['no_telp'];
             registerController.update();
             // }
           } else if (message == 'login failed') {
             String urlKontraktor =
                 '${ServerApp.url}src/login/login_cordinator/login_cordinator.php';
             var dataKordinator = {
-              'username': controllerUsername.text,
-              'password': controllerPassword.text
+              'username': authController.controllerUsername.text,
+              'password': authController.controllerPassword.text
             };
             response = await http.post(Uri.parse(urlKontraktor),
                 body: json.encode(dataKordinator));
@@ -1641,7 +1034,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                 // });
                 EasyLoading.dismiss();
                 loginController.loginCordinator();
-                Get.offAll(SplashView());
+                Get.offAllNamed(RouteName.home);
               }
             }
 
@@ -1651,8 +1044,8 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
               */
             else {
               var dataKordinator = {
-                'username': controllerUsername.text,
-                'password': controllerPassword.text
+                'username': authController.controllerUsername.text,
+                'password': authController.controllerPassword.text
               };
 
               http.Response response = await http.post(
@@ -1690,7 +1083,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                     // Navigator.of(context).pop();
                     EasyLoading.dismiss();
                     loginController.loginContractor();
-                    Get.offAll(SplashView());
+                    Get.offAllNamed(RouteName.home);
                   }
                 }
               } else {

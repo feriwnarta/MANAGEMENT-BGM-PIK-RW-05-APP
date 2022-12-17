@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
-import 'package:aplikasi_rw/screen/login_screen/validate/validate_email_and_password.dart';
+import 'package:aplikasi_rw/modules/authentication/validate/validate_email_and_password.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

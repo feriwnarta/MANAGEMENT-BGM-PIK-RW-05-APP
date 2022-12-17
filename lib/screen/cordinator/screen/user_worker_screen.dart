@@ -1,5 +1,6 @@
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
-import 'package:aplikasi_rw/screen/splash_screen/SplashView.dart';
+import 'package:aplikasi_rw/routes/app_pages.dart';
+import 'package:aplikasi_rw/routes/app_routes.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,7 +33,7 @@ class _UserWorkerState extends State<UserWorker> {
               await UserSecureStorage.deleteIdUser();
               await UserSecureStorage.deleteStatus();
               controller.logout();
-              Get.offAll(SplashView());
+              Get.offAllNamed(RouteName.home);
             },
           ),
         ],

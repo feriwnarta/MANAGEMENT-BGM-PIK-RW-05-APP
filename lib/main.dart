@@ -11,12 +11,13 @@ import 'package:aplikasi_rw/controller/indexscreen_home_controller.dart';
 import 'package:aplikasi_rw/controller/report_user_controller.dart';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/model/bills_history_model.dart';
+import 'package:aplikasi_rw/routes/app_pages.dart';
+import 'package:aplikasi_rw/routes/app_routes.dart';
 import 'package:aplikasi_rw/screen/bills_screen/bills_screen.dart';
 import 'package:aplikasi_rw/screen/home_screen/home_screen.dart';
 import 'package:aplikasi_rw/screen/payment_ipl_history/payment_ipl_history.dart';
 import 'package:aplikasi_rw/screen/report_screen2/new_google_maps_screen.dart';
 import 'package:aplikasi_rw/screen/report_screen2/report_screen_2.dart';
-import 'package:aplikasi_rw/screen/splash_screen/SplashView.dart';
 import 'package:aplikasi_rw/screen/user_screen/change_data_user.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/check_session.dart';
@@ -269,8 +270,10 @@ class _MyApp extends State<MyApp> {
         builder: (context, child) => AppLifecycleManager(
           child: GetMaterialApp(
             debugShowCheckedModeBanner: false,
-            initialRoute: '/',
-            home: SplashView(),
+            initialRoute: AppPage.INITIAL_ROUTE,
+            getPages: AppPage.pages,
+
+            // home: SplashView(),
             // home: NewGoogleMaps(),
             theme: ThemeData(
                 appBarTheme: AppBarTheme(
@@ -469,7 +472,7 @@ class _MainAppState extends State<MainApp> {
               await UserSecureStorage.deleteIdUser();
               await UserSecureStorage.deleteStatus();
               controller.logout();
-              Get.offAll(SplashView());
+              Get.offAllNamed(RouteName.home);
             },
           ),
         ],

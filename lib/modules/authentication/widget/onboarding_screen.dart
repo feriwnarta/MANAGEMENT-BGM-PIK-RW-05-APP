@@ -1,4 +1,5 @@
-import 'package:aplikasi_rw/screen/login_screen/login_screen.dart';
+import 'package:aplikasi_rw/modules/authentication/screen/login_screen.dart';
+import 'package:aplikasi_rw/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -274,7 +275,7 @@ class Onboarding3 extends StatelessWidget {
                     // minWidth: 156.w,
                     // height: 40.h,
                     onPressed: () {
-                      Get.to(() => LoginScreen());
+                      Get.toNamed(RouteName.auth);
                     },
                     style: TextButton.styleFrom(
                       shape: RoundedRectangleBorder(

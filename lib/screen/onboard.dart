@@ -1,10 +1,10 @@
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/main.dart';
+import 'package:aplikasi_rw/modules/authentication/screen/login_screen.dart';
+import 'package:aplikasi_rw/modules/authentication/widget/onboarding_screen.dart';
+import 'package:aplikasi_rw/routes/app_routes.dart';
 import 'package:aplikasi_rw/screen/cordinator/screen/home_screen_cordinator.dart';
-import 'package:aplikasi_rw/screen/login_screen/login_screen.dart';
-import 'package:aplikasi_rw/screen/login_screen/onboarding/onboarding_screen.dart';
 import 'package:aplikasi_rw/screen/maintenance_screen/maintenance_screen.dart';
-import 'package:aplikasi_rw/screen/splash_screen/SplashView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
@@ -119,7 +119,7 @@ class _NoConnetionState extends State<NoConnetion> {
       child: Text("RETRY"),
       onPressed: () {
         Navigator.of(context).pop();
-        Get.offAll(SplashView());
+        Get.offAllNamed(RouteName.home);
       },
     );
 
