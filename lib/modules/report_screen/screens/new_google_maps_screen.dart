@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:aplikasi_rw/bloc/google_map_bloc.dart';
 import 'package:aplikasi_rw/model/user_location.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:get/get.dart';
@@ -411,7 +409,7 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
       double lat = detail.result.geometry.location.lat;
       double lng = detail.result.geometry.location.lng;
 
-      var address = await Geocoder.google((Platform.isAndroid)
+      await Geocoder.google((Platform.isAndroid)
               ? 'AIzaSyDbZjwizgtMKuRhgruNqb4eBg2jQzuQjFE'
               : 'AIzaSyAprQJ0_yPDIrLRJKB-nXDh9EdITtxTdcY')
           .findAddressesFromCoordinates(Coordinates(lat, lng));

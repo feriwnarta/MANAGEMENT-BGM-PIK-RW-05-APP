@@ -1,8 +1,8 @@
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
-import 'package:aplikasi_rw/screen/cordinator/screen/absen_screen/insert_absen.dart';
-import 'package:aplikasi_rw/screen/cordinator/screen/complaint_screen/complaint_screen.dart';
-import 'package:aplikasi_rw/screen/cordinator/screen/user_worker_screen.dart';
-import 'package:aplikasi_rw/screen/cordinator/widget/HomeListOfCard.dart';
+import 'package:aplikasi_rw/modules/cordinator/screens/absen/insert_absen.dart';
+import 'package:aplikasi_rw/modules/cordinator/screens/complaint/complaint_screen.dart';
+import 'package:aplikasi_rw/modules/cordinator/screens/user_worker_screen.dart';
+import 'package:aplikasi_rw/modules/cordinator/widgets/HomeListOfCard.dart';
 import 'package:aplikasi_rw/services/chart_worker/update_chart_worker.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'absen_screen/absen_screen.dart';
+import 'absen/absen_screen.dart';
 
 // import 'package:logger/logger.dart';
 class ChangePageController extends GetxController {
@@ -275,6 +275,7 @@ class ChartData {
   ChartData.axis({this.x, this.y});
 }
 
+//ignore: must_be_immutable
 class ButtonDropdown extends StatefulWidget {
   ButtonDropdown({Key key, this.items, this.value, this.future})
       : super(key: key);

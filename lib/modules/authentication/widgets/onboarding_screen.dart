@@ -1,4 +1,3 @@
-import 'package:aplikasi_rw/modules/authentication/screen/login_screen.dart';
 import 'package:aplikasi_rw/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+//ignore: must_be_immutable
 class OnboardingScreen extends StatelessWidget {
   OnboardingScreen({Key key}) : super(key: key);
 

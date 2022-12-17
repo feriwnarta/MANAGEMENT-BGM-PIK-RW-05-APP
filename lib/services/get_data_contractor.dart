@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:aplikasi_rw/model/contractor_model.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import '../server-app.dart';
-import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 
 class GetDataContractor {

@@ -6,10 +6,10 @@ import 'package:aplikasi_rw/controller/resend_otp_countdown_controller.dart';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/authentication/controllers/auth_controller.dart';
 import 'package:aplikasi_rw/modules/authentication/validate/validate_email_and_password.dart';
-import 'package:aplikasi_rw/modules/authentication/widget/header_logo.dart';
-import 'package:aplikasi_rw/modules/authentication/widget/method_verification.dart';
-import 'package:aplikasi_rw/modules/authentication/widget/otp.dart';
-import 'package:aplikasi_rw/modules/authentication/widget/register_login_form.dart';
+import 'package:aplikasi_rw/modules/authentication/widgets/header_logo.dart';
+import 'package:aplikasi_rw/modules/authentication/widgets/method_verification.dart';
+import 'package:aplikasi_rw/modules/authentication/widgets/otp.dart';
+import 'package:aplikasi_rw/modules/authentication/widgets/register_login_form.dart';
 import 'package:aplikasi_rw/routes/app_routes.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/send_otp_services.dart';
@@ -30,6 +30,7 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+//ignore: must_be_immutable
 class LoginScreen extends StatefulWidget {
   String email, noTelp;
   TextEditingController controllerIpl;

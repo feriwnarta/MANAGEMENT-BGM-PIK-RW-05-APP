@@ -1,7 +1,6 @@
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 
 class SendOtpServices {

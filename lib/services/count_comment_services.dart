@@ -1,6 +1,5 @@
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:dio/dio.dart';
 

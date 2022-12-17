@@ -9,6 +9,7 @@ import 'package:logger/logger.dart';
 
 import '../validate/validate_email_and_password.dart';
 
+//ignore: must_be_immutable
 class RegisterLoginForm extends StatefulWidget {
   bool isLogin;
   GlobalKey<FormState> formKeyLogin, formKeyRegister;

@@ -1,7 +1,6 @@
 import 'package:aplikasi_rw/model/status_user_model.dart';
 import 'package:dio/dio.dart' as sidio;
 import 'package:dio_smart_retry/dio_smart_retry.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:dio/dio.dart';
 
@@ -23,8 +22,7 @@ class StatusUserServices extends StatusUserModel {
     if (imgPath != null && imgPath.isNotEmpty) {
       if (imgPath != 'no_image') {
         data.addEntries({
-          'status_image':
-              await MultipartFile.fromFileSync(imgPath, filename: imgPath)
+          'status_image': MultipartFile.fromFileSync(imgPath, filename: imgPath)
         }.entries);
         // var pic = await http.MultipartFile.fromPath('status_image', imgPath);
         // request.files.add(pic);

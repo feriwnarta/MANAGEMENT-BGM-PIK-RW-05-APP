@@ -6,8 +6,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_getx_widget.dart';
-// import 'package:sizer/sizer.dart' as sw;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 //ignore: must_be_immutable

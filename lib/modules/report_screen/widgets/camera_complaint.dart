@@ -1,12 +1,12 @@
-import 'package:aplikasi_rw/screen/report_screen2/add_complaint.dart';
+import 'package:aplikasi_rw/modules/report_screen/screens/add_complaint.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/state_manager.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+//ignore: must_be_immutable
 class CameraComplaint extends StatefulWidget {
   CameraComplaint({Key key, this.toast}) : super(key: key);
 

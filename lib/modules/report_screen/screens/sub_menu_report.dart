@@ -1,5 +1,4 @@
-import 'package:aplikasi_rw/screen/report_screen2/widget/camera_complaint.dart';
-import 'package:aplikasi_rw/screen/report_screen2/add_complaint.dart';
+import 'package:aplikasi_rw/modules/report_screen/screens/add_complaint.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';

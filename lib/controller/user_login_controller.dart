@@ -9,7 +9,6 @@ import 'package:aplikasi_rw/services/get_data_user_services.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:logger/logger.dart';
 
 class UserLoginController extends GetxController {
   RxString status = ''.obs;

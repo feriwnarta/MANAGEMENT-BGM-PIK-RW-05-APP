@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:aplikasi_rw/controller/status_user_controller.dart';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/controller/write_status_controller.dart';
-import 'package:aplikasi_rw/screen/loading_send_screen.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/status_user_services.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';

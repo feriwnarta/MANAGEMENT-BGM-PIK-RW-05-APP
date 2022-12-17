@@ -4,7 +4,6 @@ import 'package:aplikasi_rw/model/comment_model.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
-import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 
 class CommentService {

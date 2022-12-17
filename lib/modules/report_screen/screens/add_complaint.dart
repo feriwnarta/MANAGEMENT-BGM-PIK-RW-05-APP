@@ -4,10 +4,9 @@ import 'dart:io';
 import 'package:aplikasi_rw/controller/indexscreen_home_controller.dart';
 import 'package:aplikasi_rw/controller/report_user_controller.dart';
 import 'package:aplikasi_rw/model/category_model.dart';
-import 'package:aplikasi_rw/screen/report_screen2/controller/write_page_controller.dart';
-import 'package:aplikasi_rw/screen/report_screen2/google_maps_screen.dart';
-import 'package:aplikasi_rw/screen/report_screen2/new_google_maps_screen.dart';
-import 'package:aplikasi_rw/screen/report_screen2/widget/camera_complaint.dart';
+import 'package:aplikasi_rw/modules/report_screen/controllers/write_page_controller.dart';
+import 'package:aplikasi_rw/modules/report_screen/screens/new_google_maps_screen.dart';
+import 'package:aplikasi_rw/modules/report_screen/widgets/camera_complaint.dart';
 import 'package:aplikasi_rw/services/category_services.dart';
 import 'package:aplikasi_rw/services/klasifikasi_category_services.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
@@ -29,8 +28,7 @@ import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../server-app.dart';
-import 'package:aplikasi_rw/screen/loading_send_screen.dart';
+import '../../../server-app.dart';
 
 enum RadioComplaint { Anonim, Rahasia }
 
@@ -77,6 +75,7 @@ class _AddComplaintState extends State<AddComplaint> {
   }
 }
 
+//ignore: must_be_immutable
 class StepperRw extends StatefulWidget {
   StepperRw({Key key, this.duration}) : super(key: key);
 
