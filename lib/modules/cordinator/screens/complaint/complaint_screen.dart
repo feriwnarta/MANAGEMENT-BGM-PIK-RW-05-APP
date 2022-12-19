@@ -3,9 +3,7 @@ import 'package:aplikasi_rw/controller/report_cordinator_complaint_controller.da
 import 'package:aplikasi_rw/controller/report_cordinator_finish.dart';
 import 'package:aplikasi_rw/controller/report_cordinator_process.dart';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
-import 'package:aplikasi_rw/screen/cordinator/screen/complaint_screen/detail_report_screen.dart';
-import 'package:aplikasi_rw/screen/cordinator/screen/complaint_screen/finish_report_screen.dart';
-import 'package:aplikasi_rw/screen/cordinator/screen/complaint_screen/process_report.dart';
+import 'package:aplikasi_rw/modules/cordinator/screens/complaint/process_report.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/cordinator/process_report_services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -14,6 +12,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+
+import 'detail_report_screen.dart';
+import 'finish_report_screen.dart';
 
 //ignore: must_be_immutable
 class ComplaintScreen extends StatefulWidget {

@@ -1,15 +1,15 @@
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/main.dart';
 import 'package:aplikasi_rw/routes/app_routes.dart';
-import 'package:aplikasi_rw/screen/user_screen/change_data_user.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import '../../../server-app.dart';
+import '../../users/screens/change_data_user.dart';
 import './dashboard_statistic_screen.dart';
-import '../../server-app.dart';
 
 class HomeManagementScreen extends StatelessWidget {
   HomeManagementScreen({Key key}) : super(key: key);

@@ -1,10 +1,11 @@
 import 'package:aplikasi_rw/bloc/bills_reguler_screen_bloc.dart';
 import 'package:aplikasi_rw/model/bills_history_model.dart';
-import 'package:aplikasi_rw/screen/bills_screen/details_bill_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'details_bill_screen.dart';
 
 //ignore: must_be_immutable
 class BillsRegulerScreen extends StatelessWidget {

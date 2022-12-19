@@ -1,15 +1,16 @@
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/main.dart';
-import 'package:aplikasi_rw/modules/authentication/screen/login_screen.dart';
-import 'package:aplikasi_rw/modules/authentication/widget/onboarding_screen.dart';
 import 'package:aplikasi_rw/routes/app_routes.dart';
-import 'package:aplikasi_rw/screen/cordinator/screen/home_screen_cordinator.dart';
-import 'package:aplikasi_rw/screen/maintenance_screen/maintenance_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../authentication/screens/login_screen.dart';
+import '../authentication/widgets/onboarding_screen.dart';
+import '../cordinator/screens/home_screen_cordinator.dart';
+import '../maintenance/screens/maintenance_screen.dart';
 
 class OnBoard extends StatefulWidget {
   @override

@@ -1,5 +1,3 @@
-import 'package:aplikasi_rw/screen/home_screen/comment_screen.dart';
-import 'package:aplikasi_rw/screen/report_screen2/view_image.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/like_status_services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -10,6 +8,9 @@ import 'package:readmore/readmore.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../report_screen/screens/view_image.dart';
+import 'comment_screen.dart';
 
 //ignore: must_be_immutable
 class StatusWarga extends StatefulWidget {

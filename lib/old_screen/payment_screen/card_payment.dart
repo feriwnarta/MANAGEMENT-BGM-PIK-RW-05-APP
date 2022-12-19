@@ -1,6 +1,7 @@
-import 'package:aplikasi_rw/screen/payment_screen/edit_payment_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'edit_payment_screen.dart';
 
 //ignore: must_be_immutable
 class CardPayment extends StatelessWidget {

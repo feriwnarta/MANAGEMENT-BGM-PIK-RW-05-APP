@@ -1,7 +1,7 @@
-import 'package:aplikasi_rw/screen/cordinator/screen/complaint_screen/complaint_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart';
+import '../../cordinator/screens/complaint/complaint_screen.dart';
 import './home_management_screen.dart';
 
 class ManagementScreen extends StatefulWidget {

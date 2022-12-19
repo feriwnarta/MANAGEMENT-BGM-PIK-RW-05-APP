@@ -12,7 +12,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'dart:io';
-import '../../../screen/onboard.dart';
+
+import '../../core/onboard.dart';
 
 class SplashView extends StatefulWidget {
   @override

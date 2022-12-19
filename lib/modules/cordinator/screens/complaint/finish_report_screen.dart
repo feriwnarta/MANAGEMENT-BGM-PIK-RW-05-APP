@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
-import 'package:aplikasi_rw/screen/cordinator/screen/complaint_screen/complete_screen.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/cordinator/process_report_services.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +12,8 @@ import 'package:image_picker/image_picker.dart';
 // import 'package:logger/logger.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:http/http.dart' as http;
+
+import 'complete_screen.dart';
 
 //ignore: must_be_immutable
 class FinishReportScreen extends StatefulWidget {

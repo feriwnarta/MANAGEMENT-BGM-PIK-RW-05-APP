@@ -1,8 +1,9 @@
-import 'package:aplikasi_rw/screen/report_screen2/card_laporan_view.dart';
-import 'package:aplikasi_rw/screen/report_screen/card_laporan_warga_edit.dart';
-import 'package:aplikasi_rw/screen/transition_screen/slide_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../modules/report_screen/screens/card_laporan_view.dart';
+import '../../modules/transitions/screens/slide_transition.dart';
+import 'card_laporan_warga_edit.dart';
 
 //ignore: must_be_immutable
 class CardLaporanWarga extends StatelessWidget {

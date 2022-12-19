@@ -1,12 +1,13 @@
 import 'package:aplikasi_rw/bloc/report_screen_bloc.dart';
 import 'package:aplikasi_rw/model/card_laporan_warga_model.dart';
-import 'package:aplikasi_rw/screen/report_screen/create_report_screen.dart';
-import 'package:aplikasi_rw/screen/report_screen/card_laporan_warga.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'card_laporan_warga.dart';
+import 'create_report_screen.dart';
 
 //ignore: must_be_immutable
 class ReportScreen extends StatelessWidget {

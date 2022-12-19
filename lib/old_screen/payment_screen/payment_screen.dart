@@ -1,8 +1,5 @@
 import 'package:aplikasi_rw/bloc/payment_bloc.dart';
 import 'package:aplikasi_rw/model/card_payment_model.dart';
-import 'package:aplikasi_rw/screen/bills_screen/details_bill_screen.dart';
-import 'package:aplikasi_rw/screen/payment_screen/add_payment.dart';
-import 'package:aplikasi_rw/screen/payment_screen/card_payment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -10,6 +7,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:whatsapp_unilink/whatsapp_unilink.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../bills_screen/details_bill_screen.dart';
+import 'add_payment.dart';
+import 'card_payment.dart';
 
 //ignore: must_be_immutable
 class PaymentScreen extends StatelessWidget {

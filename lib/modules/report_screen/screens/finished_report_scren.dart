@@ -1,7 +1,8 @@
 import 'package:aplikasi_rw/services/report_finished_services.dart';
 import 'package:flutter/material.dart';
-import '../report_screen2/card_report_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'card_report_screen.dart';
 
 //ignore: must_be_immutable
 class FinishedReportScreen extends StatelessWidget {

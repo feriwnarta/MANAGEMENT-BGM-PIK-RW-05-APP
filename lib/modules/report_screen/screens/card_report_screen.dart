@@ -1,8 +1,9 @@
-import 'package:aplikasi_rw/screen/report_screen2/card_laporan_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 // import 'package:sizer/sizer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'card_laporan_view.dart';
 
 //ignore: must_be_immutable
 class CardReportScreen extends StatelessWidget {

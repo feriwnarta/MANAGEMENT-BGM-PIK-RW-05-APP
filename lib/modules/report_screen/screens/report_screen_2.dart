@@ -1,7 +1,4 @@
 import 'dart:async';
-import 'package:aplikasi_rw/screen/report_screen2/card_report_screen.dart';
-import 'package:aplikasi_rw/screen/report_screen2/finished_report_scren.dart';
-import 'package:aplikasi_rw/screen/report_screen2/sub_menu_report.dart';
 import 'package:aplikasi_rw/services/report_finished_services.dart';
 import 'package:aplikasi_rw/services/report_services.dart';
 import 'package:badges/badges.dart';
@@ -11,10 +8,14 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:shimmer/shimmer.dart';
-import '../../controller/report_user_controller.dart';
-import '../../services/delete_report_services.dart';
-import '../../controller/user_login_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../controller/report_user_controller.dart';
+import '../../../controller/user_login_controller.dart';
+import '../../../services/delete_report_services.dart';
+import 'card_report_screen.dart';
+import 'finished_report_scren.dart';
+import 'sub_menu_report.dart';
 
 //ignore: must_be_immutable
 class ReportScreen2 extends StatefulWidget {

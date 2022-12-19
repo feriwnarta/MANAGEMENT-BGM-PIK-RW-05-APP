@@ -1,8 +1,9 @@
-import 'package:aplikasi_rw/screen/cordinator/screen/home_screen_cordinator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+
+import '../home_screen_cordinator.dart';
 
 //ignore: must_be_immutable
 class CompleteScreen extends StatelessWidget {

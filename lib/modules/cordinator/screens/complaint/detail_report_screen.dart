@@ -1,6 +1,5 @@
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
-import 'package:aplikasi_rw/screen/cordinator/screen/complaint_screen/process_report.dart';
-import 'package:aplikasi_rw/screen/report_screen2/view_image.dart';
+import 'package:aplikasi_rw/modules/cordinator/screens/complaint/process_report.dart';
 import 'package:aplikasi_rw/services/cordinator/process_report_services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +8,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 // import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../../report_screen/screens/view_image.dart';
 
 //ignore: must_be_immutable
 class DetailReportScreen extends StatelessWidget {

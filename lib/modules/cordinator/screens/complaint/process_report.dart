@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:aplikasi_rw/screen/cordinator/screen/complaint_screen/finish_report_screen.dart';
 import 'package:aplikasi_rw/services/cordinator/process_report_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import '../../../../controller/user_login_controller.dart';
+import 'finish_report_screen.dart';
 
 //ignore: must_be_immutable
 class ProcessReportScreen extends StatefulWidget {
