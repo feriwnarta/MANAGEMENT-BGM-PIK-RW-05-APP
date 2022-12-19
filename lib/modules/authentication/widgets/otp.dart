@@ -202,7 +202,7 @@ class _OtpState extends State<Otp> {
                               countDownController.reset();
 
                               final logger = Logger();
-                              logger.w(countDownController.count.value);
+                              logger.d('clicked resend otp');
 
                               resendOtp(
                                   noIpl: controllerIpl.text,

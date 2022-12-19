@@ -160,6 +160,7 @@ class _StepperRwState extends State<StepperRw> {
           imagePath.value = '';
           return true;
         }
+        return true;
       },
       child: SingleChildScrollView(
           child: GetX<StepperController>(
@@ -550,11 +551,15 @@ class _StepperRwState extends State<StepperRw> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  '${nameCategory.value}',
-                                  style: TextStyle(
-                                    fontSize: 19.sp,
-                                    fontWeight: FontWeight.w500,
+                                Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 16.w),
+                                  child: Text(
+                                    '${nameCategory.value}',
+                                    style: TextStyle(
+                                      fontSize: 19.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
                                 ),
                                 SizedBox(height: 16.h),
@@ -1172,12 +1177,12 @@ class _StepperRwState extends State<StepperRw> {
           stepIcon,
           color: colorIcon,
         ),
-        SizedBox(width: 6.w),
+        SizedBox(width: 2.w),
         Text(
           text,
-          style: TextStyle(fontSize: 16.sp, color: colorText),
+          style: TextStyle(fontSize: 14.sp, color: colorText),
         ),
-        SizedBox(width: 6.w),
+        SizedBox(width: 2.w),
         (status == 'last')
             ? SizedBox()
             : SvgPicture.asset(

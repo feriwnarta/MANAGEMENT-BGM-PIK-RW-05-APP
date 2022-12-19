@@ -116,12 +116,12 @@ class _StatusWargaState extends State<StatusWarga> {
                     padding: EdgeInsets.only(bottom: 3),
                     child: Text(
                       widget.userName,
-                      style: TextStyle(fontSize: 9.0.sp),
+                      style: TextStyle(fontSize: 12.0.sp),
                     ),
                   ),
                   Text(
                     '${widget.uploadTime}',
-                    style: TextStyle(fontSize: 9.0.sp),
+                    style: TextStyle(fontSize: 11.sp),
                   )
                 ],
               ),
@@ -215,7 +215,7 @@ class _StatusWargaState extends State<StatusWarga> {
                           trimExpandedText: 'Read Less',
                           textAlign: TextAlign.justify,
                           style: TextStyle(
-                            fontSize: 12.sp,
+                            fontSize: 14.sp,
                             color: Color(0xff404040),
                           ),
                         ),
@@ -502,9 +502,9 @@ class _ButtonLikeState extends State<ButtonLike> {
           ),
           (widget.numberLike == '0')
               ? Text('Suka',
-                  style: TextStyle(color: Color(0xff404040), fontSize: 10.sp))
+                  style: TextStyle(color: Color(0xff404040), fontSize: 11.sp))
               : Text(widget.numberLike,
-                  style: TextStyle(color: Color(0xff404040), fontSize: 10.sp))
+                  style: TextStyle(color: Color(0xff404040), fontSize: 11.sp))
         ],
       ),
     );
@@ -577,9 +577,9 @@ class _ButtonCommentState extends State<ButtonComment> {
         ),
         (widget.countComment == '0')
             ? Text('Komentar',
-                style: TextStyle(color: Color(0xff404040), fontSize: 10.sp))
+                style: TextStyle(color: Color(0xff404040), fontSize: 11.sp))
             : Text(widget.countComment,
-                style: TextStyle(color: Color(0xff404040), fontSize: 10.sp))
+                style: TextStyle(color: Color(0xff404040), fontSize: 11.sp))
       ],
     );
   }

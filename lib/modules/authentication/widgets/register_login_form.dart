@@ -1,4 +1,5 @@
 import 'package:aplikasi_rw/controller/register_controller.dart';
+import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/authentication/controllers/auth_controller.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
@@ -85,6 +86,7 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
   bool passwordWrong;
   Function userRegister, userLogin;
   String email, noTelp;
+  UserLoginController loginController = Get.put(UserLoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -250,34 +252,39 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Column(
                 children: [
-                  TextFormField(
-                    keyboardType: TextInputType.visiblePassword,
-                    obscureText: isObscure,
-                    controller: authController.controllerPassword,
-                    decoration: InputDecoration(
-                        icon: SvgPicture.asset('assets/img/image-svg/key.svg'),
-                        suffixIcon: IconButton(
-                          icon: Icon((isObscure)
-                              ? Icons.visibility_off_outlined
-                              : Icons.visibility),
-                          onPressed: () {
-                            setState(() {
-                              isObscure = !isObscure;
-                            });
-                          },
-                        ),
-                        errorText:
-                            (passwordWrong) ? 'Kata sandi anda salah !' : null,
-                        hintText: 'Masukan kata sandi',
-                        hintStyle: TextStyle(fontSize: 14.sp),
-                        border: UnderlineInputBorder()),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Kata sandi tidak boleh kosong';
-                      } else {
-                        return null;
-                      }
-                    },
+                  Obx(
+                    () => TextFormField(
+                      keyboardType: TextInputType.visiblePassword,
+                      obscureText: isObscure,
+                      controller: authController.controllerPassword,
+                      decoration: InputDecoration(
+                          icon:
+                              SvgPicture.asset('assets/img/image-svg/key.svg'),
+                          suffixIcon: IconButton(
+                            icon: Icon((isObscure)
+                                ? Icons.visibility_off_outlined
+                                : Icons.visibility),
+                            onPressed: () {
+                              setState(() {
+                                isObscure = !isObscure;
+                              });
+                            },
+                          ),
+                          errorText:
+                              (loginController.passwordWrong.value == 'true')
+                                  ? 'Kata sandi anda salah !'
+                                  : null,
+                          hintText: 'Masukan kata sandi',
+                          hintStyle: TextStyle(fontSize: 14.sp),
+                          border: UnderlineInputBorder()),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Kata sandi tidak boleh kosong';
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
                   ),
                   SizedBox(height: 8.h),
                   Row(

@@ -40,6 +40,8 @@ class UserLoginController extends GetxController {
   var email = ''.obs;
   var noTelp = ''.obs;
 
+  var passwordWrong = 'false'.obs;
+
   void resetOtpWhenExit() {
     otpWhenExit = false.obs;
     noIpl = ''.obs;

@@ -559,6 +559,8 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
             'Mengirim ulang kode OTP ke whatsapp sukses',
             dismissOnTap: true,
           );
+          final logger = Logger();
+          logger.i('resend otp wa clicked');
           // Navigator.of(context).pop();
           // buildShowDialogAnimation('Mengirim ulang kode OTP ke whatsapp sukses',
           //     'OKE', 'assets/animation/succes-animation.json', 100);
@@ -1070,6 +1072,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                   //     'OKE', 'assets/animation/error-animation.json', 15.0);
                   setState(() {
                     passwordWrong = true;
+                    loginController.passwordWrong.value = 'true';
                     FocusScope.of(context).requestFocus(FocusNode());
                   });
                 }
@@ -1098,6 +1101,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
             }
           } else {
             // Navigator.of(context).pop();
+            print('password salah');
             EasyLoading.dismiss();
             // EasyLoading.showError('Nomor IPL atau email salah',
             //     dismissOnTap: true);

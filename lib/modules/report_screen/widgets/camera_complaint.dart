@@ -2,6 +2,7 @@ import 'package:aplikasi_rw/modules/report_screen/screens/add_complaint.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -83,14 +84,22 @@ class _CameraComplaintState extends State<CameraComplaint> {
   }
 
   void onCapture() async {
-    if (cameras.isNotEmpty && cameras != null) {
-      picture = await _cameraController.takePicture();
-      statusCapture = 'true'.obs;
-      logger.i(statusCapture.value);
-      // Get.back(result: {'pathImage': picture.path});
-      stepperController.index.value = 2;
-      stepperController.imagePath.value = picture.path;
-      widget.toast();
+    if (_cameraController.value.isTakingPicture) {
+      return null;
+    }
+
+    try {
+      if (cameras.isNotEmpty && cameras != null) {
+        picture = await _cameraController.takePicture();
+        statusCapture = 'true'.obs;
+        logger.i(statusCapture.value);
+        stepperController.index.value = 2;
+        stepperController.imagePath.value = picture.path;
+        widget.toast();
+      }
+    } on CameraException catch (e) {
+      printError(info: e.toString());
+      return null;
     }
   }
 
