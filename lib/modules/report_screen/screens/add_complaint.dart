@@ -762,7 +762,7 @@ class _StepperRwState extends State<StepperRw> {
                       : Colors.blue),
               SizedBox(width: 8.w),
               headerSteper(
-                  stepIcon: 'assets/img/image-svg/step-tulis.svg',
+                  stepIcon: 'assets/img/image-svg/step-camera.svg',
                   text: 'Foto',
                   colorText: stepperController.index.value != 0
                       ? Colors.blue

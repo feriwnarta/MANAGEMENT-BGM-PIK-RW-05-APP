@@ -290,7 +290,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                             Text(
                               'Deskripsi',
                               style: TextStyle(
-                                  fontSize: 12.0.sp, fontFamily: 'poppins'),
+                                  fontSize: 14.sp, fontFamily: 'poppins'),
                             ),
                             SizedBox(
                               height: 1.h,
@@ -298,7 +298,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                             Text(
                               widget.description,
                               style: TextStyle(
-                                  fontSize: 11.0.sp, fontFamily: 'Montserrat'),
+                                  fontSize: 12.sp, fontFamily: 'Montserrat'),
                             ),
                           ],
                         )),
@@ -314,7 +314,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                             Text(
                               'Masalah',
                               style: TextStyle(
-                                  fontSize: 12.0.sp, fontFamily: 'poppins'),
+                                  fontSize: 14.sp, fontFamily: 'poppins'),
                             ),
                             SizedBox(height: 1.0.h),
                             ListView.builder(
@@ -336,7 +336,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                                       Text(
                                         '${widget.dataKlasifikasi[index]}',
                                         style: TextStyle(
-                                            fontSize: 11.0.sp,
+                                            fontSize: 12.sp,
                                             fontFamily: 'Montserrat'),
                                       ),
                                     ],
@@ -374,7 +374,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                       child: Text(
                         'Lokasi',
                         style:
-                            TextStyle(fontSize: 12.0.sp, fontFamily: 'poppins'),
+                            TextStyle(fontSize: 14.0.sp, fontFamily: 'poppins'),
                       ),
                     ),
                     SizedBox(height: 15.h),
@@ -510,7 +510,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                         Text(
                           'Penilaian',
                           style: TextStyle(
-                              fontSize: 12.0.sp, fontFamily: 'poppins'),
+                              fontSize: 14.0.sp, fontFamily: 'poppins'),
                         ),
                       ],
                     ),
@@ -589,7 +589,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                         title: Text(
                           'Status Laporan',
                           style: TextStyle(
-                              fontSize: 12.0.sp, fontFamily: 'poppins'),
+                              fontSize: 14.0.sp, fontFamily: 'poppins'),
                         ),
                         subtitle: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -654,12 +654,12 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                                                 title: Text(
                                                   '${snapshot.data[index].statusProcess}',
                                                   style: TextStyle(
-                                                      fontSize: 12.0.sp),
+                                                      fontSize: 14.0.sp),
                                                 ),
                                                 subtitle: Text(
                                                   '${snapshot.data[index].time}',
                                                   style: TextStyle(
-                                                      fontSize: 9.0.sp),
+                                                      fontSize: 11.0.sp),
                                                 ),
                                               ),
                                             ),
@@ -708,7 +708,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
           initiallyExpanded: true,
           title: Text(
             'Detail Masalah',
-            style: TextStyle(fontSize: 12.0.sp, fontFamily: 'poppins'),
+            style: TextStyle(fontSize: 14.0.sp, fontFamily: 'poppins'),
           ),
           children: [
             Padding(
@@ -725,7 +725,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                   ),
                   Text(widget.noTicket,
                       style: TextStyle(
-                          fontSize: 11.0.sp,
+                          fontSize: 12.0.sp,
                           fontFamily: 'Montserrat',
                           color: Colors.indigo)),
                   SizedBox(
@@ -738,7 +738,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                   Text(
                     widget.time,
                     style:
-                        TextStyle(fontSize: 11.0.sp, fontFamily: 'Montserrat'),
+                        TextStyle(fontSize: 12.0.sp, fontFamily: 'Montserrat'),
                   ),
                   SizedBox(
                     height: 10.h,
@@ -758,7 +758,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                       ),
                       Text(widget.category,
                           style: TextStyle(
-                              fontSize: 11.0.sp, fontFamily: 'Montserrat')),
+                              fontSize: 12.0.sp, fontFamily: 'Montserrat')),
                     ],
                   ),
                   SizedBox(
