@@ -24,11 +24,15 @@ class HistoryPaymentIplServices {
       } else {
         var rs = jsonDecode(response.data) as List;
         return rs
-            .map((e) => PaymentIplHistoryModel(
+            .map(
+              (e) => PaymentIplHistoryModel(
                 nomorIpl: e['nomor_bast'],
                 jumlahTagihan: e['nominal_tgh'],
                 statusPembayaran: e['status'],
-                tanggalPembayaran: e['tanggal_transaksi']))
+                tanggalPembayaran: e['tanggal_transaksi'],
+                bulanTagihan: e['bulan_tagihan']
+              ),
+            )
             .toList();
       }
     } else {

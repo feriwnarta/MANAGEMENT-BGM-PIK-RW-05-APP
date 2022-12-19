@@ -46,13 +46,15 @@ class _PaymentIplHistoryState extends State<PaymentIplHistory> {
                           physics: ScrollPhysics(),
                           itemBuilder: (context, index) =>
                               CardHistoryPaymentIpl(
-                            jumlahTagihan: snapshot.data[index].jumlahTagihan,
-                            noIpl: snapshot.data[index].nomorIpl,
-                            statusPembayaran:
-                                snapshot.data[index].statusPembayaran,
-                            tanggalPembayaran:
-                                snapshot.data[index].tanggalPembayaran,
-                          ),
+                                  jumlahTagihan:
+                                      snapshot.data[index].jumlahTagihan,
+                                  noIpl: snapshot.data[index].nomorIpl,
+                                  statusPembayaran:
+                                      snapshot.data[index].statusPembayaran,
+                                  tanggalPembayaran:
+                                      snapshot.data[index].tanggalPembayaran,
+                                  bulanTagihan:
+                                      snapshot.data[index].bulanTagihan),
                         )
                   : Center(child: CircularProgressIndicator())),
         ),
@@ -62,13 +64,18 @@ class _PaymentIplHistoryState extends State<PaymentIplHistory> {
 }
 
 class CardHistoryPaymentIpl extends StatelessWidget {
-  final String noIpl, tanggalPembayaran, statusPembayaran, jumlahTagihan;
+  final String noIpl,
+      tanggalPembayaran,
+      statusPembayaran,
+      jumlahTagihan,
+      bulanTagihan;
 
   CardHistoryPaymentIpl(
       {this.noIpl,
       this.tanggalPembayaran,
       this.statusPembayaran,
-      this.jumlahTagihan});
+      this.jumlahTagihan,
+      this.bulanTagihan});
 
   @override
   Widget build(BuildContext context) {
@@ -148,14 +155,12 @@ class CardHistoryPaymentIpl extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Tanggal pembayaran',
+                                'Bulan tagihan',
                                 style: TextStyle(
                                     fontSize: 10.sp, color: Color(0xff757575)),
                               ),
                               Text(
-                                (tanggalPembayaran == null)
-                                    ? '-'
-                                    : tanggalPembayaran,
+                                (bulanTagihan == null) ? '-' : bulanTagihan,
                                 style: TextStyle(
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.w700,
