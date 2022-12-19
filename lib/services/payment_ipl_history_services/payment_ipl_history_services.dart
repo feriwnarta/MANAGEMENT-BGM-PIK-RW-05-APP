@@ -26,12 +26,11 @@ class HistoryPaymentIplServices {
         return rs
             .map(
               (e) => PaymentIplHistoryModel(
-                nomorIpl: e['nomor_bast'],
-                jumlahTagihan: e['nominal_tgh'],
-                statusPembayaran: e['status'],
-                tanggalPembayaran: e['tanggal_transaksi'],
-                bulanTagihan: e['bulan_tagihan']
-              ),
+                  nomorIpl: e['nomor_bast'],
+                  jumlahTagihan: e['nominal_tgh'],
+                  statusPembayaran: e['status'],
+                  tanggalPembayaran: e['tanggal_transaksi'],
+                  bulanTagihan: e['bulan_tagihan']),
             )
             .toList();
       }
