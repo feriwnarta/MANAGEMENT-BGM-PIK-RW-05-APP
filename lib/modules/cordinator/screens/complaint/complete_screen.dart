@@ -51,7 +51,7 @@ class CompleteScreen extends StatelessWidget {
                     //         )))
                     Get.offAll(HomeScreenCordinator(name: name)),
                 style: TextButton.styleFrom(
-                  foregroundColor: Color(0xff2094F3),
+                  backgroundColor: Color(0xff2094F3),
                 ),
                 child: Text(
                   'Kembali ke home',

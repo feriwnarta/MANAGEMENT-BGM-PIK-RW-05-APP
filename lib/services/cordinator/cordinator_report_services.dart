@@ -1,5 +1,7 @@
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
+import 'package:dio/dio.dart';
+import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -32,7 +34,8 @@ class ManagementServices {
     String url =
         '${ServerApp.url}src/cordinator/report_pull/report_pull_complaint.php';
     var data = {'id_user': idUser, 'start': start, 'limit': limit};
-    http.Response response = await http.post(Uri.parse(url), body: jsonEncode(data));
+    http.Response response =
+        await http.post(Uri.parse(url), body: jsonEncode(data));
     if (response.statusCode >= 200 && response.statusCode <= 299) {
       if (response.body.isNotEmpty) {
         var message = jsonDecode(response.body) as List;
@@ -66,10 +69,14 @@ class CordinatorReportServices {
       'status': status,
       'id_user': idUser
     };
-    http.Response response = await http.post(Uri.parse(url), body: jsonEncode(data));
+
+    Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
+
+    var response = await dio.post(url, data: jsonEncode(data));
     if (response.statusCode >= 200 && response.statusCode <= 299) {
-      if (response.body.isNotEmpty) {
-        var message = jsonDecode(response.body) as List;
+      if (response.data.isNotEmpty) {
+        var message = jsonDecode(response.data) as List;
         return message
             .map((item) => CordinatorReportModel(
                 description: item['description'],
@@ -98,10 +105,13 @@ class CordinatorReportServices {
       'status': status,
       'id_user': idCordinator
     };
-    http.Response response = await http.post(Uri.parse(url), body: jsonEncode(data));
+
+    Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
+    var response = await dio.post(url, data: jsonEncode(data));
     if (response.statusCode >= 200 && response.statusCode <= 299) {
-      if (response.body.isNotEmpty) {
-        var message = jsonDecode(response.body) as List;
+      if (response.data.isNotEmpty) {
+        var message = jsonDecode(response.data) as List;
         return message
             .map((item) => CordinatorReportModel(
                 description: item['description'],
@@ -132,7 +142,8 @@ class CordinatorReportServices {
       'id_user': idCordinator
     };
 
-    http.Response response = await http.post(Uri.parse(url), body: jsonEncode(data));
+    http.Response response =
+        await http.post(Uri.parse(url), body: jsonEncode(data));
     if (response.statusCode >= 200 && response.statusCode <= 299) {
       if (response.body.isNotEmpty) {
         print(response.body);

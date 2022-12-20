@@ -120,7 +120,7 @@ class DetailReportScreen extends StatelessWidget {
                         ))),
                 child: SizedBox(
                   height: 188.w,
-                  width: 319.w,
+                  width: 319.w, 
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(4),
                     child: CachedNetworkImage(
@@ -172,19 +172,34 @@ class DetailReportScreen extends StatelessWidget {
                                   : 'Laporan diterima oleh contractor (${userLogin.nameCordinator.value}')
                           .then((value) {
                         if (value == 'OKE') {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ProcessReportScreen(
-                                  url: url,
-                                  title: title,
-                                  description: description,
-                                  idReport: idReport,
-                                  latitude: latitude,
-                                  location: location,
-                                  longitude: longitude,
-                                  time: time,
-                                  name: (userLogin.status.value == 'cordinator'
-                                      ? userLogin.nameCordinator.value
-                                      : userLogin.nameContractor.value))));
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //     builder: (context) => ProcessReportScreen(
+                          //         url: url,
+                          //         title: title,
+                          //         description: description,
+                          //         idReport: idReport,
+                          //         latitude: latitude,
+                          //         location: location,
+                          //         longitude: longitude,
+                          //         time: time,
+                          //         name: (userLogin.status.value == 'cordinator'
+                          //             ? userLogin.nameCordinator.value
+                          //             : userLogin.nameContractor.value))));
+                          Get.off(
+                            () => ProcessReportScreen(
+                              url: url,
+                              title: title,
+                              description: description,
+                              idReport: idReport,
+                              latitude: latitude,
+                              location: location,
+                              longitude: longitude,
+                              time: time,
+                              name: (userLogin.status.value == 'cordinator'
+                                  ? userLogin.nameCordinator.value
+                                  : userLogin.nameContractor.value),
+                            ),
+                          );
                         } else {
                           print('error');
                         }
@@ -195,7 +210,7 @@ class DetailReportScreen extends StatelessWidget {
                       style: TextStyle(fontSize: 16.sp, color: Colors.white),
                     ),
                     style: TextButton.styleFrom(
-                        foregroundColor: Color(0xff2094F3)),
+                        backgroundColor: Color(0xff2094F3)),
                   ),
                 ),
               )

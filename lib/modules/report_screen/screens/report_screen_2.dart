@@ -41,17 +41,17 @@ class _ReportScreen2State extends State<ReportScreen2> {
 
   void onScroll() async {
     if (controller.position.haveDimensions) {
-      // if (controller.position.maxScrollExtent == controller.position.pixels) {
-      //   final logger = Logger();
-      //   logger.w('update');
-      //   reportController.getDataFromDb();
-      //   reportController.update();
-      // }
-      if (controller.offset >= controller.position.maxScrollExtent &&
-          !controller.position.outOfRange) {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
         final logger = Logger();
-        logger.w('botoom');
+        logger.w('update');
+        reportController.getDataFromDb();
+        reportController.update();
       }
+      // if (controller.offset >= controller.position.maxScrollExtent &&
+      //     !controller.position.outOfRange) {
+      //   final logger = Logger();
+      //   logger.w('botoom');
+      // }
     }
   }
 
@@ -73,7 +73,7 @@ class _ReportScreen2State extends State<ReportScreen2> {
 
   @override
   didChangeDependencies() async {
-    // controller.addListener(onScroll);
+    controller.addListener(onScroll);
     // _timer = Timer.periodic(Duration(seconds: 5), (timer) {
     // context.read<ReportBloc>().add(ReportEventRefresh());
     // print(timer);
@@ -88,6 +88,7 @@ class _ReportScreen2State extends State<ReportScreen2> {
       body: RefreshIndicator(
         onRefresh: () async => loadReport(),
         child: CustomScrollView(
+          controller: controller,
           slivers: [
             SliverAppBar(
               backgroundColor: Colors.white,

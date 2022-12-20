@@ -153,7 +153,9 @@ class CardReportScreen extends StatelessWidget {
                           width: 125.w,
                           height: 32.h,
                           child: Text(
-                            'asdsadasdasdasdassdadasssssssssasdsadsadasdasdasdasda',
+                            (description.isEmpty)
+                                ? 'Laporan tentang : ' + category
+                                : description,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontSize: 12.sp),

@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
 // import 'package:logger/logger.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:http/http.dart' as http;
@@ -86,7 +87,6 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
         preferredSize: Size.fromHeight(104.h),
         child: AppBar(
           backgroundColor: Color(0xFF2094F3),
-          automaticallyImplyLeading: false,
           title: Text(
             'Laporan Selesai',
             style: TextStyle(fontSize: 19.sp, fontWeight: FontWeight.w500),
@@ -172,6 +172,9 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                                   hours: true,
                                   milliSecond: false,
                                 );
+
+                                final logger = Logger();
+                                logger.i(widget.displayTime);
                                 return Column(
                                   children: <Widget>[
                                     Text(
@@ -314,17 +317,20 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                         height: 40.h,
                         child: TextButton(
                           style: TextButton.styleFrom(
-                              foregroundColor: Color(0xff2094F3)),
+                              backgroundColor: Color(0xff2094F3)),
                           child: Text(
                             'Laporan selesai',
                             style:
                                 TextStyle(fontSize: 16.sp, color: Colors.white),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             if (widget.imagePathCond1.isNotEmpty ||
                                 widget.imagePathCond2.isNotEmpty) {
                               String dateNow = DateTime.now().toString();
-                              ProcessReportServices.completeWork(
+                              final logger = Logger();
+
+                              String message =
+                                  await ProcessReportServices.completeWorks(
                                       duration: widget.displayTime,
                                       finishTime: dateNow,
                                       idReport: widget.idReport,
@@ -334,24 +340,45 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                                                   .userLogin.status.value) ==
                                               'cordinator'
                                           ? 'Laporan telah selesai, divalidasi oleh estate cordinator (${widget.userLogin.nameCordinator.value})'
-                                          : 'Laporan telah selesai, divalidasi oleh contractor (${widget.userLogin.nameContractor.value})')
-                                  .then((value) {
-                                value.send().then((value) {
-                                  http.Response.fromStream(value).then((value) {
-                                    String message = json.decode(value.body);
-                                    if (message != null && message == 'OKE') {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  CompleteScreen(
-                                                      time: widget.displayTime,
-                                                      name: widget.name)));
-                                    } else {
-                                      print('gagal');
-                                    }
-                                  });
-                                });
-                              });
+                                          : 'Laporan telah selesai, divalidasi oleh contractor (${widget.userLogin.nameContractor.value})');
+
+                              logger.i(message);
+
+                              if (message != null && message == 'OKE') {
+                                Get.off(CompleteScreen(
+                                  time: widget.displayTime,
+                                  name: widget.name,
+                                ));
+                              }
+                              // ProcessReportServices.completeWorks(
+                              //         duration: widget.displayTime,
+                              //         finishTime: dateNow,
+                              //         idReport: widget.idReport,
+                              //         img1: widget.imagePathCond1,
+                              //         img2: widget.imagePathCond2,
+                              //         message: (widget
+                              //                     .userLogin.status.value) ==
+                              //                 'cordinator'
+                              //             ? 'Laporan telah selesai, divalidasi oleh estate cordinator (${widget.userLogin.nameCordinator.value})'
+                              //             : 'Laporan telah selesai, divalidasi oleh contractor (${widget.userLogin.nameContractor.value})')
+                              //     .then((value) {
+                              //   value.send().then((value) {
+                              //     http.Response.fromStream(value).then((value) {
+                              //       String message = json.decode(value.body);
+
+                              //       if (message != null && message == 'OKE') {
+                              //         Navigator.of(context).push(
+                              //             MaterialPageRoute(
+                              //                 builder: (context) =>
+                              //                     CompleteScreen(
+                              //                         time: widget.displayTime,
+                              //                         name: widget.name)));
+                              //       } else {
+                              //         print('gagal');
+                              //       }
+                              //     });
+                              //   });
+                              // });
                             } else {
                               // _scaffoldKey.currentState.showSnackBar(SnackBar(
                               //     content: Text(

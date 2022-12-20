@@ -483,7 +483,7 @@ class CardListReport extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                      width: 190.w,
+                      width: 185.w,
                       child: Text(
                         title,
                         overflow: TextOverflow.ellipsis,

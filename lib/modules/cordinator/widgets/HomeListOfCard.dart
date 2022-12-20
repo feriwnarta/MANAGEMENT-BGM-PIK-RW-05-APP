@@ -182,6 +182,10 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 20.h),
+              Text(
+                '${snapshot.data['unit']}',
+                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+              ),
               SizedBox(height: 20.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -277,7 +281,10 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
                           SizedBox(width: 8.w),
                           Text(
                             '${snapshot.data['laporan_sedang_dikerjakan']} Sedang dikerjakan',
-                            style: TextStyle(fontSize: 12.sp),
+                            style: TextStyle(
+                                fontSize: 12.sp,
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold),
                           )
                         ],
                       ),
@@ -287,7 +294,13 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
                             color: Colors.blue,
                           ),
                           SizedBox(width: 8.w),
-                          Text('${snapshot.data['laporan_selesai']} Selesai')
+                          Text(
+                            '${snapshot.data['laporan_selesai']} Selesai',
+                            style: TextStyle(
+                                fontSize: 12.sp,
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold),
+                          )
                         ],
                       )
                     ],
