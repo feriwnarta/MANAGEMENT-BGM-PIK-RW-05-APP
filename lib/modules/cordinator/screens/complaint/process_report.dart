@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:aplikasi_rw/services/cordinator/process_report_services.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -101,8 +103,8 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
                             width: 88.w,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(4),
-                              child: Image.network(
-                                widget.url,
+                              child: CachedNetworkImage(
+                                imageUrl: widget.url,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -296,8 +298,7 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
                             // insert process work ke tb process
                             if (imagePathCond1.isNotEmpty ||
                                 imagePathCond2.isNotEmpty) {
-                              final logger = Logger();
-                              logger.i('clicked');
+                              EasyLoading.show(status: 'loading');
                               String message =
                                   await ProcessReportServices.insertProcessWork(
                                       idReport: widget.idReport,
@@ -305,9 +306,9 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
                                       img2: imagePathCond2,
                                       message: 'Laporan sedang dikerjakan');
                               if (message != null && message.isNotEmpty) {
-                                logger.d(message);
                                 if (message
                                     .isCaseInsensitiveContainsAny('OKE')) {
+                                  EasyLoading.dismiss();
                                   var dataFinish =
                                       await ProcessReportServices.getDataFinish(
                                           idReport: widget.idReport);
@@ -318,6 +319,9 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
                                           name: widget.name,
                                         ));
                                   }
+                                } else {
+                                  EasyLoading.showError(
+                                      'Gagal memproses laporan, silahkan coba ulang');
                                 }
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(

@@ -142,12 +142,14 @@ class CordinatorReportServices {
       'id_user': idCordinator
     };
 
-    http.Response response =
-        await http.post(Uri.parse(url), body: jsonEncode(data));
+    Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
+
+    var response = await dio.post(url, data: jsonEncode(data));
     if (response.statusCode >= 200 && response.statusCode <= 299) {
-      if (response.body.isNotEmpty) {
-        print(response.body);
-        var message = jsonDecode(response.body) as List;
+      if (response.data.isNotEmpty) {
+        print(response.data);
+        var message = jsonDecode(response.data) as List;
         return message
             .map((item) => CordinatorReportModel(
                 description: item['description'],

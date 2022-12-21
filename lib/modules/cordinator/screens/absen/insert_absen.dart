@@ -222,9 +222,14 @@ class _InsertAbsenState extends State<InsertAbsen> {
           image: _absenController.imagePath.value,
           hour: formatDateTime());
 
+      if (message['status'] == 'SUCCESS MASUK') {
+        EasyLoading.showSuccess('Absen masuk berhasil');
+      }
+
       if (message['status'] == 'SUCCESS PULANG') {
         _absenController.jamMasuk = message['jam_masuk'].toString().obs;
         _absenController.jamKeluar = message['jam_pulang'].toString().obs;
+        EasyLoading.showSuccess('Absen pulang berhasil');
         _absenController.update();
       }
 

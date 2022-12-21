@@ -205,6 +205,10 @@ class _MyApp extends State<MyApp> {
   @override
   initState() {
     super.initState();
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+    ));
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -317,11 +321,6 @@ class _MainAppState extends State<MainApp> {
       PaymentIplHistory()
       // PaymentScreen()
     ];
-
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-    ));
 
     return Scaffold(
       key: scaffoldKey,

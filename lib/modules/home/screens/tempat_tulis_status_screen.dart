@@ -370,7 +370,7 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
   Widget bottomImagePicker(BuildContext context) => Container(
         margin: EdgeInsets.only(top: 20),
         width: MediaQuery.of(context).size.width,
-        height: 100.h,
+        height: 150.h,
         child: Column(
           children: [
             Text(

@@ -1,10 +1,13 @@
 import 'dart:convert';
 
+import 'package:aplikasi_rw/controller/report_controller.dart';
+import 'package:aplikasi_rw/controller/report_user_controller.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/history_report_services.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -71,18 +74,23 @@ class _CardLaporanViewState extends State<CardLaporanView> {
   bool isVisibilityExpansion = false;
   TextEditingController controllerComment = TextEditingController();
   double rating = 0;
+  final ReportUserController reportController = Get.put(ReportUserController());
 
   @override
   initState() {
+    final logger = Logger();
+    logger.i(widget.photoComplete1);
+    logger.i(widget.photoComplete2);
+    logger.i(widget.photoProcess1);
+    logger.i(widget.photoProcess2);
     super.initState();
-    // _showDialog();
   }
 
   @override
   didChangeDependencies() async {
     super.didChangeDependencies();
     String idUser = await UserSecureStorage.getIdUser();
-    if ((idUser == widget.idUser && widget.status == 'finished') &&
+    if ((idUser == widget.idUser && widget.status == 'finish') &&
         widget.star == '0') {
       _showDialog();
     }
@@ -148,23 +156,19 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                       alignment: Alignment.centerRight,
                       child: ElevatedButton(
                         onPressed: () async {
-                          buildShowDialogAnimation('', '',
-                              'assets/animation/loading-plane.json', 2.0.h);
+                          EasyLoading.show(status: 'loading');
                           String result = await sendRating();
-                          final logger = Logger();
-                          logger.e(result);
+                          EasyLoading.dismiss();
                           if (result == 'OKE') {
-                            Navigator.of(context)
-                              ..pop()
-                              ..pop()
-                              ..pop();
-                            Get.snackbar('pesan', 'rating berhasil terkirim');
+                            Get.back();
+                            Get.back();
+                            Get.back();
+                            reportController.refresReport();
+                            reportController.update();
+                            EasyLoading.showSuccess(
+                                'Rating berhasil diberikan');
                           } else {
-                            Navigator.of(context)
-                              ..pop()
-                              ..pop();
-                            Get.snackbar('pesan',
-                                'ada sesuatu yang salah saat menambahkan rating');
+                            EasyLoading.showSuccess('Rating gagal diberikan');
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -393,9 +397,9 @@ class _CardLaporanViewState extends State<CardLaporanView> {
 
               Visibility(
                 visible: (widget.photoProcess1 != null ||
-                            widget.photoProcess1 != null) &&
+                            widget.photoProcess2 != null) &&
                         (widget.photoProcess1.isNotEmpty ||
-                            widget.photoProcess1.isNotEmpty)
+                            widget.photoProcess2.isNotEmpty)
                     ? true
                     : false,
                 child: Container(
@@ -408,7 +412,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                       Padding(
                         padding: EdgeInsets.only(left: 15.w),
                         child: Text(
-                          'Work Process',
+                          'Laporan proses kerja',
                           style: TextStyle(
                               fontSize: 12.0.sp, fontFamily: 'poppins'),
                         ),
@@ -418,21 +422,23 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            CachedNetworkImage(
-                                height: 156.h,
-                                width: 156.w,
-                                imageUrl: (widget.photoProcess1 != null)
-                                    ? '${ServerApp.url}${widget.photoProcess1}'
-                                    : ''),
+                            (widget.photoProcess1.isNotEmpty)
+                                ? CachedNetworkImage(
+                                    height: 156.h,
+                                    width: 156.w,
+                                    imageUrl:
+                                        '${ServerApp.url}${widget.photoProcess1}')
+                                : Spacer(),
                             SizedBox(
                               width: 15.w,
                             ),
-                            CachedNetworkImage(
-                                height: 156.h,
-                                width: 156.w,
-                                imageUrl: (widget.photoProcess2 != null)
-                                    ? '${ServerApp.url}${widget.photoProcess2}'
-                                    : '')
+                            (widget.photoProcess2.isNotEmpty)
+                                ? CachedNetworkImage(
+                                    height: 156.h,
+                                    width: 156.w,
+                                    imageUrl:
+                                        '${ServerApp.url}${widget.photoProcess2}')
+                                : Spacer()
                           ],
                         ),
                       ),
@@ -461,7 +467,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                       Padding(
                         padding: EdgeInsets.only(left: 15.w),
                         child: Text(
-                          'Work Finish',
+                          'Laporan selesai kerja',
                           style: TextStyle(
                               fontSize: 12.0.sp, fontFamily: 'poppins'),
                         ),
@@ -471,21 +477,23 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            CachedNetworkImage(
-                                height: 156.h,
-                                width: 156.w,
-                                imageUrl: (widget.photoComplete1 != null)
-                                    ? '${ServerApp.url}${widget.photoComplete1}'
-                                    : ''),
+                            (widget.photoComplete1.isNotEmpty)
+                                ? CachedNetworkImage(
+                                    height: 156.h,
+                                    width: 156.w,
+                                    imageUrl:
+                                        '${ServerApp.url}${widget.photoComplete1}')
+                                : Spacer(),
                             SizedBox(
                               width: 15.w,
                             ),
-                            CachedNetworkImage(
-                                height: 156.h,
-                                width: 156.w,
-                                imageUrl: (widget.photoComplete2 != null)
-                                    ? '${ServerApp.url}${widget.photoComplete2}'
-                                    : '')
+                            (widget.photoComplete2.isNotEmpty)
+                                ? CachedNetworkImage(
+                                    height: 156.h,
+                                    width: 156.w,
+                                    imageUrl:
+                                        '${ServerApp.url}${widget.photoComplete2}')
+                                : Spacer()
                           ],
                         ),
                       ),
@@ -543,7 +551,9 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                       width: 200.w,
                       child: Text(
                         (widget.comment.isEmpty)
-                            ? 'belum ada penilaian'
+                            ? (widget.star.isEmpty)
+                                ? 'Belum ada penilaian'
+                                : 'Tanpa keterangan'
                             : '${widget.comment}',
                         style: TextStyle(fontSize: 12.0.sp),
                       ),

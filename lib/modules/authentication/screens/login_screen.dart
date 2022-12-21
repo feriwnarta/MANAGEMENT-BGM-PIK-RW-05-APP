@@ -989,17 +989,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
               EasyLoading.showInfo(
                 'kami mendeteksi adanya login diperangkat baru, login diperangkat lain akan otomatis keluar',
               );
-              // await buildShowDialogAnimation(
-              //     'kami mendeteksi adanya login diperangkat baru, login diperangkat lain akan otomatis keluar',
-              //     'OKE',
-              //     'assets/animation/warning-circle-animation.json',
-              //     15.0.h);
             }
-
-            // await UserSecureStorage.setIdUser(message['id_user']);
-            // await UserSecureStorage.setStatusLogin(message['status']);
-            // String idUser = await UserSecureStorage.getIdUser();
-            // if (idUser.isNotEmpty) {
             idUser = message['id_user'];
             status = message['status'];
             // Navigator.of(context).pop();
@@ -1016,7 +1006,8 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                 '${ServerApp.url}src/login/login_cordinator/login_cordinator.php';
             var dataKordinator = {
               'username': authController.controllerUsername.text,
-              'password': authController.controllerPassword.text
+              'password': authController.controllerPassword.text,
+              'token': userToken
             };
             response = await http.post(Uri.parse(urlKontraktor),
                 body: json.encode(dataKordinator));
@@ -1024,20 +1015,27 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
 
             // jika response bukan login cordinator failed, artinya login cordinator berhasil
             if (message != 'login_cordinator_failed') {
-              await UserSecureStorage.setIdUser(
-                  message['id_estate_cordinator']);
-              await UserSecureStorage.setStatusLogin(message['status']);
-              print(message['status']);
-              String idUser = await UserSecureStorage.getIdUser();
-              if (idUser.isNotEmpty) {
-                // ambil token fcm cordinator, dan simpan ke database
-                // FirebaseMessaging messaging = FirebaseMessaging();
-                // messaging.getToken().then((token) {
-                //   saveToken(username: controllerUsername.text, token: token);
-                // });
-                EasyLoading.dismiss();
-                loginController.loginCordinator();
-                Get.offAllNamed(RouteName.home);
+              if (message['update_token'] == true) {
+                await UserSecureStorage.setIdUser(
+                    message['id_estate_cordinator']);
+                await UserSecureStorage.setStatusLogin(message['status']);
+                print(message['status']);
+                String idUser = await UserSecureStorage.getIdUser();
+                if (idUser.isNotEmpty) {
+                  // ambil token fcm cordinator, dan simpan ke database
+                  // FirebaseMessaging messaging = FirebaseMessaging();
+                  // messaging.getToken().then((token) {
+                  //   saveToken(username: controllerUsername.text, token: token);
+                  // });
+                  EasyLoading.dismiss();
+                  loginController.loginCordinator();
+                  Get.offAllNamed(RouteName.home);
+                }
+              } else {
+                final logger = Logger();
+                logger.i(message);
+                EasyLoading.showError(
+                    'Kesalahan mengambil id token user, silahkan hubungi admin');
               }
             }
 

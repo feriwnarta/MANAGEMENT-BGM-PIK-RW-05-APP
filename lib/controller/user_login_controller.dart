@@ -7,6 +7,7 @@ import 'package:aplikasi_rw/services/get_data_contractor.dart';
 import 'package:aplikasi_rw/services/get_data_cordinator_services.dart';
 import 'package:aplikasi_rw/services/get_data_user_services.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -55,13 +56,18 @@ class UserLoginController extends GetxController {
 
     var body = {'id_user': '123'};
 
-    var response = await http.post(Uri.parse(url), body: jsonEncode(body));
-    String message = jsonDecode(response.body);
+    var connection = await (Connectivity().checkConnectivity());
 
-    if (message.isCaseInsensitiveContainsAny('NORMAL')) {
-      statusServer = 'normal'.obs;
-    } else if (message.isCaseInsensitiveContainsAny('MAINTENANCE')) {
-      statusServer = 'maintenance'.obs;
+    if (connection == ConnectivityResult.none) {
+    } else {
+      var response = await http.post(Uri.parse(url), body: jsonEncode(body));
+      String message = jsonDecode(response.body);
+
+      if (message.isCaseInsensitiveContainsAny('NORMAL')) {
+        statusServer = 'normal'.obs;
+      } else if (message.isCaseInsensitiveContainsAny('MAINTENANCE')) {
+        statusServer = 'maintenance'.obs;
+      }
     }
   }
 

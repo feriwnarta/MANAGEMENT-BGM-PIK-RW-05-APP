@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/cordinator/process_report_services.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -58,7 +59,6 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
   void dispose() async {
     super.dispose();
     await widget._stopWatchTimer.dispose();
-    Get.delete<UserLoginController>();
   }
 
   @override
@@ -123,8 +123,9 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(4)),
-                                      child: Image.network(
-                                        '${ServerApp.url}${snapshot.data.photo1}',
+                                      child: CachedNetworkImage(
+                                        imageUrl:
+                                            '${ServerApp.url}${snapshot.data.photo1}',
                                         fit: BoxFit.cover,
                                       ),
                                     )
@@ -143,8 +144,9 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(4)),
-                                      child: Image.network(
-                                        '${ServerApp.url}${snapshot.data.photo2}',
+                                      child: CachedNetworkImage(
+                                        imageUrl:
+                                            '${ServerApp.url}${snapshot.data.photo2}',
                                         fit: BoxFit.cover,
                                       ),
                                     )
@@ -173,8 +175,6 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                                   milliSecond: false,
                                 );
 
-                                final logger = Logger();
-                                logger.i(widget.displayTime);
                                 return Column(
                                   children: <Widget>[
                                     Text(

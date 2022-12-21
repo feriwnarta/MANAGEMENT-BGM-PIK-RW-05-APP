@@ -8,6 +8,7 @@ import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/cordinator/process_report_services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -396,57 +397,92 @@ class CardListReport extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
+        EasyLoading.show(status: 'loading');
         (status != 'finish')
             ? ProcessReportServices.getDataFinish(idReport: idReport)
                 .then((value) {
                 if (value == null) {
+                  EasyLoading.dismiss();
                   ProcessReportServices.checkExistProcess(idReport)
                       .then((value) {
                     if (value == 'FALSE') {
                       print(value);
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ProcessReportScreen(
-                                url: url,
-                                title: title,
-                                description: description,
-                                idReport: idReport,
-                                latitude: latitude,
-                                location: location,
-                                longitude: longitude,
-                                time: time,
-                                name: (userLogin.status.value == 'cordinator')
-                                    ? userLogin.nameCordinator.value
-                                    : userLogin.nameContractor.value,
-                              )));
-                    } else {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => DetailReportScreen(
+                      // Navigator.of(context).push(MaterialPageRoute(
+                      //     builder: (context) => ProcessReportScreen(
+                      //           url: url,
+                      //           title: title,
+                      //           description: description,
+                      //           idReport: idReport,
+                      //           latitude: latitude,
+                      //           location: location,
+                      //           longitude: longitude,
+                      //           time: time,
+                      //           name: (userLogin.status.value == 'cordinator')
+                      //               ? userLogin.nameCordinator.value
+                      //               : userLogin.nameContractor.value,
+                      //         )));
+                      Get.to(() => ProcessReportScreen(
+                            url: url,
+                            title: title,
                             description: description,
                             idReport: idReport,
                             latitude: latitude,
                             location: location,
                             longitude: longitude,
                             time: time,
-                            title: title,
-                            url: url,
-                            name: (userLogin.status.value == 'cordinator')
-                                ? userLogin.nameCordinator.value
-                                : userLogin.nameContractor.value),
-                      ));
-                    }
-                  });
-                } else {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => FinishReportScreen(
-                            idReport: value.idReport,
-                            time: value.currentTimeWork,
                             name: (userLogin.status.value == 'cordinator')
                                 ? userLogin.nameCordinator.value
                                 : userLogin.nameContractor.value,
-                          )));
+                          ));
+                    } else {
+                      // Navigator.of(context).push(MaterialPageRoute(
+                      //   builder: (context) => DetailReportScreen(
+                      //       description: description,
+                      //       idReport: idReport,
+                      //       latitude: latitude,
+                      //       location: location,
+                      //       longitude: longitude,
+                      //       time: time,
+                      //       title: title,
+                      //       url: url,
+                      //       name: (userLogin.status.value == 'cordinator')
+                      //           ? userLogin.nameCordinator.value
+                      //           : userLogin.nameContractor.value),
+                      // ));
+                      Get.to(() => DetailReportScreen(
+                          description: description,
+                          idReport: idReport,
+                          latitude: latitude,
+                          location: location,
+                          longitude: longitude,
+                          time: time,
+                          title: title,
+                          url: url,
+                          name: (userLogin.status.value == 'cordinator')
+                              ? userLogin.nameCordinator.value
+                              : userLogin.nameContractor.value));
+                    }
+                  });
+                } else {
+                  EasyLoading.dismiss();
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //     builder: (context) => FinishReportScreen(
+                  //           idReport: value.idReport,
+                  //           time: value.currentTimeWork,
+                  //           name: (userLogin.status.value == 'cordinator')
+                  //               ? userLogin.nameCordinator.value
+                  //               : userLogin.nameContractor.value,
+                  //         )));
+                  Get.to(() => FinishReportScreen(
+                        idReport: value.idReport,
+                        time: value.currentTimeWork,
+                        name: (userLogin.status.value == 'cordinator')
+                            ? userLogin.nameCordinator.value
+                            : userLogin.nameContractor.value,
+                      ));
                 }
               })
-            : Container();
+            : EasyLoading.dismiss();
       },
       child: Container(
         margin: EdgeInsets.only(bottom: 2.h),

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/authentication/validate/validate_email_and_password.dart';
 import 'package:aplikasi_rw/server-app.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -83,7 +84,7 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                                             repeat: ImageRepeat.noRepeat,
                                             image: (widget.urlProfilePath ==
                                                     null)
-                                                ? NetworkImage(
+                                                ? CachedNetworkImageProvider(
                                                     '${ServerApp.url}${loginController.urlProfile}')
                                                 : FileImage(File(
                                                     widget.urlProfilePath))))),
@@ -122,9 +123,9 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                             children: [
                               SizedBox(height: 1.0.h),
                               Text(
-                                'username',
+                                'Username',
                                 style: TextStyle(
-                                    color: Colors.grey, fontSize: 10.sp),
+                                    color: Colors.grey, fontSize: 14.sp),
                               ),
                               SizedBox(height: 1.0.h),
                               Text(
@@ -160,9 +161,9 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                             children: [
                               SizedBox(height: 1.0.h),
                               Text(
-                                'email',
+                                'Email',
                                 style: TextStyle(
-                                    color: Colors.grey, fontSize: 10.sp),
+                                    color: Colors.grey, fontSize: 14.sp),
                               ),
                               SizedBox(height: 1.0.h),
                               Text(
@@ -198,9 +199,9 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                             children: [
                               SizedBox(height: 1.0.h),
                               Text(
-                                'nomor telpon',
+                                'Nomor telpon',
                                 style: TextStyle(
-                                    color: Colors.grey, fontSize: 10.sp),
+                                    color: Colors.grey, fontSize: 14.sp),
                               ),
                               SizedBox(height: 1.0.h),
                               Text(
@@ -412,7 +413,7 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
   Widget bottomImagePicker(BuildContext context) => Container(
         margin: EdgeInsets.only(top: 20),
         width: MediaQuery.of(context).size.width,
-        height: 18.0.h,
+        height: 100.h,
         child: Column(
           children: [
             Text(

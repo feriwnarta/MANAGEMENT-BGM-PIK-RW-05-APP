@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
+import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:logger/logger.dart';
 
 class GetChartWorkerServices {
@@ -11,10 +12,13 @@ class GetChartWorkerServices {
     String idUser = await UserSecureStorage.getIdUser();
     String status = await UserSecureStorage.getStatus();
 
+    Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
+
     var data = {'id_user': idUser, 'type_worker': status};
-    var request = await http.post(Uri.parse(url), body: jsonEncode(data));
+    var request = await dio.post(url, data: jsonEncode(data));
     if (request.statusCode >= 200 && request.statusCode <= 399) {
-      var response = jsonDecode(request.body);
+      var response = jsonDecode(request.data);
       final logger = Logger();
       logger.w(response);
       return response;

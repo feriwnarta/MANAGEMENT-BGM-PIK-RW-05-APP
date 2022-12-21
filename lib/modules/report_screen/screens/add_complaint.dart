@@ -155,12 +155,12 @@ class _StepperRwState extends State<StepperRw> {
           return false;
         } else if (stepperController.index.value == 1) {
           stepperController.index.value--;
+          return false;
           // gambar
         } else {
           imagePath.value = '';
           return true;
         }
-        return true;
       },
       child: SingleChildScrollView(
           child: GetX<StepperController>(

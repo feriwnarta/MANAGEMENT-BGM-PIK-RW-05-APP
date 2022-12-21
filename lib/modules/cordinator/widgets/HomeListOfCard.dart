@@ -105,6 +105,9 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
                                 ),
                                 baseColor: Colors.grey[300],
                                 highlightColor: Colors.grey[200])),
+                SizedBox(
+                  height: 30.h,
+                ),
               ],
             )),
       ),

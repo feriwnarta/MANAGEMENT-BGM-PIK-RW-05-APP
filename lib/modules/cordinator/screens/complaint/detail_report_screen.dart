@@ -3,6 +3,7 @@ import 'package:aplikasi_rw/modules/cordinator/screens/complaint/process_report.
 import 'package:aplikasi_rw/services/cordinator/process_report_services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -120,7 +121,7 @@ class DetailReportScreen extends StatelessWidget {
                         ))),
                 child: SizedBox(
                   height: 188.w,
-                  width: 319.w, 
+                  width: 319.w,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(4),
                     child: CachedNetworkImage(
@@ -164,46 +165,35 @@ class DetailReportScreen extends StatelessWidget {
                   width: 328.w,
                   height: 40.h,
                   child: TextButton(
-                    onPressed: () {
-                      ProcessReportServices.insertProcessReport(
-                              idReport: idReport,
-                              message: (userLogin.status.value == 'cordinator')
-                                  ? 'Laporan diterima oleh estate cordinator (${userLogin.nameCordinator.value})'
-                                  : 'Laporan diterima oleh contractor (${userLogin.nameCordinator.value}')
-                          .then((value) {
-                        if (value == 'OKE') {
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //     builder: (context) => ProcessReportScreen(
-                          //         url: url,
-                          //         title: title,
-                          //         description: description,
-                          //         idReport: idReport,
-                          //         latitude: latitude,
-                          //         location: location,
-                          //         longitude: longitude,
-                          //         time: time,
-                          //         name: (userLogin.status.value == 'cordinator'
-                          //             ? userLogin.nameCordinator.value
-                          //             : userLogin.nameContractor.value))));
-                          Get.off(
-                            () => ProcessReportScreen(
-                              url: url,
-                              title: title,
-                              description: description,
-                              idReport: idReport,
-                              latitude: latitude,
-                              location: location,
-                              longitude: longitude,
-                              time: time,
-                              name: (userLogin.status.value == 'cordinator'
-                                  ? userLogin.nameCordinator.value
-                                  : userLogin.nameContractor.value),
-                            ),
-                          );
-                        } else {
-                          print('error');
-                        }
-                      });
+                    onPressed: () async {
+                      EasyLoading.show(status: 'loading');
+                      String message = await ProcessReportServices.insertProcessReport(
+                          idReport: idReport,
+                          message: (userLogin.status.value == 'cordinator')
+                              ? 'Laporan diterima oleh estate cordinator (${userLogin.nameCordinator.value})'
+                              : 'Laporan diterima oleh contractor (${userLogin.nameCordinator.value}');
+                      if (message == 'OKE') {
+                        EasyLoading.dismiss();
+                        Get.off(
+                          () => ProcessReportScreen(
+                            url: url,
+                            title: title,
+                            description: description,
+                            idReport: idReport,
+                            latitude: latitude,
+                            location: location,
+                            longitude: longitude,
+                            time: time,
+                            name: (userLogin.status.value == 'cordinator'
+                                ? userLogin.nameCordinator.value
+                                : userLogin.nameContractor.value),
+                          ),
+                        );
+                      } else {
+                        EasyLoading.showError(
+                            'Gagal menerima laporan, silahkan coba lagi');
+                        EasyLoading.dismiss();
+                      }
                     },
                     child: Text(
                       'Terima Laporan',
