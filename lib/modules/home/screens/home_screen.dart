@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:aplikasi_rw/bloc/carousel_bloc.dart';
 import 'package:aplikasi_rw/controller/home_screen_controller.dart';
 import 'package:aplikasi_rw/controller/status_user_controller.dart';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
@@ -11,7 +10,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -43,7 +41,6 @@ class _HomeScreenState extends State<HomeScreen>
   final _picker = ImagePicker();
   String imagePath = '';
   PickedFile imageFile;
-  CarouselBloc blocColor;
   // TempatTulisStatusBloc blocTulisStatus;
   StatusUserController controllerStatus;
   UserLoginController controllerLogin;
@@ -83,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    blocColor = BlocProvider.of<CarouselBloc>(context);
+    // blocColor = BlocProvider.of<CarouselBloc>(context);
 
     // blocTulisStatus = BlocProvider.of<TempatTulisStatusBloc>(context);
     // blocStatusUser = BlocProvider.of<StatusUserBloc>(context);
@@ -99,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen>
   void dispose() {
     // if (_timer.isActive) _timer.cancel();
     controller.dispose();
-    blocColor.close();
+    // blocColor.close();
     // blocTulisStatus.close();
     // Get.delete<StatusUserController>();
     // Get.delete<UserLoginController>();
@@ -598,6 +595,7 @@ class ListViewStatusWarga extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     return GetX<StatusUserController>(
         init: StatusUserController(),
         initState: (state) => contol.getDataFromDb(),

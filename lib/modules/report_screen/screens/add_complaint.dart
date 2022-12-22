@@ -636,9 +636,7 @@ class _StepperRwState extends State<StepperRw> {
                                         'silahkan ceklis salah satu masalah');
                               } else {
                                 setState(() {});
-                                // ! PERLU DIUBAH KE ++
-                                controller.index.value = 2;
-                                // controller.index.value++;
+                                controller.index.value++;
                               }
                             },
                             child: Text(

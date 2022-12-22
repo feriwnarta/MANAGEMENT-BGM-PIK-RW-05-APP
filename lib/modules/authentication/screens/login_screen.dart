@@ -61,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
   final registerController = Get.put(RegisterController());
   final loginController = Get.put(UserLoginController());
   final countDownController = Get.put(CountDownController());
-  final authController = Get.put(AuthController());
+  final authController = Get.put(AuthController(), permanent: false);
 
   bool passwordWrong = false;
   String email, noTelp;
@@ -134,20 +134,17 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                         } else if (registerController.toOtp.value) {
                           return Otp(
                             controllerIpl: controllerIpl,
-                            email: email,
+                            email: controller.email.value,
                             errorController: errorController,
-                            noTelp: noTelp,
+                            noTelp: controller.noTelp.value,
                             otpKey: otpKey,
                             resendOtp: resendOtp,
                             validateOtp: validateOtp,
                           );
                         } else if (registerController.toOtpVerif.value) {
-                          // return methodVerification(
-                          //     authController.controllerEmail.text,
-                          //     authController.controllerNoTelp.text);
                           return MethodVerification(
-                            email: email,
-                            noTelp: noTelp,
+                            email: controller.email.value,
+                            noTelp: controller.noTelp.value,
                             cardMethodVerification: cardMethodVerification,
                           );
                         } else if (registerController.toResetPassword.value) {
@@ -711,6 +708,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
             if (idUser.isNotEmpty) {
               // Navigator.of(context).pop();
               EasyLoading.dismiss();
+              authController.dispose();
               registerController.resetController();
               registerController.update();
               Get.offAllNamed(RouteName.home);
@@ -847,6 +845,8 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
               final logger = Logger();
               logger.d(registerController.toOtp.value);
               logger.i(message);
+              registerController.email.value = email;
+              registerController.noTelp.value = noTelp;
             } else {
               registerController.toOtpVerif = false.obs;
               registerController.toOtp = true.obs;
@@ -997,6 +997,8 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
             // Get.offAll(SplashView());
             registerController.toOtpVerif = true.obs;
             registerController.fromLogin = true.obs;
+            registerController.email.value = message['email'];
+            registerController.noTelp.value = message['no_telp'];
             authController.controllerEmail.text = message['email'];
             authController.controllerNoTelp.text = message['no_telp'];
             registerController.update();
@@ -1022,11 +1024,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                 print(message['status']);
                 String idUser = await UserSecureStorage.getIdUser();
                 if (idUser.isNotEmpty) {
-                  // ambil token fcm cordinator, dan simpan ke database
-                  // FirebaseMessaging messaging = FirebaseMessaging();
-                  // messaging.getToken().then((token) {
-                  //   saveToken(username: controllerUsername.text, token: token);
-                  // });
                   EasyLoading.dismiss();
                   loginController.loginCordinator();
                   Get.offAllNamed(RouteName.home);

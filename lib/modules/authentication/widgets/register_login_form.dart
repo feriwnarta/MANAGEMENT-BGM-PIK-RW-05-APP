@@ -87,6 +87,7 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
   Function userRegister, userLogin;
   String email, noTelp;
   UserLoginController loginController = Get.put(UserLoginController());
+  RegisterController userRegisterController = Get.put(RegisterController());
 
   @override
   Widget build(BuildContext context) {
@@ -294,8 +295,12 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                         child: Text('Lupa kata sandi ?',
                             style: TextStyle(fontSize: 14.sp)),
                         onPressed: () {
-                          registerController.toResetPassword = true.obs;
-                          setState(() {});
+                          registerController.toResetPassword.value = true;
+                          registerController.email.value =
+                              authController.controllerEmail.text;
+                          registerController.noTelp.value =
+                              authController.controllerNoTelp.text;
+                          registerController.update();
                         },
                       )
                     ],
@@ -441,6 +446,10 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                     email = authController.controllerEmail.text;
                     noTelp = authController.controllerNoTelp.text;
                   });
+                  registerController.email.value =
+                      authController.controllerEmail.text;
+                  registerController.noTelp.value =
+                      authController.controllerNoTelp.text;
                 }
               },
             ),

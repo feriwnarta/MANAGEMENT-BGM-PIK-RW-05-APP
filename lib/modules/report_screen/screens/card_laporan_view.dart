@@ -397,9 +397,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
 
               Visibility(
                 visible: (widget.photoProcess1 != null ||
-                            widget.photoProcess2 != null) &&
-                        (widget.photoProcess1.isNotEmpty ||
-                            widget.photoProcess2.isNotEmpty)
+                        widget.photoProcess2 != null)
                     ? true
                     : false,
                 child: Container(
@@ -422,22 +420,34 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            (widget.photoProcess1.isNotEmpty)
-                                ? CachedNetworkImage(
-                                    height: 156.h,
-                                    width: 156.w,
-                                    imageUrl:
-                                        '${ServerApp.url}${widget.photoProcess1}')
+                            (widget.photoProcess1 != null)
+                                ? (widget.photoProcess1.isNotEmpty)
+                                    ? CachedNetworkImage(
+                                        height: 156.h,
+                                        width: 156.w,
+                                        imageUrl:
+                                            '${ServerApp.url}${widget.photoProcess1}',
+                                        progressIndicatorBuilder:
+                                            (context, url, progress) =>
+                                                CircularProgressIndicator(),
+                                      )
+                                    : Spacer()
                                 : Spacer(),
                             SizedBox(
                               width: 15.w,
                             ),
-                            (widget.photoProcess2.isNotEmpty)
-                                ? CachedNetworkImage(
-                                    height: 156.h,
-                                    width: 156.w,
-                                    imageUrl:
-                                        '${ServerApp.url}${widget.photoProcess2}')
+                            (widget.photoProcess2 != null)
+                                ? (widget.photoProcess2.isNotEmpty)
+                                    ? CachedNetworkImage(
+                                        height: 156.h,
+                                        width: 156.w,
+                                        imageUrl:
+                                            '${ServerApp.url}${widget.photoProcess2}',
+                                        progressIndicatorBuilder:
+                                            (context, url, progress) =>
+                                                CircularProgressIndicator(),
+                                      )
+                                    : Spacer()
                                 : Spacer()
                           ],
                         ),
@@ -477,22 +487,34 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            (widget.photoComplete1.isNotEmpty)
-                                ? CachedNetworkImage(
-                                    height: 156.h,
-                                    width: 156.w,
-                                    imageUrl:
-                                        '${ServerApp.url}${widget.photoComplete1}')
+                            (widget.photoComplete1 != null)
+                                ? (widget.photoComplete1.isNotEmpty)
+                                    ? CachedNetworkImage(
+                                        height: 156.h,
+                                        width: 156.w,
+                                        imageUrl:
+                                            '${ServerApp.url}${widget.photoComplete1}',
+                                        progressIndicatorBuilder:
+                                            (context, url, progress) =>
+                                                CircularProgressIndicator(),
+                                      )
+                                    : Spacer()
                                 : Spacer(),
                             SizedBox(
                               width: 15.w,
                             ),
-                            (widget.photoComplete2.isNotEmpty)
-                                ? CachedNetworkImage(
-                                    height: 156.h,
-                                    width: 156.w,
-                                    imageUrl:
-                                        '${ServerApp.url}${widget.photoComplete2}')
+                            (widget.photoComplete2 != null)
+                                ? (widget.photoComplete2.isNotEmpty)
+                                    ? CachedNetworkImage(
+                                        height: 156.h,
+                                        width: 156.w,
+                                        imageUrl:
+                                            '${ServerApp.url}${widget.photoComplete2}',
+                                        progressIndicatorBuilder:
+                                            (context, url, progress) =>
+                                                CircularProgressIndicator(),
+                                      )
+                                    : Spacer()
                                 : Spacer()
                           ],
                         ),
@@ -559,19 +581,6 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                       ),
                     ),
                     SizedBox(height: 10.h),
-                    // Row(
-                    //   children: [
-                    //     SizedBox(width: 4.5.w),
-                    //     Text(
-                    //       '19 Mei 2022 : 14:55',
-                    //       style:
-                    //           TextStyle(fontSize: 9.0.sp, color: Colors.grey),
-                    //     ),
-                    //   ],
-                    // ),
-                    // SizedBox(
-                    //   height: 0.h,
-                    // ),
                   ],
                 ),
               )

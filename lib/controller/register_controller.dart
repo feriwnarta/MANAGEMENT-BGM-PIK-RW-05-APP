@@ -15,6 +15,8 @@ class RegisterController extends GetxController {
   RxString methodVerifChose = ''.obs;
   RxBool fromLogin = false.obs;
 
+  RxString email = ''.obs, noTelp = ''.obs;
+
   void resetController() {
     toOtpVerif = false.obs;
     toOtp = false.obs;

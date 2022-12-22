@@ -22,6 +22,7 @@ class _PaymentIplHistoryState extends State<PaymentIplHistory> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Riwayat Pembayaran IPL'),
@@ -79,6 +80,8 @@ class CardHistoryPaymentIpl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 200));
+    ScreenUtil.init(context);
     return Column(
       children: [
         SizedBox(

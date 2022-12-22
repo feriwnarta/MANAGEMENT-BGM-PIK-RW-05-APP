@@ -113,21 +113,6 @@ void main() async {
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  // m.configure(
-  //   onMessage: (message) async {
-  //     print('onn messagasdasde $message');
-  //   },
-  //   onLaunch: (message) async {
-  //     print('onn laasdasdasdunc');
-  //   },
-  //   onResume: (message) async {
-  //     print('onn resasdasdasdume');
-  //   },
-  // );
-  // FirebaseMessaging.onMessage.listen((event) {
-
-  // })
-
   m.getToken().then((token) => print(token));
 
   NotificationSettings settings = await m.requestPermission(
@@ -155,6 +140,7 @@ void main() async {
       await PlatformAssetBundle().load('assets/ca/lets-encrypt-r3.pem');
   SecurityContext.defaultContext
       .setTrustedCertificatesBytes(data.buffer.asUint8List());
+
   runApp(MyApp());
   configLoading();
 
@@ -231,60 +217,25 @@ class _MyApp extends State<MyApp> {
     // *date format indonesia
     initializeDateFormatting('id_ID', null);
 
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<CarouselBloc>(
-          create: (context) => CarouselBloc(0),
-        ),
-        BlocProvider<BillTabColorBloc>(
-          create: (context) => BillTabColorBloc(TabState()),
-        ),
-        BlocProvider<BillRegulerBloc>(
-          create: (context) =>
-              BillRegulerBloc(BillsHistoryModel.getBillsHistory()),
-        ),
-        BlocProvider<PaymentBloc>(
-          create: (context) => PaymentBloc(true),
-        ),
-        BlocProvider<ShimmerLoadingBloc>(
-          create: (context) => ShimmerLoadingBloc(true),
-        ),
-        BlocProvider<CommentBloc>(
-          create: (context) =>
-              CommentBloc(CommentBlocUnitialized())..add(CommentBlocEvent()),
-        ),
-        BlocProvider<CommentCountBloc>(
-          create: (context) =>
-              CommentCountBloc(CommentCountBlocState(countComment: '0')),
-        ),
-        BlocProvider<LikeStatusBloc>(
-          create: (context) => LikeStatusBloc(LikeStatusState(
-              colorButton: Colors.black, isLike: false, numberLike: '0')),
-        ),
-        BlocProvider<GoogleMapBloc>(
-          create: (context) => GoogleMapBloc(GoogleMapState()),
-        ),
-      ],
-      child: ScreenUtilInit(
-        designSize: Size(360, 800),
-        // allowFontScaling: false,
-        minTextAdapt: true,
-        builder: (context, child) => AppLifecycleManager(
-          child: GetMaterialApp(
-            debugShowCheckedModeBanner: false,
-            initialRoute: AppPage.INITIAL_ROUTE,
-            getPages: AppPage.pages,
+    return ScreenUtilInit(
+      designSize: const Size(360, 800),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) => AppLifecycleManager(
+        child: GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          initialRoute: AppPage.INITIAL_ROUTE,
+          getPages: AppPage.pages,
 
-            // home: SplashView(),
-            // home: NewGoogleMaps(),
-            theme: ThemeData(
-                appBarTheme: AppBarTheme(
-                  systemOverlayStyle: SystemUiOverlayStyle.dark,
-                ),
-                fontFamily: 'open sans',
-                scaffoldBackgroundColor: Colors.white),
-            builder: EasyLoading.init(), // set background color theme
-          ),
+          // home: SplashView(),
+          // home: NewGoogleMaps(),
+          theme: ThemeData(
+              appBarTheme: AppBarTheme(
+                systemOverlayStyle: SystemUiOverlayStyle.dark,
+              ),
+              fontFamily: 'open sans',
+              scaffoldBackgroundColor: Colors.white),
+          builder: EasyLoading.init(), // set background color theme
         ),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:aplikasi_rw/modules/report_screen/screens/add_complaint.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 // import 'package:table_calendar/table_calendar.dart';
@@ -89,21 +90,12 @@ class _RadioMenuState extends State<RadioMenu> {
             style: TextStyle(color: Colors.white, fontSize: 13.0.sp),
           ),
           onPressed: () {
-            // if (widget.menuRequest == SubMenu.Complaint) {
-            //   Navigator.of(context)
-            //       .push(MaterialPageRoute(
-            //     builder: (context) => AddReport(),
-            //   ))
-            //       .then((value) {
-            //     if (value == 'reload') {
-            //       // widget.bloc.add(ReportEventRefresh());
-            //       Navigator.pop(context, 'reload');
-            //     }
-            //   });
-            // } else if (widget.menuRequest == SubMenu.Request) {
-            //   Get.snackbar('Message', 'On Progress', overlayBlur: 2);
-            // }
-            Get.to(() => AddComplaint());
+            if (widget.menuRequest == SubMenu.Complaint) {
+              Get.to(() => AddComplaint());
+            } else if (widget.menuRequest == SubMenu.Request) {
+              EasyLoading.showToast('On Progress');
+            }
+
             // Get.to(() => CameraComplaint());
           },
         )

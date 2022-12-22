@@ -275,7 +275,7 @@ class Onboarding3 extends StatelessWidget {
                     // minWidth: 156.w,
                     // height: 40.h,
                     onPressed: () {
-                      Get.toNamed(RouteName.auth);
+                      Get.offNamed(RouteName.auth);
                     },
                     style: TextButton.styleFrom(
                       shape: RoundedRectangleBorder(
