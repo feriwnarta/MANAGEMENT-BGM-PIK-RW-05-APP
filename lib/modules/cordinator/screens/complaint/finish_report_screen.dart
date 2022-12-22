@@ -6,6 +6,7 @@ import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/cordinator/process_report_services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -328,7 +329,7 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                                 widget.imagePathCond2.isNotEmpty) {
                               String dateNow = DateTime.now().toString();
                               final logger = Logger();
-
+                              EasyLoading.show(status: 'loading');
                               String message =
                                   await ProcessReportServices.completeWorks(
                                       duration: widget.displayTime,
@@ -343,6 +344,7 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                                           : 'Laporan telah selesai, divalidasi oleh contractor (${widget.userLogin.nameContractor.value})');
 
                               logger.i(message);
+                              EasyLoading.dismiss();
 
                               if (message != null && message == 'OKE') {
                                 Get.off(CompleteScreen(

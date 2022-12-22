@@ -372,7 +372,7 @@ class _MainAppState extends State<MainApp> {
                     'assets/img/image-svg/keluhan-icon.svg',
                     color: Color(0xff2094F3),
                   ),
-                  label: 'Keluhan'),
+                  label: 'Peduli lingkungan'),
               BottomNavigationBarItem(
                   icon: SvgPicture.asset(
                     'assets/img/image-svg/riwayatipl-icon.svg',

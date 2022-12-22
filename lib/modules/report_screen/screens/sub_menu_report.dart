@@ -149,7 +149,7 @@ class _RadioMenuState extends State<RadioMenu> {
                     });
                   },
                 ),
-                Text('Keluhan',
+                Text('Peduli lingkungan',
                     style: TextStyle(
                         fontSize: 14.sp, color: widget.colorFontComplaint))
               ],

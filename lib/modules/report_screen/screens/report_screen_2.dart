@@ -101,7 +101,7 @@ class _ReportScreen2State extends State<ReportScreen2> {
                   padding: EdgeInsets.only(bottom: 20.h, left: 25.h),
                   child: Row(children: [
                     Text(
-                      'Riwayat keluhan',
+                      'Peduli lingkungan',
                       style: TextStyle(
                         fontSize: 19.sp,
                         color: Color(0xff2094F3),
