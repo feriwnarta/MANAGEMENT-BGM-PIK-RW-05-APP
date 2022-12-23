@@ -4,13 +4,13 @@ import 'package:aplikasi_rw/modules/cordinator/screens/complaint/complaint_scree
 import 'package:aplikasi_rw/modules/cordinator/screens/user_worker_screen.dart';
 import 'package:aplikasi_rw/modules/cordinator/widgets/HomeListOfCard.dart';
 import 'package:aplikasi_rw/services/chart_worker/update_chart_worker.dart';
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'absen/absen_screen.dart';
+import 'package:badges/badges.dart' as badge;
 
 // import 'package:logger/logger.dart';
 class ChangePageController extends GetxController {
@@ -113,6 +113,7 @@ class _MenuWorkerScreenState extends State<MenuWorkerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: PreferredSize(
@@ -164,16 +165,16 @@ class _MenuWorkerScreenState extends State<MenuWorkerScreen> {
                     borderRadius: BorderRadius.circular(200),
                     radius: 15.h,
                     onTap: () {},
-                    child: Badge(
+                    child: badge.Badge(
                       badgeColor: Colors.red,
                       // showBadge: () ? true : false,
                       badgeContent: Text(
                         '0',
                         style: TextStyle(color: Colors.white),
                       ),
-                      position: BadgePosition.topEnd(top: -15, end: -10),
+                      position: badge.BadgePosition.topEnd(top: -15, end: -10),
                       child: SvgPicture.asset('assets/img/image-svg/bell.svg'),
-                      animationType: BadgeAnimationType.scale,
+                      animationType: badge.BadgeAnimationType.scale,
                     ),
                   ),
                 ],

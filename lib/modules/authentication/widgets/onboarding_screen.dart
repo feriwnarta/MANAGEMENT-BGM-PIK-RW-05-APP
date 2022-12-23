@@ -13,6 +13,7 @@ class OnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     return Scaffold(
       body: Stack(
         children: [
@@ -55,6 +56,7 @@ class Onboarding1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     return Container(
       color: Color(0xffF2F9FF),
       child: Column(
@@ -141,6 +143,7 @@ class Onboarding2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     return Container(
       color: Color(0xffF2F9FF),
       child: Column(
@@ -222,6 +225,7 @@ class Onboarding3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     return Container(
       color: Color(0xffF2F9FF),
       child: Column(

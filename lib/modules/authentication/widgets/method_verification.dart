@@ -11,6 +11,7 @@ class MethodVerification extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [

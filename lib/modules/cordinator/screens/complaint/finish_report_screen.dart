@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
@@ -14,7 +13,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 // import 'package:logger/logger.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
-import 'package:http/http.dart' as http;
 
 import 'complete_screen.dart';
 
@@ -76,11 +74,11 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ProcessReportServices.getDataFinish(idReport: widget.idReport)
-        .then((value) => print('id estate ${value.photo1}'));
+    // ProcessReportServices.getDataFinish(idReport: widget.idReport)
+    //     .then((value) => print('id estate ${value.photo1}'));
 
     // logger.i(widget.name);
-
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Color(0xffE0E0E0),

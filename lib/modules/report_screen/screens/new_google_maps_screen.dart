@@ -75,6 +75,7 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
                       SafeArea(
                         child: Obx(
                           () => GoogleMap(
+                            liteModeEnabled: true,
                             trafficEnabled: true,
                             myLocationEnabled: false,
                             myLocationButtonEnabled: false,
@@ -319,6 +320,8 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
                                                 Expanded(
                                                     child: Text(
                                                   '${jalan.value}',
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   style: TextStyle(
                                                       fontSize: 12.sp,
                                                       color: Color(0xff2094F3)),

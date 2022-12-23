@@ -2,7 +2,6 @@ import 'package:aplikasi_rw/modules/report_screen/screens/add_complaint.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -95,7 +94,7 @@ class _CameraComplaintState extends State<CameraComplaint> {
         logger.i(statusCapture.value);
         stepperController.index.value = 2;
         stepperController.imagePath.value = picture.path;
-        widget.toast();
+        // widget.toast();
       }
     } on CameraException catch (e) {
       printError(info: e.toString());

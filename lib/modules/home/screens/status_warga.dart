@@ -80,6 +80,7 @@ class _StatusWargaState extends State<StatusWarga> {
   @override
   Widget build(BuildContext context) {
     // logger.w('rebuild widget' + widget.idStatus);
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     return FutureBuilder(
         future: updateButtonLike(),
         builder: (context, snapshot) => (snapshot.hasData)
@@ -95,12 +96,12 @@ class _StatusWargaState extends State<StatusWarga> {
           boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 2)]),
 
       // top : 10, left: 10, right: 10
-      margin: EdgeInsets.only(top: 10, left: 10, right: 10),
+      margin: EdgeInsets.only(top: 16.h, left: 16.w, right: 16.w),
       child: Column(
         children: [
           Row(children: [
             Padding(
-              padding: const EdgeInsets.only(left: 10, top: 10),
+              padding: EdgeInsets.only(left: 10.w, top: 10.h),
               child: CircleAvatar(
                 radius: 20,
                 backgroundImage: CachedNetworkImageProvider(
@@ -108,7 +109,7 @@ class _StatusWargaState extends State<StatusWarga> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(left: 10, top: 10),
+              margin: EdgeInsets.only(left: 12.w, top: 10.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -121,7 +122,7 @@ class _StatusWargaState extends State<StatusWarga> {
                   ),
                   Text(
                     '${widget.uploadTime}',
-                    style: TextStyle(fontSize: 11.sp),
+                    style: TextStyle(fontSize: 10.sp),
                   )
                 ],
               ),
@@ -183,7 +184,7 @@ class _StatusWargaState extends State<StatusWarga> {
                           '${widget.urlStatusImage}',
                         ),
                         fit: BoxFit.cover,
-                        height: 300.h,
+                        height: 344.h,
                       ),
                       onTap: () => Navigator.of(context).push(
                         MaterialPageRoute(
@@ -215,7 +216,7 @@ class _StatusWargaState extends State<StatusWarga> {
                           trimExpandedText: 'Read Less',
                           textAlign: TextAlign.justify,
                           style: TextStyle(
-                            fontSize: 14.sp,
+                            fontSize: 12.sp,
                             color: Color(0xff404040),
                           ),
                         ),
@@ -502,9 +503,9 @@ class _ButtonLikeState extends State<ButtonLike> {
           ),
           (widget.numberLike == '0')
               ? Text('Suka',
-                  style: TextStyle(color: Color(0xff404040), fontSize: 11.sp))
+                  style: TextStyle(color: Color(0xff404040), fontSize: 10.sp))
               : Text(widget.numberLike,
-                  style: TextStyle(color: Color(0xff404040), fontSize: 11.sp))
+                  style: TextStyle(color: Color(0xff404040), fontSize: 10.sp))
         ],
       ),
     );
@@ -577,9 +578,9 @@ class _ButtonCommentState extends State<ButtonComment> {
         ),
         (widget.countComment == '0')
             ? Text('Komentar',
-                style: TextStyle(color: Color(0xff404040), fontSize: 11.sp))
+                style: TextStyle(color: Color(0xff404040), fontSize: 10.sp))
             : Text(widget.countComment,
-                style: TextStyle(color: Color(0xff404040), fontSize: 11.sp))
+                style: TextStyle(color: Color(0xff404040), fontSize: 10.sp))
       ],
     );
   }

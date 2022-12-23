@@ -111,6 +111,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     return Scaffold(
       key: _scaffoldkey,
       body: Stack(

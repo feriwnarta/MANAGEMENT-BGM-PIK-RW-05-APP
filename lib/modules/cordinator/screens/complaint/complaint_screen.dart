@@ -39,7 +39,7 @@ class _ComplaintScreenState extends State<ComplaintScreen>
   @override
   @mustCallSuper
   Widget build(BuildContext context) {
-    print('${widget.name}');
+    ScreenUtil.init(context, designSize: const Size(360, 800));
 
     super.build(context);
     return DefaultTabController(

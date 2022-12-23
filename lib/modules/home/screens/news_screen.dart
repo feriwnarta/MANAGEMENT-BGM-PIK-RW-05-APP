@@ -12,6 +12,7 @@ class NewsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -21,7 +22,10 @@ class NewsScreen extends StatelessWidget {
             floating: true,
             pinned: true,
             snap: true,
-            actionsIconTheme: IconThemeData(opacity: 0.0),
+            iconTheme: IconThemeData(color: Colors.yellow),
+            actionsIconTheme: IconThemeData(
+              opacity: 0.0,
+            ),
             flexibleSpace: Stack(
               children: <Widget>[
                 Positioned.fill(

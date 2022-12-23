@@ -43,8 +43,7 @@ class DetailReportScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('LENGTH :::: $title');
-    print(name);
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     // logger.i('${explodeTitle().length}');
 
     return Scaffold(

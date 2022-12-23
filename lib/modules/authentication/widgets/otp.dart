@@ -76,6 +76,7 @@ class _OtpState extends State<Otp> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     return Column(
       children: [
         SizedBox(

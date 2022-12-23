@@ -10,6 +10,7 @@ enum SubMenu { Request, Complaint }
 class SubMenuReport extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     SubMenu menuRequest = SubMenu.Complaint;
 
     return Scaffold(

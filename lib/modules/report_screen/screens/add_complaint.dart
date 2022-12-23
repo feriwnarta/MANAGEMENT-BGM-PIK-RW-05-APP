@@ -61,6 +61,7 @@ class _AddComplaintState extends State<AddComplaint> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -284,7 +285,7 @@ class _StepperRwState extends State<StepperRw> {
                             ),
                             SizedBox(height: 12.h),
                             Obx(
-                              () => (stepperController.index.value == 2)
+                              () => (stepperController.index.value == 3)
                                   ? ListView.builder(
                                       itemCount: selectedIndex.length,
                                       shrinkWrap: true,
@@ -691,52 +692,55 @@ class _StepperRwState extends State<StepperRw> {
     );
   }
 
-  GridView gridViewCategory(List<CategoryModel> category) {
-    return GridView.count(
-      crossAxisCount: 3,
-      childAspectRatio: .15 / .12,
-      children: category
-          .map<Widget>(
-            (e) => GestureDetector(
-              child: Column(
-                children: [
-                  SizedBox(
-                    width: 60.w,
-                    height: 60.h,
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CachedNetworkImage(
-                          imageUrl: '${ServerApp.url}/icon/${e.icon}',
+  Padding gridViewCategory(List<CategoryModel> category) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      child: GridView.count(
+        crossAxisCount: 3,
+        // childAspectRatio: .15 / .12,
+        children: category
+            .map<Widget>(
+              (e) => GestureDetector(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: 60.w,
+                      height: 60.h,
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CachedNetworkImage(
+                            imageUrl: '${ServerApp.url}/icon/${e.icon}',
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Text(
-                    '${e.category}',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.w500,
+                    Text(
+                      '${e.category}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      overflow: TextOverflow.clip,
                     ),
-                    overflow: TextOverflow.clip,
-                  ),
-                ],
+                  ],
+                ),
+                onTap: () {
+                  idCategory.update((val) {
+                    idCategory = e.idCategory.obs;
+                  });
+                  nameCategory.update((val) {
+                    nameCategory = e.category.obs;
+                  });
+                  isSelected.update((val) {
+                    isSelected = true.obs;
+                  });
+                },
               ),
-              onTap: () {
-                idCategory.update((val) {
-                  idCategory = e.idCategory.obs;
-                });
-                nameCategory.update((val) {
-                  nameCategory = e.category.obs;
-                });
-                isSelected.update((val) {
-                  isSelected = true.obs;
-                });
-              },
-            ),
-          )
-          .toList(),
+            )
+            .toList(),
+      ),
     );
   }
 
@@ -815,38 +819,10 @@ class _StepperRwState extends State<StepperRw> {
       child: Column(
         children: [
           Container(
-            height: 450.h,
+            height: 510.h,
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // TextFormField(
-                  //   controller: controllerWrite.controllerTitleReport,
-                  //   decoration: InputDecoration(
-                  //     enabledBorder: UnderlineInputBorder(
-                  //       borderSide: BorderSide(
-                  //         color: Color(0xffE0E0E0),
-                  //       ),
-                  //     ),
-                  //     focusedBorder: UnderlineInputBorder(
-                  //       borderSide: BorderSide(
-                  //         color: Color(0xffE0E0E0),
-                  //       ),
-                  //     ),
-                  //     hintText: 'Ketik judul laporan anda',
-                  //     contentPadding: EdgeInsets.only(
-                  //       right: 23.w,
-                  //       left: 23.w,
-                  //       bottom: 22.h,
-                  //       top: 13.h,
-                  //     ),
-                  //     hintStyle:
-                  //         TextStyle(color: Colors.black, fontSize: 14.sp),
-                  //   ),
-                  //   validator: (value) => (value.length > 0)
-                  //       ? null
-                  //       : 'judul laporan tidak boleh kosong',
-                  // ),
-                  // SizedBox(height: 16.h),
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 18.w),
                     child: Column(
@@ -870,9 +846,6 @@ class _StepperRwState extends State<StepperRw> {
                               hintStyle: TextStyle(
                                   color: Colors.grey, fontSize: 14.sp),
                             ),
-                            // validator: (value) => (value.length > 0)
-                            //     ? null
-                            //     : 'isi laporan tidak boleh kosong',
                           ),
                         ),
                         SizedBox(height: 8.h),
@@ -927,6 +900,8 @@ class _StepperRwState extends State<StepperRw> {
                                           context,
                                           titleText: '',
                                           cancelText: 'Batal',
+                                          itemTextStyle:
+                                              TextStyle(fontSize: 16.sp),
                                           confirmText: 'Oke',
                                           firstDate: DateTime(1960),
                                           dateFormat: 'dd-MMMM-yyyy',
@@ -955,7 +930,7 @@ class _StepperRwState extends State<StepperRw> {
 
                                     controllerWrite.date = formated.obs;
                                   }
-                                  showToast();
+                                  // showToast();
                                 },
                               ),
                             ),
@@ -963,7 +938,7 @@ class _StepperRwState extends State<StepperRw> {
                         ),
                         SizedBox(height: 24.h),
                         SizedBox(
-                          height: 30.h,
+                          height: 40.h,
                           width: double.infinity,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(6),
@@ -1004,7 +979,7 @@ class _StepperRwState extends State<StepperRw> {
                                         selectLoc = address.obs;
                                       });
 
-                                      showToast();
+                                      // showToast();
 
                                       String latitude =
                                           value['latitude'].toString();
@@ -1024,13 +999,31 @@ class _StepperRwState extends State<StepperRw> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 50.h),
+                  SizedBox(height: 46.h),
+                  Obx(
+                    () => Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
+                          color: Color(0xff9E9E9E)),
+                      width: 288.w,
+                      height: 36.h,
+                      child: Center(
+                        child: Text(
+                          (_radio.value == RadioComplaint.Anonim
+                              ? 'Nama anda bersifat rahasia'
+                              : 'Nama dan laporan anda bersifat rahasia'),
+                          style: TextStyle(
+                              fontSize: 14.sp, color: Color(0xffE0E0E0)),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 24.h,
+                  ),
                   Divider(
                     color: Color(0xffE0E0E0),
                     thickness: 2,
-                  ),
-                  SizedBox(
-                    height: 10.h,
                   ),
                   Obx(
                     () => IntrinsicHeight(
@@ -1058,7 +1051,9 @@ class _StepperRwState extends State<StepperRw> {
                             ),
                           ),
                           VerticalDivider(
-                              thickness: 2, color: Color(0xffE0E0E0)),
+                            thickness: 2,
+                            color: Color(0xffE0E0E0),
+                          ),
                           SizedBox(
                             width: 170.w,
                             child: RadioListTile<RadioComplaint>(
@@ -1146,7 +1141,7 @@ class _StepperRwState extends State<StepperRw> {
                       selectDate = formated.obs;
                     });
                     controllerWrite.date = formated.obs;
-                    showToast();
+                    // showToast();
                   }
                 },
                 child: Text(
@@ -1180,7 +1175,7 @@ class _StepperRwState extends State<StepperRw> {
         SizedBox(width: 2.w),
         Text(
           text,
-          style: TextStyle(fontSize: 14.sp, color: colorText),
+          style: TextStyle(fontSize: 16.sp, color: colorText),
         ),
         SizedBox(width: 2.w),
         (status == 'last')

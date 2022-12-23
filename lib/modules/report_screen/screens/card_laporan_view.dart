@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:aplikasi_rw/controller/report_controller.dart';
 import 'package:aplikasi_rw/controller/report_user_controller.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/history_report_services.dart';
@@ -250,6 +248,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     return Scaffold(
         backgroundColor: Colors.grey[100],
         appBar: AppBar(
@@ -602,6 +601,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                 ? (snapshot.data.isNotEmpty)
                     ? ExpansionTile(
                         expandedAlignment: Alignment.centerLeft,
+                        childrenPadding: EdgeInsets.zero,
                         initiallyExpanded: true,
                         onExpansionChanged: (value) =>
                             isVisibilityExpansion = value,
@@ -614,27 +614,45 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
-                              height: 25.h,
-                              width: 70.w,
+                              width: 78.w,
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 2.h, horizontal: 8.w),
+                              alignment: Alignment.center,
                               decoration: BoxDecoration(
+                                border: Border.all(
                                   color:
                                       (widget.status.toLowerCase() == 'listed')
-                                          ? Colors.red
+                                          ? Color(0xffEEB4B0)
                                           : (widget.status.toLowerCase() ==
-                                                  'noticed')
-                                              ? Colors.yellow[900]
+                                                  'process')
+                                              ? Color(0xffEECEB0)
                                               : (widget.status.toLowerCase() ==
-                                                      'process')
-                                                  ? Colors.yellow[600]
-                                                  : Colors.green,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Center(
-                                  child: Text(
-                                widget.status,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              )),
+                                                      'finish')
+                                                  ? Color(0xffB8DBCA)
+                                                  : Color(0xffEECEB0),
+                                ),
+                                borderRadius: BorderRadius.circular(6),
+                                color: (widget.status.toLowerCase() == 'listed')
+                                    ? Color(0xffEEB4B0).withOpacity(0.5)
+                                    : (widget.status.toLowerCase() == 'process')
+                                        ? Color(0xffEECEB0).withOpacity(0.5)
+                                        : (widget.status.toLowerCase() ==
+                                                'finish')
+                                            ? Color(0xffB8DBCA).withOpacity(0.5)
+                                            : Color(0xffEECEB0)
+                                                .withOpacity(0.5),
+                              ),
+                              child: Text(
+                                (widget.status.toLowerCase() == 'listed')
+                                    ? 'Menunggu'
+                                    : (widget.status.toLowerCase() == 'noticed')
+                                        ? 'Menunggu'
+                                        : (widget.status.toLowerCase() ==
+                                                'process')
+                                            ? 'Proses'
+                                            : 'Selesai',
+                                style: TextStyle(fontSize: 12.sp),
+                              ),
                             ),
                             SizedBox(
                               width: 10.w,
@@ -665,21 +683,17 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                                         height: 100.0.h,
                                         child: TimelineTile(
                                           endChild: Container(
-                                            // margin: EdgeInsets.only(left: 20),
-                                            child: Container(
-                                              margin:
-                                                  EdgeInsets.only(top: 20.h),
-                                              child: ListTile(
-                                                title: Text(
-                                                  '${snapshot.data[index].statusProcess}',
-                                                  style: TextStyle(
-                                                      fontSize: 14.0.sp),
-                                                ),
-                                                subtitle: Text(
-                                                  '${snapshot.data[index].time}',
-                                                  style: TextStyle(
-                                                      fontSize: 11.0.sp),
-                                                ),
+                                            margin: EdgeInsets.only(top: 20.h),
+                                            child: ListTile(
+                                              title: Text(
+                                                '${snapshot.data[index].statusProcess}',
+                                                style: TextStyle(
+                                                    fontSize: 12.0.sp),
+                                              ),
+                                              subtitle: Text(
+                                                '${snapshot.data[index].time}',
+                                                style: TextStyle(
+                                                    fontSize: 11.0.sp),
                                               ),
                                             ),
                                           ),
@@ -821,6 +835,7 @@ class _GoogleMapViewReportState extends State<GoogleMapViewReport> {
     return Container(
       height: 300.h,
       child: GoogleMap(
+        liteModeEnabled: true,
         initialCameraPosition: CameraPosition(
             bearing: 192.8334901395799,
             target: LatLng(

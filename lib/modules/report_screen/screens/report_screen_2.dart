@@ -16,6 +16,7 @@ import '../../../services/delete_report_services.dart';
 import 'card_report_screen.dart';
 import 'finished_report_scren.dart';
 import 'sub_menu_report.dart';
+import 'package:badges/badges.dart' as badge;
 
 //ignore: must_be_immutable
 class ReportScreen2 extends StatefulWidget {
@@ -98,7 +99,7 @@ class _ReportScreen2State extends State<ReportScreen2> {
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
                 background: Padding(
-                  padding: EdgeInsets.only(bottom: 20.h, left: 25.h),
+                  padding: EdgeInsets.only(bottom: 17.h, left: 16.w),
                   child: Row(children: [
                     Text(
                       'Peduli lingkungan',
@@ -108,7 +109,7 @@ class _ReportScreen2State extends State<ReportScreen2> {
                       ),
                     ),
                     SizedBox(
-                      width: 170.w,
+                      width: 158.w,
                     ),
                     FutureBuilder<List<ReportFinishedModel>>(
                         future: _future,
@@ -133,7 +134,7 @@ class _ReportScreen2State extends State<ReportScreen2> {
                                     ));
                                   }
                                 },
-                                child: Badge(
+                                child: badge.Badge(
                                   badgeColor: Colors.red,
                                   badgeContent: (snapshot.data != null &&
                                           snapshot.data.isNotEmpty)
@@ -154,7 +155,7 @@ class _ReportScreen2State extends State<ReportScreen2> {
                                   animationType: BadgeAnimationType.scale,
                                 ),
                               )
-                            : Badge(
+                            : badge.Badge(
                                 badgeColor: Colors.red,
                                 badgeContent: Text(
                                   '0',
@@ -170,8 +171,7 @@ class _ReportScreen2State extends State<ReportScreen2> {
                               )),
                   ]),
                 ),
-                titlePadding:
-                    EdgeInsets.only(top: 17.h, left: 16.w, right: 16.w),
+                titlePadding: EdgeInsets.only(left: 16.w, right: 16.w),
                 title: SizedBox(
                   width: 340.w,
                   child: Card(
@@ -181,7 +181,7 @@ class _ReportScreen2State extends State<ReportScreen2> {
                     child: TextField(
                       decoration: InputDecoration(
                           contentPadding: EdgeInsets.symmetric(
-                              vertical: 2.h, horizontal: 12.w),
+                              vertical: 8.h, horizontal: 12.w),
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(6),
                               borderSide: BorderSide.none),
@@ -189,6 +189,7 @@ class _ReportScreen2State extends State<ReportScreen2> {
                               borderRadius: BorderRadius.circular(6),
                               borderSide: BorderSide.none),
                           hintText: 'Nomor Laporan',
+                          hintStyle: TextStyle(fontSize: 14.sp),
                           suffixIcon: Icon(
                             Icons.search,
                           )),

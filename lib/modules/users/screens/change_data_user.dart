@@ -47,6 +47,7 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     return WillPopScope(
       onWillPop: () async {
         if (status != null && status == 'refresh') {

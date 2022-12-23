@@ -8,6 +8,7 @@ class HeaderLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     return Container(
       height: 302.h,
       decoration: BoxDecoration(

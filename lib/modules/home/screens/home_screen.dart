@@ -105,6 +105,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     super.build(context);
 
     return Scaffold(
@@ -128,15 +129,18 @@ class _HomeScreenState extends State<HomeScreen>
                       children: [
                         SizedBox(height: 24.h),
                         Padding(
-                          padding: const EdgeInsets.only(left: 15),
+                          padding: EdgeInsets.only(left: 16.w),
                           child: Text(
                             'Berita',
                             style: TextStyle(
                                 fontWeight: FontWeight.w500, fontSize: 16.sp),
                           ),
                         ),
+                        SizedBox(
+                          height: 2.h,
+                        ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 15),
+                          padding: EdgeInsets.only(left: 16.w),
                           child: Text(
                             'Informasi yang di berikan untuk warga BGM PIK 05',
                             style: TextStyle(
@@ -174,11 +178,14 @@ class _HomeScreenState extends State<HomeScreen>
                         //         : Container())
                       ],
                     ),
+                    SizedBox(
+                      height: 16.h,
+                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 15, top: 10),
+                          padding: EdgeInsets.only(left: 16.w),
                           child: Text(
                             "Posting",
                             style: TextStyle(
@@ -187,8 +194,9 @@ class _HomeScreenState extends State<HomeScreen>
                             ),
                           ),
                         ),
+                        SizedBox(height: 2.h),
                         Padding(
-                          padding: const EdgeInsets.only(left: 15),
+                          padding: EdgeInsets.only(left: 16.w),
                           child: Text(
                             "Unggahan warga BMG PIK 05",
                             style: TextStyle(
@@ -217,9 +225,9 @@ class _HomeScreenState extends State<HomeScreen>
               ? CarouselSlider.builder(
                   options: CarouselOptions(
                     // height: 180,
-                    height: 183.h,
+                    height: 164.h,
                     enlargeCenterPage: kDebugMode ? false : true,
-                    disableCenter: true,
+                    disableCenter: false,
                     viewportFraction: 0.47,
                     autoPlay: true,
                     autoPlayInterval: Duration(seconds: 4),
@@ -230,56 +238,46 @@ class _HomeScreenState extends State<HomeScreen>
                     return SingleChildScrollView(
                       child: GestureDetector(
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Container(
+                                height: 124.h,
+                                width: 143.w,
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(6),
+                                    // borderRadius: BorderRadius.only(
+                                    //     topLeft: Radius.circular(15),
+                                    //     topRight: Radius.circular(15)),
+                                    child: CachedNetworkImage(
+                                      imageUrl:
+                                          '${ServerApp.url}${snapshot.data[index].urlImageNews}',
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, _) => Container(
+                                        color: Colors.grey,
+                                      ),
+                                      errorWidget: (context, url, _) =>
+                                          Container(
+                                        color: Colors.grey,
+                                        child: Icon(
+                                          Icons.error,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ))),
                             SizedBox(
-                              height: 167.78.h,
-                              width: 156.w,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                      height: 121.78.h,
-                                      width: 156.w,
-                                      child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(6),
-                                          // borderRadius: BorderRadius.only(
-                                          //     topLeft: Radius.circular(15),
-                                          //     topRight: Radius.circular(15)),
-                                          child: CachedNetworkImage(
-                                            imageUrl:
-                                                '${ServerApp.url}${snapshot.data[index].urlImageNews}',
-                                            fit: BoxFit.cover,
-                                            placeholder: (context, _) =>
-                                                Container(
-                                              color: Colors.grey,
-                                            ),
-                                            errorWidget: (context, url, _) =>
-                                                Container(
-                                              color: Colors.grey,
-                                              child: Icon(
-                                                Icons.error,
-                                                color: Colors.red,
-                                              ),
-                                            ),
-                                          ))),
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 4.w),
-                                    width: 148.w,
-                                    child: Text(
-                                      snapshot.data[index].caption,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          color: Color(0xff404040),
-                                          fontSize: 12.sp),
-                                    ),
-                                  )
-                                ],
-                              ),
+                              height: 3.h,
                             ),
+                            SizedBox(
+                              width: 143.w,
+                              child: Text(
+                                snapshot.data[index].caption,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: true,
+                                style: TextStyle(
+                                    color: Color(0xff404040), fontSize: 12.sp),
+                              ),
+                            )
                           ],
                         ),
                         onTap: () {
@@ -341,7 +339,7 @@ class _HomeScreenState extends State<HomeScreen>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: 1.h,
+          height: 16.h,
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -354,7 +352,7 @@ class _HomeScreenState extends State<HomeScreen>
                 style: TextStyle(fontSize: 19.sp, color: Color(0xff2094F3)),
               ),
               Padding(
-                padding: EdgeInsets.only(right: 50.w),
+                padding: EdgeInsets.only(right: 38.w),
                 child: Image(
                   width: 34.w,
                   height: 40.h,
@@ -405,7 +403,7 @@ class _HomeScreenState extends State<HomeScreen>
     return Align(
       alignment: Alignment.center,
       child: SizedBox(
-        height: 144.h,
+        // height: 144.h,
         width: 340.w,
         child: Card(
           elevation: 10,
@@ -437,8 +435,8 @@ class _HomeScreenState extends State<HomeScreen>
                               width: 15.w,
                             ),
                             SizedBox(
-                              height: 40.h,
-                              width: 40.w,
+                              height: 50.h,
+                              width: 50.w,
                               child: CircleAvatar(
                                   backgroundImage: CachedNetworkImageProvider(
                                       '${ServerApp.url}${controllerLogin.urlProfile}')),
@@ -502,7 +500,7 @@ class _HomeScreenState extends State<HomeScreen>
                             icon: Icon(
                               FontAwesomeIcons.camera,
                               color: Colors.white,
-                              size: 12.w,
+                              size: 16.h,
                             ),
                             label: Text(
                               'Kamera',
@@ -510,7 +508,7 @@ class _HomeScreenState extends State<HomeScreen>
                                   color: Colors.white, fontSize: 14.sp),
                             )),
                         SizedBox(
-                          width: 24.w,
+                          width: 8.w,
                         ),
                         VerticalDivider(
                           color: Colors.white,
@@ -520,7 +518,7 @@ class _HomeScreenState extends State<HomeScreen>
                           endIndent: 10,
                         ),
                         SizedBox(
-                          width: 24.w,
+                          width: 8.w,
                         ),
                         TextButton.icon(
                             onPressed: () {
@@ -532,7 +530,7 @@ class _HomeScreenState extends State<HomeScreen>
                             icon: Icon(
                               FontAwesomeIcons.solidImage,
                               color: Colors.white,
-                              size: 12.w,
+                              size: 16.h,
                             ),
                             label: Text(
                               'Galeri',

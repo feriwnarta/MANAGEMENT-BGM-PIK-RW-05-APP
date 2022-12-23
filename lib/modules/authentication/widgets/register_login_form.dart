@@ -91,6 +91,8 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

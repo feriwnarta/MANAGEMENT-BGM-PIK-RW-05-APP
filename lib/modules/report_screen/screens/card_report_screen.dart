@@ -54,6 +54,7 @@ class CardReportScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     return Center(
       child: Container(
         // padding: EdgeInsets.only(bottom: 10),
@@ -109,7 +110,7 @@ class CardReportScreen extends StatelessWidget {
                                   fontSize: 10.sp, color: Color(0xff2094F3)),
                             ),
                             SizedBox(
-                              width: 70.w,
+                              width: 76.w,
                             ),
                             Container(
                               width: 78.w,
