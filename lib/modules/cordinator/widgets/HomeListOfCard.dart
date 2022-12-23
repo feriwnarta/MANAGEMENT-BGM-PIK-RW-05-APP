@@ -31,15 +31,15 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
     super.initState();
     final logger = Logger();
     logger.e('clicked');
-    setState(() {
-      // widget.futureLineChart = GetChartWorkerServices.getChart();
-      // widget.futurePieChart = PieChartServices.getPie();
-      // widget.futureBarChart = TotalManPowerServices.getManPower();
-    });
+
+    widget.futureLineChart = GetChartWorkerServices.getChart();
+    widget.futurePieChart = PieChartServices.getPie();
+    widget.futureBarChart = TotalManPowerServices.getManPower();
   }
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     return RefreshIndicator(
       onRefresh: () async {
         setState(() {
@@ -57,8 +57,8 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
               children: [
                 SizedBox(height: 16.h),
                 FutureBuilder<Map<String, dynamic>>(
-                    // future: widget.futureLineChart,
-                    future: GetChartWorkerServices.getChart(),
+                    future: widget.futureLineChart,
+                    // future: GetChartWorkerServices.getChart(),
                     builder: (context, snapshot) =>
                         (snapshot.connectionState == ConnectionState.done)
                             ? lineChart(snapshot)
@@ -73,8 +73,8 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
                                 baseColor: Colors.grey[300],
                                 highlightColor: Colors.grey[200])),
                 FutureBuilder<Map<String, dynamic>>(
-                    // future: widget.futurePieChart,
-                    future: PieChartServices.getPie(),
+                    future: widget.futurePieChart,
+                    // future: PieChartServices.getPie(),
                     builder: (context, snapshot) =>
                         (snapshot.connectionState == ConnectionState.done)
                             ? pieChart(snapshot)
@@ -90,7 +90,8 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
                                 baseColor: Colors.grey[300],
                                 highlightColor: Colors.grey[200])),
                 FutureBuilder(
-                    future: TotalManPowerServices.getManPower(),
+                    // future: TotalManPowerServices.getManPower(),
+                    future: widget.futureBarChart,
                     builder: (context, snapshot) =>
                         (snapshot.connectionState == ConnectionState.done)
                             ? barChart(snapshot)
