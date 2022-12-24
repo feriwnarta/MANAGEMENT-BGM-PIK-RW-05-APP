@@ -163,7 +163,7 @@ class _CardReportProcessState extends State<CardReportProcess>
   didChangeDependencies() async {
     super.didChangeDependencies();
     controllerReportProcess.scrollcontroller.addListener(onScroll);
-    timer = Timer.periodic(Duration(seconds: 3), (second) {
+    timer = Timer.periodic(Duration(seconds: 1), (second) {
       controllerReportProcess.realtimeData();
     });
   }
@@ -290,7 +290,7 @@ class _CardReportState extends State<CardReport>
   @override
   didChangeDependencies() async {
     super.didChangeDependencies();
-    timer = Timer.periodic(Duration(seconds: 3), (second) {
+    timer = Timer.periodic(Duration(seconds: 1), (second) {
       if (userLoginController.status.value == 'cordinator') {
         reportCordinatorController.realtimeData('cordinator');
       } else if (userLoginController.status.value == 'contractor') {
@@ -600,7 +600,7 @@ class _CardReportFinish extends State<CardReportFinish>
   @override
   didChangeDependencies() async {
     super.didChangeDependencies();
-    timer = Timer.periodic(Duration(seconds: 3), (second) {
+    timer = Timer.periodic(Duration(seconds: 1), (second) {
       controller.realtimeData();
     });
     controller.scrollcontroller.addListener(onScroll);

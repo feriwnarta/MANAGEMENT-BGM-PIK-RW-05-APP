@@ -17,24 +17,26 @@ class HomeListOfCard extends StatefulWidget {
   HomeListOfCard({Key key}) : super(key: key);
 
   final dataDropdown = [];
-  Future<Map<String, dynamic>> futureLineChart;
-  Future<Map<String, dynamic>> futurePieChart;
-  Future<List<TotalManPowerModel>> futureBarChart;
+  Future<Map<String, dynamic>> futureLineChart =
+      GetChartWorkerServices.getChart();
+  Future<Map<String, dynamic>> futurePieChart = PieChartServices.getPie();
+  Future<List<TotalManPowerModel>> futureBarChart =
+      TotalManPowerServices.getManPower();
 
   @override
   State<HomeListOfCard> createState() => _HomeListOfCardState();
 }
 
 class _HomeListOfCardState extends State<HomeListOfCard> {
+  // widget.futureLineChart = GetChartWorkerServices.getChart();
+  // widget.futurePieChart = PieChartServices.getPie();
+  // widget.futureBarChart = TotalManPowerServices.getManPower();
+
   @override
   initState() {
     super.initState();
     final logger = Logger();
     logger.e('clicked');
-
-    widget.futureLineChart = GetChartWorkerServices.getChart();
-    widget.futurePieChart = PieChartServices.getPie();
-    widget.futureBarChart = TotalManPowerServices.getManPower();
   }
 
   @override
