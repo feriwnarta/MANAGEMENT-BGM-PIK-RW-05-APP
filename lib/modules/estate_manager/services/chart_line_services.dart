@@ -43,10 +43,31 @@ class ChartLineServices {
                 .map((data) => data['persentase_sekarang'])
                 .toList()));
 
-        logger.i(model.dropdown);
+        logger.i(model.dataChart);
 
         return model;
       }).toList();
+    }
+  }
+
+  static Future<Map<String, dynamic>> updateChart(
+      {String idUser, String rangeDate, String date, String idCategory}) async {
+    Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
+
+    var data = {
+      'id_user': idUser,
+      'date': date,
+      'range_date': rangeDate,
+      'id_category': idCategory
+    };
+    var response = await dio.post(
+        '${ServerApp.url}/src/estate_manager/update_chart_line.php',
+        data: jsonEncode(data));
+
+    if (response.statusCode == 200) {
+      var result = jsonDecode(response.data);
+      return result;
     }
   }
 }

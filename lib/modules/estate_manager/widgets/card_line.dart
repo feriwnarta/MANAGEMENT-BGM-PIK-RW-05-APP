@@ -84,6 +84,8 @@ class _CardLineState extends State<CardLine> {
                           child: CardLineChart(
                             index: index,
                             snapshot: snapshot,
+                            date: date.value,
+                            rangeDate: rangeDate.value,
                           ),
                         ),
                       )

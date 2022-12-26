@@ -1,7 +1,11 @@
+import 'dart:developer';
+
+import 'package:aplikasi_rw/modules/estate_manager/services/chart_line_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/state_manager.dart';
+import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 import '../models/LineChartModel.dart';
@@ -10,8 +14,15 @@ class CardLineChart extends StatefulWidget {
   AsyncSnapshot<List<LineChartModel>> snapshot;
   int index;
   RxInt category;
+  String rangeDate, date;
 
-  CardLineChart({Key key, this.snapshot, this.index, this.category})
+  CardLineChart(
+      {Key key,
+      this.snapshot,
+      this.index,
+      this.category,
+      this.date,
+      this.rangeDate})
       : super(key: key);
 
   @override
@@ -24,12 +35,13 @@ class _CardLineChartState extends State<CardLineChart> {
   int index;
   RxInt category;
   RxString test = ''.obs;
+  bool isUpdate = false;
+  Map<String, dynamic> dataUpdate = {};
 
   _CardLineChartState({this.category, this.index, this.snapshot});
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(360, 800));
     return Card(
       elevation: 5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -50,21 +62,15 @@ class _CardLineChartState extends State<CardLineChart> {
               width: double.infinity,
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
-                  hint: (snapshot.data[index].dropdown.length > 1)
-                      ? Text(
-                          '${snapshot.data[index].dropdown[0]['name_category']}',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16.sp,
-                          ),
-                        )
-                      : Text(
-                          '${snapshot.data[index].dropdown[0]['name_category']}',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16.sp,
-                          ),
-                        ),
+                  hint: Text(
+                    (!isUpdate)
+                        ? '${snapshot.data[index].dropdown[0]['name_category']}'
+                        : dataUpdate['name_category'],
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16.sp,
+                    ),
+                  ),
                   isDense: true,
                   underline: null,
                   style: TextStyle(
@@ -83,13 +89,20 @@ class _CardLineChartState extends State<CardLineChart> {
                   // After selecting the desired option,it will
                   // change button value to selected value
                   onChanged: (String category) async {
-                    // widget.future = await UpdateChartWorkerServices.updateChart
-                    //(category: category);
-                    // setState(() {});
-                    // this.category.value = int.parse(category);
-                    test.value = 'category';
+                    test.value = category;
 
-                    setState(() {});
+                    dataUpdate = await ChartLineServices.updateChart(
+                        date: widget.date,
+                        idCategory: test.value,
+                        idUser: '1',
+                        rangeDate: widget.rangeDate);
+
+                    setState(() {
+                      isUpdate = true;
+                    });
+
+                    final logger = Logger();
+                    logger.d(dataUpdate.toString());
                   },
                 ),
               ),
@@ -106,7 +119,9 @@ class _CardLineChartState extends State<CardLineChart> {
                       width: 100.w,
                       height: 49.h,
                       child: Text(
-                        '${snapshot.data[0].persentaseSekarang[index]}',
+                        (!isUpdate)
+                            ? '${snapshot.data[0].persentaseSekarang[index]}'
+                            : dataUpdate['persentase_sekarang'],
                         style: TextStyle(
                           fontSize: 28.sp,
                           fontWeight: FontWeight.w500,
@@ -116,19 +131,33 @@ class _CardLineChartState extends State<CardLineChart> {
                     SizedBox(
                       height: 19.h,
                     ),
-                    SizedBox(
-                      width: 100.w,
-                      height: 20.h,
-                      child: Row(
-                          children: (snapshot.data[index].pic[0] != null)
-                              ? snapshot.data[index].pic[0]
-                                  .map<Widget>((data) => Text(
-                                        '${data}',
-                                        overflow: TextOverflow.ellipsis,
-                                      ))
-                                  .toList()
-                              : [Text('-')]),
-                    )
+                    (!isUpdate)
+                        ? SizedBox(
+                            width: 100.w,
+                            height: 20.h,
+                            child: Row(
+                                children: (snapshot.data[index].pic[0] != null)
+                                    ? snapshot.data[index].pic[0]
+                                        .map<Widget>((data) => Text(
+                                              '$data',
+                                              overflow: TextOverflow.ellipsis,
+                                            ))
+                                        .toList()
+                                    : [Text('-')]),
+                          )
+                        : SizedBox(
+                            width: 100.w,
+                            height: 20.h,
+                            child: Row(
+                                children: (dataUpdate['pic'] != null)
+                                    ? dataUpdate['pic']
+                                        .map<Widget>((data) => Text(
+                                              '$data',
+                                              overflow: TextOverflow.ellipsis,
+                                            ))
+                                        .toList()
+                                    : [Text('-')]),
+                          ),
                   ],
                 ),
                 Column(
@@ -139,7 +168,7 @@ class _CardLineChartState extends State<CardLineChart> {
                       child: SfSparkAreaChart(
                         data: (snapshot.data[index].dataChart[0].length != 0)
                             ? snapshot.data[index].dataChart[0]
-                                .map<num>((data) => double.parse(data))
+                                .map<double>((data) => double.parse(data))
                                 .toList()
                             : [100, 100, 100, 100],
                         color: (snapshot.data[index].status[0] == 'minus')
@@ -155,21 +184,36 @@ class _CardLineChartState extends State<CardLineChart> {
                     SizedBox(
                       height: 15.h,
                     ),
-                    SizedBox(
-                        height: 20.h,
-                        width: 60.w,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            (snapshot.data[index].status[0] == 'plus' &&
-                                    snapshot.data[index].persentase[0] ==
-                                        '100 %')
-                                ? Spacer()
-                                : SvgPicture.asset(
-                                    'assets/img/image-svg/low.svg'),
-                            Text('${snapshot.data[index].persentase[0]}')
-                          ],
-                        )),
+                    (!isUpdate)
+                        ? SizedBox(
+                            height: 20.h,
+                            width: 60.w,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                (snapshot.data[index].status[0] == 'plus' &&
+                                        snapshot.data[index].persentase[0] ==
+                                            '100 %')
+                                    ? Spacer()
+                                    : SvgPicture.asset(
+                                        'assets/img/image-svg/low.svg'),
+                                Text('${snapshot.data[index].persentase[0]}')
+                              ],
+                            ))
+                        : SizedBox(
+                            height: 20.h,
+                            width: 60.w,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                (dataUpdate['status'] == 'plus' &&
+                                        dataUpdate['persentase'] == '100 %')
+                                    ? Spacer()
+                                    : SvgPicture.asset(
+                                        'assets/img/image-svg/low.svg'),
+                                Text(dataUpdate['persentase'])
+                              ],
+                            )),
                     SizedBox(
                       height: 16.h,
                     ),
