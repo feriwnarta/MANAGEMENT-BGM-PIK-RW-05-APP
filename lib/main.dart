@@ -2,6 +2,7 @@ import 'package:aplikasi_rw/controller/home_screen_controller.dart';
 import 'package:aplikasi_rw/controller/indexscreen_home_controller.dart';
 import 'package:aplikasi_rw/controller/report_user_controller.dart';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
+import 'package:aplikasi_rw/modules/estate_manager/screens/dashboard.dart';
 import 'package:aplikasi_rw/routes/app_pages.dart';
 import 'package:aplikasi_rw/routes/app_routes.dart';
 import 'package:aplikasi_rw/modules/home/screens/home_screen.dart';
@@ -213,11 +214,10 @@ class _MyApp extends State<MyApp> {
       builder: (context, child) => AppLifecycleManager(
         child: GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          initialRoute: AppPage.INITIAL_ROUTE,
-          getPages: AppPage.pages,
+          // initialRoute: AppPage.INITIAL_ROUTE,
+          // getPages: AppPage.pages,
+          home: DashboardEm(),
 
-          // home: SplashView(),
-          // home: NewGoogleMaps(),
           theme: ThemeData(
               appBarTheme: AppBarTheme(
                 systemOverlayStyle: SystemUiOverlayStyle.dark,

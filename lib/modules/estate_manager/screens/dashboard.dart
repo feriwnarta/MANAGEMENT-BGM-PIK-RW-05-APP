@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
-
-import '../services/chart_line_services.dart';
 import '../widgets/app_bar.dart';
 import '../widgets/card_line.dart';
 
@@ -37,7 +32,7 @@ class _DashboardEmState extends State<DashboardEm> {
                     SizedBox(
                       height: 20.h,
                     ),
-                    CardLine(widget: button()),
+                    CardLine(),
                   ],
                 ),
               )
@@ -45,59 +40,6 @@ class _DashboardEmState extends State<DashboardEm> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget button() {
-    return Column(children: [
-      Row(
-        children: [
-          buttonSelectDate(),
-          SizedBox(
-            width: 12.w,
-          ),
-          buttonFiter(),
-        ],
-      ),
-      SizedBox(
-        height: 16.h,
-      ),
-    ]);
-  }
-
-  SizedBox buttonFiter() {
-    return SizedBox(
-      width: 92.w,
-      child: OutlinedButton.icon(
-          onPressed: () {},
-          icon: SvgPicture.asset('assets/img/image-svg/filter.svg'),
-          style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.grey,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              )),
-          label: Text(
-            'Filter',
-            style: TextStyle(fontSize: 14.sp),
-          )),
-    );
-  }
-
-  SizedBox buttonSelectDate() {
-    return SizedBox(
-      width: 142.w,
-      child: OutlinedButton.icon(
-          onPressed: () {},
-          icon: SvgPicture.asset('assets/img/image-svg/pilih-tanggal.svg'),
-          style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.grey,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              )),
-          label: Text(
-            'Pilih tanggal',
-            style: TextStyle(fontSize: 14.sp),
-          )),
     );
   }
 

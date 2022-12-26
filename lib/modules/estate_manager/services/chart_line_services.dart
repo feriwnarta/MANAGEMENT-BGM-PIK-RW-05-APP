@@ -43,7 +43,7 @@ class ChartLineServices {
                 .map((data) => data['persentase_sekarang'])
                 .toList()));
 
-        logger.i(model.status[0]);
+        logger.i(model.dropdown);
 
         return model;
       }).toList();

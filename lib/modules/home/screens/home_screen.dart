@@ -50,21 +50,12 @@ class _HomeScreenState extends State<HomeScreen>
   final key = GlobalKey();
 
   final showHamburgerMenuKey = GlobalKey();
-
-  // final GlobalKey _second = GlobalKey();
-  // final GlobalKey _first = GlobalKey();
-
   @override
   initState() {
     super.initState();
     controllerStatus = Get.put(StatusUserController());
     controllerLogin = Get.put(UserLoginController());
     writeStatusController = Get.put(WriteStatusController());
-
-    // showcase
-    // WidgetsBinding.instance.addPostFrameCallback(
-    //   (_) => ShowCaseWidget.of(context).startShowCase([_first, _second]),
-    // );
   }
 
   // Timer _timer;
@@ -80,16 +71,7 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    // blocColor = BlocProvider.of<CarouselBloc>(context);
-
-    // blocTulisStatus = BlocProvider.of<TempatTulisStatusBloc>(context);
-    // blocStatusUser = BlocProvider.of<StatusUserBloc>(context);
     controller.addListener(onScroll);
-
-    // _timer = Timer.periodic(Duration(seconds: 5), (duration) async {
-    //   print(duration);
-    //   controllerStatus.realtimeData();
-    // });
   }
 
   @override
@@ -225,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen>
               ? CarouselSlider.builder(
                   options: CarouselOptions(
                     // height: 180,
-                    height: 164.h,
+                    height: 183.h,
                     enlargeCenterPage: kDebugMode ? false : true,
                     disableCenter: false,
                     viewportFraction: 0.47,
