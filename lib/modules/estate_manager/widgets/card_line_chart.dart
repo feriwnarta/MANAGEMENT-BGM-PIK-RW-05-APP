@@ -120,7 +120,7 @@ class _CardLineChartState extends State<CardLineChart> {
                       height: 49.h,
                       child: Text(
                         (!isUpdate)
-                            ? '${snapshot.data[0].persentaseSekarang[index]}'
+                            ? '${snapshot.data[index].persentaseSekarang[0]}'
                             : dataUpdate['persentase_sekarang'],
                         style: TextStyle(
                           fontSize: 28.sp,

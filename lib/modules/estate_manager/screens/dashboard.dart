@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../widgets/app_bar.dart';
-import '../widgets/card_line.dart';
+import '../widgets/statistic_chart.dart';
 
 class DashboardEm extends StatefulWidget {
   const DashboardEm({Key key}) : super(key: key);
@@ -12,17 +12,22 @@ class DashboardEm extends StatefulWidget {
 }
 
 class _DashboardEmState extends State<DashboardEm> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(360, 800));
     print('render');
     return Scaffold(
+      key: _scaffoldKey,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppBarEm(),
+              AppBarEm(
+                scaffoldKey: _scaffoldKey,
+              ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Column(
@@ -39,6 +44,65 @@ class _DashboardEmState extends State<DashboardEm> {
             ],
           ),
         ),
+      ),
+      endDrawer: drawerSideBar(),
+      // Disable opening the end drawer with a swipe gesture.
+      endDrawerEnableOpenDragGesture: false,
+    );
+  }
+
+  Drawer drawerSideBar() {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            decoration: BoxDecoration(color: Colors.blue),
+            child: Align(
+                alignment: Alignment.topLeft,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                    Text(
+                      'as',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                )),
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.person,
+              color: Colors.grey,
+            ),
+            title: Text(
+              'Buat akun',
+              style: TextStyle(color: Colors.grey),
+            ),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.person,
+              color: Colors.grey,
+            ),
+            title: Text(
+              'Laporan',
+              style: TextStyle(color: Colors.grey),
+            ),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: Icon(Icons.logout, color: Colors.grey),
+            title: Text(
+              'Keluar',
+              style: TextStyle(color: Colors.grey),
+            ),
+            onTap: () async {},
+          ),
+        ],
       ),
     );
   }

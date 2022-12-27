@@ -93,8 +93,9 @@ dependencies:
   http_parser: ^4.0.2
   flutter_easyloading: ^3.0.5
   camera: ^0.10.0+5
-  # video_player: ^2.4.9
   dio_smart_retry: ^1.4.0
+  auto_size_text: ^3.0.0
+  
   
   
   
