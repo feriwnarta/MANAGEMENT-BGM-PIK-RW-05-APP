@@ -4,6 +4,7 @@ import 'package:aplikasi_rw/controller/report_user_controller.dart';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/estate_manager/screens/create_account.dart';
 import 'package:aplikasi_rw/modules/estate_manager/screens/dashboard.dart';
+import 'package:aplikasi_rw/modules/home/screens/home_folder_screen.dart';
 import 'package:aplikasi_rw/routes/app_pages.dart';
 import 'package:aplikasi_rw/routes/app_routes.dart';
 import 'package:aplikasi_rw/modules/home/screens/home_screen.dart';
@@ -124,9 +125,6 @@ void main() async {
     print('User declined or has not accepted permission');
   }
 
-  // m.requestNotificationPermissions(
-  //     const IosNotificationSettings(sound: true, badge: true, alert: true));
-
   ByteData data =
       await PlatformAssetBundle().load('assets/ca/lets-encrypt-r3.pem');
   SecurityContext.defaultContext
@@ -134,22 +132,6 @@ void main() async {
 
   runApp(MyApp());
   configLoading();
-
-  // runApp(
-  //   ShowCaseWidget(
-  //     autoPlay: false,
-  //     autoPlayLockEnable: false,
-  //     builder: Builder(
-  //       builder: (context) => MyApp(),
-  //     ),
-  //     onStart: (index, key) {
-  //       print('onStart: $index, $key');
-  //     },
-  //     onComplete: (index, key) {
-  //       print('onComplete: $index, $key');
-  //     },
-  //   ),
-  // );
 }
 
 void configLoading() {
@@ -183,8 +165,8 @@ class _MyApp extends State<MyApp> {
   initState() {
     super.initState();
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
+      statusBarColor: Color(0xff1F8EE5),
+      statusBarIconBrightness: Brightness.light,
     ));
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -215,9 +197,9 @@ class _MyApp extends State<MyApp> {
       builder: (context, child) => AppLifecycleManager(
         child: GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          // initialRoute: AppPage.INITIAL_ROUTE,
-          // getPages: AppPage.pages,
-          home: CreateAccount(),
+          initialRoute: AppPage.INITIAL_ROUTE,
+          getPages: AppPage.pages,
+          // home: CreateAccount(),
 
           theme: ThemeData(
               appBarTheme: AppBarTheme(
@@ -254,9 +236,7 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     screens = [
-      HomeScreen(
-        scaffoldKey: scaffoldKey,
-      ),
+      HomeScreenFolder(),
       ReportScreen2(),
       // BillScreen(),
       PaymentIplHistory()
@@ -273,23 +253,21 @@ class _MainAppState extends State<MainApp> {
 
       bottomNavigationBar: Obx(
         () => Container(
-          decoration: BoxDecoration(
-              boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)]),
+          // decoration: BoxDecoration(
+          //   boxShadow: [
+          //     BoxShadow(color: Colors.grey, blurRadius: 5),
+          //   ],
+          // ),
           child: BottomNavigationBar(
+            backgroundColor: Color(0xff2094F3),
             type: BottomNavigationBarType.fixed,
             iconSize: 12.sp,
             showSelectedLabels: true,
             showUnselectedLabels: true,
-            selectedItemColor: Colors.blue,
-            unselectedItemColor: Colors.black54,
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.white,
             currentIndex: indexScreen.index.value,
             onTap: (index) {
-              // setState(() {
-              //   _index = index;
-              //   if (index == 1) {
-              //     reportController.refresReport();
-              //   }
-              // });
               indexScreen.index.value = index;
               if (indexScreen.index.value == 1) {
                 reportController.refresReport();
@@ -298,30 +276,33 @@ class _MainAppState extends State<MainApp> {
             },
             items: [
               BottomNavigationBarItem(
-                icon: SvgPicture.asset('assets/img/image-svg/home-icon.svg',
-                    color: Color(0xff757575)),
-                activeIcon:
-                    SvgPicture.asset('assets/img/image-svg/home-icon.svg'),
+                icon: SvgPicture.asset(
+                  'assets/img/image-svg/home-deactive.svg',
+                ),
+                activeIcon: SvgPicture.asset(
+                  'assets/img/image-svg/home-active.svg',
+                  color: Colors.white,
+                ),
                 label: 'Beranda',
               ),
               BottomNavigationBarItem(
                   icon: SvgPicture.asset(
-                    'assets/img/image-svg/keluhan-icon.svg',
-                    color: Color(0xff757575),
+                    'assets/img/image-svg/user-deactive.svg',
+                    color: Colors.white,
                   ),
                   activeIcon: SvgPicture.asset(
-                    'assets/img/image-svg/keluhan-icon.svg',
-                    color: Color(0xff2094F3),
+                    'assets/img/image-svg/user-active.svg',
+                    color: Colors.white,
                   ),
-                  label: 'Peduli lingkungan'),
+                  label: 'Profil'),
               BottomNavigationBarItem(
                   icon: SvgPicture.asset(
-                    'assets/img/image-svg/riwayatipl-icon.svg',
-                    color: Color(0xff757575),
+                    'assets/img/image-svg/setting-deactive.svg',
+                    color: Colors.white,
                   ),
                   activeIcon: SvgPicture.asset(
-                    'assets/img/image-svg/riwayatipl-icon.svg',
-                    color: Color(0xff2094F3),
+                    'assets/img/image-svg/setting-active.svg',
+                    color: Colors.white,
                   ),
                   label: 'Riwayat IPL'),
             ],

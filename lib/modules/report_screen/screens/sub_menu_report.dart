@@ -1,5 +1,8 @@
+import 'package:aplikasi_rw/modules/cordinator/screens/complaint/complaint_screen.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/add_complaint.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -15,17 +18,190 @@ class SubMenuReport extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xff2196F3),
+        systemOverlayStyle:
+            SystemUiOverlayStyle(statusBarBrightness: Brightness.light),
         title: Text(
-          'Buat Laporan',
-          style: TextStyle(color: Colors.black, fontSize: 16.sp),
+          'Warga peduli lingkungan',
+          style: TextStyle(color: Colors.white, fontSize: 16.sp),
         ),
-        brightness: Brightness.light,
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
-        child: RadioMenu(menuRequest: menuRequest),
+        child: MenuPeduliLingkungan(),
       ),
+    );
+  }
+}
+
+class MenuPeduliLingkungan extends StatefulWidget {
+  const MenuPeduliLingkungan({Key key}) : super(key: key);
+
+  @override
+  State<MenuPeduliLingkungan> createState() => _MenuPeduliLingkunganState();
+}
+
+class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
+  RxBool isActive = true.obs;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 32.h,
+        ),
+        Obx(
+          () => GestureDetector(
+            onTap: () => isActive.value = !isActive.value,
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 16.w),
+              padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 12.h),
+              decoration: (isActive.value)
+                  ? BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(
+                        color: Color(0xff2094F3),
+                      ))
+                  : BoxDecoration(),
+              child: Row(
+                children: [
+                  Container(
+                    width: 70.w,
+                    height: 72.h,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                            'assets/img/citizen_menu/peduli-lingkungan-umum.jpg'),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 16.w,
+                  ),
+                  SizedBox(
+                    width: 221.w,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AutoSizeText(
+                          'Peduli Lingkungan Umum',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(
+                          height: 4.h,
+                        ),
+                        AutoSizeText(
+                          'Kepedulian lingkungan yang di tujukan untuk area lingkungan umum yang ada di Bukit Golf Mediterania RW 05.',
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xff616161),
+                          ),
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 16.h,
+        ),
+        Obx(
+          () => GestureDetector(
+            onTap: () => isActive.value = !isActive.value,
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 16.w),
+              padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 12.h),
+              decoration: (!isActive.value)
+                  ? BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(
+                        color: Color(0xff2094F3),
+                      ))
+                  : BoxDecoration(),
+              child: Row(
+                children: [
+                  Container(
+                    width: 70.w,
+                    height: 72.h,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                            'assets/img/citizen_menu/peduli-lingkungan-umum.jpg'),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 16.w,
+                  ),
+                  SizedBox(
+                    width: 221.w,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AutoSizeText(
+                          'Peduli Lingkungan Pribadi',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(
+                          height: 4.h,
+                        ),
+                        AutoSizeText(
+                          'Kepedulian lingkungan yang di tujukan untuk area lingkungan pribadi warga Bukit Golf Mediterania RW 05. ',
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xff616161),
+                          ),
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 360.h,
+        ),
+        SizedBox(
+          width: 328.w,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+            )),
+            onPressed: () {
+              if (isActive.value) {
+                Get.to(() => AddComplaint());
+              }
+            },
+            child: Text(
+              'Selanjutnya',
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+            ),
+          ),
+        )
+      ],
     );
   }
 }

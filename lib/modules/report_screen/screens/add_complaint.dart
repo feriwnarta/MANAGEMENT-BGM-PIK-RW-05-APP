@@ -10,6 +10,7 @@ import 'package:aplikasi_rw/modules/report_screen/widgets/camera_complaint.dart'
 import 'package:aplikasi_rw/services/category_services.dart';
 import 'package:aplikasi_rw/services/klasifikasi_category_services.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart' as sidio;
 import 'package:dio_smart_retry/dio_smart_retry.dart';
@@ -67,7 +68,6 @@ class _AddComplaintState extends State<AddComplaint> {
           title: Text(
             'Buat Laporan',
             style: TextStyle(
-              fontSize: 19.sp,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -748,12 +748,13 @@ class _StepperRwState extends State<StepperRw> {
     return Column(
       children: [
         Container(
+          width: 328.w,
           margin: EdgeInsets.symmetric(vertical: 16.h),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               headerSteper(
-                  stepIcon: 'assets/img/image-svg/step-kategori.svg',
+                  stepIcon: 'assets/img/image-svg/kategori-icon.svg',
                   text: 'Kategori',
                   colorText: stepperController.index.value == 0
                       ? Colors.blue
@@ -766,7 +767,7 @@ class _StepperRwState extends State<StepperRw> {
                       : Colors.blue),
               SizedBox(width: 8.w),
               headerSteper(
-                  stepIcon: 'assets/img/image-svg/step-camera.svg',
+                  stepIcon: 'assets/img/image-svg/photo-icon.svg',
                   text: 'Foto',
                   colorText: stepperController.index.value != 0
                       ? Colors.blue
@@ -779,7 +780,7 @@ class _StepperRwState extends State<StepperRw> {
                       : Colors.grey),
               SizedBox(width: 8.w),
               headerSteper(
-                  stepIcon: 'assets/img/image-svg/step-tulis.svg',
+                  stepIcon: 'assets/img/image-svg/tulis-icon.svg',
                   text: 'Tulis',
                   colorText: stepperController.index.value > 1
                       ? Colors.blue
@@ -793,7 +794,7 @@ class _StepperRwState extends State<StepperRw> {
               SizedBox(width: 8.w),
               headerSteper(
                 status: 'last',
-                stepIcon: 'assets/img/image-svg/step-tinjau.svg',
+                stepIcon: 'assets/img/image-svg/tinjau-icon.svg',
                 text: 'Tinjau',
                 colorText: stepperController.index.value == 3
                     ? Colors.blue
@@ -1167,21 +1168,24 @@ class _StepperRwState extends State<StepperRw> {
       Color colorChevron,
       String status}) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SvgPicture.asset(
           stepIcon,
           color: colorIcon,
         ),
-        SizedBox(width: 2.w),
-        Text(
+        SizedBox(width: 4.w),
+        AutoSizeText(
           text,
-          style: TextStyle(fontSize: 16.sp, color: colorText),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(fontSize: 12.sp, color: colorText),
         ),
-        SizedBox(width: 2.w),
+        SizedBox(width: 15.w),
         (status == 'last')
             ? SizedBox()
             : SvgPicture.asset(
-                'assets/img/image-svg/chevron-left.svg',
+                'assets/img/image-svg/chevron-icon.svg',
                 color: colorChevron,
               ),
       ],

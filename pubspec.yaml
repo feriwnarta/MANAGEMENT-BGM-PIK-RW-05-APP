@@ -131,6 +131,7 @@ flutter:
   assets:
     - assets/ca/
     - assets/img/
+    - assets/img/citizen_menu/
     - assets/img/image-icons/
     - assets/img/image-onboarding/
     - assets/img/image-svg/
