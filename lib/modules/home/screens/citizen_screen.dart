@@ -1,5 +1,9 @@
 import 'package:aplikasi_rw/modules/home/widgets/menu.dart';
+import 'package:aplikasi_rw/modules/payment_ipl/screens/history/payment_ipl_history.dart';
+import 'package:aplikasi_rw/modules/report_screen/screens/report_screen_2.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/sub_menu_report.dart';
+import 'package:aplikasi_rw/modules/social_media/screens/social_media_screen.dart';
+import 'package:aplikasi_rw/services/payment_ipl_history_services/payment_ipl_history_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -52,8 +56,8 @@ class _MyWidgetState extends State<CitizenScreen> {
                         Menu(
                           icon:
                               'assets/img/citizen_menu/status-peduli-lingkungan.jpg',
-                          text: 'Peduli lingkungan',
-                          onTap: () {},
+                          text: 'Status peduli lingkungan',
+                          onTap: () => Get.to(() => ReportScreen2()),
                         ),
                         SizedBox(
                           width: 14.w,
@@ -61,7 +65,7 @@ class _MyWidgetState extends State<CitizenScreen> {
                         Menu(
                           icon: 'assets/img/citizen_menu/ipl.jpg',
                           text: 'Status IPL\n',
-                          onTap: () {},
+                          onTap: () => Get.to(() => PaymentIplHistory()),
                         ),
                         SizedBox(
                           width: 14.w,
@@ -88,8 +92,8 @@ class _MyWidgetState extends State<CitizenScreen> {
                         ),
                         Menu(
                           icon: 'assets/img/citizen_menu/media.jpg',
-                          text: 'Informasi Umum',
-                          onTap: () {},
+                          text: 'Sosial Media',
+                          onTap: () => Get.to(() => SocialMedia()),
                         ),
                       ],
                     ),

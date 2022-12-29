@@ -16,6 +16,7 @@ import 'package:dio/dio.dart' as sidio;
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -65,6 +66,8 @@ class _AddComplaintState extends State<AddComplaint> {
     ScreenUtil.init(context, designSize: const Size(360, 800));
     return Scaffold(
         appBar: AppBar(
+          systemOverlayStyle:
+              SystemUiOverlayStyle(statusBarBrightness: Brightness.light),
           title: Text(
             'Buat Laporan',
             style: TextStyle(
@@ -115,17 +118,6 @@ class _StepperRwState extends State<StepperRw> {
     fToastOnWritePage = FToast();
     fToastOnWritePage.init(context);
     fToast.init(context);
-    // widget.duration = Duration(hours: 1);
-    dio = sidio.Dio();
-    // dio.interceptors.add(RetryOnConnectionChangeInterceptor(
-    //   requestRetrier: DioConnectivityRequestRetrier(
-    //     dio: dio,
-    //     connectivity: Connectivity(),
-    //   ),
-    // ));
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   showToast();
-    // });
     stepperController = Get.put(StepperController());
     controllerWrite = Get.put(WritePageController());
   }
@@ -134,7 +126,6 @@ class _StepperRwState extends State<StepperRw> {
 
   @override
   dispose() {
-    widget.duration = Duration(seconds: 0);
     fToast.removeCustomToast();
     Get.delete<StepperController>();
     Get.delete<WritePageController>();
@@ -662,7 +653,7 @@ class _StepperRwState extends State<StepperRw> {
               children: [
                 SizedBox(height: 16.h),
                 Container(
-                  height: 400.h,
+                  height: MediaQuery.of(context).size.height,
                   child: FutureBuilder<List<CategoryModel>>(
                       future: CategoryServices.getCategory(),
                       builder: (_, snapshot) {
@@ -697,32 +688,32 @@ class _StepperRwState extends State<StepperRw> {
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: GridView.count(
         crossAxisCount: 3,
-        // childAspectRatio: .15 / .12,
+        childAspectRatio: MediaQuery.of(context).size.width /
+            (MediaQuery.of(context).size.height / 1.4),
         children: category
             .map<Widget>(
               (e) => GestureDetector(
                 child: Column(
                   children: [
                     SizedBox(
-                      width: 60.w,
-                      height: 60.h,
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CachedNetworkImage(
-                            imageUrl: '${ServerApp.url}/icon/${e.icon}',
-                          ),
+                      width: 96.w,
+                      height: 96.h,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CachedNetworkImage(
+                          imageUrl: '${ServerApp.url}/icon/${e.icon}',
                         ),
                       ),
                     ),
-                    Text(
+                    AutoSizeText(
                       '${e.category}',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 10.sp,
                         fontWeight: FontWeight.w500,
                       ),
-                      overflow: TextOverflow.clip,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
                     ),
                   ],
                 ),

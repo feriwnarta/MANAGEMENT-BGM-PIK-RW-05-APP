@@ -304,7 +304,7 @@ class _MainAppState extends State<MainApp> {
                     'assets/img/image-svg/setting-active.svg',
                     color: Colors.white,
                   ),
-                  label: 'Riwayat IPL'),
+                  label: 'Pengaturan'),
             ],
           ),
         ),

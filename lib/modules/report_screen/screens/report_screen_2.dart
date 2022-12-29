@@ -15,7 +15,6 @@ import '../../../controller/user_login_controller.dart';
 import '../../../services/delete_report_services.dart';
 import 'card_report_screen.dart';
 import 'finished_report_scren.dart';
-import 'sub_menu_report.dart';
 import 'package:badges/badges.dart' as badge;
 
 //ignore: must_be_immutable
@@ -85,6 +84,7 @@ class _ReportScreen2State extends State<ReportScreen2> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 200));
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () async => loadReport(),
@@ -94,83 +94,90 @@ class _ReportScreen2State extends State<ReportScreen2> {
             SliverAppBar(
               backgroundColor: Colors.white,
               expandedHeight: 120.h,
-              // floating: true,
+
               // leadingWidth: 400.w,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
-                background: Padding(
-                  padding: EdgeInsets.only(bottom: 17.h, left: 16.w),
-                  child: Row(children: [
-                    Text(
-                      'Peduli lingkungan',
-                      style: TextStyle(
-                        fontSize: 19.sp,
-                        color: Color(0xff2094F3),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 158.w,
-                    ),
-                    FutureBuilder<List<ReportFinishedModel>>(
-                        future: _future,
-                        builder: (context, snapshot) => (snapshot.hasData)
-                            ? GestureDetector(
-                                onTap: () {
-                                  if (snapshot.data != null) {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          FinishedReportScreen(
-                                        report: snapshot.data,
-                                      ),
-                                    ));
-                                  } else {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          FinishedReportScreen(
-                                        report: [],
-                                      ),
-                                    ));
-                                  }
-                                },
-                                child: badge.Badge(
-                                  badgeColor: Colors.red,
-                                  badgeContent: (snapshot.data != null &&
-                                          snapshot.data.isNotEmpty)
-                                      ? Text(
-                                          snapshot.data[0].total,
-                                          style: TextStyle(color: Colors.white),
-                                        )
-                                      : Text(
-                                          '0',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                  position:
-                                      BadgePosition.topEnd(top: -15, end: -10),
-                                  child: Icon(
-                                    Icons.notifications,
-                                    color: Colors.black,
-                                  ),
-                                  animationType: BadgeAnimationType.scale,
-                                ),
-                              )
-                            : badge.Badge(
-                                badgeColor: Colors.red,
-                                badgeContent: Text(
-                                  '0',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                position:
-                                    BadgePosition.topEnd(top: -17, end: -17),
-                                child: Icon(
-                                  Icons.notifications,
-                                  color: Color(0xff404040),
-                                ),
-                                animationType: BadgeAnimationType.scale,
-                              )),
-                  ]),
+                background: AppBar(
+                  title: Text(
+                    'Status Peduli Lingkungan',
+                    style:
+                        TextStyle(fontSize: 19.sp, fontWeight: FontWeight.w500),
+                  ),
                 ),
+                // background: Padding(
+                //   padding: EdgeInsets.only(bottom: 17.h, left: 16.w),
+                //   child: Row(children: [
+                //     Text(
+                //       'Peduli lingkungan',
+                //       style: TextStyle(
+                //         fontSize: 19.sp,
+                //         color: Color(0xff2094F3),
+                //       ),
+                //     ),
+                //     SizedBox(
+                //       width: 158.w,
+                //     ),
+                //     FutureBuilder<List<ReportFinishedModel>>(
+                //         future: _future,
+                //         builder: (context, snapshot) => (snapshot.hasData)
+                //             ? GestureDetector(
+                //                 onTap: () {
+                //                   if (snapshot.data != null) {
+                //                     Navigator.of(context)
+                //                         .push(MaterialPageRoute(
+                //                       builder: (context) =>
+                //                           FinishedReportScreen(
+                //                         report: snapshot.data,
+                //                       ),
+                //                     ));
+                //                   } else {
+                //                     Navigator.of(context)
+                //                         .push(MaterialPageRoute(
+                //                       builder: (context) =>
+                //                           FinishedReportScreen(
+                //                         report: [],
+                //                       ),
+                //                     ));
+                //                   }
+                //                 },
+                //                 child: badge.Badge(
+                //                   badgeColor: Colors.red,
+                //                   badgeContent: (snapshot.data != null &&
+                //                           snapshot.data.isNotEmpty)
+                //                       ? Text(
+                //                           snapshot.data[0].total,
+                //                           style: TextStyle(color: Colors.white),
+                //                         )
+                //                       : Text(
+                //                           '0',
+                //                           style: TextStyle(color: Colors.white),
+                //                         ),
+                //                   position:
+                //                       BadgePosition.topEnd(top: -15, end: -10),
+                //                   child: Icon(
+                //                     Icons.notifications,
+                //                     color: Colors.black,
+                //                   ),
+                //                   animationType: BadgeAnimationType.scale,
+                //                 ),
+                //               )
+                //             : badge.Badge(
+                //                 badgeColor: Colors.red,
+                //                 badgeContent: Text(
+                //                   '0',
+                //                   style: TextStyle(color: Colors.white),
+                //                 ),
+                //                 position:
+                //                     BadgePosition.topEnd(top: -17, end: -17),
+                //                 child: Icon(
+                //                   Icons.notifications,
+                //                   color: Color(0xff404040),
+                //                 ),
+                //                 animationType: BadgeAnimationType.scale,
+                //               )),
+                //   ]),
+                // ),
                 titlePadding: EdgeInsets.only(left: 16.w, right: 16.w),
                 title: SizedBox(
                   width: 340.w,
@@ -494,33 +501,33 @@ class _ReportScreen2State extends State<ReportScreen2> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        mini: true,
-        child: Icon(
-          Icons.add,
-          size: 20.h,
-        ),
-        onPressed: () {
-          // Navigator.of(context)
-          //     .push(MaterialPageRoute(
-          //   builder: (context) => AddReport(),
-          // ))
-          //     .then((value) {
-          //   if (value == 'reload') {
-          //     bloc.add(ReportEventRefresh());
-          //   }
-          // });
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (_) => SubMenuReport(),
-          ));
-          //     .then((value) {
-          //   if (value == 'reload') {
-          //     bloc.add(ReportEventRefresh());
-          //     _future = ReportFinishedServices.getDataApi();
-          //   }
-          // });
-        },
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   mini: true,
+      //   child: Icon(
+      //     Icons.add,
+      //     size: 20.h,
+      //   ),
+      //   onPressed: () {
+      //     // Navigator.of(context)
+      //     //     .push(MaterialPageRoute(
+      //     //   builder: (context) => AddReport(),
+      //     // ))
+      //     //     .then((value) {
+      //     //   if (value == 'reload') {
+      //     //     bloc.add(ReportEventRefresh());
+      //     //   }
+      //     // });
+      //     Navigator.of(context).push(MaterialPageRoute(
+      //       builder: (_) => SubMenuReport(),
+      //     ));
+      //     //     .then((value) {
+      //     //   if (value == 'reload') {
+      //     //     bloc.add(ReportEventRefresh());
+      //     //     _future = ReportFinishedServices.getDataApi();
+      //     //   }
+      //     // });
+      //   },
+      // ),
     );
   }
 

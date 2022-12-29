@@ -61,7 +61,7 @@ class _CommentScreenState extends State<CommentScreen> {
         // padding: EdgeInsets.all(0.6.h),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20), color: Colors.white),
-        height: 350.h,
+        height: 370.h,
         child: WillPopScope(
           onWillPop: () async {
             commentController.listComment = <CommentModel>[].obs;
@@ -158,7 +158,7 @@ class _CommentScreenState extends State<CommentScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
-                    height: 40.0.h,
+                    height: 50.h,
                     padding: EdgeInsets.symmetric(vertical: 5),
                     decoration: BoxDecoration(color: Colors.white, boxShadow: [
                       BoxShadow(

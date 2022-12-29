@@ -81,8 +81,7 @@ class CardHistoryPaymentIpl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(360, 200));
-    ScreenUtil.init(context);
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     return Column(
       children: [
         SizedBox(
