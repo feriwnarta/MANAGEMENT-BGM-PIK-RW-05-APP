@@ -1,6 +1,7 @@
 import 'package:aplikasi_rw/controller/status_user_controller.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/view_image.dart';
-import 'package:aplikasi_rw/modules/social_media/screens/create_status_screen.dart';
+import 'package:aplikasi_rw/modules/social_media/screens/create_status.dart';
+import 'package:aplikasi_rw/modules/social_media/screens/list-image.dart';
 import 'package:aplikasi_rw/services/like_status_services.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -143,7 +144,13 @@ class _SocialMediaState extends State<SocialMedia> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.to(() => CreateStatus());
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) {
+              return CreateStatus();
+            },
+          );
         },
         child: SvgPicture.asset('assets/img/image-svg/pencil.svg'),
       ),

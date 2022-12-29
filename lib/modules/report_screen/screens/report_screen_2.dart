@@ -84,7 +84,7 @@ class _ReportScreen2State extends State<ReportScreen2> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(360, 200));
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () async => loadReport(),

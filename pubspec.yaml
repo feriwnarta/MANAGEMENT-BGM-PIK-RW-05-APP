@@ -96,6 +96,7 @@ dependencies:
   dio_smart_retry: ^1.4.0
   auto_size_text: ^3.0.0
   like_button: ^2.0.5
+  photo_manager: ^2.5.2
   
   
   
