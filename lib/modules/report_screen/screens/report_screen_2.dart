@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:aplikasi_rw/services/report_finished_services.dart';
 import 'package:aplikasi_rw/services/report_services.dart';
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -14,8 +13,6 @@ import '../../../controller/report_user_controller.dart';
 import '../../../controller/user_login_controller.dart';
 import '../../../services/delete_report_services.dart';
 import 'card_report_screen.dart';
-import 'finished_report_scren.dart';
-import 'package:badges/badges.dart' as badge;
 
 //ignore: must_be_immutable
 class ReportScreen2 extends StatefulWidget {

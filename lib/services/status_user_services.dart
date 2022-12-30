@@ -3,6 +3,8 @@ import 'package:dio/dio.dart' as sidio;
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:logger/logger.dart';
 
 import '../server-app.dart';
 
@@ -12,7 +14,8 @@ class StatusUserServices extends StatusUserModel {
       String imgPath,
       String username,
       String foto_profile,
-      String caption}) async {
+      String caption,
+      String location}) async {
     Dio dio = Dio();
     dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
 
@@ -22,7 +25,8 @@ class StatusUserServices extends StatusUserModel {
     if (imgPath != null && imgPath.isNotEmpty) {
       if (imgPath != 'no_image') {
         data.addEntries({
-          'status_image': MultipartFile.fromFileSync(imgPath, filename: imgPath)
+          'status_image': await MultipartFile.fromFile(imgPath,
+              filename: imgPath, contentType: MediaType('image', 'jpg'))
         }.entries);
         // var pic = await http.MultipartFile.fromPath('status_image', imgPath);
         // request.files.add(pic);
@@ -34,8 +38,12 @@ class StatusUserServices extends StatusUserModel {
         'id_user': idUser,
         'username': username,
         'foto_profile': foto_profile,
-        'caption': caption
+        'caption': caption,
+        'location': location
       });
+
+      final logger = Logger();
+      logger.i(data);
 
       var request = await dio.post(uri, data: data);
 

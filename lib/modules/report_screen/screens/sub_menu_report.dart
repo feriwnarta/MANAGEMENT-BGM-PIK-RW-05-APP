@@ -1,4 +1,3 @@
-import 'package:aplikasi_rw/modules/cordinator/screens/complaint/complaint_screen.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/add_complaint.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:aplikasi_rw/modules/estate_manager/services/chart_line_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

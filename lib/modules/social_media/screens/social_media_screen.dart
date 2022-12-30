@@ -1,7 +1,6 @@
 import 'package:aplikasi_rw/controller/status_user_controller.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/view_image.dart';
 import 'package:aplikasi_rw/modules/social_media/screens/create_status.dart';
-import 'package:aplikasi_rw/modules/social_media/screens/list-image.dart';
 import 'package:aplikasi_rw/services/like_status_services.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -9,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/state_manager.dart';
 import 'package:like_button/like_button.dart';
 import 'package:logger/logger.dart';
 import 'package:readmore/readmore.dart';
@@ -82,7 +80,9 @@ class _SocialMediaState extends State<SocialMedia> {
                 physics: ClampingScrollPhysics(),
                 itemCount: (controller.isMaxReached.value)
                     ? controller.listStatus.length
-                    : controller.listStatus.length + 2,
+                    : (controller.listStatus.length == 0)
+                        ? controller.listStatus.length + 1
+                        : controller.listStatus.length + 2,
                 itemBuilder: (context, index) {
                   if (index < controller.listStatus.length) {
                     return CardSocialMedia(

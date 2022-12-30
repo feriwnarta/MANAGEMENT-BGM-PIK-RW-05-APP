@@ -1,10 +1,17 @@
+import 'dart:io';
+
+import 'package:aplikasi_rw/controller/user_login_controller.dart';
+import 'package:aplikasi_rw/modules/social_media/controllers/social_media_controllers.dart';
 import 'package:aplikasi_rw/modules/social_media/screens/list-image.dart';
+import 'package:aplikasi_rw/services/status_user_services.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/state_manager.dart';
+import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 import '../../../server-app.dart';
 
@@ -17,6 +24,10 @@ class CreateStatus extends StatefulWidget {
 
 class _CreateStatusState extends State<CreateStatus> {
   RxString location = ''.obs;
+  SocialMediaControllers socialMediaControllers =
+      Get.put(SocialMediaControllers());
+  UserLoginController userLoginController =
+      Get.put(UserLoginController(), permanent: true);
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +52,10 @@ class _CreateStatusState extends State<CreateStatus> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Get.back();
+                                  Get.delete<SocialMediaControllers>();
+                                },
                                 child: Text(
                                   'Batal',
                                   style: TextStyle(
@@ -51,7 +65,36 @@ class _CreateStatusState extends State<CreateStatus> {
                               SizedBox(
                                 width: 70.w,
                                 child: ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () async {
+                                    EasyLoading.show(status: 'mengirim');
+                                    var result = await StatusUserServices
+                                        .sendDataStatus(
+                                            caption: socialMediaControllers
+                                                .controller.text,
+                                            foto_profile: userLoginController
+                                                .urlProfile.value,
+                                            idUser: userLoginController
+                                                .idUser.value,
+                                            imgPath: (socialMediaControllers
+                                                    .imagePath.isEmpty)
+                                                ? 'no_image'
+                                                : socialMediaControllers
+                                                    .imagePath.value,
+                                            location: socialMediaControllers
+                                                .location.value,
+                                            username: userLoginController
+                                                .username.value);
+                                    final logger = Logger();
+                                    logger.i(result);
+                                    if (result != null || result == 'succes') {
+                                      EasyLoading.dismiss();
+                                      Get.back();
+                                    } else {
+                                      EasyLoading.dismiss();
+                                      EasyLoading.showError(
+                                          'Gagal mengirim status');
+                                    }
+                                  },
                                   style: ElevatedButton.styleFrom(
                                       shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
@@ -101,6 +144,7 @@ class _CreateStatusState extends State<CreateStatus> {
                             maxLines: 15,
                             minLines: 1,
                             autofocus: true,
+                            controller: socialMediaControllers.controller,
                             decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Tulis sebuah postingan',
@@ -114,49 +158,60 @@ class _CreateStatusState extends State<CreateStatus> {
                           SizedBox(
                             height: 4.h,
                           ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 28.w),
-                            height: 140.h,
-                            width: 300.w,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(6),
-                              child: CachedNetworkImage(
-                                fit: BoxFit.cover,
-                                imageUrl:
-                                    '${ServerApp.url}imageuser/default_profile/blank_profile_picture.jpg',
-                              ),
-                            ),
+                          Obx(
+                            () => (socialMediaControllers.imagePath.isNotEmpty)
+                                ? Container(
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 28.w),
+                                    height: 140.h,
+                                    width: 300.w,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(6),
+                                      child: Image(
+                                        fit: BoxFit.cover,
+                                        image: FileImage(
+                                          File(
+                                              '${socialMediaControllers.imagePath.value}'),
+                                        ),
+                                      ),
+                                    ))
+                                : SizedBox(),
                           ),
                           SizedBox(
                             height: 4.h,
                           ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 28.w),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/img/image-svg/location-marker.svg',
-                                  color: Colors.blue,
-                                ),
-                                SizedBox(
-                                  width: 4.w,
-                                ),
-                                SizedBox(
-                                  width: 255.w,
-                                  child: AutoSizeText(
-                                    'asdasdasdasdasd',
-                                    maxLines: 4,
-                                    style: TextStyle(
-                                        fontSize: 10.sp, color: Colors.blue),
+                          Obx(() => (socialMediaControllers.location.isNotEmpty)
+                              ? Container(
+                                  margin:
+                                      EdgeInsets.symmetric(horizontal: 28.w),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SvgPicture.asset(
+                                        'assets/img/image-svg/location-marker.svg',
+                                        color: Colors.blue,
+                                      ),
+                                      SizedBox(
+                                        width: 4.w,
+                                      ),
+                                      SizedBox(
+                                        width: 255.w,
+                                        child: AutoSizeText(
+                                          '${socialMediaControllers.location.value}',
+                                          maxLines: 4,
+                                          style: TextStyle(
+                                              fontSize: 10.sp,
+                                              color: Colors.blue),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                          )
+                                )
+                              : SizedBox())
                         ],
                       ),
                       Container(

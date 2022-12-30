@@ -82,10 +82,12 @@ class HeaderScreen extends StatelessWidget {
           builder: (context, snapshot) => (snapshot.hasData)
               ? CarouselSlider(
                   options: CarouselOptions(
-                      height: 188.h,
-                      enableInfiniteScroll: false,
-                      enlargeCenterPage: false,
-                      viewportFraction: 0.9),
+                    height: 188.h,
+                    // aspectRatio: 16 / 2,
+                    enableInfiniteScroll: false,
+                    enlargeCenterPage: false,
+                    viewportFraction: 0.85,
+                  ),
                   items: snapshot.data.map((e) {
                     return Builder(
                       builder: (BuildContext context) {
