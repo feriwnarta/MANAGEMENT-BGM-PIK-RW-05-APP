@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:aplikasi_rw/controller/status_user_controller.dart';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/social_media/controllers/social_media_controllers.dart';
 import 'package:aplikasi_rw/modules/social_media/screens/list-image.dart';
@@ -28,6 +29,7 @@ class _CreateStatusState extends State<CreateStatus> {
       Get.put(SocialMediaControllers());
   UserLoginController userLoginController =
       Get.put(UserLoginController(), permanent: true);
+  final contol = Get.put(StatusUserController());
 
   @override
   Widget build(BuildContext context) {
@@ -86,8 +88,12 @@ class _CreateStatusState extends State<CreateStatus> {
                                                 .username.value);
                                     final logger = Logger();
                                     logger.i(result);
-                                    if (result != null || result == 'succes') {
+                                    if (result != null &&
+                                        result.isCaseInsensitiveContainsAny(
+                                            'succes')) {
+                                      contol.refreshStatus();
                                       EasyLoading.dismiss();
+                                      Get.delete<SocialMediaControllers>();
                                       Get.back();
                                     } else {
                                       EasyLoading.dismiss();

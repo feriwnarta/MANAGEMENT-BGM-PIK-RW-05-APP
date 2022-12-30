@@ -1007,11 +1007,13 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
           } else if (message == 'login failed') {
             String urlKontraktor =
                 '${ServerApp.url}src/login/login_cordinator/login_cordinator.php';
+
             var dataKordinator = {
               'username': authController.controllerUsername.text,
               'password': authController.controllerPassword.text,
               'token': userToken
             };
+
             response = await http.post(Uri.parse(urlKontraktor),
                 body: json.encode(dataKordinator));
             message = jsonDecode(response.body);

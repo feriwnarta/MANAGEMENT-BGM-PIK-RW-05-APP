@@ -69,76 +69,79 @@ class _SocialMediaState extends State<SocialMedia> {
           ],
         ),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          controller: scrollController,
-          child: GetX<StatusUserController>(
-            init: StatusUserController(),
-            initState: (state) => contol.getDataFromDb(),
-            builder: (controller) => ListView.builder(
-                shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
-                itemCount: (controller.isMaxReached.value)
-                    ? controller.listStatus.length
-                    : (controller.listStatus.length == 0)
-                        ? controller.listStatus.length + 1
-                        : controller.listStatus.length + 2,
-                itemBuilder: (context, index) {
-                  if (index < controller.listStatus.length) {
-                    return CardSocialMedia(
-                      isLike: controller.listStatus[index].isLike == 1
-                          ? true.obs
-                          : false.obs,
-                      username: controller.listStatus[index].userName,
-                      caption: controller.listStatus[index].caption,
-                      fotoProfile: controller.listStatus[index].urlProfile,
-                      urlStatusImage:
-                          controller.listStatus[index].urlStatusImage,
-                      numberOfComments:
-                          controller.listStatus[index].commentCount,
-                      uploadTime: controller.listStatus[index].uploadTime,
-                      numberOfLikes:
-                          int.parse(controller.listStatus[index].likeCount),
-                      idStatus: controller.listStatus[index].idStatus,
-                      idUser: '${controllerLogin.idUser}',
-                    );
-                  } else if (controller.listStatus.length == 0) {
-                    return Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
-                      child: Center(
-                        child: SizedBox(
-                          width: 30,
-                          height: 30,
-                          child: CircularProgressIndicator(),
+      body: RefreshIndicator(
+        onRefresh: () async => await contol.refreshStatus(),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            controller: scrollController,
+            child: GetX<StatusUserController>(
+              init: StatusUserController(),
+              initState: (state) => contol.getDataFromDb(),
+              builder: (controller) => ListView.builder(
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  itemCount: (controller.isMaxReached.value)
+                      ? controller.listStatus.length
+                      : (controller.listStatus.length == 0)
+                          ? controller.listStatus.length + 1
+                          : controller.listStatus.length + 2,
+                  itemBuilder: (context, index) {
+                    if (index < controller.listStatus.length) {
+                      return CardSocialMedia(
+                        isLike: controller.listStatus[index].isLike == 1
+                            ? true.obs
+                            : false.obs,
+                        username: controller.listStatus[index].userName,
+                        caption: controller.listStatus[index].caption,
+                        fotoProfile: controller.listStatus[index].urlProfile,
+                        urlStatusImage:
+                            controller.listStatus[index].urlStatusImage,
+                        numberOfComments:
+                            controller.listStatus[index].commentCount,
+                        uploadTime: controller.listStatus[index].uploadTime,
+                        numberOfLikes:
+                            int.parse(controller.listStatus[index].likeCount),
+                        idStatus: controller.listStatus[index].idStatus,
+                        idUser: '${controllerLogin.idUser}',
+                      );
+                    } else if (controller.listStatus.length == 0) {
+                      return Container(
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        child: Center(
+                          child: SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: CircularProgressIndicator(),
+                          ),
                         ),
-                      ),
-                    );
-                  } else if (controller.listStatus.length > index) {
-                    return Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
-                      child: Center(
-                        child: SizedBox(
-                          width: 30,
-                          height: 30,
-                          child: CircularProgressIndicator(),
+                      );
+                    } else if (controller.listStatus.length > index) {
+                      return Container(
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        child: Center(
+                          child: SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: CircularProgressIndicator(),
+                          ),
                         ),
-                      ),
-                    );
-                  } else if (index == controller.listStatus.length) {
-                    return SizedBox();
-                  } else {
-                    return Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
-                      child: Center(
-                        child: SizedBox(
-                          width: 30,
-                          height: 30,
-                          child: CircularProgressIndicator(),
+                      );
+                    } else if (index == controller.listStatus.length) {
+                      return SizedBox();
+                    } else {
+                      return Container(
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        child: Center(
+                          child: SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: CircularProgressIndicator(),
+                          ),
                         ),
-                      ),
-                    );
-                  }
-                }),
+                      );
+                    }
+                  }),
+            ),
           ),
         ),
       ),
@@ -270,23 +273,25 @@ class CardSocialMedia extends StatelessWidget {
                     SizedBox(
                       height: 8.h,
                     ),
-                    GestureDetector(
-                      onTap: () => Get.to(
-                        () => ViewImage(urlImage: '$urlStatusImage'),
-                      ),
-                      child: Container(
-                        width: 296.w,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6)),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(6),
-                          child: CachedNetworkImage(
-                            imageUrl: '$urlStatusImage',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
+                    (urlStatusImage.isNotEmpty && urlStatusImage != null)
+                        ? GestureDetector(
+                            onTap: () => Get.to(
+                              () => ViewImage(urlImage: '$urlStatusImage'),
+                            ),
+                            child: Container(
+                              width: 296.w,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(6)),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(6),
+                                child: CachedNetworkImage(
+                                  imageUrl: '$urlStatusImage',
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          )
+                        : SizedBox(),
                     SizedBox(
                       height: 8.h,
                     ),

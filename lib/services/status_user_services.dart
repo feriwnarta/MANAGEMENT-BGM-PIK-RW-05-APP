@@ -20,7 +20,7 @@ class StatusUserServices extends StatusUserModel {
     dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
 
     String uri = '${ServerApp.url}src/status/add_status.php';
-    var data = {};
+    Map<String, dynamic> data = {};
 
     if (imgPath != null && imgPath.isNotEmpty) {
       if (imgPath != 'no_image') {
@@ -42,25 +42,10 @@ class StatusUserServices extends StatusUserModel {
         'location': location
       });
 
-      final logger = Logger();
-      logger.i(data);
-
-      var request = await dio.post(uri, data: data);
-
-      // request.fields['id_user'] = idUser;
-      // request.fields['username'] = username;
-      // request.fields['foto_profile'] = foto_profile;
-      // request.fields['caption'] = caption;
+      FormData formData = FormData.fromMap(data);
+      var request = await dio.post(uri, data: formData);
 
       return request.data;
-
-      // await request.send().then((value) {
-      //   http.Response.fromStream(value).then((value) {
-      //     String message = json.decode(value.body);
-      //     print('msg' + message);
-      //   });
-      // });
-
     }
   }
 
@@ -81,7 +66,9 @@ class StatusUserServices extends StatusUserModel {
             uploadTime: item['upload_time'],
             urlProfile: item['foto_profile'],
             caption: item['caption'],
-            urlStatusImage: '${ServerApp.url}' + item['status_image'],
+            urlStatusImage: (item['status_image'] != '')
+                ? '${ServerApp.url}' + item['status_image']
+                : '',
             numberOfComments: item['comment'],
             idStatus: item['id_status'],
             numberOfLikes: item['like'],

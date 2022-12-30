@@ -28,22 +28,21 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
   );
   final int _sizePerPage = 50;
 
-  AssetPathEntity _path;
-  List<AssetEntity> _entities;
+  Rx<AssetPathEntity> _path = AssetPathEntity(id: '1', name: 'album').obs;
+  RxList<AssetEntity> _entities = <AssetEntity>[].obs;
   int _totalEntitiesCount = 0;
 
   int _page = 0;
-  bool _isLoading = false;
-  bool _isLoadingMore = false;
-  bool _hasMoreToLoad = true;
+  RxBool _isLoading = false.obs;
+  RxBool _isLoadingMore = false.obs;
+  RxBool _hasMoreToLoad = true.obs;
 
   SocialMediaControllers socialMediaControllers =
-      Get.put(SocialMediaControllers());
+      Get.put(SocialMediaControllers(), permanent: true);
 
   Future<void> _requestAssets() async {
-    setState(() {
-      _isLoading = true;
-    });
+    _isLoading.value = true;
+
     // Request permissions.
     final PermissionState ps = await PhotoManager.requestPermissionExtend();
     if (!mounted) {
@@ -51,9 +50,8 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
     }
     // Further requests can be only proceed with authorized or limited.
     if (!ps.hasAccess) {
-      setState(() {
-        _isLoading = false;
-      });
+      _isLoading.value = false;
+
       // showToast('Permission is not accessible.');
       return;
     }
@@ -67,44 +65,41 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
     }
     // Return if not paths found.
     if (paths.isEmpty) {
-      setState(() {
-        _isLoading = false;
-      });
+      _isLoading.value = false;
+
       // showToast('No paths found.');
       return;
     }
-    setState(() {
-      _path = paths.first;
-    });
-    _totalEntitiesCount = await _path.assetCountAsync;
-    final List<AssetEntity> entities = await _path.getAssetListPaged(
+
+    _path.value = paths.first;
+
+    _totalEntitiesCount = await _path.value.assetCountAsync;
+    final List<AssetEntity> entities = await _path.value.getAssetListPaged(
       page: 0,
       size: _sizePerPage,
     );
     if (!mounted) {
       return;
     }
-    setState(() {
-      _entities = entities;
-      _isLoading = false;
-      _hasMoreToLoad = _entities.length < _totalEntitiesCount;
-    });
+
+    _entities.value = entities;
+    _isLoading.value = false;
+    _hasMoreToLoad.value = _entities.length < _totalEntitiesCount;
   }
 
   Future<void> _loadMoreAsset() async {
-    final List<AssetEntity> entities = await _path.getAssetListPaged(
+    final List<AssetEntity> entities = await _path.value.getAssetListPaged(
       page: _page + 1,
       size: _sizePerPage,
     );
     if (!mounted) {
       return;
     }
-    setState(() {
-      _entities.addAll(entities);
-      _page++;
-      _hasMoreToLoad = _entities.length < _totalEntitiesCount;
-      _isLoadingMore = false;
-    });
+
+    _entities.addAll(entities);
+    _page++;
+    _hasMoreToLoad.value = _entities.length < _totalEntitiesCount;
+    _isLoadingMore.value = false;
   }
 
   @override
@@ -114,56 +109,58 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
   }
 
   Widget _buildBody(BuildContext context) {
-    if (_isLoading) {
-      return const Center(child: CircularProgressIndicator.adaptive());
-    }
-    if (_path == null) {
-      return const Center(child: Text('Request paths first.'));
-    }
-    if (_entities?.isNotEmpty != true) {
-      return const Center(child: Text('No assets found on this device.'));
-    }
-    return ListView.builder(
-      scrollDirection: Axis.horizontal,
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: _entities.length,
-      itemBuilder: (context, index) {
-        if (index == _entities.length - 8 &&
-            !_isLoadingMore &&
-            _hasMoreToLoad) {
-          _loadMoreAsset();
-        }
-        final AssetEntity entity = _entities[index];
-        return GestureDetector(
-          onTap: () {
-            final logger = Logger();
-            entity.file.then((value) {
-              logger.i(value.path);
-              socialMediaControllers.imagePath.value = value.path;
-            });
-          },
-          child: Container(
-            width: 64.w,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6), color: Colors.red),
-            margin: EdgeInsets.only(right: 16.w),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(6),
-              child: Image(
-                fit: BoxFit.cover,
-                image: AssetEntityImageProvider(
-                  entity,
-                  isOriginal: false,
-                  // thumbnailSize: const ThumbnailSize.square(200), // Preferred value.
-                  thumbnailFormat: ThumbnailFormat.jpeg,
+    return Obx(() {
+      if (_isLoading.value) {
+        return const Center(child: CircularProgressIndicator.adaptive());
+      }
+      if (_path == null) {
+        return const Center(child: Text('Request paths first.'));
+      }
+      if (_entities?.isNotEmpty != true) {
+        return const Center(child: Text('No assets found on this device.'));
+      }
+      return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: _entities.length,
+        itemBuilder: (context, index) {
+          if (index == _entities.length - 8 &&
+              !_isLoadingMore.value &&
+              _hasMoreToLoad.value) {
+            _loadMoreAsset();
+          }
+          final AssetEntity entity = _entities[index];
+          return GestureDetector(
+            onTap: () {
+              final logger = Logger();
+              entity.file.then((value) {
+                logger.i(value.path);
+                socialMediaControllers.imagePath.value = value.path;
+              });
+            },
+            child: Container(
+              width: 64.w,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6), color: Colors.red),
+              margin: EdgeInsets.only(right: 16.w),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(6),
+                child: Image(
+                  fit: BoxFit.cover,
+                  image: AssetEntityImageProvider(
+                    entity,
+                    isOriginal: false,
+                    // thumbnailSize: const ThumbnailSize.square(200), // Preferred value.
+                    thumbnailFormat: ThumbnailFormat.jpeg,
+                  ),
                 ),
               ),
             ),
-          ),
-        );
-      },
-    );
+          );
+        },
+      );
+    });
   }
 
   @override

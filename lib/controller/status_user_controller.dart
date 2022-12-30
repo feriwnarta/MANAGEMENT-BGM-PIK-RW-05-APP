@@ -71,7 +71,7 @@ class StatusUserController extends GetxController {
     listStatus.assignAll(listStatusBaru);
   }
 
-  void getDataFromDb() async {
+  Future<void> getDataFromDb() async {
     String idUser = await UserSecureStorage.getIdUser();
     if (isLoading.value) {
       listStatus.assignAll(await StatusUserServices.getDataApi(idUser, 0, 10));
