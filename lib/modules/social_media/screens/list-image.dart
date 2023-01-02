@@ -150,8 +150,9 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
                   fit: BoxFit.cover,
                   image: AssetEntityImageProvider(
                     entity,
-                    isOriginal: false,
-                    // thumbnailSize: const ThumbnailSize.square(200), // Preferred value.
+                    isOriginal: true,
+                    thumbnailSize:
+                        const ThumbnailSize.square(200), // Preferred value.
                     thumbnailFormat: ThumbnailFormat.jpeg,
                   ),
                 ),

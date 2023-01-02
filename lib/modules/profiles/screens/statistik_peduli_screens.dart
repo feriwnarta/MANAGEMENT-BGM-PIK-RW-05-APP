@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 
 class StatistikPeduliScreen extends StatelessWidget {
   const StatistikPeduliScreen({Key key}) : super(key: key);
@@ -54,7 +53,7 @@ class StatistikPeduliScreen extends StatelessWidget {
                 ),
                 Center(
                   child: SizedBox(
-                    width: 275.w,
+                    width: 300.w,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -103,7 +102,6 @@ class StatistikPeduliScreen extends StatelessWidget {
                       color: Color(0xffF5F5F5),
                       elevation: 2,
                       child: Container(
-                        height: 108.h,
                         width: 156.w,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -120,9 +118,9 @@ class StatistikPeduliScreen extends StatelessWidget {
                               height: 8.h,
                             ),
                             Container(
-                              margin: EdgeInsets.symmetric(horizontal: 12.w),
                               child: AutoSizeText(
                                 'Peduli Lingkungan Umum',
+                                minFontSize: 12,
                                 style: TextStyle(
                                   fontSize: 12.sp,
                                   color: Color(0xff616161),
@@ -147,6 +145,9 @@ class StatistikPeduliScreen extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
+                            SizedBox(
+                              height: 16.h,
+                            )
                           ],
                         ),
                       ),
@@ -155,7 +156,6 @@ class StatistikPeduliScreen extends StatelessWidget {
                       elevation: 2,
                       color: Color(0xffFDF4E4),
                       child: Container(
-                        height: 108.h,
                         width: 156.w,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -173,14 +173,15 @@ class StatistikPeduliScreen extends StatelessWidget {
                               height: 8.h,
                             ),
                             Container(
-                              margin: EdgeInsets.symmetric(horizontal: 12.w),
+                              // margin: EdgeInsets.symmetric(horizontal: 12.w),
                               child: AutoSizeText(
                                 'Peduli Lingkungan Pribadi',
+                                minFontSize: 12,
                                 style: TextStyle(
                                   fontSize: 12.sp,
                                   color: Color(0xff616161),
                                 ),
-                                maxLines: 1,
+                                maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -200,6 +201,9 @@ class StatistikPeduliScreen extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
+                            SizedBox(
+                              height: 16.h,
+                            )
                           ],
                         ),
                       ),

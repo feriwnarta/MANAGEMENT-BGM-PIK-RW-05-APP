@@ -24,7 +24,8 @@ class NewsServices {
     var obj = jsonDecode(response.data) as List;
     return obj
         .map(
-          (item) => CardNews(url: item['url_news_image']),
+          (item) =>
+              CardNews(url: item['url_news_image'], content: item['content']),
         )
         .toList();
   }

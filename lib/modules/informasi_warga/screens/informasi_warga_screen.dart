@@ -36,7 +36,6 @@ class InformasiWargaScreen extends StatelessWidget {
                                 () => ReadInformation(),
                                 transition: Transition.rightToLeft,
                                 arguments: [
-                                  'content',
                                   snapshot.data[index].content,
                                 ],
                               ),
