@@ -1,16 +1,20 @@
+import 'package:aplikasi_rw/controller/user_login_controller.dart';
+import 'package:aplikasi_rw/modules/home/services/news_service.dart';
 import 'package:aplikasi_rw/modules/home/widgets/app_bar_citizen.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/instance_manager.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../server-app.dart';
 import '../models/card_news.dart';
-import '../services/news_services.dart';
 
 class HeaderScreen extends StatelessWidget {
-  const HeaderScreen({Key key}) : super(key: key);
+  HeaderScreen({Key key}) : super(key: key);
+
+  final userLoginController = Get.put(UserLoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +48,7 @@ class HeaderScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     AutoSizeText(
-                      'Hi, Laura Meldy',
+                      '${userLoginController.username.value}',
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w500,

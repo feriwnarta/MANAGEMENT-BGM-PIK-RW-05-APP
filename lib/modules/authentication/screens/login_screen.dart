@@ -998,11 +998,13 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
             // Get.offAll(SplashView());
             registerController.toOtpVerif = true.obs;
             registerController.fromLogin = true.obs;
+
             registerController.email.value = message['email'];
             registerController.noTelp.value = message['no_telp'];
             authController.controllerEmail.text = message['email'];
             authController.controllerNoTelp.text = message['no_telp'];
             registerController.update();
+
             // }
           } else if (message == 'login failed') {
             String urlKontraktor =

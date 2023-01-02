@@ -9,7 +9,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../../../server-app.dart';
 import '../../users/screens/change_data_user.dart';
-import './dashboard_statistic_screen.dart';
 
 class HomeManagementScreen extends StatelessWidget {
   HomeManagementScreen({Key key}) : super(key: key);
@@ -25,7 +24,10 @@ class HomeManagementScreen extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            children: [Header(scaffoldKey: scaffoldKey), DashboardStatistic()],
+            children: [
+              Header(scaffoldKey: scaffoldKey),
+              // DashboardStatistic(),
+            ],
           ),
         ),
       ),

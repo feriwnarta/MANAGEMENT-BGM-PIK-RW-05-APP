@@ -109,7 +109,6 @@ class _StepperRwState extends State<StepperRw> {
   final _picker = ImagePicker();
   StepperController stepperController;
   RxList<Map<String, dynamic>> idKlasifikasi = <Map<String, dynamic>>[].obs;
-  sidio.Dio dio;
 
   @override
   void initState() {
@@ -404,6 +403,8 @@ class _StepperRwState extends State<StepperRw> {
                           });
 
                           if (stepperController.imagePath.value.isNotEmpty) {
+                            sidio.Dio dio = sidio.Dio();
+
                             String idUser = await UserSecureStorage.getIdUser();
                             String uri =
                                 '${ServerApp.url}/src/report/add_report.php';
@@ -427,7 +428,10 @@ class _StepperRwState extends State<StepperRw> {
                               'type': controllerWrite.type.value
                             });
                             // showLoading(context);
-                            EasyLoading.show(status: 'mengirim');
+                            EasyLoading.show(
+                              status: 'mengirim',
+                            );
+
                             dio.interceptors.add(RetryInterceptor(
                               dio: dio,
                               retries: 100,
@@ -438,66 +442,29 @@ class _StepperRwState extends State<StepperRw> {
                             String m = jsonDecode(response.data);
                             if (m != null && m.isNotEmpty) {
                               EasyLoading.dismiss();
-                              EasyLoading.showToast('Laporan terkirim');
-                              final indexHome =
-                                  Get.put(IndexScreenHomeController());
-                              final reportController =
-                                  Get.put(ReportUserController());
-                              reportController.refresReport();
-                              reportController.update();
-                              indexHome.index.value = 1;
+                              Get.off(
+                                () => CompletedScreen(),
+                                transition: Transition.rightToLeft,
+                              );
+                              // EasyLoading.showToast('Laporan terkirim');
+                              // final indexHome =
+                              //     Get.put(IndexScreenHomeController());
+                              // final reportController =
+                              //     Get.put(ReportUserController());
+                              // reportController.refresReport();
+                              // reportController.update();
+                              // indexHome.index.value = 1;
 
-                              Get
-                                ..back()
-                                ..back()
-                                ..back();
+                              // Get
+                              //   ..back()
+                              //   ..back()
+                              //   ..back();
                             }
                           } else {
                             EasyLoading.showError(
                               'foto / gambar gagal diambil, silahkan mengambil foto / gambar ulang',
                             );
                           }
-
-                          // ReportServices.sendDataReport(
-                          //         description: controllerWrite
-                          //             .controllerContentReport.text,
-                          //         category: nameCategory.value,
-                          //         idCategory: idCategory.value,
-                          //         latitude: controllerWrite.latitude.value,
-                          //         longitude: controllerWrite.longitude.value,
-                          //         address: controllerWrite.address.value,
-                          //         status: 'listed',
-                          //         idKlasifikasiCategory: stringKlasifikasi,
-                          //         idUser: idUser,
-                          //         imgPath: imagePath.value,
-                          //         type: controllerWrite.type.value)
-                          //     .then((res) {
-                          //   showLoading(context);
-                          //   res.send().then((value) {
-                          //     http.Response.fromStream(value).then((val) async {
-                          //       String m = jsonDecode(val.body);
-                          //       if (m != null && m.isNotEmpty) {
-                          //         Navigator.of(context).pop();
-                          //         buildShowDialogAnimation(
-                          //             'Laporan Berhasil Dikirim',
-                          //             '',
-                          //             'assets/animation/succes-animation.json',
-                          //             100.h);
-                          //         await Future.delayed(
-                          //             Duration(milliseconds: 1350));
-                          //         final indexHome =
-                          //             Get.put(IndexScreenHomeController());
-                          //         final reportController =
-                          //             Get.put(ReportUserController());
-                          //         reportController.refresReport();
-                          //         reportController.update();
-                          //         indexHome.index.value = 1;
-
-                          //         Get..back()..back()..back();
-                          //       }
-                          //     });
-                          //   });
-                          // });
                         },
                         child: Text(
                           'Kirim Laporan',
@@ -1290,5 +1257,82 @@ class _StepperRwState extends State<StepperRw> {
             ],
           );
         });
+  }
+}
+
+class CompletedScreen extends StatelessWidget {
+  const CompletedScreen({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 124.h,
+              ),
+              SvgPicture.asset('assets/img/image-svg/completed.svg'),
+              SizedBox(
+                height: 16.h,
+              ),
+              AutoSizeText(
+                'Yeayyy !!',
+                style: TextStyle(
+                  fontSize: 30.sp,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(
+                height: 24.h,
+              ),
+              SizedBox(
+                width: 259.w,
+                child: AutoSizeText(
+                  'Anda sudah menjadi warga yang peduli terhadap lingkungan disekitar.',
+                  style: TextStyle(
+                    fontSize: 19.sp,
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              SizedBox(
+                height: 148.h,
+              ),
+              SizedBox(
+                width: 328.w,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                  ),
+                  onPressed: () {
+                    final indexHome = Get.put(IndexScreenHomeController());
+                    final reportController = Get.put(ReportUserController());
+                    reportController.refresReport();
+                    reportController.update();
+                    indexHome.index.value = 1;
+
+                    Get.back();
+                    Get.back();
+                  },
+                  child: Text(
+                    'Kembali Keberanda',
+                    style: TextStyle(fontSize: 16.sp),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

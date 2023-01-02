@@ -132,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen>
                           ),
                         ),
                         SizedBox(height: 16.h),
-                        buildCarouselSliderNews(),
+                        // buildCarouselSliderNews(),
                         // SizedBox(
                         //   height: 17,
                         // ),
@@ -199,119 +199,119 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  StreamBuilder buildCarouselSliderNews() {
-    return StreamBuilder<List<CardNews>>(
-      stream: NewsServices.getNews('${controllerLogin.idUser}'),
-      builder: (context, snapshot) => (snapshot.hasData)
-          ? (snapshot.data.length > 0)
-              ? CarouselSlider.builder(
-                  options: CarouselOptions(
-                    // height: 180,
-                    height: 183.h,
-                    enlargeCenterPage: kDebugMode ? false : true,
-                    disableCenter: false,
-                    viewportFraction: 0.47,
-                    autoPlay: true,
-                    autoPlayInterval: Duration(seconds: 4),
-                    // onPageChanged: (index, _) => blocColor.add(index),
-                  ),
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (context, index, realIndex) {
-                    return SingleChildScrollView(
-                      child: GestureDetector(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                                height: 124.h,
-                                width: 143.w,
-                                child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(6),
-                                    // borderRadius: BorderRadius.only(
-                                    //     topLeft: Radius.circular(15),
-                                    //     topRight: Radius.circular(15)),
-                                    child: CachedNetworkImage(
-                                      imageUrl:
-                                          '${ServerApp.url}${snapshot.data[index].urlImageNews}',
-                                      fit: BoxFit.cover,
-                                      placeholder: (context, _) => Container(
-                                        color: Colors.grey,
-                                      ),
-                                      errorWidget: (context, url, _) =>
-                                          Container(
-                                        color: Colors.grey,
-                                        child: Icon(
-                                          Icons.error,
-                                          color: Colors.red,
-                                        ),
-                                      ),
-                                    ))),
-                            SizedBox(
-                              height: 3.h,
-                            ),
-                            SizedBox(
-                              width: 143.w,
-                              child: Text(
-                                snapshot.data[index].caption,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                softWrap: true,
-                                style: TextStyle(
-                                    color: Color(0xff404040), fontSize: 12.sp),
-                              ),
-                            )
-                          ],
-                        ),
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => NewsScreen(
-                                    urlImage:
-                                        '${ServerApp.url}${snapshot.data[index].urlImageNews}',
-                                    caption: snapshot.data[index].caption,
-                                    content: snapshot.data[index].content,
-                                    writerAndTime:
-                                        snapshot.data[index].writerAndTime,
-                                  )));
-                        },
-                      ),
-                    );
-                  },
-                )
-              : Center(
-                  child: Text(
-                    'No News',
-                    style: TextStyle(fontSize: 11.0.sp),
-                  ),
-                )
-          : SizedBox(
-              height: 121.78.h,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: 5,
-                scrollDirection: Axis.horizontal,
-                // padding: EdgeInsets.only(right: 2.0.w),
-                physics: ScrollPhysics(),
-                itemBuilder: (context, index) => Container(
-                  // height: 20.h,
-                  width: 156.w,
-                  margin: EdgeInsets.symmetric(horizontal: 3.w),
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                  child: Shimmer.fromColors(
-                      baseColor: Colors.grey[300],
-                      highlightColor: Colors.grey[200],
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(10)),
-                        width: double.infinity,
-                        height: 50,
-                      )),
-                ),
-              ),
-            ),
-    );
-  }
+  // StreamBuilder buildCarouselSliderNews() {
+  //   return StreamBuilder<List<CardNews>>(
+  //     stream: NewsServices.getNews('${controllerLogin.idUser}'),
+  //     builder: (context, snapshot) => (snapshot.hasData)
+  //         ? (snapshot.data.length > 0)
+  //             ? CarouselSlider.builder(
+  //                 options: CarouselOptions(
+  //                   // height: 180,
+  //                   height: 183.h,
+  //                   enlargeCenterPage: kDebugMode ? false : true,
+  //                   disableCenter: false,
+  //                   viewportFraction: 0.47,
+  //                   autoPlay: true,
+  //                   autoPlayInterval: Duration(seconds: 4),
+  //                   // onPageChanged: (index, _) => blocColor.add(index),
+  //                 ),
+  //                 itemCount: snapshot.data.length,
+  //                 itemBuilder: (context, index, realIndex) {
+  //                   return SingleChildScrollView(
+  //                     child: GestureDetector(
+  //                       child: Column(
+  //                         crossAxisAlignment: CrossAxisAlignment.start,
+  //                         children: [
+  //                           Container(
+  //                               height: 124.h,
+  //                               width: 143.w,
+  //                               child: ClipRRect(
+  //                                   borderRadius: BorderRadius.circular(6),
+  //                                   // borderRadius: BorderRadius.only(
+  //                                   //     topLeft: Radius.circular(15),
+  //                                   //     topRight: Radius.circular(15)),
+  //                                   child: CachedNetworkImage(
+  //                                     imageUrl:
+  //                                         '${ServerApp.url}${snapshot.data[index].urlImageNews}',
+  //                                     fit: BoxFit.cover,
+  //                                     placeholder: (context, _) => Container(
+  //                                       color: Colors.grey,
+  //                                     ),
+  //                                     errorWidget: (context, url, _) =>
+  //                                         Container(
+  //                                       color: Colors.grey,
+  //                                       child: Icon(
+  //                                         Icons.error,
+  //                                         color: Colors.red,
+  //                                       ),
+  //                                     ),
+  //                                   ))),
+  //                           SizedBox(
+  //                             height: 3.h,
+  //                           ),
+  //                           SizedBox(
+  //                             width: 143.w,
+  //                             child: Text(
+  //                               snapshot.data[index].caption,
+  //                               maxLines: 2,
+  //                               overflow: TextOverflow.ellipsis,
+  //                               softWrap: true,
+  //                               style: TextStyle(
+  //                                   color: Color(0xff404040), fontSize: 12.sp),
+  //                             ),
+  //                           )
+  //                         ],
+  //                       ),
+  //                       onTap: () {
+  //                         Navigator.of(context).push(MaterialPageRoute(
+  //                             builder: (context) => NewsScreen(
+  //                                   urlImage:
+  //                                       '${ServerApp.url}${snapshot.data[index].urlImageNews}',
+  //                                   caption: snapshot.data[index].caption,
+  //                                   content: snapshot.data[index].content,
+  //                                   writerAndTime:
+  //                                       snapshot.data[index].writerAndTime,
+  //                                 )));
+  //                       },
+  //                     ),
+  //                   );
+  //                 },
+  //               )
+  //             : Center(
+  //                 child: Text(
+  //                   'No News',
+  //                   style: TextStyle(fontSize: 11.0.sp),
+  //                 ),
+  //               )
+  //         : SizedBox(
+  //             height: 121.78.h,
+  //             child: ListView.builder(
+  //               shrinkWrap: true,
+  //               itemCount: 5,
+  //               scrollDirection: Axis.horizontal,
+  //               // padding: EdgeInsets.only(right: 2.0.w),
+  //               physics: ScrollPhysics(),
+  //               itemBuilder: (context, index) => Container(
+  //                 // height: 20.h,
+  //                 width: 156.w,
+  //                 margin: EdgeInsets.symmetric(horizontal: 3.w),
+  //                 decoration:
+  //                     BoxDecoration(borderRadius: BorderRadius.circular(20)),
+  //                 child: Shimmer.fromColors(
+  //                     baseColor: Colors.grey[300],
+  //                     highlightColor: Colors.grey[200],
+  //                     child: Container(
+  //                       decoration: BoxDecoration(
+  //                           color: Colors.grey,
+  //                           borderRadius: BorderRadius.circular(10)),
+  //                       width: double.infinity,
+  //                       height: 50,
+  //                     )),
+  //               ),
+  //             ),
+  //           ),
+  //   );
+  // }
 
   Container headerBackground(
       BuildContext context, String fotoProfile, String username) {

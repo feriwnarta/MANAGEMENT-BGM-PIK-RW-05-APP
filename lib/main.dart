@@ -3,6 +3,7 @@ import 'package:aplikasi_rw/controller/indexscreen_home_controller.dart';
 import 'package:aplikasi_rw/controller/report_user_controller.dart';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/home/screens/home_folder_screen.dart';
+import 'package:aplikasi_rw/modules/profiles/screens/UserProfileScreens.dart';
 import 'package:aplikasi_rw/routes/app_pages.dart';
 import 'package:aplikasi_rw/routes/app_routes.dart';
 import 'package:aplikasi_rw/modules/payment_ipl/screens/history/payment_ipl_history.dart';
@@ -234,7 +235,7 @@ class _MainAppState extends State<MainApp> {
   Widget build(BuildContext context) {
     screens = [
       HomeScreenFolder(),
-      ReportScreen2(),
+      UserProfileScreen(),
       // BillScreen(),
       PaymentIplHistory()
       // PaymentScreen()
