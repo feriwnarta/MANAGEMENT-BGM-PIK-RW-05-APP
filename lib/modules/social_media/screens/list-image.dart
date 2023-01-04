@@ -57,9 +57,9 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
     }
     // Obtain assets using the path entity.
     final List<AssetPathEntity> paths = await PhotoManager.getAssetPathList(
-      onlyAll: true,
-      filterOption: _filterOptionGroup,
-    );
+        onlyAll: true,
+        filterOption: _filterOptionGroup,
+        type: RequestType.image);
     if (!mounted) {
       return;
     }
@@ -139,25 +139,25 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
                 socialMediaControllers.imagePath.value = value.path;
               });
             },
-            child: Container(
-              width: 64.w,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6), color: Colors.red),
-              margin: EdgeInsets.only(right: 16.w),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(6),
-                child: Image(
-                  fit: BoxFit.cover,
-                  image: AssetEntityImageProvider(
-                    entity,
-                    isOriginal: true,
-                    thumbnailSize:
-                        const ThumbnailSize.square(200), // Preferred value.
-                    thumbnailFormat: ThumbnailFormat.jpeg,
-                  ),
-                ),
-              ),
-            ),
+            child: FutureBuilder<File>(
+                future: entity.file,
+                builder: (context, snapshot) => (snapshot.hasData)
+                    ? Container(
+                        width: 64.w,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            color: Colors.red),
+                        margin: EdgeInsets.only(right: 16.w),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(6),
+                            child: Image(
+                              fit: BoxFit.cover,
+                              image: FileImage(
+                                File('${snapshot.data.path}'),
+                              ),
+                            )),
+                      )
+                    : CircularProgressIndicator.adaptive()),
           );
         },
       );

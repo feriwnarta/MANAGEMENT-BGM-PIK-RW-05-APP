@@ -1,4 +1,5 @@
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
+import 'package:aplikasi_rw/modules/profiles/screens/change_data_user.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/statistik_peduli_screens.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -214,6 +215,8 @@ class UserProfileScreen extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 trailing: Icon(Icons.chevron_right_rounded),
+                onTap: () => Get.to(() => ChangeDataUser(),
+                    transition: Transition.rightToLeft),
               ),
               SizedBox(
                 height: 208.h,

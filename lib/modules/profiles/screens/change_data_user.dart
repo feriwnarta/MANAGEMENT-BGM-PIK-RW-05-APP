@@ -4,6 +4,8 @@ import 'package:aplikasi_rw/modules/authentication/validate/validate_email_and_p
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
@@ -58,8 +60,10 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Ganti data'),
-          brightness: Brightness.light,
+          title: Text('Pengaturan profil'),
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarBrightness: Brightness.light,
+          ),
         ),
         body: FutureBuilder<UserChangeModel>(
             future: UserChangeServices.getDataUser('${loginController.idUser}'),
@@ -71,51 +75,49 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                           height: 15.h,
                         ),
                         Center(
-                          child: Stack(
-                            children: [
-                              GestureDetector(
-                                child: Container(
-                                    height: 70.h,
-                                    width: 70.w,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: Border.all(color: Colors.blue),
-                                        image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            repeat: ImageRepeat.noRepeat,
-                                            image: (widget.urlProfilePath ==
-                                                    null)
-                                                ? CachedNetworkImageProvider(
-                                                    '${ServerApp.url}${loginController.urlProfile}')
-                                                : FileImage(File(
-                                                    widget.urlProfilePath))))),
-                                onTap: () => showModalBottomSheet(
-                                    context: context,
-                                    builder: ((builder) =>
-                                        bottomImagePicker(context))),
-                              ),
-                              Positioned(
-                                right: -14.w,
-                                bottom: -14.h,
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.image,
-                                    color: Colors.blue[800],
+                          child: GestureDetector(
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 64.h,
+                                  width: 64.w,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      repeat: ImageRepeat.noRepeat,
+                                      image: (widget.urlProfilePath == null)
+                                          ? CachedNetworkImageProvider(
+                                              '${ServerApp.url}${loginController.urlProfile}')
+                                          : FileImage(
+                                              File(widget.urlProfilePath),
+                                            ),
+                                    ),
                                   ),
+                                ),
+                                TextButton.icon(
                                   onPressed: () {
                                     showModalBottomSheet(
                                         context: context,
                                         builder: ((builder) =>
                                             bottomImagePicker(context)));
                                   },
-                                  iconSize: 20.h,
-                                ),
-                              )
-                            ],
+                                  icon: Icon(
+                                    FontAwesomeIcons.pen,
+                                    size: 12.h,
+                                  ),
+                                  label: Text('Ubah Foto'),
+                                )
+                              ],
+                            ),
+                            onTap: () => showModalBottomSheet(
+                                context: context,
+                                builder: ((builder) =>
+                                    bottomImagePicker(context))),
                           ),
                         ),
                         SizedBox(
-                          height: 3.h,
+                          height: 28.h,
                         ),
                         ListTile(
                           leading: Icon(Icons.person, size: 20.h),
@@ -126,7 +128,72 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                               Text(
                                 'Username',
                                 style: TextStyle(
-                                    color: Colors.grey, fontSize: 14.sp),
+                                    color: Colors.grey, fontSize: 11.sp),
+                              ),
+                              SizedBox(height: 1.0.h),
+                              Text(
+                                '${loginController.username}',
+                                style: TextStyle(fontSize: 12.sp),
+                              ),
+                              SizedBox(height: 1.0.h),
+                            ],
+                          ),
+                          trailing: Icon(
+                            FontAwesomeIcons.pen,
+                            size: 10.h,
+                          ),
+                          onTap: () => showModalBottomSheet(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(15.0))),
+                              context: context,
+                              isScrollControlled: true,
+                              builder: (context) => buildPaddingChangeData(
+                                  context, 'masukan username', 'username')),
+                        ),
+                        ListTile(
+                          leading: SvgPicture.asset(
+                              'assets/img/image-svg/cluster.svg'),
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 1.0.h),
+                              Text(
+                                'Nama Cluster',
+                                style: TextStyle(
+                                    color: Colors.grey, fontSize: 11.sp),
+                              ),
+                              SizedBox(height: 1.0.h),
+                              Text(
+                                '${loginController.username}',
+                                style: TextStyle(fontSize: 12.sp),
+                              ),
+                              SizedBox(height: 1.0.h),
+                            ],
+                          ),
+                          trailing: Icon(
+                            FontAwesomeIcons.pen,
+                            size: 10.h,
+                          ),
+                          onTap: () => showModalBottomSheet(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(15.0))),
+                              context: context,
+                              isScrollControlled: true,
+                              builder: (context) => buildPaddingChangeData(
+                                  context, 'masukan username', 'username')),
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.home, size: 20.h),
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 1.0.h),
+                              Text(
+                                'Nomor Rumah',
+                                style: TextStyle(
+                                    color: Colors.grey, fontSize: 11.sp),
                               ),
                               SizedBox(height: 1.0.h),
                               Text(
@@ -164,7 +231,7 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                               Text(
                                 'Email',
                                 style: TextStyle(
-                                    color: Colors.grey, fontSize: 14.sp),
+                                    color: Colors.grey, fontSize: 11.sp),
                               ),
                               SizedBox(height: 1.0.h),
                               Text(
@@ -202,7 +269,9 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                               Text(
                                 'Nomor telpon',
                                 style: TextStyle(
-                                    color: Colors.grey, fontSize: 14.sp),
+                                  color: Colors.grey,
+                                  fontSize: 11.sp,
+                                ),
                               ),
                               SizedBox(height: 1.0.h),
                               Text(

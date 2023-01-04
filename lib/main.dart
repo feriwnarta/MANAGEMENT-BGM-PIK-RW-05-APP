@@ -4,11 +4,11 @@ import 'package:aplikasi_rw/controller/report_user_controller.dart';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/home/screens/home_folder_screen.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/UserProfileScreens.dart';
+import 'package:aplikasi_rw/modules/profiles/screens/profile_settings_screen.dart';
 import 'package:aplikasi_rw/routes/app_pages.dart';
 import 'package:aplikasi_rw/routes/app_routes.dart';
 import 'package:aplikasi_rw/modules/payment_ipl/screens/history/payment_ipl_history.dart';
-import 'package:aplikasi_rw/modules/report_screen/screens/report_screen_2.dart';
-import 'package:aplikasi_rw/modules/users/screens/change_data_user.dart';
+import 'package:aplikasi_rw/modules/profiles/screens/change_data_user.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/check_session.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
@@ -236,9 +236,7 @@ class _MainAppState extends State<MainApp> {
     screens = [
       HomeScreenFolder(),
       UserProfileScreen(),
-      // BillScreen(),
-      PaymentIplHistory()
-      // PaymentScreen()
+      ProfileSettings(),
     ];
 
     return Scaffold(

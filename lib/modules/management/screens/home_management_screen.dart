@@ -8,7 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../../../server-app.dart';
-import '../../users/screens/change_data_user.dart';
+import '../../profiles/screens/change_data_user.dart';
 
 class HomeManagementScreen extends StatelessWidget {
   HomeManagementScreen({Key key}) : super(key: key);

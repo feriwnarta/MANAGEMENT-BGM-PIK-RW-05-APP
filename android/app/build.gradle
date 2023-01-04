@@ -68,6 +68,14 @@ android {
        }
    }
 
+   bundle {
+        storeArchive {
+            enable = false
+        }
+    }
+
+
+
 }
 
 flutter {

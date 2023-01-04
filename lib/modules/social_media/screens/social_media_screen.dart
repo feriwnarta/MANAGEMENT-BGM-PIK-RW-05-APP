@@ -5,6 +5,7 @@ import 'package:aplikasi_rw/services/like_status_services.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -51,6 +52,8 @@ class _SocialMediaState extends State<SocialMedia> {
     ScreenUtil.init(context, designSize: const Size(360, 800));
     return Scaffold(
       appBar: AppBar(
+        systemOverlayStyle:
+            SystemUiOverlayStyle(statusBarBrightness: Brightness.light),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -111,7 +114,7 @@ class _SocialMediaState extends State<SocialMedia> {
                           child: SizedBox(
                             width: 30,
                             height: 30,
-                            child: CircularProgressIndicator(),
+                            child: SizedBox(),
                           ),
                         ),
                       );

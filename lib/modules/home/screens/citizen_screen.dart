@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
-import 'package:aplikasi_rw/model/card_news.dart';
 import 'package:aplikasi_rw/modules/home/services/news_service.dart';
 import 'package:aplikasi_rw/modules/home/widgets/menu.dart';
 import 'package:aplikasi_rw/modules/informasi_warga/screens/informasi_warga_screen.dart';
@@ -249,9 +247,8 @@ class _MyWidgetState extends State<CitizenScreen> {
                         Menu(
                           icon: 'assets/img/citizen_menu/ipl.jpg',
                           text: 'Peduli lingkungan',
-                          onTap: () => Get.to(
-                            () => SubMenuReport(),
-                          ),
+                          onTap: () => Get.to(() => SubMenuReport(),
+                              transition: Transition.rightToLeft),
                         ),
                         SizedBox(
                           width: 14.w,
@@ -260,7 +257,8 @@ class _MyWidgetState extends State<CitizenScreen> {
                           icon:
                               'assets/img/citizen_menu/status-peduli-lingkungan.jpg',
                           text: 'Status peduli lingkungan',
-                          onTap: () => Get.to(() => ReportScreen2()),
+                          onTap: () => Get.to(() => ReportScreen2(),
+                              transition: Transition.rightToLeft),
                         ),
                         SizedBox(
                           width: 14.w,
@@ -268,7 +266,10 @@ class _MyWidgetState extends State<CitizenScreen> {
                         Menu(
                           icon: 'assets/img/citizen_menu/ipl.jpg',
                           text: 'Status IPL\n',
-                          onTap: () => Get.to(() => PaymentIplHistory()),
+                          onTap: () => Get.to(
+                            () => PaymentIplHistory(),
+                            transition: Transition.rightToLeft,
+                          ),
                         ),
                         SizedBox(
                           width: 14.w,
@@ -299,9 +300,8 @@ class _MyWidgetState extends State<CitizenScreen> {
                         Menu(
                           icon: 'assets/img/citizen_menu/media.jpg',
                           text: 'Sosial Media',
-                          onTap: () => Get.to(
-                            () => SocialMedia(),
-                          ),
+                          onTap: () => Get.to(() => SocialMedia(),
+                              transition: Transition.rightToLeft),
                         ),
                       ],
                     ),

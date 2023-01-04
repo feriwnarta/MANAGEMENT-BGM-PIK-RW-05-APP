@@ -3,22 +3,16 @@ import 'package:aplikasi_rw/controller/home_screen_controller.dart';
 import 'package:aplikasi_rw/controller/status_user_controller.dart';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/controller/write_status_controller.dart';
-import 'package:aplikasi_rw/model/card_news.dart';
 import 'package:aplikasi_rw/modules/home/screens/tempat_tulis_status_screen.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'news_screen.dart';
 import 'status_warga.dart';
 
 //ignore: must_be_immutable

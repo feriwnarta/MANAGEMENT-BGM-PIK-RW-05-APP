@@ -50,7 +50,8 @@ class _HomeScreenFolderState extends State<HomeScreenFolder> {
                       Menu(
                         icon: 'assets/img/menu-warga.jpg',
                         text: 'Warga',
-                        onTap: () => Get.to(() => CitizenScreen()),
+                        onTap: () => Get.to(() => CitizenScreen(),
+                            transition: Transition.rightToLeft),
                       ),
                       SizedBox(
                         width: 16.w,
