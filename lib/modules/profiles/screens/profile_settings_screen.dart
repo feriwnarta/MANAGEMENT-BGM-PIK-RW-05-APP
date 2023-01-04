@@ -103,7 +103,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                   contentPadding: EdgeInsets.zero,
                   dense: true,
                   leading: SvgPicture.asset(
-                    'assets/img/image-svg/information-circle.svg',
+                    'assets/img/image-svg/information-circle2.svg',
                     color: Colors.black,
                   ),
                   title: AutoSizeText(
@@ -125,7 +125,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                   contentPadding: EdgeInsets.zero,
                   dense: true,
                   leading: SvgPicture.asset(
-                    'assets/img/image-svg/flag.svg',
+                    'assets/img/image-svg/flag2.svg',
                     color: Colors.black,
                   ),
                   title: AutoSizeText(
@@ -146,7 +146,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                   contentPadding: EdgeInsets.zero,
                   dense: true,
                   leading: SvgPicture.asset(
-                    'assets/img/image-svg/shield-exclamation.svg',
+                    'assets/img/image-svg/shield-exclamation2.svg',
                     color: Colors.black,
                   ),
                   title: AutoSizeText(

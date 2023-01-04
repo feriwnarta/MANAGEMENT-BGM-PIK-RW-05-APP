@@ -146,15 +146,19 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
                         width: 64.w,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(6),
-                            color: Colors.red),
+                            color: Colors.grey),
                         margin: EdgeInsets.only(right: 16.w),
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(6),
-                            child: Image(
+                            child: AssetEntityImage(
+                              entity,
                               fit: BoxFit.cover,
-                              image: FileImage(
-                                File('${snapshot.data.path}'),
-                              ),
+                              isOriginal: false, // Defaults to `true`.
+                              filterQuality: FilterQuality.medium,
+                              thumbnailSize: const ThumbnailSize.square(
+                                  200), // Preferred value.
+                              thumbnailFormat:
+                                  ThumbnailFormat.jpeg, // Defaults to `jpeg`.
                             )),
                       )
                     : CircularProgressIndicator.adaptive()),
