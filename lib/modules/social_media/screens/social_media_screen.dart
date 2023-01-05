@@ -111,10 +111,11 @@ class _SocialMediaState extends State<SocialMedia> {
                       return Container(
                         margin: EdgeInsets.symmetric(vertical: 10),
                         child: Center(
-                          child: SizedBox(
-                            width: 30,
-                            height: 30,
-                            child: SizedBox(),
+                          child: Text(
+                            'Tidak ada status',
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                            ),
                           ),
                         ),
                       );

@@ -479,7 +479,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
 
   Future<void> checkEmailIpl(String iplOrEmail) async {
     String url = '${ServerApp.url}src/login/check_ipl_email.php';
-    var data = {'iplOrEmail': iplOrEmail};
+    var data = {'username': iplOrEmail};
     try {
       var response = await http.post(Uri.parse(url), body: jsonEncode(data));
       if (response.statusCode >= 200 && response.statusCode <= 399) {
@@ -685,8 +685,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     logger.d(otpKey);
     logger.d(authController.controllerUsername.text);
     try {
-      // buildShowDialogAnimation(
-      //     '', '', 'assets/animation/loading-plane.json', 2.0.h);
       EasyLoading.show(status: 'loading');
       http.Response response =
           await http.post(Uri.parse(url), body: json.encode(data));

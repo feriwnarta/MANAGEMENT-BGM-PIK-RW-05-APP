@@ -377,9 +377,10 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                             buildShowDialogAnimation('', '',
                                 'assets/animation/loading-plane.json', 2.0.h);
                             String rs = await UserChangeServices.editData(
-                                '${loginController.idUser}',
-                                controller.text,
-                                'username');
+                              '${loginController.idUser}',
+                              controller.text,
+                              'username',
+                            );
                             if (rs == 'OK') {
                               Navigator.of(context)
                                 ..pop()

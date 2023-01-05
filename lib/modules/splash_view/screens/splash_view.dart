@@ -106,6 +106,9 @@ class _SplashViewState extends State<SplashView> {
 
       if (response.statusCode >= 200 && response.statusCode <= 399) {
         var message = jsonDecode(response.body);
+
+        final logger = Logger();
+        logger.d(message);
         if (message == 'FAILL') {
           logger.e(message);
           return 'FAILL';
