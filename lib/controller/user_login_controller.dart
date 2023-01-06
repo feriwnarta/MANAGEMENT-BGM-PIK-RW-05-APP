@@ -98,8 +98,7 @@ class UserLoginController extends GetxController {
             status = 'user'.obs;
             this.idUser = idUser.obs;
             UserModel userModel = await GetDataUserServices.getDataUser(idUser);
-            final logger = Logger();
-            logger.i(userModel);
+
             if (userModel != null) {
               this.urlProfile = userModel.urlProfile.obs;
               this.username = userModel.username.obs;
@@ -116,13 +115,18 @@ class UserLoginController extends GetxController {
             break;
 
           case 'cordinator':
-            status = 'cordinator'.obs;
+            status = 'user'.obs;
             this.idUser = idUser.obs;
-            CordinatorModel cordinatorModel =
-                await GetDataCordinatorServices.getDataCordinator(idUser);
-            if (cordinatorModel != null) {
-              this.nameCordinator = cordinatorModel.nameCordinator.obs;
-              this.job = cordinatorModel.job.obs;
+            UserModel userModel = await GetDataUserServices.getDataUser(idUser);
+
+            if (userModel != null) {
+              this.urlProfile = userModel.urlProfile.obs;
+              this.username = userModel.username.obs;
+              this.email = userModel.email.obs;
+              this.houseNumber = userModel.houseNumber.obs;
+              this.cluster = userModel.cluster.obs;
+              this.rw = userModel.rw.obs;
+              this.noTelp = userModel.noTelp.obs;
             } else {
               status = 'logout'.obs;
               UserSecureStorage.deleteIdUser();
@@ -169,9 +173,14 @@ class UserLoginController extends GetxController {
   Future<void> loginCitizen() async {
     String idUser = await UserSecureStorage.getIdUser();
     String statusUser = await UserSecureStorage.getStatus();
+
     if (idUser != null && statusUser != null) {
       // status = 'user'.obs;
       UserModel userModel = await GetDataUserServices.getDataUser(idUser);
+
+      final logger = Logger();
+      logger.i(userModel);
+
       this.urlProfile = userModel.urlProfile.obs;
       this.username = userModel.username.obs;
       this.email = userModel.email.obs;

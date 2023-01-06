@@ -151,9 +151,6 @@ class _SplashViewState extends State<SplashView> {
   Future<void> checkOtpWhenExit() async {
     final storage = FlutterSecureStorage();
     String status = await storage.read(key: 'successotp');
-    final logger = Logger();
-    logger.e('testterrr');
-    logger.e(status);
 
     if (status != null) {
       if (status.isCaseInsensitiveContainsAny('false')) {
@@ -168,7 +165,6 @@ class _SplashViewState extends State<SplashView> {
         logger.e(_loginController.email.value);
       }
     } else {
-      logger.w('success otp kosong');
       // _loginController.resetOtpWhenExit();
       _loginController.otpWhenExit = false.obs;
       _loginController.update();

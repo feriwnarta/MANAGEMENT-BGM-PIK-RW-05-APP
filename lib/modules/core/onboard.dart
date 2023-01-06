@@ -36,9 +36,7 @@ class _OnBoardState extends State<OnBoard> {
                   : _loginController.status.value == 'user'
                       ? MainApp()
                       : (_loginController.status.value == 'cordinator')
-                          ? HomeScreenCordinator(
-                              name: _loginController.nameCordinator.value,
-                            )
+                          ? MainApp()
                           : (_loginController.status.value == 'contractor')
                               ? HomeScreenCordinator(
                                   name: _loginController.nameContractor.value,

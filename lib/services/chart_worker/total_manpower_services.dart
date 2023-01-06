@@ -18,9 +18,8 @@ class TotalManPowerServices {
     var data = {'id_user': idUser, 'type_worker': typeWorker};
     var response = await http.post(Uri.parse(url), body: jsonEncode(data));
     if (response.statusCode >= 200 && response.statusCode <= 399) {
-      final logger = Logger();
       var result = jsonDecode(response.body) as List;
-      logger.w(result);
+
       if (result != null)
         return result
             .map<TotalManPowerModel>((e) => TotalManPowerModel(

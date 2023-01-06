@@ -4,6 +4,7 @@ import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:logger/logger.dart';
 
 class GetDataUserServices {
   static Future<UserModel> getDataUser(String idUser) async {
@@ -19,15 +20,16 @@ class GetDataUserServices {
 
     if (response.statusCode >= 200 && response.data.isNotEmpty) {
       var result = jsonDecode(response.data);
-      print(result['username']);
+
       UserModel model = UserModel(
         urlProfile: result['profile_image'],
         username: result['username'],
-        cluster: result['cluster'],
-        email: result['email'],
-        houseNumber: result['house_number'],
-        noTelp: result['no_telp'],
-        rw: result['rw'],
+        cluster: result['cluster'] == null ? '' : result['cluster'],
+        email: result['email'] == null ? '' : result['email'],
+        houseNumber:
+            result['house_number'] == null ? '' : result['house_number'],
+        noTelp: result['no_telp'] == null ? '' : result['no_telp'],
+        rw: result['rw'] == null ? '' : result['rw'],
       );
       return model;
     }

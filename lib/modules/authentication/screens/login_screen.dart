@@ -927,9 +927,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     // var deviceVersion;
     var identifier;
 
-    final logger = Logger();
-    logger.w('s');
-
     try {
       if (io.Platform.isAndroid) {
         var build = await deviceInfoPlugin.androidInfo;
@@ -961,11 +958,12 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
         response = await http.post(Uri.parse(url), body: json.encode(data));
 
         if (response.statusCode >= 400) {
-          EasyLoading.showError('Server error, tolong hubungin admin',
-              dismissOnTap: true);
+          EasyLoading.showError(
+            'Server error, tolong hubungin admin',
+            dismissOnTap: true,
+          );
         }
 
-        logger.e(response.body);
         if (response.body.isNotEmpty) {
           message = jsonDecode(response.body);
           if (message != 'login failed') {
@@ -981,8 +979,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
             var result = await CheckAccessOtp.checkAccess(
                 username: authController.controllerUsername.text);
 
-            logger.d(result['otp']);
-
             if (result['otp'] == '0') {
               await UserSecureStorage.setIdUser(message['id_user']);
               await UserSecureStorage.setStatusLogin(message['status']);
@@ -991,6 +987,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                 value: authController.controllerUsername.text,
               );
               String idUser = await UserSecureStorage.getIdUser();
+
               // countDownController.reset();
               // countDownController.reset();
               if (idUser.isNotEmpty) {
@@ -1004,7 +1001,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                 Get.delete<AuthController>();
               }
               loginController.loginCitizen();
-              logger.d('otp 0');
             } else {
               idUser = message['id_user'];
               status = message['status'];
@@ -1023,98 +1019,99 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
 
             // }
           } else if (message == 'login failed') {
-            String urlKontraktor =
-                '${ServerApp.url}src/login/login_cordinator/login_cordinator.php';
+            // String urlKontraktor =
+            //     '${ServerApp.url}src/login/login_cordinator/login_cordinator.php';
 
-            var dataKordinator = {
-              'username': authController.controllerUsername.text,
-              'password': authController.controllerPassword.text,
-              'token': userToken
-            };
+            // var dataKordinator = {
+            //   'username': authController.controllerUsername.text,
+            //   'password': authController.controllerPassword.text,
+            //   'token': userToken
+            // };
 
-            response = await http.post(Uri.parse(urlKontraktor),
-                body: json.encode(dataKordinator));
-            message = jsonDecode(response.body);
+            // response = await http.post(Uri.parse(urlKontraktor),
+            //     body: json.encode(dataKordinator));
+            // message = jsonDecode(response.body);
 
-            // jika response bukan login cordinator failed, artinya login cordinator berhasil
-            if (message != 'login_cordinator_failed') {
-              if (message['update_token'] == true) {
-                await UserSecureStorage.setIdUser(
-                    message['id_estate_cordinator']);
-                await UserSecureStorage.setStatusLogin(message['status']);
-                print(message['status']);
-                String idUser = await UserSecureStorage.getIdUser();
-                if (idUser.isNotEmpty) {
-                  EasyLoading.dismiss();
-                  loginController.loginCordinator();
-                  Get.offAllNamed(RouteName.home);
-                }
-              } else {
-                final logger = Logger();
-                logger.i(message);
-                EasyLoading.showError(
-                    'Kesalahan mengambil id token user, silahkan hubungi admin');
-              }
-            }
+            // // jika response bukan login cordinator failed, artinya login cordinator berhasil
+            // if (message != 'login_cordinator_failed') {
+            //   if (message['update_token'] == true) {
+            //     await UserSecureStorage.setIdUser(
+            //         message['id_estate_cordinator']);
+            //     await UserSecureStorage.setStatusLogin(message['status']);
+            //     final logger = Logger();
+            //     logger.d(message['status']);
+            //     String idUser = await UserSecureStorage.getIdUser();
+            //     if (idUser.isNotEmpty) {
+            //       EasyLoading.dismiss();
+            //       loginController.loginCordinator();
+            //       Get.offAllNamed(RouteName.home);
+            //     }
+            //   } else {
+            //     final logger = Logger();
+            //     logger.i(message);
+            //     EasyLoading.showError(
+            //         'Kesalahan mengambil id token user, silahkan hubungi admin');
+            //   }
+            // }
 
             /**
               * jika status response login cordinator failed
               * akses login ke kontraktor
               */
-            else {
-              var dataKordinator = {
-                'username': authController.controllerUsername.text,
-                'password': authController.controllerPassword.text
-              };
+            // else {
+            //   var dataKordinator = {
+            //     'username': authController.controllerUsername.text,
+            //     'password': authController.controllerPassword.text
+            //   };
 
-              http.Response response = await http.post(
-                  Uri.parse(
-                      '${ServerApp.url}src/login/login_kontraktor/login_kontraktor.php'),
-                  body: jsonEncode(dataKordinator));
-              /**
-               * jika response status code diatas 200, berarti tidak ada kesalahan dalam mengirim request
-               * setelah itu cek response apakah login succes atau tidak
-               */
-              if (response.statusCode >= 200 && response.statusCode <= 399) {
-                var message = jsonDecode(response.body);
+            //   http.Response response = await http.post(
+            //       Uri.parse(
+            //           '${ServerApp.url}src/login/login_kontraktor/login_kontraktor.php'),
+            //       body: jsonEncode(dataKordinator));
+            //   /**
+            //    * jika response status code diatas 200, berarti tidak ada kesalahan dalam mengirim request
+            //    * setelah itu cek response apakah login succes atau tidak
+            //    */
+            //   if (response.statusCode >= 200 && response.statusCode <= 399) {
+            //     var message = jsonDecode(response.body);
 
-                // jika login gagal / username atau password salah
-                if (message == 'login_kontraktor_failed') {
-                  // Navigator.of(context).pop();
-                  EasyLoading.dismiss();
-                  // EasyLoading.showError('Nomor IPL / email / password salah',
-                  //     dismissOnTap: true);
-                  // buildShowDialogAnimation('IPL number / email / passwod wrong',
-                  //     'OKE', 'assets/animation/error-animation.json', 15.0);
-                  setState(() {
-                    passwordWrong = true;
-                    loginController.passwordWrong.value = 'true';
-                    FocusScope.of(context).requestFocus(FocusNode());
-                  });
-                }
-                // jika login berhasil
-                else {
-                  await UserSecureStorage.setIdUser(message['id_contractor']);
-                  await UserSecureStorage.setStatusLogin(message['status']);
+            //     // jika login gagal / username atau password salah
+            //     if (message == 'login_kontraktor_failed') {
+            //       // Navigator.of(context).pop();
+            //       EasyLoading.dismiss();
+            //       // EasyLoading.showError('Nomor IPL / email / password salah',
+            //       //     dismissOnTap: true);
+            //       // buildShowDialogAnimation('IPL number / email / passwod wrong',
+            //       //     'OKE', 'assets/animation/error-animation.json', 15.0);
+            //       setState(() {
+            //         passwordWrong = true;
+            //         loginController.passwordWrong.value = 'true';
+            //         FocusScope.of(context).requestFocus(FocusNode());
+            //       });
+            //     }
+            //     // jika login berhasil
+            //     else {
+            //       await UserSecureStorage.setIdUser(message['id_contractor']);
+            //       await UserSecureStorage.setStatusLogin(message['status']);
 
-                  String idUser = await UserSecureStorage.getIdUser();
-                  if (idUser.isNotEmpty) {
-                    print('login kontraktor');
-                    // Navigator.of(context).pop();
-                    EasyLoading.dismiss();
-                    loginController.loginContractor();
-                    Get.offAllNamed(RouteName.home);
-                  }
-                }
-              } else {
-                // Navigator.of(context).pop();
-                EasyLoading.dismiss();
-                EasyLoading.showError('Response Error, tolong hubungi admin',
-                    dismissOnTap: true);
-                // buildShowDialogAnimation('Http Response Error', 'OKE',
-                //     'assets/animation/error-animation.json', 15.0);
-              }
-            }
+            //       String idUser = await UserSecureStorage.getIdUser();
+            //       if (idUser.isNotEmpty) {
+            //         print('login kontraktor');
+            //         // Navigator.of(context).pop();
+            //         EasyLoading.dismiss();
+            //         loginController.loginContractor();
+            //         Get.offAllNamed(RouteName.home);
+            //       }
+            //     }
+            //   } else {
+            //     // Navigator.of(context).pop();
+            //     EasyLoading.dismiss();
+            //     EasyLoading.showError('Response Error, tolong hubungi admin',
+            //         dismissOnTap: true);
+            //     // buildShowDialogAnimation('Http Response Error', 'OKE',
+            //     //     'assets/animation/error-animation.json', 15.0);
+            //   }
+            // }
           } else {
             // Navigator.of(context).pop();
             print('password salah');

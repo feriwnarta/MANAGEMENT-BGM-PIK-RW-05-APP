@@ -328,8 +328,6 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                   // await userLogin();
                   if (formKeyLogin.currentState.validate()) {
                     await userLogin();
-                    final logger = Logger();
-                    logger.d('clicked');
                   }
                   // final logger = Logger();
                   // logger.w('test');

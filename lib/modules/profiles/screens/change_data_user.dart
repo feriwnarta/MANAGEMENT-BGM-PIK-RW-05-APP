@@ -187,38 +187,42 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                       //       builder: (context) => buildPaddingChangeData(
                       //           context, 'masukan username', 'username')),
                       // ),
-                      ListTile(
-                        leading: Icon(Icons.home, size: 20.h),
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 1.0.h),
-                            Text(
-                              'Nomor Rumah',
-                              style: TextStyle(
-                                  color: Colors.grey, fontSize: 11.sp),
+                      (snapshot.data.numberHouse == null)
+                          ? SizedBox()
+                          : ListTile(
+                              leading: Icon(Icons.home, size: 20.h),
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 1.0.h),
+                                  Text(
+                                    'Nomor Rumah',
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 11.sp),
+                                  ),
+                                  SizedBox(height: 1.0.h),
+                                  Text(
+                                    '${snapshot.data.numberHouse}',
+                                    style: TextStyle(fontSize: 12.sp),
+                                  ),
+                                  SizedBox(height: 1.0.h),
+                                ],
+                              ),
+                              trailing: Icon(
+                                FontAwesomeIcons.pen,
+                                size: 10.h,
+                              ),
+                              onTap: () => showModalBottomSheet(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(15.0))),
+                                  context: context,
+                                  isScrollControlled: true,
+                                  builder: (context) => buildPaddingChangeData(
+                                      context,
+                                      'masukan username',
+                                      'number_house')),
                             ),
-                            SizedBox(height: 1.0.h),
-                            Text(
-                              '${snapshot.data.numberHouse}',
-                              style: TextStyle(fontSize: 12.sp),
-                            ),
-                            SizedBox(height: 1.0.h),
-                          ],
-                        ),
-                        trailing: Icon(
-                          FontAwesomeIcons.pen,
-                          size: 10.h,
-                        ),
-                        onTap: () => showModalBottomSheet(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(15.0))),
-                            context: context,
-                            isScrollControlled: true,
-                            builder: (context) => buildPaddingChangeData(
-                                context, 'masukan username', 'number_house')),
-                      ),
                       SizedBox(
                         height: 1.0.h,
                       ),

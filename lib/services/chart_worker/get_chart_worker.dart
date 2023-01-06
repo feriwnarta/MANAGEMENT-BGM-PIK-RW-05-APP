@@ -19,8 +19,7 @@ class GetChartWorkerServices {
     var request = await dio.post(url, data: jsonEncode(data));
     if (request.statusCode >= 200 && request.statusCode <= 399) {
       var response = jsonDecode(request.data);
-      final logger = Logger();
-      logger.w(response);
+
       return response;
     }
   }
