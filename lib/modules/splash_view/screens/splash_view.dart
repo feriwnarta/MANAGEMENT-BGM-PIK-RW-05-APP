@@ -192,12 +192,18 @@ class _SplashViewState extends State<SplashView> {
         final logger = Logger();
         logger.e(idUser);
         if (message.toString() != 'E001' && message.toString() != 'E002') {
-          logger.i(message['warga']);
-          if (message['warga'] == '1') {
+          logger.i(message[0]['warga']);
+          if (message[0]['warga'] == '1') {
             _loginController.accessWarga = true.obs;
           }
 
-          if (message['management'] == '1') {
+          if (message[0]['otp'] == '1') {
+            _loginController.enabledOtp = true.obs;
+          } else {
+            _loginController.enabledOtp = false.obs;
+          }
+
+          if (message[0]['management'] == '1') {
             _loginController.accessManagement = true.obs;
           }
 

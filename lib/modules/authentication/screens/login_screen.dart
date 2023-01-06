@@ -5,6 +5,7 @@ import 'package:aplikasi_rw/controller/register_controller.dart';
 import 'package:aplikasi_rw/controller/resend_otp_countdown_controller.dart';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/authentication/controllers/auth_controller.dart';
+import 'package:aplikasi_rw/modules/authentication/services/check_access_otp.dart';
 import 'package:aplikasi_rw/modules/authentication/validate/validate_email_and_password.dart';
 import 'package:aplikasi_rw/modules/authentication/widgets/header_logo.dart';
 import 'package:aplikasi_rw/modules/authentication/widgets/method_verification.dart';
@@ -88,8 +89,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     super.initState();
     if (email != null && noTelp != null) {
       if (email.isNotEmpty && noTelp.isNotEmpty) {
-        final logger = Logger();
-        logger.e('email ga kosong');
         registerController.otpWhenExit = true.obs;
       }
     } else {
@@ -479,7 +478,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
 
   Future<void> checkEmailIpl(String iplOrEmail) async {
     String url = '${ServerApp.url}src/login/check_ipl_email.php';
-    var data = {'username': iplOrEmail};
+    var data = {'iplOrEmail': iplOrEmail};
     try {
       var response = await http.post(Uri.parse(url), body: jsonEncode(data));
       if (response.statusCode >= 200 && response.statusCode <= 399) {
@@ -625,6 +624,8 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
           registerController.update();
           // registerController.resetController();
           // email
+          Get.delete<RegisterController>();
+          Get.delete<AuthController>();
           final storage = FlutterSecureStorage();
           await storage.delete(key: 'successotp');
           await storage.delete(key: 'noipl');
@@ -711,6 +712,8 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
               registerController.resetController();
               registerController.update();
               Get.offAllNamed(RouteName.home);
+              Get.delete<RegisterController>();
+              Get.delete<AuthController>();
             }
           } else {
             // Navigator.of(context).pop();
@@ -857,20 +860,10 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
               registerController.update();
             }
           } else if (message == 'wa number not found') {
-            // buildShowDialogAnimation(
-            //     'Whatsapp number not found, please use another option',
-            //     'OK',
-            //     'assets/animation/error-animation.json',
-            //     2.0.h);
             EasyLoading.showError(
                 'Nomor whatsapp tidak ditemukan, tolong gunakan pilihan otp lain',
                 dismissOnTap: true);
           } else {
-            // buildShowDialogAnimation(
-            //     'Whatsapp otp is in error, please use another option',
-            //     'OK',
-            //     'assets/animation/error-animation.json',
-            //     2.0.h);
             EasyLoading.showError(
               'Whatsapp OTP sedang error, tolong gunakan pilihan otp lain',
               dismissOnTap: true,
@@ -963,18 +956,13 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
 
     if (_formKeyLogin.currentState.validate()) {
       try {
-        // buildShowDialogAnimation(
-        //     '', '', 'assets/animation/loading-plane.json', 100.h);
         EasyLoading.show(status: 'loading');
 
-        // response = await http.post(url, body: json.encode(data));
         response = await http.post(Uri.parse(url), body: json.encode(data));
 
         if (response.statusCode >= 400) {
           EasyLoading.showError('Server error, tolong hubungin admin',
               dismissOnTap: true);
-          // buildShowDialogAnimation('Error During login', 'OKE',
-          //     'assets/animation/error-animation.json', 15.0);
         }
 
         logger.e(response.body);
@@ -983,25 +971,55 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
           if (message != 'login failed') {
             EasyLoading.dismiss();
             if (message['active_user'] == true) {
-              // Navigator.of(context).pop();
               EasyLoading.dismiss();
               EasyLoading.showInfo(
                 'kami mendeteksi adanya login diperangkat baru, login diperangkat lain akan otomatis keluar',
               );
             }
-            idUser = message['id_user'];
-            status = message['status'];
-            // Navigator.of(context).pop();
-            loginController.loginCitizen();
-            // Get.offAll(SplashView());
-            registerController.toOtpVerif = true.obs;
-            registerController.fromLogin = true.obs;
 
-            registerController.email.value = message['email'];
-            registerController.noTelp.value = message['no_telp'];
-            authController.controllerEmail.text = message['email'];
-            authController.controllerNoTelp.text = message['no_telp'];
-            registerController.update();
+            // check access otp untuk kebutuhan debugging
+            var result = await CheckAccessOtp.checkAccess(
+                username: authController.controllerUsername.text);
+
+            logger.d(result['otp']);
+
+            if (result['otp'] == '0') {
+              await UserSecureStorage.setIdUser(message['id_user']);
+              await UserSecureStorage.setStatusLogin(message['status']);
+              await UserSecureStorage.setKeyValue(
+                key: 'noIpl',
+                value: authController.controllerUsername.text,
+              );
+              String idUser = await UserSecureStorage.getIdUser();
+              // countDownController.reset();
+              // countDownController.reset();
+              if (idUser.isNotEmpty) {
+                // Navigator.of(context).pop();
+                EasyLoading.dismiss();
+                authController.dispose();
+                registerController.resetController();
+                registerController.update();
+                Get.offAllNamed(RouteName.home);
+                Get.delete<RegisterController>();
+                Get.delete<AuthController>();
+              }
+              loginController.loginCitizen();
+              logger.d('otp 0');
+            } else {
+              idUser = message['id_user'];
+              status = message['status'];
+              // Navigator.of(context).pop();
+              loginController.loginCitizen();
+              // Get.offAll(SplashView());
+              registerController.toOtpVerif = true.obs;
+              registerController.fromLogin = true.obs;
+
+              registerController.email.value = message['email'];
+              registerController.noTelp.value = message['no_telp'];
+              authController.controllerEmail.text = message['email'];
+              authController.controllerNoTelp.text = message['no_telp'];
+              registerController.update();
+            }
 
             // }
           } else if (message == 'login failed') {

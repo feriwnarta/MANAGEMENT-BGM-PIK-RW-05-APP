@@ -2,9 +2,13 @@ import 'dart:io';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/authentication/validate/validate_email_and_password.dart';
 import 'package:aplikasi_rw/server-app.dart';
+import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
+import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -68,237 +72,235 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
         body: FutureBuilder<UserChangeModel>(
             future: UserChangeServices.getDataUser('${loginController.idUser}'),
             builder: (context, snapshot) => (snapshot.hasData)
-                ? Obx(
-                    () => Column(
-                      children: [
-                        SizedBox(
-                          height: 15.h,
-                        ),
-                        Center(
-                          child: GestureDetector(
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: 64.h,
-                                  width: 64.w,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      repeat: ImageRepeat.noRepeat,
-                                      image: (widget.urlProfilePath == null)
-                                          ? CachedNetworkImageProvider(
-                                              '${ServerApp.url}${loginController.urlProfile}')
-                                          : FileImage(
-                                              File(widget.urlProfilePath),
-                                            ),
-                                    ),
+                ? Column(
+                    children: [
+                      SizedBox(
+                        height: 15.h,
+                      ),
+                      Center(
+                        child: GestureDetector(
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 64.h,
+                                width: 64.w,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    repeat: ImageRepeat.noRepeat,
+                                    image: (widget.urlProfilePath == null)
+                                        ? CachedNetworkImageProvider(
+                                            '${ServerApp.url}${snapshot.data.profileImage}')
+                                        : FileImage(
+                                            File(widget.urlProfilePath),
+                                          ),
                                   ),
                                 ),
-                                TextButton.icon(
-                                  onPressed: () {
-                                    showModalBottomSheet(
-                                        context: context,
-                                        builder: ((builder) =>
-                                            bottomImagePicker(context)));
-                                  },
-                                  icon: Icon(
-                                    FontAwesomeIcons.pen,
-                                    size: 12.h,
-                                  ),
-                                  label: Text('Ubah Foto'),
-                                )
-                              ],
+                              ),
+                              TextButton.icon(
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                      context: context,
+                                      builder: ((builder) =>
+                                          bottomImagePicker(context)));
+                                },
+                                icon: Icon(
+                                  FontAwesomeIcons.pen,
+                                  size: 12.h,
+                                ),
+                                label: Text('Ubah Foto'),
+                              )
+                            ],
+                          ),
+                          onTap: () => showModalBottomSheet(
+                              context: context,
+                              builder: ((builder) =>
+                                  bottomImagePicker(context))),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 28.h,
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.person, size: 20.h),
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 1.0.h),
+                            Text(
+                              'Username',
+                              style: TextStyle(
+                                  color: Colors.grey, fontSize: 11.sp),
                             ),
-                            onTap: () => showModalBottomSheet(
-                                context: context,
-                                builder: ((builder) =>
-                                    bottomImagePicker(context))),
-                          ),
+                            SizedBox(height: 1.0.h),
+                            Text(
+                              '${snapshot.data.fullName}',
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                            SizedBox(height: 1.0.h),
+                          ],
                         ),
-                        SizedBox(
-                          height: 28.h,
+                        trailing: Icon(
+                          FontAwesomeIcons.pen,
+                          size: 10.h,
                         ),
-                        ListTile(
-                          leading: Icon(Icons.person, size: 20.h),
-                          title: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 1.0.h),
-                              Text(
-                                'Username',
-                                style: TextStyle(
-                                    color: Colors.grey, fontSize: 11.sp),
-                              ),
-                              SizedBox(height: 1.0.h),
-                              Text(
-                                '${loginController.username}',
-                                style: TextStyle(fontSize: 12.sp),
-                              ),
-                              SizedBox(height: 1.0.h),
-                            ],
-                          ),
-                          trailing: Icon(
-                            FontAwesomeIcons.pen,
-                            size: 10.h,
-                          ),
-                          onTap: () => showModalBottomSheet(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(15.0))),
-                              context: context,
-                              isScrollControlled: true,
-                              builder: (context) => buildPaddingChangeData(
-                                  context, 'masukan username', 'username')),
+                        onTap: () => showModalBottomSheet(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(15.0))),
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (context) => buildPaddingChangeData(
+                                context, 'masukan username', 'username')),
+                      ),
+                      // ListTile(
+                      //   leading: SvgPicture.asset(
+                      //       'assets/img/image-svg/cluster.svg'),
+                      //   title: Column(
+                      //     crossAxisAlignment: CrossAxisAlignment.start,
+                      //     children: [
+                      //       SizedBox(height: 1.0.h),
+                      //       Text(
+                      //         'Nama Cluster',
+                      //         style: TextStyle(
+                      //             color: Colors.grey, fontSize: 11.sp),
+                      //       ),
+                      //       SizedBox(height: 1.0.h),
+                      //       Text(
+                      //         '${snapshot.data.cluster}',
+                      //         style: TextStyle(fontSize: 12.sp),
+                      //       ),
+                      //       SizedBox(height: 1.0.h),
+                      //     ],
+                      //   ),
+                      //   trailing: Icon(
+                      //     FontAwesomeIcons.pen,
+                      //     size: 10.h,
+                      //   ),
+                      //   onTap: () => showModalBottomSheet(
+                      //       shape: RoundedRectangleBorder(
+                      //           borderRadius: BorderRadius.vertical(
+                      //               top: Radius.circular(15.0))),
+                      //       context: context,
+                      //       isScrollControlled: true,
+                      //       builder: (context) => buildPaddingChangeData(
+                      //           context, 'masukan username', 'username')),
+                      // ),
+                      ListTile(
+                        leading: Icon(Icons.home, size: 20.h),
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 1.0.h),
+                            Text(
+                              'Nomor Rumah',
+                              style: TextStyle(
+                                  color: Colors.grey, fontSize: 11.sp),
+                            ),
+                            SizedBox(height: 1.0.h),
+                            Text(
+                              '${snapshot.data.numberHouse}',
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                            SizedBox(height: 1.0.h),
+                          ],
                         ),
-                        ListTile(
-                          leading: SvgPicture.asset(
-                              'assets/img/image-svg/cluster.svg'),
-                          title: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 1.0.h),
-                              Text(
-                                'Nama Cluster',
-                                style: TextStyle(
-                                    color: Colors.grey, fontSize: 11.sp),
-                              ),
-                              SizedBox(height: 1.0.h),
-                              Text(
-                                '${loginController.username}',
-                                style: TextStyle(fontSize: 12.sp),
-                              ),
-                              SizedBox(height: 1.0.h),
-                            ],
-                          ),
-                          trailing: Icon(
-                            FontAwesomeIcons.pen,
-                            size: 10.h,
-                          ),
-                          onTap: () => showModalBottomSheet(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(15.0))),
-                              context: context,
-                              isScrollControlled: true,
-                              builder: (context) => buildPaddingChangeData(
-                                  context, 'masukan username', 'username')),
+                        trailing: Icon(
+                          FontAwesomeIcons.pen,
+                          size: 10.h,
                         ),
-                        ListTile(
-                          leading: Icon(Icons.home, size: 20.h),
-                          title: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 1.0.h),
-                              Text(
-                                'Nomor Rumah',
-                                style: TextStyle(
-                                    color: Colors.grey, fontSize: 11.sp),
-                              ),
-                              SizedBox(height: 1.0.h),
-                              Text(
-                                '${loginController.username}',
-                                style: TextStyle(fontSize: 12.sp),
-                              ),
-                              SizedBox(height: 1.0.h),
-                            ],
-                          ),
-                          trailing: Icon(
-                            FontAwesomeIcons.pen,
-                            size: 10.h,
-                          ),
-                          onTap: () => showModalBottomSheet(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(15.0))),
-                              context: context,
-                              isScrollControlled: true,
-                              builder: (context) => buildPaddingChangeData(
-                                  context, 'masukan username', 'username')),
+                        onTap: () => showModalBottomSheet(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(15.0))),
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (context) => buildPaddingChangeData(
+                                context, 'masukan username', 'number_house')),
+                      ),
+                      SizedBox(
+                        height: 1.0.h,
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.email,
+                          size: 20.h,
                         ),
-                        SizedBox(
-                          height: 1.0.h,
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 1.0.h),
+                            Text(
+                              'Email',
+                              style: TextStyle(
+                                  color: Colors.grey, fontSize: 11.sp),
+                            ),
+                            SizedBox(height: 1.0.h),
+                            Text(
+                              '${snapshot.data.email}',
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                            SizedBox(height: 1.0.h),
+                          ],
                         ),
-                        ListTile(
-                          leading: Icon(
-                            Icons.email,
-                            size: 20.h,
-                          ),
-                          title: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 1.0.h),
-                              Text(
-                                'Email',
-                                style: TextStyle(
-                                    color: Colors.grey, fontSize: 11.sp),
+                        trailing: Icon(
+                          FontAwesomeIcons.pen,
+                          size: 10.h,
+                        ),
+                        onTap: () => showModalBottomSheet(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(15.0))),
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (context) => buildPaddingChangeData(
+                                context, 'masukan email', 'email')),
+                      ),
+                      SizedBox(
+                        height: 1.0.h,
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.phone_android,
+                          size: 20.h,
+                        ),
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 1.0.h),
+                            Text(
+                              'Nomor telpon',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 11.sp,
                               ),
-                              SizedBox(height: 1.0.h),
-                              Text(
-                                '${snapshot.data.email}',
-                                style: TextStyle(fontSize: 12.sp),
-                              ),
-                              SizedBox(height: 1.0.h),
-                            ],
-                          ),
-                          trailing: Icon(
-                            FontAwesomeIcons.pen,
-                            size: 10.h,
-                          ),
-                          onTap: () => showModalBottomSheet(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(15.0))),
-                              context: context,
-                              isScrollControlled: true,
-                              builder: (context) => buildPaddingChangeData(
-                                  context, 'masukan email', 'email')),
+                            ),
+                            SizedBox(height: 1.0.h),
+                            Text(
+                              '${snapshot.data.noPhone}',
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                            SizedBox(height: 1.0.h),
+                          ],
                         ),
-                        SizedBox(
-                          height: 1.0.h,
+                        trailing: Icon(
+                          FontAwesomeIcons.pen,
+                          size: 10.h,
                         ),
-                        ListTile(
-                          leading: Icon(
-                            Icons.phone_android,
-                            size: 20.h,
-                          ),
-                          title: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 1.0.h),
-                              Text(
-                                'Nomor telpon',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 11.sp,
-                                ),
-                              ),
-                              SizedBox(height: 1.0.h),
-                              Text(
-                                '${snapshot.data.noPhone}',
-                                style: TextStyle(fontSize: 12.sp),
-                              ),
-                              SizedBox(height: 1.0.h),
-                            ],
-                          ),
-                          trailing: Icon(
-                            FontAwesomeIcons.pen,
-                            size: 10.h,
-                          ),
-                          onTap: () => showModalBottomSheet(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(15.0))),
-                              context: context,
-                              isScrollControlled: true,
-                              builder: (context) => buildPaddingChangeData(
-                                  context, 'masukan nomor telepon', 'phone')),
-                        ),
-                        SizedBox(
-                          height: 1.0.h,
-                        ),
-                      ],
-                    ),
+                        onTap: () => showModalBottomSheet(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(15.0))),
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (context) => buildPaddingChangeData(
+                                context, 'masukan nomor telepon', 'phone')),
+                      ),
+                      SizedBox(
+                        height: 1.0.h,
+                      ),
+                    ],
                   )
                 : Center(child: CircularProgressIndicator())),
       ),
@@ -374,64 +376,66 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                       onPressed: () async {
                         if (_formKey.currentState.validate()) {
                           if (dataKolom == 'username') {
-                            buildShowDialogAnimation('', '',
-                                'assets/animation/loading-plane.json', 2.0.h);
+                            EasyLoading.show(status: 'loading');
                             String rs = await UserChangeServices.editData(
                               '${loginController.idUser}',
                               controller.text,
                               'username',
                             );
                             if (rs == 'OK') {
-                              Navigator.of(context)
-                                ..pop()
-                                ..pop();
+                              EasyLoading.dismiss();
+                              Get.back();
+
                               setState(() {});
-                              loginController.username = controller.text.obs;
+                              loginController.username.value = controller.text;
                               print(loginController.username.value);
                               status = 'refresh';
                             }
-                          } else if (dataKolom == 'fullname') {
+                          } else if (dataKolom == 'number_house') {
+                            EasyLoading.show(status: 'loading');
                             String rs = await UserChangeServices.editData(
                                 '${loginController.idUser}',
                                 controller.text,
-                                'fullname');
+                                'number_house');
                             if (rs == 'OK') {
-                              Navigator.of(context).pop();
+                              EasyLoading.dismiss();
+                              Get.back();
+                              loginController.houseNumber.value =
+                                  controller.text;
                               setState(() {});
                               status = 'refresh';
                             }
                           } else if (dataKolom == 'email') {
+                            EasyLoading.show(status: 'loading');
                             String rs = await UserChangeServices.editData(
                                 '${loginController.idUser}',
                                 controller.text,
                                 'email');
                             if (rs == 'OK') {
-                              Navigator.of(context)..pop();
+                              EasyLoading.dismiss();
+                              Get.back();
                               setState(() {});
+                              loginController.email.value = controller.text;
                               status = 'refresh';
                             } else if (rs == 'email sudah digunakan') {
-                              buildShowDialogAnimation(
-                                  'email sudah digunakan',
-                                  'OKE',
-                                  'assets/animation/error-orange-animation.json',
-                                  2.0.h);
+                              EasyLoading.showInfo('Email sudah digunakan');
                             }
                           } else if (dataKolom == 'phone') {
+                            EasyLoading.show(status: 'loading');
                             String rs = await UserChangeServices.editData(
                                 '${loginController.idUser}',
                                 controller.text,
                                 'phone');
+
                             if (rs == 'OK') {
-                              loginController.username = controller.text.obs;
-                              Navigator.of(context).pop();
+                              EasyLoading.dismiss();
+                              Get.back();
                               setState(() {});
+                              loginController.noTelp.value = controller.text;
                               status = 'refresh';
                             } else if (rs == 'no telp sudah digunakan') {
-                              buildShowDialogAnimation(
-                                  'no telpon sudah digunakan',
-                                  'OKE',
-                                  'assets/animation/error-orange-animation.json',
-                                  2.0.h);
+                              EasyLoading.showInfo(
+                                  'No telpon sudah terdaftar, silahkan menggunakan nomor lain');
                             }
                           }
                           controller.clear();
@@ -545,25 +549,42 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
 class UserChangeModel {
   String email;
   String username;
-  String fullname;
+  String fullName;
   String noPhone;
+  String cluster;
+  String numberHouse;
+  String profileImage;
 
-  UserChangeModel({this.email, this.username, this.fullname, this.noPhone});
+  UserChangeModel(
+      {this.email,
+      this.username,
+      this.fullName,
+      this.noPhone,
+      this.cluster,
+      this.numberHouse,
+      this.profileImage});
 }
 
 class UserChangeServices {
   static Future<UserChangeModel> getDataUser(String idUser) async {
     String url = '${ServerApp.url}src/user/user.php';
-    var data = {"id_user": idUser};
+
+    String statusUser = await UserSecureStorage.getStatus();
+
+    var data = {"id_user": idUser, "status_user": statusUser};
     var response = await http.post(Uri.parse(url), body: jsonEncode(data));
     if (response.statusCode >= 200 && response.body.isNotEmpty) {
       var result = jsonDecode(response.body);
-      print(result['username']);
+
       UserChangeModel model = UserChangeModel(
-          email: result['email'],
-          fullname: result['fullname'],
-          noPhone: result['no_telp'],
-          username: result['username']);
+        email: result['email'],
+        fullName: result['name'],
+        cluster: result['cluster'],
+        numberHouse: result['house_number'],
+        noPhone: result['no_telp'],
+        username: result['username'],
+        profileImage: result['profile_image'],
+      );
       return model;
     }
     return UserChangeModel();
@@ -571,18 +592,13 @@ class UserChangeServices {
 
   static Future<String> editData(
       String idUser, String initData, String kolom) async {
-    // Dio dio = Dio();
-    // dio.interceptors.add(RetryOnConnectionChangeInterceptor(
-    //   requestRetrier: DioConnectivityRequestRetrier(
-    //     dio: dio,
-    //     connectivity: Connectivity(),
-    //   ),
-    // ));
+    Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
     String url = '${ServerApp.url}src/user/update_user.php';
     var data = {'id_user': idUser, 'kolom': kolom, 'data': initData};
     // http.Response response = await http.post(url, body: jsonEncode(data));
-    var response = await http.post(Uri.parse(url), body: jsonEncode(data));
-    var result = jsonDecode(response.body);
+    var response = await dio.post(url, data: jsonEncode(data));
+    var result = jsonDecode(response.data);
     final logger = Logger();
     logger.d(result);
 

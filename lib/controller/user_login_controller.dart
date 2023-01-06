@@ -10,6 +10,7 @@ import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
 class UserLoginController extends GetxController {
   RxString status = ''.obs;
@@ -19,6 +20,11 @@ class UserLoginController extends GetxController {
   RxString idUser;
   var urlProfile = ''.obs;
   var username = ''.obs;
+  var email = ''.obs;
+  var noTelp = ''.obs;
+  var rw = ''.obs;
+  var cluster = ''.obs;
+  var houseNumber = ''.obs;
 
   // user cordinator
   var idCordinator = ''.obs;
@@ -38,10 +44,11 @@ class UserLoginController extends GetxController {
 
   var otpWhenExit = false.obs;
   var noIpl = ''.obs;
-  var email = ''.obs;
-  var noTelp = ''.obs;
 
   var passwordWrong = 'false'.obs;
+
+  // AUTHENTICATION
+  var enabledOtp = true.obs;
 
   void resetOtpWhenExit() {
     otpWhenExit = false.obs;
@@ -91,9 +98,16 @@ class UserLoginController extends GetxController {
             status = 'user'.obs;
             this.idUser = idUser.obs;
             UserModel userModel = await GetDataUserServices.getDataUser(idUser);
+            final logger = Logger();
+            logger.i(userModel);
             if (userModel != null) {
               this.urlProfile = userModel.urlProfile.obs;
               this.username = userModel.username.obs;
+              this.email = userModel.email.obs;
+              this.houseNumber = userModel.houseNumber.obs;
+              this.cluster = userModel.cluster.obs;
+              this.rw = userModel.rw.obs;
+              this.noTelp = userModel.noTelp.obs;
             } else {
               status = 'logout'.obs;
               UserSecureStorage.deleteIdUser();
@@ -160,6 +174,11 @@ class UserLoginController extends GetxController {
       UserModel userModel = await GetDataUserServices.getDataUser(idUser);
       this.urlProfile = userModel.urlProfile.obs;
       this.username = userModel.username.obs;
+      this.email = userModel.email.obs;
+      this.houseNumber = userModel.houseNumber.obs;
+      this.cluster = userModel.cluster.obs;
+      this.rw = userModel.rw.obs;
+      this.noTelp = userModel.noTelp.obs;
     }
   }
 

@@ -1,6 +1,14 @@
 class UserModel {
   String username;
-  String urlProfile;
+  String urlProfile, email, noTelp, houseNumber, cluster, rw;
 
-  UserModel({this.username, this.urlProfile});
+  UserModel({
+    this.username,
+    this.urlProfile,
+    this.cluster,
+    this.email,
+    this.houseNumber,
+    this.noTelp,
+    this.rw,
+  });
 }

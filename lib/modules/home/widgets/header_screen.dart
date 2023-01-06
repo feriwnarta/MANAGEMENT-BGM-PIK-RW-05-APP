@@ -57,7 +57,7 @@ class HeaderScreen extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     AutoSizeText(
-                      'Akasia golf',
+                      '${userLoginController.cluster.value} ${userLoginController.houseNumber.value}',
                       style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,

@@ -242,7 +242,7 @@ class _MainAppState extends State<MainApp> {
     return Scaffold(
       key: scaffoldKey,
       // membuat sidebar dan drawer
-      endDrawer: drawerSideBar(),
+      // endDrawer: drawerSideBar(),
       body: Obx(
         () => IndexedStack(children: screens, index: indexScreen.index.value),
       ),
