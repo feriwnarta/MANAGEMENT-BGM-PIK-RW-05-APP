@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../server-app.dart';
@@ -33,6 +34,9 @@ class _MyWidgetState extends State<CitizenScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final logger = Logger();
+    logger.i(userLoginController.accessCordinator.value);
+
     ScreenUtil.init(context, designSize: const Size(360, 800));
 
     return Scaffold(

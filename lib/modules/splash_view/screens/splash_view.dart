@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
@@ -193,6 +194,10 @@ class _SplashViewState extends State<SplashView> {
             _loginController.accessWarga = true.obs;
           }
 
+          if (message[0]['cordinator'] == '1') {
+            _loginController.accessCordinator = true.obs;
+          }
+
           if (message[0]['otp'] == '1') {
             _loginController.enabledOtp = true.obs;
           } else {
@@ -205,6 +210,8 @@ class _SplashViewState extends State<SplashView> {
 
           logger.i(_loginController.accessManagement.value);
           logger.i(_loginController.accessWarga.value);
+          logger.i(_loginController.accessCordinator.value);
+          logger.i(message[0]['cordinator']);
         } else {
           //error
         }

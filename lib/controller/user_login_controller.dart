@@ -38,6 +38,7 @@ class UserLoginController extends GetxController {
 
   var accessManagement = false.obs;
   var accessWarga = false.obs;
+  var accessCordinator = false.obs;
 
   var statusServer = 'normal'.obs;
   var statusConnection = 'online'.obs;
