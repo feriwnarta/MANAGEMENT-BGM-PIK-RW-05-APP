@@ -30,6 +30,7 @@ class GetDataUserServices {
             result['house_number'] == null ? '' : result['house_number'],
         noTelp: result['no_telp'] == null ? '' : result['no_telp'],
         rw: result['rw'] == null ? '' : result['rw'],
+        name: result['name'] == null ? '-' : result['name'],
       );
       return model;
     }

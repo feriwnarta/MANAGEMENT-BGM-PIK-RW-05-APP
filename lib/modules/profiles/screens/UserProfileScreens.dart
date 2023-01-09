@@ -78,7 +78,7 @@ class UserProfileScreen extends StatelessWidget {
                           SizedBox(
                             width: 241.w,
                             child: AutoSizeText(
-                              '${userLoginController.username.value}',
+                              '${userLoginController.name.value}',
                               style: TextStyle(
                                 fontSize: 19.sp,
                                 fontWeight: FontWeight.w500,
@@ -90,18 +90,22 @@ class UserProfileScreen extends StatelessWidget {
                           SizedBox(
                             height: 4.h,
                           ),
-                          SizedBox(
-                            width: 241.w,
-                            child: AutoSizeText(
-                              '${userLoginController.cluster.value} No ${userLoginController.houseNumber.value}',
-                              style: TextStyle(
-                                fontSize: 10.sp,
-                                color: Color(0xff404040),
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
+                          (userLoginController.cluster.value.isNotEmpty &&
+                                  userLoginController
+                                      .houseNumber.value.isNotEmpty)
+                              ? SizedBox(
+                                  width: 241.w,
+                                  child: AutoSizeText(
+                                    '${userLoginController.cluster.value} No ${userLoginController.houseNumber.value}',
+                                    style: TextStyle(
+                                      fontSize: 10.sp,
+                                      color: Color(0xff404040),
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                )
+                              : SizedBox(),
                           SizedBox(
                             height: 4.h,
                           ),

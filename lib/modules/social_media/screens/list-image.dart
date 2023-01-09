@@ -26,7 +26,7 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
       sizeConstraint: SizeConstraint(ignoreSize: true),
     ),
   );
-  final int _sizePerPage = 10;
+  final int _sizePerPage = 5;
 
   Rx<AssetPathEntity> _path = AssetPathEntity(id: '1', name: 'album').obs;
   RxList<AssetEntity> _entities = <AssetEntity>[].obs;

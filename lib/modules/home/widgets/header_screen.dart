@@ -48,7 +48,7 @@ class HeaderScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     AutoSizeText(
-                      '${userLoginController.username.value}',
+                      '${userLoginController.name.value}',
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w500,

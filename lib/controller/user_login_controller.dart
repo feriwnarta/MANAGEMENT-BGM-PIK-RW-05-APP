@@ -25,6 +25,7 @@ class UserLoginController extends GetxController {
   var rw = ''.obs;
   var cluster = ''.obs;
   var houseNumber = ''.obs;
+  var name = ''.obs;
 
   // user cordinator
   var idCordinator = ''.obs;
@@ -103,6 +104,7 @@ class UserLoginController extends GetxController {
             if (userModel != null) {
               this.urlProfile = userModel.urlProfile.obs;
               this.username = userModel.username.obs;
+              this.name = userModel.name.obs;
               this.email = userModel.email.obs;
               this.houseNumber = userModel.houseNumber.obs;
               this.cluster = userModel.cluster.obs;
@@ -123,6 +125,7 @@ class UserLoginController extends GetxController {
             if (userModel != null) {
               this.urlProfile = userModel.urlProfile.obs;
               this.username = userModel.username.obs;
+              this.name = userModel.name.obs;
               this.email = userModel.email.obs;
               this.houseNumber = userModel.houseNumber.obs;
               this.cluster = userModel.cluster.obs;
@@ -181,7 +184,7 @@ class UserLoginController extends GetxController {
 
       final logger = Logger();
       logger.i(userModel);
-
+      this.name = userModel.name.obs;
       this.urlProfile = userModel.urlProfile.obs;
       this.username = userModel.username.obs;
       this.email = userModel.email.obs;
