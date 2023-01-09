@@ -957,6 +957,9 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
 
         response = await http.post(Uri.parse(url), body: json.encode(data));
 
+        final logger = Logger();
+        logger.i(response);
+
         if (response.statusCode >= 400) {
           EasyLoading.showError(
             'Server error, tolong hubungin admin',
@@ -1019,6 +1022,8 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
 
             // }
           } else if (message == 'login failed') {
+            EasyLoading.dismiss();
+            EasyLoading.showError('Password salah');
             // String urlKontraktor =
             //     '${ServerApp.url}src/login/login_cordinator/login_cordinator.php';
 
