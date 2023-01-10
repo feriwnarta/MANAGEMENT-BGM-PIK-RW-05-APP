@@ -537,14 +537,14 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
     final pickedFile = await _picker.getImage(source: source, imageQuality: 50);
 
     if (pickedFile != null) {
-      setState(() {
-        widget.urlProfilePath = pickedFile.path;
-      });
       String message = await UserChangeServices.changeFoto(
           '${loginController.idUser}', pickedFile.path);
-      loginController.urlProfile = message.obs;
-      final logger = Logger();
-      logger.w(message);
+
+      setState(() {
+        widget.urlProfilePath = pickedFile.path;
+        loginController.urlProfile.value = message;
+      });
+
       status = 'refresh';
     }
   }

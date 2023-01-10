@@ -36,8 +36,9 @@ class HeaderScreen extends StatelessWidget {
                 height: 48.h,
                 width: 48.w,
                 child: CircleAvatar(
-                    backgroundImage: CachedNetworkImageProvider(
-                        '${ServerApp.url}imageuser/default_profile/blank_profile_picture.jpg')),
+                  backgroundImage: CachedNetworkImageProvider(
+                      '${ServerApp.url}${userLoginController.urlProfile.value}'),
+                ),
               ),
               SizedBox(
                 width: 14.w,

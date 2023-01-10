@@ -26,7 +26,7 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
       sizeConstraint: SizeConstraint(ignoreSize: true),
     ),
   );
-  final int _sizePerPage = 5;
+  int _sizePerPage = 5;
 
   Rx<AssetPathEntity> _path = AssetPathEntity(id: '1', name: 'album').obs;
   RxList<AssetEntity> _entities = <AssetEntity>[].obs;
@@ -88,16 +88,23 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
   }
 
   Future<void> _loadMoreAsset() async {
-    final List<AssetEntity> entities = await _path.value.getAssetListPaged(
-      page: _page + 1,
-      size: _sizePerPage,
+    _page += 5;
+    _sizePerPage += 5;
+
+    final List<AssetEntity> entities = await _path.value.getAssetListRange(
+      start: _page,
+      end: _sizePerPage,
     );
     if (!mounted) {
       return;
     }
 
+    final logger = Logger();
+    logger.e('load more asset');
+
     _entities.addAll(entities);
-    _page++;
+
+    logger.e(_entities.length);
     _hasMoreToLoad.value = _entities.length < _totalEntitiesCount;
     _isLoadingMore.value = false;
   }
@@ -125,11 +132,6 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
         physics: NeverScrollableScrollPhysics(),
         itemCount: _entities.length,
         itemBuilder: (context, index) {
-          if (index == _entities.length - 8 &&
-              !_isLoadingMore.value &&
-              _hasMoreToLoad.value) {
-            _loadMoreAsset();
-          }
           final AssetEntity entity = _entities[index];
           return GestureDetector(
             onTap: () {
@@ -168,12 +170,33 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
     });
   }
 
+  ScrollController controller = ScrollController();
+
+  void onScroll() async {
+    final logger = Logger();
+    if (controller.position.haveDimensions) {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        if (!_isLoadingMore.value && _hasMoreToLoad.value) {
+          logger.e('load dari on scroll');
+          _loadMoreAsset();
+        }
+      }
+    }
+  }
+
+  @override
+  initState() {
+    controller.addListener(onScroll);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: ListView(
         shrinkWrap: true,
+        controller: controller,
         scrollDirection: Axis.horizontal,
         children: [
           Row(

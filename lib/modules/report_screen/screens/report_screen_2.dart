@@ -167,13 +167,13 @@ class _ReportScreen2State extends State<ReportScreen2> {
                               itemCount: (controller.isMaxReached.value)
                                   ? controller.listReport.length
                                   : (controller.listReport.length + 1),
-                              itemBuilder: (context, index) => (controller.listReport.length ==
-                                      0)
+                              itemBuilder: (context, index) => (index == 0)
                                   ? Center(
                                       child: Text(
-                                      'No reports',
-                                      style: TextStyle(fontSize: 12.sp),
-                                    ))
+                                        'Tidak ada laporan',
+                                        style: TextStyle(fontSize: 12.sp),
+                                      ),
+                                    )
                                   : (index < controller.listReport.length)
                                       ? (controller.listReport[index].idUser ==
                                               loginController.idUser.value)
@@ -361,9 +361,13 @@ class _ReportScreen2State extends State<ReportScreen2> {
                                               photoProcess1: controller
                                                   .listReport[index]
                                                   .photoProcess1,
-                                              photoProcess2: controller.listReport[index].photoProcess2,
-                                              star: controller.listReport[index].star,
-                                              comment: controller.listReport[index].comment
+                                              photoProcess2: controller
+                                                  .listReport[index]
+                                                  .photoProcess2,
+                                              star: controller
+                                                  .listReport[index].star,
+                                              comment: controller
+                                                  .listReport[index].comment
                                               // additionalInformation: ,
                                               )
                                       : (controller.listReport.length <= 9)
