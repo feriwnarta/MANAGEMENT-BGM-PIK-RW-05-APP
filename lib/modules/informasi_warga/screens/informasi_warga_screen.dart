@@ -2,6 +2,7 @@ import 'package:aplikasi_rw/modules/home/services/news_service.dart';
 import 'package:aplikasi_rw/modules/informasi_warga/screens/read_informasi_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../server-app.dart';
 import '../../home/models/card_news.dart';
@@ -18,6 +19,7 @@ class InformasiWargaScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Informasi Warga'),
         titleTextStyle: TextStyle(fontSize: 19.sp),
+        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       body: SingleChildScrollView(
         child: Center(

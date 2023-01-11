@@ -5,6 +5,7 @@ import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/social_media/controllers/social_media_controllers.dart';
 import 'package:aplikasi_rw/modules/social_media/screens/list-image.dart';
 import 'package:aplikasi_rw/services/status_user_services.dart';
+import 'package:aplikasi_rw/utils/view_image_file.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -135,7 +136,7 @@ class _CreateStatusState extends State<CreateStatus> {
                               SizedBox(
                                 width: 297.w,
                                 child: AutoSizeText(
-                                  'Laura post',
+                                  '${userLoginController.name.value} post',
                                   style: TextStyle(fontSize: 12.sp),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
@@ -166,24 +167,34 @@ class _CreateStatusState extends State<CreateStatus> {
                           ),
                           Obx(
                             () => (socialMediaControllers.imagePath.isNotEmpty)
-                                ? Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 28.w),
-                                    height: 140.h,
-                                    width: 300.w,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(6),
+                                ? GestureDetector(
+                                    onTap: () => Get.to(
+                                        () => ViewImageFile(
+                                            path:
+                                                '${socialMediaControllers.imagePath.value}'),
+                                        transition: Transition.rightToLeft),
+                                    child: AspectRatio(
+                                      aspectRatio: 16 / 9,
+                                      child: Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 28.w),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(6),
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(6),
+                                            child: Image(
+                                              fit: BoxFit.cover,
+                                              image: FileImage(
+                                                File(
+                                                    '${socialMediaControllers.imagePath.value}'),
+                                              ),
+                                            ),
+                                          )),
                                     ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(6),
-                                      child: Image(
-                                        fit: BoxFit.cover,
-                                        image: FileImage(
-                                          File(
-                                              '${socialMediaControllers.imagePath.value}'),
-                                        ),
-                                      ),
-                                    ))
+                                  )
                                 : SizedBox(),
                           ),
                           SizedBox(

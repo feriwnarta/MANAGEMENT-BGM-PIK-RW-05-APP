@@ -17,7 +17,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:sizer/sizer.dart';
 import 'package:http/http.dart' as http;
 
-import 'view_image.dart';
+import '../../../utils/view_image.dart';
 
 //ignore: must_be_immutable
 class CardLaporanView extends StatefulWidget {

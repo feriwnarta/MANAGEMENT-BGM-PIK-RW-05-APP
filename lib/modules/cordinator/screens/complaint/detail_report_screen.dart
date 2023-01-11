@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 // import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../report_screen/screens/view_image.dart';
+import '../../../../utils/view_image.dart';
 
 //ignore: must_be_immutable
 class DetailReportScreen extends StatelessWidget {

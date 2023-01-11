@@ -1,5 +1,6 @@
 import 'package:aplikasi_rw/model/payment_ipl_history_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../services/payment_ipl_history_services/payment_ipl_history_services.dart';
@@ -27,6 +28,7 @@ class _PaymentIplHistoryState extends State<PaymentIplHistory> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Riwayat Pembayaran IPL'),
+        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       body: RefreshIndicator(
         onRefresh: () async =>

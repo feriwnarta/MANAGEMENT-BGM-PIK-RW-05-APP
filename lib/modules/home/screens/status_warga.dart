@@ -9,7 +9,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../report_screen/screens/view_image.dart';
+import '../../../utils/view_image.dart';
 import 'comment_screen.dart';
 
 //ignore: must_be_immutable
