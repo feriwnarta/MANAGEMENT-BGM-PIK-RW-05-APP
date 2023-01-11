@@ -128,7 +128,7 @@ class _CreateStatusState extends State<CreateStatus> {
                                 width: 24.w,
                                 child: CircleAvatar(
                                     backgroundImage: CachedNetworkImageProvider(
-                                        '${ServerApp.url}imageuser/default_profile/blank_profile_picture.jpg')),
+                                        '${ServerApp.url}${userLoginController.urlProfile.value}')),
                               ),
                               SizedBox(
                                 width: 4.w,

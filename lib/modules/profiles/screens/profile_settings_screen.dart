@@ -1,5 +1,8 @@
+import 'package:aplikasi_rw/modules/profiles/screens/about_apps.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/notification_settings.dart';
+import 'package:aplikasi_rw/modules/profiles/screens/privacy_policy.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/security_screen.dart';
+import 'package:aplikasi_rw/modules/profiles/screens/terms_and_conditions.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -116,7 +119,12 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                     overflow: TextOverflow.clip,
                   ),
                   trailing: Icon(Icons.chevron_right),
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(
+                      () => AboutApps(),
+                      transition: Transition.rightToLeft,
+                    );
+                  },
                 ),
                 Divider(
                   thickness: 1,
@@ -138,6 +146,10 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                     overflow: TextOverflow.clip,
                   ),
                   trailing: Icon(Icons.chevron_right),
+                  onTap: () => Get.to(
+                    () => TermAndCondition(),
+                    transition: Transition.rightToLeft,
+                  ),
                 ),
                 Divider(
                   thickness: 1,
@@ -159,7 +171,10 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                     overflow: TextOverflow.clip,
                   ),
                   trailing: Icon(Icons.chevron_right),
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(() => PrivacyPolicy(),
+                        transition: Transition.rightToLeft);
+                  },
                 ),
               ],
             ),

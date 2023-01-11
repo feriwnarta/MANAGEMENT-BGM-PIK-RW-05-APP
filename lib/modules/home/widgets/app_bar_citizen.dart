@@ -1,8 +1,10 @@
+import 'package:aplikasi_rw/modules/home/screens/notification_screen.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class AppBarCitizen extends StatefulWidget {
   const AppBarCitizen({Key key}) : super(key: key);
@@ -47,7 +49,12 @@ class _AppBarCitizenState extends State<AppBarCitizen> {
             splashColor: Colors.white,
             borderRadius: BorderRadius.circular(200),
             radius: 15.h,
-            onTap: () {},
+            onTap: () {
+              Get.to(
+                () => NotificationScreen(),
+                transition: Transition.rightToLeft,
+              );
+            },
             child: Badge(
               badgeColor: Colors.red,
               // showBadge: () ? true : false,

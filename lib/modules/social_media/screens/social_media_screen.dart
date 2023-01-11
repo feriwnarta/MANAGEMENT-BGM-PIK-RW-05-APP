@@ -232,7 +232,9 @@ class CardSocialMedia extends StatelessWidget {
                         child: AutoSizeText(
                           '$username',
                           maxLines: 1,
-                          style: TextStyle(fontSize: 12.sp),
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                          ),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -325,29 +327,33 @@ class CardSocialMedia extends StatelessWidget {
                               ),
                             );
                           },
-                          child: SizedBox(
-                            width: 67.w,
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(
-                                    'assets/img/image-svg/comment-icon.svg'),
-                                SizedBox(
-                                  width: 4.w,
-                                ),
-                                (numberOfComments == '0')
-                                    ? Text(
-                                        'Komentar',
-                                        style: TextStyle(
-                                            fontSize: 10.sp,
-                                            color: Color(0xff404040)),
-                                      )
-                                    : Text(
-                                        '$numberOfComments',
-                                        style: TextStyle(
-                                            fontSize: 10.sp,
-                                            color: Color(0xff404040)),
-                                      )
-                              ],
+                          child: Material(
+                            color: Colors.white,
+                            child: SizedBox(
+                              width: 67.w,
+                              height: 20.h,
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(
+                                      'assets/img/image-svg/comment-icon.svg'),
+                                  SizedBox(
+                                    width: 4.w,
+                                  ),
+                                  (numberOfComments == '0')
+                                      ? Text(
+                                          'Komentar',
+                                          style: TextStyle(
+                                              fontSize: 10.sp,
+                                              color: Color(0xff404040)),
+                                        )
+                                      : Text(
+                                          '$numberOfComments',
+                                          style: TextStyle(
+                                              fontSize: 10.sp,
+                                              color: Color(0xff404040)),
+                                        )
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -391,13 +397,14 @@ class CardSocialMedia extends StatelessWidget {
                               );
                             return result;
                           },
+                          bubblesSize: 50,
                           onTap: (isLiked) async {
                             if (this.isLike.value == false) {
                               String result = await LikeStatusService.addLike(
                                   idStatus: idStatus, idUser: idUser);
                               final logger = Logger();
                               logger.i(result);
-                              if (result == 'OK') {
+                              if (result == 'success') {
                                 isLike.value = true;
                                 return Future.value(true);
                               }

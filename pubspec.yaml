@@ -97,6 +97,7 @@ dependencies:
   like_button: ^2.0.5
   photo_manager: ^2.5.2
   flutter_html: ^3.0.0-alpha.3
+  package_info_plus: ^3.0.2
 
   
   
@@ -153,6 +154,7 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+  
   fonts:
     - family: Poppins
       fonts:
@@ -167,9 +169,9 @@ flutter:
       fonts:
         - asset: assets/fonts/SairaCondensed-Regular.ttf
 
-    - family: PT Sans Narrow
+    - family: Inter
       fonts:
-        - asset: assets/fonts/PTSansNarrow-Regular.ttf
+        - asset: assets/fonts/Inter-Regular.ttf
 
     - family: Montserrat 
       fonts:
@@ -178,6 +180,8 @@ flutter:
     - family: NewsCycle 
       fonts:
         - asset: assets/fonts/NewsCycle-Regular.ttf
+
+    
 
 
   #       - asset: fonts/TrajanPro_Bold.ttf

@@ -72,6 +72,7 @@ void main() async {
           ledColor: Colors.white,
           channelShowBadge: true,
           playSound: true,
+          importance: NotificationImportance.Max,
         )
       ],
       // Channel groups are only visual and are not required
@@ -93,12 +94,17 @@ void main() async {
     logger.w(event.messageId);
 
     AwesomeNotifications().createNotification(
-        content: NotificationContent(
-            id: 10,
-            channelKey: 'basic_channel',
-            title: '${event.notification.title}',
-            body: '${event.notification.body}',
-            actionType: ActionType.Default));
+      content: NotificationContent(
+        id: 10,
+        channelKey: 'basic_channel',
+        title: '${event.notification.title}',
+        body: '${event.notification.body}',
+        actionType: ActionType.Default,
+        wakeUpScreen: true,
+        displayOnBackground: true,
+        displayOnForeground: true,
+      ),
+    );
   });
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
