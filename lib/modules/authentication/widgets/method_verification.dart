@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MethodVerification extends StatelessWidget {
-  const MethodVerification(
+  MethodVerification(
       {Key key, this.cardMethodVerification, this.email, this.noTelp})
       : super(key: key);
 
   final Function cardMethodVerification;
   final String noTelp, email;
 
+  final AssetImage image = AssetImage('assets/img/logo_rw.png');
+
   @override
   Widget build(BuildContext context) {
+    precacheImage(image, context);
+
     ScreenUtil.init(context, designSize: const Size(360, 800));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -19,7 +23,7 @@ class MethodVerification extends StatelessWidget {
           height: 32.h,
         ),
         Image(
-          image: AssetImage('assets/img/logo_rw.png'),
+          image: image,
           width: 80.w,
           height: 94.h,
         ),

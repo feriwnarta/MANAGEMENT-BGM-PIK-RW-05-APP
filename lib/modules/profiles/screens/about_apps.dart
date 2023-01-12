@@ -12,8 +12,11 @@ class AboutApps extends StatefulWidget {
 }
 
 class _AboutAppsState extends State<AboutApps> {
+  final AssetImage image = AssetImage('assets/img/logo_rw.png');
+
   @override
   void didChangeDependencies() async {
+    precacheImage(image, context);
     super.didChangeDependencies();
   }
 
@@ -39,7 +42,7 @@ class _AboutAppsState extends State<AboutApps> {
                   width: 54.w,
                   height: 64.h,
                   fit: BoxFit.cover,
-                  image: AssetImage('assets/img/logo_rw.png'),
+                  image: image,
                 ),
                 SizedBox(
                   height: 16.h,

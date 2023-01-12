@@ -75,15 +75,18 @@ class _SocialMediaState extends State<SocialMedia> {
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () async {
+            await Future.delayed(Duration(seconds: 1));
             await contol.refreshStatus();
           },
-          child: SingleChildScrollView(
-            controller: scrollController,
-            child: GetX<StatusUserController>(
-              init: StatusUserController(),
-              initState: (state) => contol.getDataFromDb(),
-              builder: (controller) => ListView.builder(
-                  shrinkWrap: true,
+          child: GetX<StatusUserController>(
+            init: StatusUserController(),
+            initState: (state) => contol.getDataFromDb(),
+            builder: (controller) => RefreshIndicator(
+              onRefresh: () async {
+                await Future.delayed(Duration(seconds: 1));
+                await contol.refreshStatus();
+              },
+              child: ListView.builder(
                   physics: ClampingScrollPhysics(),
                   itemCount: (controller.isMaxReached.value)
                       ? controller.listStatus.length

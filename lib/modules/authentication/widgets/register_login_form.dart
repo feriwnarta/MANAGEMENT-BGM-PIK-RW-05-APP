@@ -88,6 +88,14 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
   UserLoginController loginController = Get.put(UserLoginController());
   RegisterController userRegisterController = Get.put(RegisterController());
 
+  AssetImage image = AssetImage('assets/img/logo_rw.png');
+
+  @override
+  void didChangeDependencies() {
+    precacheImage(image, context);
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(360, 800));
@@ -99,7 +107,7 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
           height: 32.h,
         ),
         Image(
-          image: AssetImage('assets/img/logo_rw.png'),
+          image: image,
           width: 80.w,
           height: 94.h,
         ),

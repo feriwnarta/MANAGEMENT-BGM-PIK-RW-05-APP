@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Menu extends StatelessWidget {
-  const Menu({Key key, this.icon, this.text, this.onTap}) : super(key: key);
+  Menu({Key key, this.icon, this.text, this.onTap}) : super(key: key);
 
   final String icon, text;
 

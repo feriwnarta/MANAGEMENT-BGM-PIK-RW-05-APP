@@ -8,13 +8,24 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 
 class StatistikPeduliScreen extends StatelessWidget {
-  const StatistikPeduliScreen({Key key}) : super(key: key);
+  StatistikPeduliScreen({Key key}) : super(key: key);
+
+  final userLogin = Get.put(UserLoginController());
+
+  final AssetImage image1 = AssetImage(
+    'assets/img/checklist.png',
+  );
+
+  final AssetImage image2 = AssetImage('assets/img/coordination.png');
+
+  final AssetImage image3 = AssetImage('assets/img/bro.png');
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(360, 800));
-
-    final userLogin = Get.put(UserLoginController());
+    precacheImage(image1, context);
+    precacheImage(image2, context);
+    precacheImage(image3, context);
 
     return Scaffold(
       appBar: AppBar(
@@ -72,9 +83,7 @@ class StatistikPeduliScreen extends StatelessWidget {
                                     Image(
                                         height: 24.h,
                                         width: 24.w,
-                                        image: AssetImage(
-                                          'assets/img/checklist.png',
-                                        )),
+                                        image: image1),
                                     SizedBox(
                                       height: 4.h,
                                     ),
@@ -125,8 +134,7 @@ class StatistikPeduliScreen extends StatelessWidget {
                                         Image(
                                           width: 24.w,
                                           height: 24.h,
-                                          image: AssetImage(
-                                              'assets/img/coordination.png'),
+                                          image: image2,
                                         ),
                                         SizedBox(
                                           height: 8.h,
@@ -235,7 +243,7 @@ class StatistikPeduliScreen extends StatelessWidget {
                                 fit: BoxFit.contain,
                                 width: 282.w,
                                 height: 248.h,
-                                image: AssetImage('assets/img/bro.png'),
+                                image: image3,
                               ),
                             ),
                             SizedBox(

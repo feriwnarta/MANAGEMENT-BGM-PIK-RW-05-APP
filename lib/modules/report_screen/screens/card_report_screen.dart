@@ -52,9 +52,12 @@ class CardReportScreen extends StatelessWidget {
       this.photoProcess1,
       this.photoProcess2});
 
+  final AssetImage image = AssetImage('assets/img/loading.gif');
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(360, 800));
+    precacheImage(image, context);
     return Center(
       child: Container(
         // padding: EdgeInsets.only(bottom: 10),
@@ -89,7 +92,7 @@ class CardReportScreen extends StatelessWidget {
                             child: Icon(Icons.error),
                           );
                         },
-                        placeholder: AssetImage('assets/img/loading.gif'),
+                        placeholder: image,
                         image: CachedNetworkImageProvider(urlImageReport),
                         fit: BoxFit.cover,
                         width: 70.w,

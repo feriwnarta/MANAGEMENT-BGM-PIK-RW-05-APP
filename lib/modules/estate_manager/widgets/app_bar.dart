@@ -3,10 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppBarEm extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
-  const AppBarEm({Key key, this.scaffoldKey}) : super(key: key);
+  AppBarEm({Key key, this.scaffoldKey}) : super(key: key);
+
+  final AssetImage image = AssetImage('assets/img/logo_rw.png');
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(image, context);
+
     ScreenUtil.init(context, designSize: const Size(360, 800));
     return Container(
       margin: EdgeInsets.only(top: 16.h),
@@ -27,7 +31,7 @@ class AppBarEm extends StatelessWidget {
                 Image(
                   width: 34.w,
                   height: 40.h,
-                  image: AssetImage('assets/img/logo_rw.png'),
+                  image: image,
                   fit: BoxFit.cover,
                   repeat: ImageRepeat.noRepeat,
                 ),

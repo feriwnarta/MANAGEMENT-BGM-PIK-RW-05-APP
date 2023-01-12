@@ -17,6 +17,14 @@ class ProfileSettings extends StatefulWidget {
 }
 
 class _ProfileSettingsState extends State<ProfileSettings> {
+  final AssetImage image = AssetImage('assets/img/logo_rw.png');
+
+  @override
+  void didChangeDependencies() {
+    precacheImage(image, context);
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(360, 800));
@@ -47,7 +55,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                     Image(
                       width: 34.w,
                       height: 40.h,
-                      image: AssetImage('assets/img/logo_rw.png'),
+                      image: image,
                       fit: BoxFit.cover,
                       repeat: ImageRepeat.noRepeat,
                     )

@@ -32,6 +32,14 @@ class CitizenScreen extends StatefulWidget {
 class _MyWidgetState extends State<CitizenScreen> {
   final userLoginController = Get.put(UserLoginController());
 
+  final AssetImage image = AssetImage('assets/img/logo_rw.png');
+
+  @override
+  void didChangeDependencies() {
+    precacheImage(image, context);
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     final logger = Logger();
@@ -66,7 +74,7 @@ class _MyWidgetState extends State<CitizenScreen> {
                   Image(
                     width: 34.w,
                     height: 40.h,
-                    image: AssetImage('assets/img/logo_rw.png'),
+                    image: image,
                     fit: BoxFit.cover,
                     repeat: ImageRepeat.noRepeat,
                   ),

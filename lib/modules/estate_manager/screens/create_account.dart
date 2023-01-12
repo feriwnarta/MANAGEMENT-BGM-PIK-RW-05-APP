@@ -31,6 +31,14 @@ class _CreateAccountState extends State<CreateAccount> {
 
   Future futureBagian = CreateAccountServices.getBagian();
 
+  final AssetImage image = AssetImage('assets/img/blank_profile_picture.jpg');
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    precacheImage(image, context);
+  }
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(360, 800));
@@ -192,8 +200,7 @@ class _CreateAccountState extends State<CreateAccount> {
                         children: [
                           CircleAvatar(
                             backgroundImage: (pathKontraktor.isEmpty)
-                                ? AssetImage(
-                                    'assets/img/blank_profile_picture.jpg')
+                                ? image
                                 : FileImage(File(pathKontraktor.value)),
                             radius: 124.h / 2,
                           ),
@@ -482,8 +489,7 @@ class _CreateAccountState extends State<CreateAccount> {
                         children: [
                           CircleAvatar(
                             backgroundImage: (pathCordinator.isEmpty)
-                                ? AssetImage(
-                                    'assets/img/blank_profile_picture.jpg')
+                                ? image
                                 : FileImage(File(pathCordinator.value)),
                             radius: 124.h / 2,
                           ),

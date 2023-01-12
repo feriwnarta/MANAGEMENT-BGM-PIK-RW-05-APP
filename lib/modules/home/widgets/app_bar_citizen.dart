@@ -17,26 +17,32 @@ class AppBarCitizen extends StatefulWidget {
 }
 
 class _AppBarCitizenState extends State<AppBarCitizen> {
+  final AssetImage image = AssetImage('assets/img/logo_rw.png');
   NotificationController controller = Get.put(NotificationController());
-  Timer _timer;
 
   @override
   void initState() {
-    _timer = Timer.periodic(
+    controller.timer = Timer.periodic(
       Duration(seconds: 1),
       (_) {
         controller.getCountNotif();
       },
-    );
+    ).obs;
     super.initState();
   }
 
   @override
   void dispose() {
-    if (_timer != null && _timer.isActive) {
-      _timer.cancel();
+    if (controller.timer.value != null && controller.timer.value.isActive) {
+      controller.timer.value.cancel();
     }
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    precacheImage(image, context);
+    super.didChangeDependencies();
   }
 
   @override
@@ -63,7 +69,7 @@ class _AppBarCitizenState extends State<AppBarCitizen> {
           Image(
             width: 34.w,
             height: 40.h,
-            image: AssetImage('assets/img/logo_rw.png'),
+            image: image,
             fit: BoxFit.cover,
             repeat: ImageRepeat.noRepeat,
           ),

@@ -976,6 +976,8 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
               EasyLoading.showInfo(
                 'kami mendeteksi adanya login diperangkat baru, login diperangkat lain akan otomatis keluar',
               );
+
+              await Future.delayed(Duration(seconds: 2));
             }
 
             // check access otp untuk kebutuhan debugging

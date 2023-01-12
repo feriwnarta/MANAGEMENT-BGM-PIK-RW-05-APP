@@ -42,6 +42,18 @@ class MenuPeduliLingkungan extends StatefulWidget {
 
 class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
   RxBool isActive = true.obs;
+  final AssetImage image =
+      AssetImage('assets/img/citizen_menu/peduli-lingkungan-umum.jpg');
+
+  final AssetImage image2 =
+      AssetImage('assets/img/citizen_menu/peduli-lingkungan-umum.jpg');
+
+  @override
+  void didChangeDependencies() {
+    precacheImage(image, context);
+    precacheImage(image2, context);
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +82,7 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                     height: 72.h,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage(
-                            'assets/img/citizen_menu/peduli-lingkungan-umum.jpg'),
+                        image: image,
                       ),
                     ),
                   ),
@@ -136,8 +147,7 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                     height: 72.h,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage(
-                            'assets/img/citizen_menu/peduli-lingkungan-umum.jpg'),
+                        image: image2,
                       ),
                     ),
                   ),

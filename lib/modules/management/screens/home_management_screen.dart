@@ -126,15 +126,19 @@ class HomeManagementScreen extends StatelessWidget {
 }
 
 class Header extends StatelessWidget {
-  const Header({
+  Header({
     Key key,
     @required this.scaffoldKey,
   }) : super(key: key);
 
   final GlobalKey<ScaffoldState> scaffoldKey;
 
+  final AssetImage image = AssetImage('assets/img/logo_rw.png');
+
   @override
   Widget build(BuildContext context) {
+    precacheImage(image, context);
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 15.w),
       child: Row(
@@ -150,7 +154,7 @@ class Header extends StatelessWidget {
             child: Image(
               width: 34.w,
               height: 40.h,
-              image: AssetImage('assets/img/logo_rw.png'),
+              image: image,
               fit: BoxFit.cover,
               repeat: ImageRepeat.noRepeat,
             ),

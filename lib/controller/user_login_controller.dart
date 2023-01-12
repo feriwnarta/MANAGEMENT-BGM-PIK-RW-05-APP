@@ -12,6 +12,8 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 
+import '../modules/home/controller/notification_controller.dart';
+
 class UserLoginController extends GetxController {
   RxString status = ''.obs;
   var userStatus = ''.obs;
@@ -58,6 +60,8 @@ class UserLoginController extends GetxController {
     email = ''.obs;
     noTelp = ''.obs;
   }
+
+  NotificationController controller = Get.put(NotificationController());
 
   Future<void> checkServer() async {
     // String idUser = await UserSecureStorage.getIdUser();
@@ -171,6 +175,9 @@ class UserLoginController extends GetxController {
       nameCordinator = ''.obs;
       job = <String>[].obs;
       accessManagement = false.obs;
+      if (controller.timer.value != null && controller.timer.value.isActive) {
+        controller.timer.value.cancel();
+      }
     }
   }
 
