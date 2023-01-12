@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/state_manager.dart';
 import 'package:logger/logger.dart';
 
+//ignore: must_be_immutable
 class SecurityScreen extends StatelessWidget {
   SecurityScreen({Key key}) : super(key: key);
 

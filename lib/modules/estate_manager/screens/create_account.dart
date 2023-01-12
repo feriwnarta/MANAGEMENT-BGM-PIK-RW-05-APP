@@ -28,7 +28,6 @@ class _CreateAccountState extends State<CreateAccount> {
   RxString pathCordinator = ''.obs;
   RxString pathKontraktor = ''.obs;
   final _formCordinator = GlobalKey<FormState>();
-  final _formKontraktor = GlobalKey<FormState>();
 
   Future futureBagian = CreateAccountServices.getBagian();
 

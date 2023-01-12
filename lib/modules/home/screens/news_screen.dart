@@ -17,7 +17,7 @@ class NewsScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            brightness: Brightness.dark,
+            // brightness: Brightness.dark,
             expandedHeight: 250.h,
             floating: true,
             pinned: true,

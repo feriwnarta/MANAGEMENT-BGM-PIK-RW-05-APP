@@ -12,7 +12,6 @@ import 'package:logger/logger.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class NewGoogleMaps extends StatefulWidget {
   @override

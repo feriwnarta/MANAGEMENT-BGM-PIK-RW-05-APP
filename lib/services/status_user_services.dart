@@ -4,7 +4,6 @@ import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
-import 'package:logger/logger.dart';
 
 import '../server-app.dart';
 

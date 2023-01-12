@@ -252,7 +252,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
     return Scaffold(
         backgroundColor: Colors.grey[100],
         appBar: AppBar(
-          brightness: Brightness.light,
+          // brightness: Brightness.light,
           title: Text(''),
           elevation: 0,
           backgroundColor: Colors.white,

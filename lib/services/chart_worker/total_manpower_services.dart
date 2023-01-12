@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:http/http.dart' as http;
-import 'package:logger/logger.dart';
 
 class TotalManPowerModel {
   String idManPower, cluster, total, status;

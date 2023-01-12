@@ -65,7 +65,7 @@ class _TempatTulisStatusState extends State<TempatTulisStatus> {
 
   Widget build(BuildContext context) {
     appBar = AppBar(
-      brightness: Brightness.light,
+      // brightness: Brightness.light,
       // leading: IconButton(
       //   icon: Icon(
       //     Icons.clear_rounded,

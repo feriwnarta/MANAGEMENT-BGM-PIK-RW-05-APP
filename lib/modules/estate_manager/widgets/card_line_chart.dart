@@ -8,6 +8,7 @@ import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 import '../models/LineChartModel.dart';
 
+//ignore: must_be_immutable
 class CardLineChart extends StatefulWidget {
   AsyncSnapshot<List<LineChartModel>> snapshot;
   int index;

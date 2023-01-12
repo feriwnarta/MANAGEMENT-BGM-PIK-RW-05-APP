@@ -4,7 +4,6 @@ import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
-import 'package:logger/logger.dart';
 
 class GetChartWorkerServices {
   static Future<Map<String, dynamic>> getChart() async {

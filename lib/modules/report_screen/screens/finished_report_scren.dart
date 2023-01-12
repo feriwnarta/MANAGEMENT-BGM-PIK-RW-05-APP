@@ -15,7 +15,7 @@ class FinishedReportScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.black),
-          brightness: Brightness.light,
+          // brightness: Brightness.light,
           backgroundColor: Colors.white,
           title: Text(
             'Report Finished',

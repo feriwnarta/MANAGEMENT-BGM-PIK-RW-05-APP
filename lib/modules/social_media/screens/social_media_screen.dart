@@ -171,6 +171,7 @@ class _SocialMediaState extends State<SocialMedia> {
   }
 }
 
+//ignore: must_be_immutable
 class CardSocialMedia extends StatelessWidget {
   CardSocialMedia(
       {Key key,
