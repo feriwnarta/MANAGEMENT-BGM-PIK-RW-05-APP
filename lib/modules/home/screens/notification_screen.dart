@@ -1,8 +1,14 @@
+import 'dart:async';
+
+import 'package:aplikasi_rw/modules/home/controller/notification_controller.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/instance_manager.dart';
 import 'package:readmore/readmore.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -13,6 +19,27 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+  var controller = Get.put(NotificationController());
+
+  Timer timer;
+
+  @override
+  initState() {
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      controller.getNotif();
+    });
+
+    super.initState();
+  }
+
+  @override
+  dispose() {
+    if (timer != null && timer.isActive) {
+      timer.cancel();
+    }
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(360, 800));
@@ -20,21 +47,38 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Notification'),
+        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.symmetric(
-            horizontal: 16.w,
-          ),
-          width: double.infinity,
-          child: Column(
-            children: [
-              SizedBox(
-                height: 16.h,
-              ),
-              NotifiBody(),
-            ],
-          ),
+        child: Obx(
+          () =>
+              (controller.listNotif != null && controller.listNotif.length == 0)
+                  ? LinearProgressIndicator()
+                  : Container(
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                      ),
+                      width: double.infinity,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 16.h,
+                          ),
+                          Column(
+                            children: controller.listNotif
+                                .map<Widget>(
+                                  (e) => NotifiBody(
+                                    content: e.content,
+                                    time: e.time,
+                                    title: e.title,
+                                    urlProfile: e.urlImage,
+                                  ),
+                                )
+                                .toList(),
+                          )
+                        ],
+                      ),
+                    ),
         ),
       ),
     );
@@ -66,7 +110,7 @@ class NotifiBody extends StatelessWidget {
                 height: 24.h,
                 child: CircleAvatar(
                   backgroundImage: CachedNetworkImageProvider(
-                      '${ServerApp.url}/imageuser/48b495679c59b614a64768263129ba5c9553efbc.jpg'),
+                      '${ServerApp.url}/$urlProfile'),
                 ),
               ),
               Padding(
@@ -76,7 +120,7 @@ class NotifiBody extends StatelessWidget {
                     SizedBox(
                       width: 296.w,
                       child: AutoSizeText(
-                        'Donnita Q menanggapi postinganmu',
+                        '$title',
                         style: TextStyle(fontSize: 12.sp),
                         maxLines: 1,
                         minFontSize: 10,
@@ -85,7 +129,7 @@ class NotifiBody extends StatelessWidget {
                     SizedBox(
                       width: 296.w,
                       child: AutoSizeText(
-                        '10 Menit Yang lalu',
+                        '$time',
                         style: TextStyle(
                           fontSize: 10.sp,
                           color: Color(0xff9E9E9E),
@@ -100,7 +144,7 @@ class NotifiBody extends StatelessWidget {
                     SizedBox(
                       width: 296.w,
                       child: ReadMoreText(
-                        'Di Cafe Cahaya Senja enak untuk nongkrong dan makanan nya recomended :) Di Cafe Cahaya Senja enak untuk nongkrong dan makanan nya recomended :) Di Cafe Cahaya Senja enak untuk nongkrong dan makanan nya recomended :)  Di Cafe Cahaya Senja enak untuk nongkrong dan makanan nya recomended :)',
+                        '$content',
                         trimLines: 3,
                         trimMode: TrimMode.Line,
                         trimCollapsedText: ' Baca selengkapnya',

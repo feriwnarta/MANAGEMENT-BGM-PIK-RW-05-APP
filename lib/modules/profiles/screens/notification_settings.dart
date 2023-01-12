@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/state_manager.dart';
-import 'package:logger/logger.dart';
 
 class NotificationSettings extends StatelessWidget {
   NotificationSettings({Key key}) : super(key: key);

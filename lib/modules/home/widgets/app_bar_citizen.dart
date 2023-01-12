@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:aplikasi_rw/modules/home/controller/notification_controller.dart';
 import 'package:aplikasi_rw/modules/home/screens/notification_screen.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +17,28 @@ class AppBarCitizen extends StatefulWidget {
 }
 
 class _AppBarCitizenState extends State<AppBarCitizen> {
+  NotificationController controller = Get.put(NotificationController());
+  Timer _timer;
+
+  @override
+  void initState() {
+    _timer = Timer.periodic(
+      Duration(seconds: 1),
+      (_) {
+        controller.getCountNotif();
+      },
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (_timer != null && _timer.isActive) {
+      _timer.cancel();
+    }
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(360, 800));
@@ -45,29 +70,31 @@ class _AppBarCitizenState extends State<AppBarCitizen> {
           SizedBox(
             width: 127.w,
           ),
-          InkWell(
-            splashColor: Colors.white,
-            borderRadius: BorderRadius.circular(200),
-            radius: 15.h,
-            onTap: () {
-              Get.to(
-                () => NotificationScreen(),
-                transition: Transition.rightToLeft,
-              );
-            },
-            child: Badge(
-              badgeColor: Colors.red,
-              // showBadge: () ? true : false,
-              badgeContent: Text(
-                '0',
-                style: TextStyle(color: Colors.white),
+          Obx(
+            () => InkWell(
+              splashColor: Colors.white,
+              borderRadius: BorderRadius.circular(200),
+              radius: 15.h,
+              onTap: () {
+                Get.to(
+                  () => NotificationScreen(),
+                  transition: Transition.rightToLeft,
+                );
+              },
+              child: Badge(
+                badgeColor: Colors.red,
+                // showBadge: () ? true : false,
+                badgeContent: Text(
+                  '${controller.count.value}',
+                  style: TextStyle(color: Colors.white),
+                ),
+                position: BadgePosition.topEnd(top: -15, end: -10),
+                child: SvgPicture.asset(
+                  'assets/img/image-svg/bell.svg',
+                  color: Color(0xff404040),
+                ),
+                animationType: BadgeAnimationType.scale,
               ),
-              position: BadgePosition.topEnd(top: -15, end: -10),
-              child: SvgPicture.asset(
-                'assets/img/image-svg/bell.svg',
-                color: Color(0xff404040),
-              ),
-              animationType: BadgeAnimationType.scale,
             ),
           ),
         ],
