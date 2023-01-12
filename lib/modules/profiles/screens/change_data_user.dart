@@ -69,243 +69,243 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
           ),
         ),
         body: FutureBuilder<UserChangeModel>(
-            future: UserChangeServices.getDataUser('${loginController.idUser}'),
-            builder: (context, snapshot) => (snapshot.hasData)
-                ? Column(
-                    children: [
-                      SizedBox(
-                        height: 15.h,
-                      ),
-                      Center(
-                        child: GestureDetector(
-                          child: Column(
-                            children: [
-                              Container(
-                                height: 64.h,
-                                width: 64.w,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    repeat: ImageRepeat.noRepeat,
-                                    image: (widget.urlProfilePath == null)
-                                        ? CachedNetworkImageProvider(
-                                            '${ServerApp.url}${snapshot.data.profileImage}')
-                                        : FileImage(
-                                            File(widget.urlProfilePath),
-                                          ),
-                                  ),
-                                ),
-                              ),
-                              TextButton.icon(
-                                onPressed: () {
-                                  showModalBottomSheet(
-                                      context: context,
-                                      builder: ((builder) =>
-                                          bottomImagePicker(context)));
-                                },
-                                icon: Icon(
-                                  FontAwesomeIcons.pen,
-                                  size: 12.h,
-                                ),
-                                label: Text('Ubah Foto'),
-                              )
-                            ],
-                          ),
-                          onTap: () => showModalBottomSheet(
-                              context: context,
-                              builder: ((builder) =>
-                                  bottomImagePicker(context))),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 28.h,
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.person, size: 20.h),
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+          future: UserChangeServices.getDataUser('${loginController.idUser}'),
+          builder: (context, snapshot) => (snapshot.hasData)
+              ? Column(
+                  children: [
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                    Center(
+                      child: GestureDetector(
+                        child: Column(
                           children: [
-                            SizedBox(height: 1.0.h),
-                            Text(
-                              'Username',
-                              style: TextStyle(
-                                  color: Colors.grey, fontSize: 11.sp),
-                            ),
-                            SizedBox(height: 1.0.h),
-                            Text(
-                              '${snapshot.data.fullName}',
-                              style: TextStyle(fontSize: 12.sp),
-                            ),
-                            SizedBox(height: 1.0.h),
-                          ],
-                        ),
-                        trailing: Icon(
-                          FontAwesomeIcons.pen,
-                          size: 10.h,
-                        ),
-                        onTap: () => showModalBottomSheet(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(15.0))),
-                            context: context,
-                            isScrollControlled: true,
-                            builder: (context) => buildPaddingChangeData(
-                                context, 'masukan username', 'username')),
-                      ),
-                      // ListTile(
-                      //   leading: SvgPicture.asset(
-                      //       'assets/img/image-svg/cluster.svg'),
-                      //   title: Column(
-                      //     crossAxisAlignment: CrossAxisAlignment.start,
-                      //     children: [
-                      //       SizedBox(height: 1.0.h),
-                      //       Text(
-                      //         'Nama Cluster',
-                      //         style: TextStyle(
-                      //             color: Colors.grey, fontSize: 11.sp),
-                      //       ),
-                      //       SizedBox(height: 1.0.h),
-                      //       Text(
-                      //         '${snapshot.data.cluster}',
-                      //         style: TextStyle(fontSize: 12.sp),
-                      //       ),
-                      //       SizedBox(height: 1.0.h),
-                      //     ],
-                      //   ),
-                      //   trailing: Icon(
-                      //     FontAwesomeIcons.pen,
-                      //     size: 10.h,
-                      //   ),
-                      //   onTap: () => showModalBottomSheet(
-                      //       shape: RoundedRectangleBorder(
-                      //           borderRadius: BorderRadius.vertical(
-                      //               top: Radius.circular(15.0))),
-                      //       context: context,
-                      //       isScrollControlled: true,
-                      //       builder: (context) => buildPaddingChangeData(
-                      //           context, 'masukan username', 'username')),
-                      // ),
-                      (snapshot.data.numberHouse == null)
-                          ? SizedBox()
-                          : ListTile(
-                              leading: Icon(Icons.home, size: 20.h),
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 1.0.h),
-                                  Text(
-                                    'Nomor Rumah',
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 11.sp),
-                                  ),
-                                  SizedBox(height: 1.0.h),
-                                  Text(
-                                    '${snapshot.data.numberHouse}',
-                                    style: TextStyle(fontSize: 12.sp),
-                                  ),
-                                  SizedBox(height: 1.0.h),
-                                ],
+                            Container(
+                              height: 64.h,
+                              width: 64.w,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  repeat: ImageRepeat.noRepeat,
+                                  image: (widget.urlProfilePath == null)
+                                      ? CachedNetworkImageProvider(
+                                          '${ServerApp.url}${snapshot.data.profileImage}')
+                                      : FileImage(
+                                          File(widget.urlProfilePath),
+                                        ),
+                                ),
                               ),
-                              trailing: Icon(
+                            ),
+                            TextButton.icon(
+                              onPressed: () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: ((builder) =>
+                                        bottomImagePicker(context)));
+                              },
+                              icon: Icon(
                                 FontAwesomeIcons.pen,
-                                size: 10.h,
+                                size: 12.h,
                               ),
-                              onTap: () => showModalBottomSheet(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(15.0))),
-                                  context: context,
-                                  isScrollControlled: true,
-                                  builder: (context) => buildPaddingChangeData(
-                                      context,
-                                      'masukan username',
-                                      'number_house')),
-                            ),
-                      SizedBox(
-                        height: 1.0.h,
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.email,
-                          size: 20.h,
-                        ),
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 1.0.h),
-                            Text(
-                              'Email',
-                              style: TextStyle(
-                                  color: Colors.grey, fontSize: 11.sp),
-                            ),
-                            SizedBox(height: 1.0.h),
-                            Text(
-                              '${snapshot.data.email}',
-                              style: TextStyle(fontSize: 12.sp),
-                            ),
-                            SizedBox(height: 1.0.h),
+                              label: Text('Ubah Foto'),
+                            )
                           ],
                         ),
-                        trailing: Icon(
-                          FontAwesomeIcons.pen,
-                          size: 10.h,
-                        ),
                         onTap: () => showModalBottomSheet(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(15.0))),
                             context: context,
-                            isScrollControlled: true,
-                            builder: (context) => buildPaddingChangeData(
-                                context, 'masukan email', 'email')),
+                            builder: ((builder) => bottomImagePicker(context))),
                       ),
-                      SizedBox(
-                        height: 1.0.h,
+                    ),
+                    SizedBox(
+                      height: 28.h,
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.person, size: 20.h),
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 1.0.h),
+                          Text(
+                            'Username',
+                            style:
+                                TextStyle(color: Colors.grey, fontSize: 11.sp),
+                          ),
+                          SizedBox(height: 1.0.h),
+                          Text(
+                            '${snapshot.data.fullName}',
+                            style: TextStyle(fontSize: 12.sp),
+                          ),
+                          SizedBox(height: 1.0.h),
+                        ],
                       ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.phone_android,
-                          size: 20.h,
-                        ),
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 1.0.h),
-                            Text(
-                              'Nomor telpon',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 11.sp,
-                              ),
+                      trailing: Icon(
+                        FontAwesomeIcons.pen,
+                        size: 10.h,
+                      ),
+                      onTap: () => showModalBottomSheet(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(15.0))),
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (context) => buildPaddingChangeData(
+                              context, 'masukan username', 'username')),
+                    ),
+                    // ListTile(
+                    //   leading: SvgPicture.asset(
+                    //       'assets/img/image-svg/cluster.svg'),
+                    //   title: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: [
+                    //       SizedBox(height: 1.0.h),
+                    //       Text(
+                    //         'Nama Cluster',
+                    //         style: TextStyle(
+                    //             color: Colors.grey, fontSize: 11.sp),
+                    //       ),
+                    //       SizedBox(height: 1.0.h),
+                    //       Text(
+                    //         '${snapshot.data.cluster}',
+                    //         style: TextStyle(fontSize: 12.sp),
+                    //       ),
+                    //       SizedBox(height: 1.0.h),
+                    //     ],
+                    //   ),
+                    //   trailing: Icon(
+                    //     FontAwesomeIcons.pen,
+                    //     size: 10.h,
+                    //   ),
+                    //   onTap: () => showModalBottomSheet(
+                    //       shape: RoundedRectangleBorder(
+                    //           borderRadius: BorderRadius.vertical(
+                    //               top: Radius.circular(15.0))),
+                    //       context: context,
+                    //       isScrollControlled: true,
+                    //       builder: (context) => buildPaddingChangeData(
+                    //           context, 'masukan username', 'username')),
+                    // ),
+                    (snapshot.data.numberHouse == null)
+                        ? SizedBox()
+                        : ListTile(
+                            leading: Icon(Icons.home, size: 20.h),
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(height: 1.0.h),
+                                Text(
+                                  'Nomor Rumah',
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 11.sp),
+                                ),
+                                SizedBox(height: 1.0.h),
+                                Text(
+                                  '${snapshot.data.numberHouse}',
+                                  style: TextStyle(fontSize: 12.sp),
+                                ),
+                                SizedBox(height: 1.0.h),
+                              ],
                             ),
-                            SizedBox(height: 1.0.h),
-                            Text(
-                              '${snapshot.data.noPhone}',
-                              style: TextStyle(fontSize: 12.sp),
+                            trailing: Icon(
+                              FontAwesomeIcons.pen,
+                              size: 10.h,
                             ),
-                            SizedBox(height: 1.0.h),
-                          ],
-                        ),
-                        trailing: Icon(
-                          FontAwesomeIcons.pen,
-                          size: 10.h,
-                        ),
-                        onTap: () => showModalBottomSheet(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(15.0))),
-                            context: context,
-                            isScrollControlled: true,
-                            builder: (context) => buildPaddingChangeData(
-                                context, 'masukan nomor telepon', 'phone')),
+                            onTap: () => showModalBottomSheet(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(15.0))),
+                                context: context,
+                                isScrollControlled: true,
+                                builder: (context) => buildPaddingChangeData(
+                                    context,
+                                    'masukan username',
+                                    'number_house')),
+                          ),
+                    SizedBox(
+                      height: 1.0.h,
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.email,
+                        size: 20.h,
                       ),
-                      SizedBox(
-                        height: 1.0.h,
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 1.0.h),
+                          Text(
+                            'Email',
+                            style:
+                                TextStyle(color: Colors.grey, fontSize: 11.sp),
+                          ),
+                          SizedBox(height: 1.0.h),
+                          Text(
+                            '${snapshot.data.email}',
+                            style: TextStyle(fontSize: 12.sp),
+                          ),
+                          SizedBox(height: 1.0.h),
+                        ],
                       ),
-                    ],
-                  )
-                : Center(child: CircularProgressIndicator())),
+                      trailing: Icon(
+                        FontAwesomeIcons.pen,
+                        size: 10.h,
+                      ),
+                      onTap: () => showModalBottomSheet(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(15.0))),
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (context) => buildPaddingChangeData(
+                              context, 'masukan email', 'email')),
+                    ),
+                    SizedBox(
+                      height: 1.0.h,
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.phone_android,
+                        size: 20.h,
+                      ),
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 1.0.h),
+                          Text(
+                            'Nomor telpon',
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 11.sp,
+                            ),
+                          ),
+                          SizedBox(height: 1.0.h),
+                          Text(
+                            '${snapshot.data.noPhone}',
+                            style: TextStyle(fontSize: 12.sp),
+                          ),
+                          SizedBox(height: 1.0.h),
+                        ],
+                      ),
+                      trailing: Icon(
+                        FontAwesomeIcons.pen,
+                        size: 10.h,
+                      ),
+                      onTap: () => showModalBottomSheet(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(15.0))),
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (context) => buildPaddingChangeData(
+                              context, 'masukan nomor telepon', 'phone')),
+                    ),
+                    SizedBox(
+                      height: 1.0.h,
+                    ),
+                  ],
+                )
+              : LinearProgressIndicator(),
+        ),
       ),
     );
   }

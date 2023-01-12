@@ -192,7 +192,7 @@ class NotificationSettings extends StatelessWidget {
                     ),
                   );
                 } else {
-                  return CircularProgressIndicator.adaptive();
+                  return LinearProgressIndicator();
                 }
               },
             ),
