@@ -14,13 +14,6 @@ class ReportServices extends ReportModel {
     Dio dio = Dio();
     dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
 
-    // dio.interceptors.add(RetryOnConnectionChangeInterceptor(
-    //   requestRetrier: DioConnectivityRequestRetrier(
-    //     dio: dio,
-    //     connectivity: Connectivity(),
-    //   ),
-    // ));
-
     var data = {'id_user': idUser, 'start': start, 'limit': limit};
     String apiUrl = '${ServerApp.url}/src/report/report.php';
     // ambil data dari api

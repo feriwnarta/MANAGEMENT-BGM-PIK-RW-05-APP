@@ -4,6 +4,7 @@ import 'package:aplikasi_rw/model/ReportModel.dart';
 import 'package:aplikasi_rw/services/report_services.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 class ReportUserController extends GetxController {
   List<ReportModel> listReport = <ReportModel>[].obs;
@@ -41,7 +42,8 @@ class ReportUserController extends GetxController {
         });
         print(el);
       }
-    } on SocketException {} on HttpException {}
+    } on SocketException {
+    } on HttpException {}
   }
 
   Future<void> addReport() async {
@@ -75,6 +77,10 @@ class ReportUserController extends GetxController {
 
     if (isLoading.value) {
       listReport.assignAll(await ReportServices.getDataApi(idUser, 0, 10));
+
+      final logger = Logger();
+      logger.e(listReport.length);
+
       update();
       if (listReport.isNotEmpty) {
         isLoading.value = false;

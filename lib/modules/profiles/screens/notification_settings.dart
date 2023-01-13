@@ -68,12 +68,9 @@ class NotificationSettings extends StatelessWidget {
                                 onChanged: (value) async {
                                   String response = await updateNotif(
                                       status: 'laporan_diterima', value: value);
+                                  print(response);
 
-                                  if (response == 'SUCCESS') {
-                                    laporanDiterima.value = value;
-                                  } else {
-                                    laporanDiterima.value = value;
-                                  }
+                                  laporanDiterima.value = value;
                                 },
                                 activeColor: Colors.blue,
                               ),
@@ -213,7 +210,7 @@ class NotificationSettings extends StatelessWidget {
       laporanDiterima.value = true;
     }
     if (data['report_received'] == '0') {
-      laporanDiterima.value = true;
+      laporanDiterima.value = false;
     }
     if (data['report_done'] == '1') {
       laporanDikerjakan.value = true;

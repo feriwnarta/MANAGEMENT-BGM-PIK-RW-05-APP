@@ -709,7 +709,7 @@ class _StepperRwState extends State<StepperRw> {
           width: 328.w,
           margin: EdgeInsets.symmetric(vertical: 16.h),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               headerSteper(
                   stepIcon: 'assets/img/image-svg/kategori-icon.svg',

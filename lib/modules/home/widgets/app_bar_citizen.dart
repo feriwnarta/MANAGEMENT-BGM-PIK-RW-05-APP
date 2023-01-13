@@ -89,17 +89,17 @@ class _AppBarCitizenState extends State<AppBarCitizen> {
               },
               child: Badge(
                 badgeColor: Colors.red,
-                // showBadge: () ? true : false,
+                padding: EdgeInsets.all(3),
                 badgeContent: Text(
                   '${controller.count.value}',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontSize: 11.sp),
                 ),
-                position: BadgePosition.topEnd(top: -15, end: -10),
+                position: BadgePosition.topEnd(top: -18, end: -10),
                 child: SvgPicture.asset(
                   'assets/img/image-svg/bell.svg',
                   color: Color(0xff404040),
                 ),
-                animationType: BadgeAnimationType.scale,
+                animationType: BadgeAnimationType.fade,
               ),
             ),
           ),

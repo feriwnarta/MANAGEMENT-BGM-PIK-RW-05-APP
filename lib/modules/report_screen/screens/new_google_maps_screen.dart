@@ -74,7 +74,7 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
                       SafeArea(
                         child: Obx(
                           () => GoogleMap(
-                            trafficEnabled: true,
+                            trafficEnabled: false,
                             myLocationEnabled: false,
                             myLocationButtonEnabled: false,
                             zoomControlsEnabled: false,
@@ -175,51 +175,6 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
                             },
                           ),
                         ),
-                      ),
-                      GestureDetector(
-                        child: Container(
-                          width: 328.w,
-                          height: 36.h,
-                          margin: EdgeInsets.only(
-                            top: 24.h,
-                            left: 16.w,
-                          ),
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(6),
-                              boxShadow: [
-                                BoxShadow(color: Colors.grey, blurRadius: 2),
-                              ]),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Cari lokasi',
-                                style: TextStyle(
-                                    fontSize: 14.sp, color: Color(0xff757575)),
-                              ),
-                              SvgPicture.asset(
-                                'assets/img/image-svg/search-maps.svg',
-                              ),
-                            ],
-                          ),
-                        ),
-                        onTap: () async {
-                          Prediction p = await PlacesAutocomplete.show(
-                              context: context,
-                              mode: Mode.overlay,
-                              language: 'id',
-                              components: [Component(Component.country, "id")],
-                              types: [""],
-                              strictbounds: false,
-                              apiKey: (Platform.isAndroid)
-                                  ? 'AIzaSyDbZjwizgtMKuRhgruNqb4eBg2jQzuQjFE'
-                                  : 'AIzaSyAprQJ0_yPDIrLRJKB-nXDh9EdITtxTdcY');
-                          displayPrediction(prediction: p).then((value) {
-                            getNearbyPlaces(LatLng(value[0], value[1]));
-                          });
-                        },
                       ),
                       Align(
                           alignment: Alignment(0.9, 0.5),

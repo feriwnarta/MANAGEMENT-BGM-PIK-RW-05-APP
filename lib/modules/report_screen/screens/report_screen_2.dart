@@ -24,7 +24,6 @@ class ReportScreen2 extends StatefulWidget {
 class _ReportScreen2State extends State<ReportScreen2> {
   // scroll controller
   ScrollController controller = ScrollController();
-  Future _future;
 
   // refresh key
   final GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
@@ -35,7 +34,7 @@ class _ReportScreen2State extends State<ReportScreen2> {
   // Timer _timer;
   ReportUserController reportController = Get.put(ReportUserController());
 
-  UserLoginController loginController;
+  UserLoginController loginController = Get.put(UserLoginController());
 
   void onScroll() async {
     if (controller.position.haveDimensions) {
@@ -45,28 +44,23 @@ class _ReportScreen2State extends State<ReportScreen2> {
         reportController.getDataFromDb();
         reportController.update();
       }
-      // if (controller.offset >= controller.position.maxScrollExtent &&
-      //     !controller.position.outOfRange) {
-      //   final logger = Logger();
-      //   logger.w('botoom');
-      // }
     }
   }
 
   @override
   void initState() {
     super.initState();
-    loginController = Get.put(UserLoginController());
+
+    reportController.getDataFromDb();
+    print('initstate');
     loginController.update();
-    _future = ReportFinishedServices.getDataApi();
   }
 
   @override
   void dispose() {
-    // if (_timer.isActive) _timer.cancel();
     controller.dispose();
     controllerSearch.clear();
-    // Get.delete<ReportUserController>();
+    Get.delete<ReportUserController>();
 
     super.dispose();
   }
@@ -74,11 +68,6 @@ class _ReportScreen2State extends State<ReportScreen2> {
   @override
   didChangeDependencies() async {
     controller.addListener(onScroll);
-    // _timer = Timer.periodic(Duration(seconds: 5), (timer) {
-    // context.read<ReportBloc>().add(ReportEventRefresh());
-    // print(timer);
-    // reportController.realtimeData();
-    // });
     super.didChangeDependencies();
   }
 
@@ -98,745 +87,261 @@ class _ReportScreen2State extends State<ReportScreen2> {
         onRefresh: () async => loadReport(),
         child: SafeArea(
           child: SingleChildScrollView(
-            child: Stack(
-              children: [
-                Container(
-                  width: 328.w,
-                  margin: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                  ).copyWith(top: 16.h),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    elevation: 2,
-                    child: TextField(
-                      decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 8.h, horizontal: 12.w),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(6),
-                              borderSide: BorderSide.none),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(6),
-                              borderSide: BorderSide.none),
-                          hintText: 'Nomor Laporan',
-                          hintStyle: TextStyle(fontSize: 14.sp),
-                          suffixIcon: Icon(
-                            Icons.search,
-                          )),
-                      style: TextStyle(fontSize: 14.sp),
-                      onChanged: (value) async {
-                        if (value.isNotEmpty) {
-                          reportController.listReport =
-                              await ReportServices.search(value);
-                          // reportController.update();
+            child: Stack(children: [
+              Container(
+                width: 328.w,
+                margin: EdgeInsets.symmetric(
+                  horizontal: 16.w,
+                ).copyWith(top: 16.h),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  elevation: 2,
+                  child: TextField(
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 8.h, horizontal: 12.w),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(6),
+                            borderSide: BorderSide.none),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(6),
+                            borderSide: BorderSide.none),
+                        hintText: 'Nomor Laporan',
+                        hintStyle: TextStyle(fontSize: 14.sp),
+                        suffixIcon: Icon(
+                          Icons.search,
+                        )),
+                    style: TextStyle(fontSize: 14.sp),
+                    onChanged: (value) async {
+                      if (value.isNotEmpty) {
+                        reportController.listReport =
+                            await ReportServices.search(value);
+                        // reportController.update();
+                        setState(() {});
+                      } else {
+                        reportController.listReport.clear();
+                        reportController.refresReport().then((value) {
+                          final logger = Logger();
+                          logger.w(reportController.listReport[0].description);
+                          logger.d(reportController.listReport.length);
+                          FocusScope.of(context).requestFocus(FocusNode());
                           setState(() {});
-                        } else {
-                          reportController.listReport.clear();
-                          reportController.refresReport().then((value) {
-                            final logger = Logger();
-                            logger
-                                .w(reportController.listReport[0].description);
-                            logger.d(reportController.listReport.length);
-                            FocusScope.of(context).requestFocus(FocusNode());
-                            setState(() {});
-                          });
-                          // });
-                        }
-                      },
-                    ),
+                        });
+                        // });
+                      }
+                    },
                   ),
                 ),
-                Obx(
-                  () => (reportController.listReport.length == 0)
-                      ? Padding(
-                          padding: EdgeInsets.only(top: 100.h),
-                          child: Center(
-                            child: Text('Tidak ada laporan'),
-                          ),
-                        )
-                      : Column(
-                          children: [
-                            SizedBox(
-                              height: 84.h,
-                            ),
-                            GetBuilder<ReportUserController>(
-                              init: ReportUserController(),
-                              initState: (state) =>
-                                  reportController.getDataFromDb(),
-                              builder: (controller) =>
-                                  (controller.isLoading.value)
-                                      ? ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: 7,
-                                          padding: EdgeInsets.zero,
-                                          itemBuilder: (context, index) =>
-                                              ShimmerReport(),
-                                        )
-                                      : ListView.builder(
-                                          physics: ScrollPhysics(),
-                                          shrinkWrap: true,
-                                          padding: EdgeInsets.zero,
-                                          itemCount: (controller
-                                                  .isMaxReached.value)
-                                              ? controller.listReport.length
-                                              : (controller.listReport.length +
-                                                  1),
-                                          itemBuilder: (context, index) =>
-                                              (reportController
-                                                          .listReport.length ==
-                                                      0)
-                                                  ? Center(
-                                                      child: Text(
-                                                        'Tidak ada laporan',
-                                                        style: TextStyle(
-                                                            fontSize: 12.sp),
-                                                      ),
-                                                    )
-                                                  : (index <
-                                                          controller.listReport
-                                                              .length)
-                                                      ? (controller.listReport[index].idUser ==
-                                                              loginController
-                                                                  .idUser.value)
-                                                          ? Slidable(
-                                                              // actionPane:
-                                                              //     SlidableDrawerActionPane(),
-                                                              enabled: true,
-                                                              endActionPane:
-                                                                  ActionPane(
-                                                                motion:
-                                                                    ScrollMotion(),
-                                                                children: [
-                                                                  SlidableAction(
-                                                                    label:
-                                                                        'delete',
-                                                                    backgroundColor:
-                                                                        Colors
-                                                                            .red,
-                                                                    icon: Icons
-                                                                        .delete_forever_outlined,
-                                                                    onPressed:
-                                                                        (_) {
-                                                                      String
-                                                                          noTicket =
-                                                                          '${controller.listReport[index].noTicket}';
-                                                                      DeleteReportServices.deleteReport(
-                                                                              idReport: '${controller.listReport[index].idReport}',
-                                                                              idUser: loginController.idUser.value)
-                                                                          .then((status) {
-                                                                        if (status ==
-                                                                            'success delete') {
-                                                                          // delete dri list report
-                                                                          controller.listReport.removeWhere((element) =>
-                                                                              element.idReport ==
-                                                                              controller.listReport[index].idReport);
-                                                                          // Get.snackbar(
-                                                                          //     'Message',
-                                                                          //     '$noTicket delete',
-                                                                          //     backgroundColor:
-                                                                          //         Colors.blue,
-                                                                          //     colorText:
-                                                                          //         Colors
-                                                                          //             .white,
-                                                                          //     overlayBlur: 2);
-                                                                          EasyLoading.showInfo(
-                                                                              '$noTicket berhasil dihapus');
-                                                                          reportController
-                                                                              .refresReport();
-                                                                          reportController
-                                                                              .update();
-                                                                        } else if (status ==
-                                                                            'failed delete') {
-                                                                          // Get.snackbar(
-                                                                          //     'Message',
-                                                                          //     '$noTicket can\'t delete',
-                                                                          //     backgroundColor:
-                                                                          //         Colors.blue,
-                                                                          //     colorText:
-                                                                          //         Colors
-                                                                          //             .white,
-                                                                          //     overlayBlur: 2);
-                                                                          EasyLoading.showError(
-                                                                              '$noTicket tidak bisa dihapus, karena bukan anda pembuat');
-                                                                        } else if (status ==
-                                                                            'can\'t delete') {
-                                                                          // Get.snackbar(
-                                                                          //     'Message',
-                                                                          //     'can\'t delete the report if it\'s beeing processed or finish',
-                                                                          //     backgroundColor:
-                                                                          //         Colors.blue,
-                                                                          //     colorText:
-                                                                          //         Colors
-                                                                          //             .white,
-                                                                          //     overlayBlur: 2);
-                                                                          EasyLoading.showError(
-                                                                              'laporan tidak bisa dihapus jika sedang diproses atau selesai');
-                                                                        }
-                                                                      });
-                                                                    },
-                                                                  )
-                                                                ],
-                                                              ),
+              ),
+              Column(
+                children: [
+                  SizedBox(
+                    height: 84.h,
+                  ),
+                  Obx(
+                    () => (reportController.isLoading.value)
+                        ? ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: 7,
+                            padding: EdgeInsets.zero,
+                            itemBuilder: (context, index) => ShimmerReport(),
+                          )
+                        : ListView.builder(
+                            physics: ScrollPhysics(),
+                            shrinkWrap: true,
+                            padding: EdgeInsets.zero,
+                            itemCount: (reportController.isMaxReached.value)
+                                ? reportController.listReport.length
+                                : (reportController.listReport.length + 1),
+                            itemBuilder: (context, index) => (reportController.listReport.length ==
+                                    0)
+                                ? Center(
+                                    child: Text(
+                                      'Tidak ada laporan',
+                                      style: TextStyle(fontSize: 12.sp),
+                                    ),
+                                  )
+                                : (index < reportController.listReport.length)
+                                    ? (reportController.listReport[index].idUser ==
+                                            loginController.idUser.value)
+                                        ? Slidable(
+                                            // actionPane:
+                                            //     SlidableDrawerActionPane(),
+                                            enabled: true,
+                                            endActionPane: ActionPane(
+                                              motion: ScrollMotion(),
+                                              children: [
+                                                SlidableAction(
+                                                  label: 'delete',
+                                                  backgroundColor: Colors.red,
+                                                  icon: Icons
+                                                      .delete_forever_outlined,
+                                                  onPressed: (_) {
+                                                    String noTicket =
+                                                        '${reportController.listReport[index].noTicket}';
+                                                    DeleteReportServices.deleteReport(
+                                                            idReport:
+                                                                '${reportController.listReport[index].idReport}',
+                                                            idUser:
+                                                                loginController
+                                                                    .idUser
+                                                                    .value)
+                                                        .then((status) {
+                                                      if (status ==
+                                                          'success delete') {
+                                                        // delete dri list report
+                                                        reportController
+                                                            .listReport
+                                                            .removeWhere((element) =>
+                                                                element
+                                                                    .idReport ==
+                                                                reportController
+                                                                    .listReport[
+                                                                        index]
+                                                                    .idReport);
 
-                                                              child: CardReportScreen(
-                                                                  urlImageReport: controller
-                                                                      .listReport[
-                                                                          index]
-                                                                      .urlImageReport,
-                                                                  description: controller
-                                                                      .listReport[
-                                                                          index]
-                                                                      .description,
-                                                                  location: controller
-                                                                      .listReport[
-                                                                          index]
-                                                                      .location,
-                                                                  noTicket: controller
-                                                                      .listReport[
-                                                                          index]
-                                                                      .noTicket,
-                                                                  time: controller
-                                                                      .listReport[
-                                                                          index]
-                                                                      .time,
-                                                                  status: controller
-                                                                      .listReport[
-                                                                          index]
-                                                                      .status,
-                                                                  category: controller
-                                                                      .listReport[
-                                                                          index]
-                                                                      .category,
-                                                                  categoryIcon: controller
-                                                                      .listReport[
-                                                                          index]
-                                                                      .iconCategory,
-                                                                  latitude: controller
-                                                                      .listReport[
-                                                                          index]
-                                                                      .latitude,
-                                                                  longitude: controller
-                                                                      .listReport[
-                                                                          index]
-                                                                      .longitude,
-                                                                  idReport: controller
-                                                                      .listReport[
-                                                                          index]
-                                                                      .idReport,
-                                                                  idUser: controller
-                                                                      .listReport[
-                                                                          index]
-                                                                      .idUser,
-                                                                  dataKlasifikasi:
-                                                                      controller
-                                                                          .listReport[index]
-                                                                          .dataKlasifikasi,
-                                                                  statusWorking: controller.listReport[index].statusWorking,
-                                                                  photoComplete1: controller.listReport[index].photoComplete1,
-                                                                  photoComplete2: controller.listReport[index].photoComplete2,
-                                                                  photoProcess1: controller.listReport[index].photoProcess1,
-                                                                  photoProcess2: controller.listReport[index].photoProcess2,
-                                                                  star: controller.listReport[index].star,
-                                                                  comment: controller.listReport[index].comment
-                                                                  // additionalInformation: ,
-                                                                  ),
-                                                            )
-                                                          : CardReportScreen(
-                                                              urlImageReport:
-                                                                  controller
-                                                                      .listReport[
-                                                                          index]
-                                                                      .urlImageReport,
-                                                              description: controller
-                                                                  .listReport[
-                                                                      index]
-                                                                  .description,
-                                                              location: controller
-                                                                  .listReport[index]
-                                                                  .location,
-                                                              noTicket: controller.listReport[index].noTicket,
-                                                              time: controller.listReport[index].time,
-                                                              status: controller.listReport[index].status,
-                                                              category: controller.listReport[index].category,
-                                                              categoryIcon: controller.listReport[index].iconCategory,
-                                                              latitude: controller.listReport[index].latitude,
-                                                              longitude: controller.listReport[index].longitude,
-                                                              idReport: controller.listReport[index].idReport,
-                                                              idUser: controller.listReport[index].idUser,
-                                                              dataKlasifikasi: controller.listReport[index].dataKlasifikasi,
-                                                              statusWorking: controller.listReport[index].statusWorking,
-                                                              photoComplete1: controller.listReport[index].photoComplete1,
-                                                              photoComplete2: controller.listReport[index].photoComplete2,
-                                                              photoProcess1: controller.listReport[index].photoProcess1,
-                                                              photoProcess2: controller.listReport[index].photoProcess2,
-                                                              star: controller.listReport[index].star,
-                                                              comment: controller.listReport[index].comment
-                                                              // additionalInformation: ,
-                                                              )
-                                                      : (controller.listReport.length <= 9)
-                                                          ? SizedBox()
-                                                          : Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Container(
-                                                                  width: 30,
-                                                                  height: 30,
-                                                                  child:
-                                                                      CircularProgressIndicator(),
-                                                                ),
-                                                              ],
-                                                            ),
-                                        ),
-                            )
-                          ],
-                        ),
-                ),
-              ],
-            ),
+                                                        EasyLoading.showInfo(
+                                                            '$noTicket berhasil dihapus');
+                                                        reportController
+                                                            .refresReport();
+                                                        reportController
+                                                            .update();
+                                                      } else if (status ==
+                                                          'failed delete') {
+                                                        EasyLoading.showError(
+                                                            '$noTicket tidak bisa dihapus, karena bukan anda pembuat');
+                                                      } else if (status ==
+                                                          'can\'t delete') {
+                                                        EasyLoading.showError(
+                                                            'laporan tidak bisa dihapus jika sedang diproses atau selesai');
+                                                      }
+                                                    });
+                                                  },
+                                                )
+                                              ],
+                                            ),
+
+                                            child: CardReportScreen(
+                                                urlImageReport: reportController
+                                                    .listReport[index]
+                                                    .urlImageReport,
+                                                description: reportController
+                                                    .listReport[index]
+                                                    .description,
+                                                location: reportController
+                                                    .listReport[index].location,
+                                                noTicket: reportController
+                                                    .listReport[index].noTicket,
+                                                time: reportController
+                                                    .listReport[index].time,
+                                                status: reportController
+                                                    .listReport[index].status,
+                                                category: reportController
+                                                    .listReport[index].category,
+                                                categoryIcon: reportController
+                                                    .listReport[index]
+                                                    .iconCategory,
+                                                latitude: reportController
+                                                    .listReport[index].latitude,
+                                                longitude: reportController
+                                                    .listReport[index]
+                                                    .longitude,
+                                                idReport: reportController
+                                                    .listReport[index].idReport,
+                                                idUser: reportController
+                                                    .listReport[index].idUser,
+                                                dataKlasifikasi: reportController
+                                                    .listReport[index]
+                                                    .dataKlasifikasi,
+                                                statusWorking: reportController
+                                                    .listReport[index]
+                                                    .statusWorking,
+                                                photoComplete1: reportController
+                                                    .listReport[index]
+                                                    .photoComplete1,
+                                                photoComplete2: reportController
+                                                    .listReport[index]
+                                                    .photoComplete2,
+                                                photoProcess1: reportController
+                                                    .listReport[index]
+                                                    .photoProcess1,
+                                                photoProcess2: reportController
+                                                    .listReport[index]
+                                                    .photoProcess2,
+                                                star: reportController.listReport[index].star,
+                                                comment: reportController.listReport[index].comment
+                                                // additionalInformation: ,
+                                                ),
+                                          )
+                                        : CardReportScreen(
+                                            urlImageReport: reportController
+                                                .listReport[index]
+                                                .urlImageReport,
+                                            description: reportController
+                                                .listReport[index].description,
+                                            location: reportController
+                                                .listReport[index].location,
+                                            noTicket: reportController
+                                                .listReport[index].noTicket,
+                                            time: reportController
+                                                .listReport[index].time,
+                                            status: reportController
+                                                .listReport[index].status,
+                                            category: reportController
+                                                .listReport[index].category,
+                                            categoryIcon: reportController
+                                                .listReport[index].iconCategory,
+                                            latitude: reportController
+                                                .listReport[index].latitude,
+                                            longitude: reportController
+                                                .listReport[index].longitude,
+                                            idReport: reportController
+                                                .listReport[index].idReport,
+                                            idUser: reportController
+                                                .listReport[index].idUser,
+                                            dataKlasifikasi: reportController
+                                                .listReport[index]
+                                                .dataKlasifikasi,
+                                            statusWorking: reportController
+                                                .listReport[index]
+                                                .statusWorking,
+                                            photoComplete1: reportController.listReport[index].photoComplete1,
+                                            photoComplete2: reportController.listReport[index].photoComplete2,
+                                            photoProcess1: reportController.listReport[index].photoProcess1,
+                                            photoProcess2: reportController.listReport[index].photoProcess2,
+                                            star: reportController.listReport[index].star,
+                                            comment: reportController.listReport[index].comment
+                                            // additionalInformation: ,
+                                            )
+                                    : (reportController.listReport.length <= 9)
+                                        ? SizedBox()
+                                        : Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: 30,
+                                                height: 30,
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                            ],
+                                          ),
+                          ),
+                  ),
+                ],
+              ),
+            ]),
           ),
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   mini: true,
-      //   child: Icon(
-      //     Icons.add,
-      //     size: 20.h,
-      //   ),
-      //   onPressed: () {
-      //     // Navigator.of(context)
-      //     //     .push(MaterialPageRoute(
-      //     //   builder: (context) => AddReport(),
-      //     // ))
-      //     //     .then((value) {
-      //     //   if (value == 'reload') {
-      //     //     bloc.add(ReportEventRefresh());
-      //     //   }
-      //     // });
-      //     Navigator.of(context).push(MaterialPageRoute(
-      //       builder: (_) => SubMenuReport(),
-      //     ));
-      //     //     .then((value) {
-      //     //   if (value == 'reload') {
-      //     //     bloc.add(ReportEventRefresh());
-      //     //     _future = ReportFinishedServices.getDataApi();
-      //     //   }
-      //     // });
-      //   },
-      // ),
     );
   }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Stack(children: [
-  //     Scaffold(
-  //       resizeToAvoidBottomInset: false,
-  //       // resizeToAvoidBottomPadding: false,
-  //       body: SafeArea(
-  //         child: NestedScrollView(
-  //             controller: controller,
-  //             headerSliverBuilder: (context, innerBoxIsScrolled) => [
-  //                   SliverAppBar(
-  //                     backgroundColor: Colors.red,
-  //                     expandedHeight: 120.h,
-  //                     pinned: true,
-  //                     bottom: PreferredSize(
-  //                       preferredSize: const Size.fromHeight(0),
-  //                       child: Container(
-  //                         padding: EdgeInsets.symmetric(horizontal: 1.5.w),
-  //                         height: 36.h,
-  //                         child: TextField(
-  //                           keyboardType: TextInputType.datetime,
-  //                           maxLines: 1,
-  //                           decoration: InputDecoration(
-  //                               contentPadding: EdgeInsets.only(top: 1.2.h),
-  //                               prefixIcon: Icon(
-  //                                 Icons.search,
-  //                                 size: 2.5.h,
-  //                               ),
-  //                               fillColor: Colors.grey[50],
-  //                               filled: true,
-  //                               hintText: 'Nomor laporan',
-  //                               hintStyle: TextStyle(
-  //                                 fontSize: 11.0.sp,
-  //                               ),
-  //                               focusedBorder: OutlineInputBorder(
-  //                                   borderRadius: BorderRadius.circular(10),
-  //                                   borderSide:
-  //                                       BorderSide(color: Colors.grey[300])),
-  //                               enabledBorder: OutlineInputBorder(
-  //                                   borderRadius: BorderRadius.circular(10),
-  //                                   borderSide:
-  //                                       BorderSide(color: Colors.grey[300])),
-  //                               border: OutlineInputBorder(
-  //                                 borderRadius: BorderRadius.circular(10),
-  //                               )),
-  //                           onChanged: (value) async {
-  //                             if (value.isNotEmpty) {
-  //                               reportController.listReport =
-  //                                   await ReportServices.search(value);
-  //                               // reportController.update();
-  //                               setState(() {});
-  //                             } else {
-  //                               // setState(() {
-  //                               // reportController.searchReport = null;
-  //                               // reportController.isLoading = true.obs;
-  //                               // reportController.listReport.clear();
-  //                               // reportController.getDataFromDb();
-  //                               reportController.listReport.clear();
-  //                               reportController.refresReport().then((value) {
-  //                                 final logger = Logger();
-  //                                 logger.w(reportController
-  //                                     .listReport[0].description);
-  //                                 logger.d(reportController.listReport.length);
-  //                                 FocusScope.of(context)
-  //                                     .requestFocus(FocusNode());
-  //                                 setState(() {});
-  //                               });
-  //                               // });
-  //                             }
-  //                           },
-  //                         ),
-  //                       ),
-  //                     ),
-  //                     flexibleSpace: FlexibleSpaceBar(
-  //                       background: Container(
-  //                         margin: EdgeInsets.only(bottom: 6.0.h),
-  //                         child: Row(
-  //                           mainAxisAlignment: MainAxisAlignment.start,
-  //                           children: [
-  //                             SizedBox(
-  //                               width: 16.w,
-  //                             ),
-  //                             Text(
-  //                               'Riwayat keluhan',
-  //                               style: TextStyle(
-  //                                   fontSize: 19.sp, color: Color(0xff485E88)),
-  //                             ),
-  //                             SizedBox(width: 161.w),
-  //                             FutureBuilder<List<ReportFinishedModel>>(
-  //                                 future: _future,
-  //                                 builder: (context, snapshot) => (snapshot
-  //                                         .hasData)
-  //                                     ? GestureDetector(
-  //                                         onTap: () {
-  //                                           if (snapshot.data != null) {
-  //                                             Navigator.of(context)
-  //                                                 .push(MaterialPageRoute(
-  //                                               builder: (context) =>
-  //                                                   FinishedReportScreen(
-  //                                                 report: snapshot.data,
-  //                                               ),
-  //                                             ));
-  //                                           } else {
-  //                                             Navigator.of(context)
-  //                                                 .push(MaterialPageRoute(
-  //                                               builder: (context) =>
-  //                                                   FinishedReportScreen(
-  //                                                 report: [],
-  //                                               ),
-  //                                             ));
-  //                                           }
-  //                                         },
-  //                                         child: Badge(
-  //                                           badgeColor: Colors.red,
-  //                                           badgeContent: (snapshot.data !=
-  //                                                       null &&
-  //                                                   snapshot.data.isNotEmpty)
-  //                                               ? Text(
-  //                                                   snapshot.data[0].total,
-  //                                                   style: TextStyle(
-  //                                                       color: Colors.white),
-  //                                                 )
-  //                                               : Text(
-  //                                                   '0',
-  //                                                   style: TextStyle(
-  //                                                       color: Colors.white),
-  //                                                 ),
-  //                                           position: BadgePosition.topEnd(
-  //                                               top: -15, end: -10),
-  //                                           child: Icon(
-  //                                             Icons.notifications,
-  //                                             color: Colors.indigo,
-  //                                           ),
-  //                                           animationType:
-  //                                               BadgeAnimationType.scale,
-  //                                         ),
-  //                                       )
-  //                                     : Badge(
-  //                                         badgeColor: Colors.red,
-  //                                         badgeContent: Text(
-  //                                           '0',
-  //                                           style:
-  //                                               TextStyle(color: Colors.white),
-  //                                         ),
-  //                                         position: BadgePosition.topEnd(
-  //                                             top: -17, end: -17),
-  //                                         child: Icon(
-  //                                           Icons.notifications,
-  //                                           color: Colors.indigo,
-  //                                         ),
-  //                                         animationType:
-  //                                             BadgeAnimationType.scale,
-  //                                       )),
-  //                           ],
-  //                         ),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ],
-  //             body: RefreshIndicator(
-  //               key: refreshIndicatorKey,
-  //               onRefresh: () async => loadReport(),
-  //               child: NotificationListener<ScrollNotification>(
-  //                 onNotification: (notification) {
-  //                   if (notification.metrics.maxScrollExtent >
-  //                           notification.metrics.pixels &&
-  //                       notification.metrics.maxScrollExtent -
-  //                               notification.metrics.pixels <=
-  //                           60.0) {
-  //                     reportController.getDataFromDb();
-  //                   }
-  //                   return false;
-  //                 },
-  //                 child: SingleChildScrollView(
-  //                   child: Column(
-  //                     children: [
-  //                       Divider(
-  //                         color: Colors.black,
-  //                         height: 3.0.h,
-  //                         thickness: 0.3,
-  //                       ),
-  //                       GetBuilder<ReportUserController>(
-  //                           init: ReportUserController(),
-  //                           initState: (state) =>
-  //                               reportController.getDataFromDb(),
-  //                           builder: (controller) => (controller
-  //                                   .isLoading.value)
-  //                               ? ListView.builder(
-  //                                   shrinkWrap: true,
-  //                                   itemCount: 5,
-  //                                   itemBuilder: (context, index) =>
-  //                                       ShimmerReport(),
-  //                                 )
-  //                               : ListView.builder(
-  //                                   physics: ScrollPhysics(),
-  //                                   shrinkWrap: true,
-  //                                   itemCount: (controller.isMaxReached.value)
-  //                                       ? controller.listReport.length
-  //                                       : (controller.listReport.length + 1),
-  //                                   itemBuilder: (context, index) => (controller
-  //                                               .listReport.length ==
-  //                                           0)
-  //                                       ? Center(
-  //                                           child: Text(
-  //                                           'No reports',
-  //                                           style: TextStyle(fontSize: 12.sp),
-  //                                         ))
-  //                                       : (index < controller.listReport.length)
-  //                                           ? Slidable(
-  //                                               // actionPane:
-  //                                               //     SlidableDrawerActionPane(),
-  //                                               enabled: true,
-  //                                               endActionPane: ActionPane(
-  //                                                 motion: ScrollMotion(),
-  //                                                 children: [
-  //                                                   SlidableAction(
-  //                                                     label: 'delete',
-  //                                                     backgroundColor:
-  //                                                         Colors.red,
-  //                                                     icon: Icons
-  //                                                         .delete_forever_outlined,
-  //                                                     onPressed: (_) {
-  //                                                       String noTicket =
-  //                                                           '${controller.listReport[index].noTicket}';
-  //                                                       DeleteReportServices.deleteReport(
-  //                                                               idReport:
-  //                                                                   '${controller.listReport[index].idReport}',
-  //                                                               idUser:
-  //                                                                   loginController
-  //                                                                       .idUser
-  //                                                                       .value)
-  //                                                           .then((status) {
-  //                                                         if (status ==
-  //                                                             'success delete') {
-  //                                                           // delete dri list report
-  //                                                           controller.listReport
-  //                                                               .removeWhere((element) =>
-  //                                                                   element
-  //                                                                       .idReport ==
-  //                                                                   controller
-  //                                                                       .listReport[
-  //                                                                           index]
-  //                                                                       .idReport);
-  //                                                           Get.snackbar(
-  //                                                               'Message',
-  //                                                               '$noTicket delete',
-  //                                                               backgroundColor:
-  //                                                                   Colors.blue,
-  //                                                               colorText:
-  //                                                                   Colors
-  //                                                                       .white,
-  //                                                               overlayBlur: 2);
-  //                                                           reportController
-  //                                                               .refresReport();
-  //                                                           reportController
-  //                                                               .update();
-  //                                                         } else if (status ==
-  //                                                             'failed delete') {
-  //                                                           Get.snackbar(
-  //                                                               'Message',
-  //                                                               '$noTicket can\'t delete',
-  //                                                               backgroundColor:
-  //                                                                   Colors.blue,
-  //                                                               colorText:
-  //                                                                   Colors
-  //                                                                       .white,
-  //                                                               overlayBlur: 2);
-  //                                                         } else if (status ==
-  //                                                             'can\'t delete') {
-  //                                                           Get.snackbar(
-  //                                                               'Message',
-  //                                                               'can\'t delete the report if it\'s beeing processed or finish',
-  //                                                               backgroundColor:
-  //                                                                   Colors.blue,
-  //                                                               colorText:
-  //                                                                   Colors
-  //                                                                       .white,
-  //                                                               overlayBlur: 2);
-  //                                                         }
-  //                                                       });
-  //                                                     },
-  //                                                   )
-  //                                                 ],
-  //                                               ),
-
-  //                                               child: CardReportScreen(
-  //                                                   urlImageReport: controller
-  //                                                       .listReport[index]
-  //                                                       .urlImageReport,
-  //                                                   description: controller
-  //                                                       .listReport[index]
-  //                                                       .description,
-  //                                                   location: controller
-  //                                                       .listReport[index]
-  //                                                       .location,
-  //                                                   noTicket: controller
-  //                                                       .listReport[index]
-  //                                                       .noTicket,
-  //                                                   time: controller
-  //                                                       .listReport[index].time,
-  //                                                   status: controller
-  //                                                       .listReport[index]
-  //                                                       .status,
-  //                                                   category: controller
-  //                                                       .listReport[index]
-  //                                                       .category,
-  //                                                   categoryIcon: controller
-  //                                                       .listReport[index]
-  //                                                       .iconCategory,
-  //                                                   latitude: controller
-  //                                                       .listReport[index]
-  //                                                       .latitude,
-  //                                                   longitude: controller
-  //                                                       .listReport[index]
-  //                                                       .longitude,
-  //                                                   idReport: controller
-  //                                                       .listReport[index]
-  //                                                       .idReport,
-  //                                                   idUser: controller
-  //                                                       .listReport[index]
-  //                                                       .idUser,
-  //                                                   dataKlasifikasi: controller
-  //                                                       .listReport[index]
-  //                                                       .dataKlasifikasi,
-  //                                                   statusWorking: controller
-  //                                                       .listReport[index]
-  //                                                       .statusWorking,
-  //                                                   photoComplete1: controller
-  //                                                       .listReport[index]
-  //                                                       .photoComplete1,
-  //                                                   photoComplete2: controller
-  //                                                       .listReport[index]
-  //                                                       .photoComplete2,
-  //                                                   photoProcess1: controller
-  //                                                       .listReport[index]
-  //                                                       .photoProcess1,
-  //                                                   photoProcess2: controller
-  //                                                       .listReport[index]
-  //                                                       .photoProcess2,
-  //                                                   star: controller
-  //                                                       .listReport[index].star,
-  //                                                   comment: controller
-  //                                                       .listReport[index]
-  //                                                       .comment
-  //                                                   // additionalInformation: ,
-  //                                                   ),
-  //                                             )
-  //                                           : (controller.listReport.length <=
-  //                                                   9)
-  //                                               ? SizedBox()
-  //                                               : Row(
-  //                                                   mainAxisAlignment:
-  //                                                       MainAxisAlignment
-  //                                                           .center,
-  //                                                   children: [
-  //                                                     Container(
-  //                                                       width: 30,
-  //                                                       height: 30,
-  //                                                       child:
-  //                                                           CircularProgressIndicator(),
-  //                                                     ),
-  //                                                   ],
-  //                                                 )))
-  //                     ],
-  //                   ),
-  //                 ),
-  //               ),
-  //             )),
-  //       ),
-  //       floatingActionButton: FloatingActionButton(
-  //         child: Icon(
-  //           Icons.add,
-  //           size: 4.0.h,
-  //         ),
-  //         onPressed: () {
-  //           // Navigator.of(context)
-  //           //     .push(MaterialPageRoute(
-  //           //   builder: (context) => AddReport(),
-  //           // ))
-  //           //     .then((value) {
-  //           //   if (value == 'reload') {
-  //           //     bloc.add(ReportEventRefresh());
-  //           //   }
-  //           // });
-  //           Navigator.of(context).push(MaterialPageRoute(
-  //             builder: (_) => SubMenuReport(),
-  //           ));
-  //           //     .then((value) {
-  //           //   if (value == 'reload') {
-  //           //     bloc.add(ReportEventRefresh());
-  //           //     _future = ReportFinishedServices.getDataApi();
-  //           //   }
-  //           // });
-  //         },
-  //       ),
-  //     ),
-  //     Container()
-  //   ]);
-  // }
-
   Future loadReport() async {
-    // await Future.delayed(Duration(seconds: 1));
-    // final logger = Logger();
-    // logger.e('user adalah kami');
-    // bloc.add(ReportEventRefresh());
     reportController.refresReport();
     reportController.update();
-    _future = ReportFinishedServices.getDataApi();
   }
 }
 

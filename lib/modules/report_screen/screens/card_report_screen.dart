@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 // import 'package:sizer/sizer.dart';
@@ -140,7 +141,7 @@ class CardReportScreen extends StatelessWidget {
                                             : Color(0xffEECEB0)
                                                 .withOpacity(0.5),
                               ),
-                              child: Text(
+                              child: AutoSizeText(
                                 (status.toLowerCase() == 'listed')
                                     ? 'Menunggu'
                                     : (status.toLowerCase() == 'noticed')
@@ -149,20 +150,25 @@ class CardReportScreen extends StatelessWidget {
                                             ? 'Proses'
                                             : 'Selesai',
                                 style: TextStyle(fontSize: 12.sp),
+                                overflow: TextOverflow.ellipsis,
+                                minFontSize: 10,
+                                maxLines: 1,
                               ),
                             ),
                           ],
                         ),
                         SizedBox(
                           width: 125.w,
-                          height: 32.h,
-                          child: Text(
+                          height: 42.h,
+                          child: AutoSizeText(
                             (description.isEmpty)
                                 ? 'Laporan tentang : ' + category
                                 : description,
-                            maxLines: 2,
+                            maxLines: 3,
+                            stepGranularity: 10,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontSize: 12.sp),
+                            minFontSize: 10,
                           ),
                         ),
                         SizedBox(
