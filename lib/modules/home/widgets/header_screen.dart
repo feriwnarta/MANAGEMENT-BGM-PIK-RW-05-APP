@@ -12,8 +12,11 @@ import '../../../server-app.dart';
 import '../models/card_news.dart';
 import 'package:get/get.dart';
 
+//ignore: must_be_immutable
 class HeaderScreen extends StatelessWidget {
-  HeaderScreen({Key key}) : super(key: key);
+  HeaderScreen({Key key, this.isEmOrCord}) : super(key: key);
+
+  bool isEmOrCord = false;
 
   final userLoginController = Get.put(UserLoginController());
 
@@ -83,67 +86,69 @@ class HeaderScreen extends StatelessWidget {
         SizedBox(
           height: 24.h,
         ),
-        FutureBuilder<List<CardNews>>(
-          future: NewsServices.getNews(),
-          builder: (context, snapshot) => (snapshot.hasData)
-              ? CarouselSlider(
-                  options: CarouselOptions(
-                    height: 188.h,
-                    // aspectRatio: 16 / 2,
-                    enableInfiniteScroll: false,
-                    enlargeCenterPage: false,
-                    viewportFraction: 0.85,
-                  ),
-                  items: snapshot.data.map((e) {
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return GestureDetector(
-                          onTap: () => Get.to(() => ReadInformation(),
-                              transition: Transition.rightToLeft,
-                              arguments: [e.content]),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            margin: EdgeInsets.only(right: 16.w),
-                            child: CachedNetworkImage(
-                              imageUrl: '${ServerApp.url}${e.url}',
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  }).toList(),
-                )
-              : CarouselSlider(
-                  options: CarouselOptions(
-                    height: 188.h,
-                    enableInfiniteScroll: false,
-                    enlargeCenterPage: false,
-                    viewportFraction: 0.9,
-                  ),
-                  items: [
-                    1,
-                    2,
-                    3,
-                  ].map((i) {
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return Shimmer.fromColors(
-                          baseColor: Colors.grey[300],
-                          highlightColor: Colors.grey[200],
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(10)),
-                            width: MediaQuery.of(context).size.width,
-                            height: 188.h,
-                            margin: EdgeInsets.symmetric(horizontal: 5.0),
-                          ),
-                        );
-                      },
-                    );
-                  }).toList(),
-                ),
-        ),
+        (!isEmOrCord)
+            ? FutureBuilder<List<CardNews>>(
+                future: NewsServices.getNews(),
+                builder: (context, snapshot) => (snapshot.hasData)
+                    ? CarouselSlider(
+                        options: CarouselOptions(
+                          height: 188.h,
+                          // aspectRatio: 16 / 2,
+                          enableInfiniteScroll: false,
+                          enlargeCenterPage: false,
+                          viewportFraction: 0.85,
+                        ),
+                        items: snapshot.data.map((e) {
+                          return Builder(
+                            builder: (BuildContext context) {
+                              return GestureDetector(
+                                onTap: () => Get.to(() => ReadInformation(),
+                                    transition: Transition.rightToLeft,
+                                    arguments: [e.content]),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  margin: EdgeInsets.only(right: 16.w),
+                                  child: CachedNetworkImage(
+                                    imageUrl: '${ServerApp.url}${e.url}',
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }).toList(),
+                      )
+                    : CarouselSlider(
+                        options: CarouselOptions(
+                          height: 188.h,
+                          enableInfiniteScroll: false,
+                          enlargeCenterPage: false,
+                          viewportFraction: 0.9,
+                        ),
+                        items: [
+                          1,
+                          2,
+                          3,
+                        ].map((i) {
+                          return Builder(
+                            builder: (BuildContext context) {
+                              return Shimmer.fromColors(
+                                baseColor: Colors.grey[300],
+                                highlightColor: Colors.grey[200],
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 188.h,
+                                  margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                ),
+                              );
+                            },
+                          );
+                        }).toList(),
+                      ),
+              )
+            : SizedBox(),
       ],
     );
   }

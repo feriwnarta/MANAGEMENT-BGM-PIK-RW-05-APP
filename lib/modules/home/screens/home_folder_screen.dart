@@ -1,3 +1,4 @@
+import 'package:aplikasi_rw/modules/estate_manager/screens/menu_folder_screens_em.dart';
 import 'package:aplikasi_rw/modules/home/screens/citizen_screen.dart';
 import 'package:aplikasi_rw/modules/home/widgets/header_screen.dart';
 import 'package:aplikasi_rw/modules/home/widgets/menu.dart';
@@ -21,7 +22,9 @@ class _HomeScreenFolderState extends State<HomeScreenFolder> {
         child: SingleChildScrollView(
             child: Column(
           children: [
-            HeaderScreen(),
+            HeaderScreen(
+              isEmOrCord: false,
+            ),
             SizedBox(
               height: 24.h,
             ),
@@ -59,6 +62,10 @@ class _HomeScreenFolderState extends State<HomeScreenFolder> {
                       Menu(
                         icon: 'assets/img/menu-em.jpg',
                         text: 'Estate Manager',
+                        onTap: () => Get.to(
+                          () => MenuFolderEm(),
+                          transition: Transition.rightToLeft,
+                        ),
                       ),
                       SizedBox(
                         width: 16.w,

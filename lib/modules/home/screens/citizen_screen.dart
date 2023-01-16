@@ -115,7 +115,9 @@ class _MyWidgetState extends State<CitizenScreen> {
           child: Column(
             children: [
               (Platform.isAndroid)
-                  ? HeaderScreen()
+                  ? HeaderScreen(
+                      isEmOrCord: false,
+                    )
                   : SizedBox(
                       height: 32.h,
                     ),

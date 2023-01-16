@@ -96,9 +96,9 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
                                     address = await Geocoder.google(
                                             'AIzaSyDbZjwizgtMKuRhgruNqb4eBg2jQzuQjFE')
                                         .findAddressesFromCoordinates(
-                                            Coordinates(
-                                                position.target.latitude,
-                                                position.target.longitude));
+                                      Coordinates(position.target.latitude,
+                                          position.target.longitude),
+                                    );
                                   } on Exception catch (e) {
                                     final logger = Logger();
                                     logger.e(e);
@@ -106,11 +106,13 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
                                 } else if (Platform.isIOS) {
                                   try {
                                     address = await Geocoder.google(
-                                            'AIzaSyAprQJ0_yPDIrLRJKB-nXDh9EdITtxTdcY')
-                                        .findAddressesFromCoordinates(
-                                            Coordinates(
-                                                position.target.latitude,
-                                                position.target.longitude));
+                                      'AIzaSyAprQJ0_yPDIrLRJKB-nXDh9EdITtxTdcY',
+                                    ).findAddressesFromCoordinates(
+                                      Coordinates(
+                                        position.target.latitude,
+                                        position.target.longitude,
+                                      ),
+                                    );
                                   } on Exception catch (e) {
                                     final logger = Logger();
                                     logger.e(e);

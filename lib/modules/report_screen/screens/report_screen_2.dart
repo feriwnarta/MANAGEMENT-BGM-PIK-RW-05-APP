@@ -95,23 +95,25 @@ class _ReportScreen2State extends State<ReportScreen2> {
                 ).copyWith(top: 16.h),
                 child: Card(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   elevation: 2,
                   child: TextField(
                     decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 8.h, horizontal: 12.w),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(6),
-                            borderSide: BorderSide.none),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(6),
-                            borderSide: BorderSide.none),
-                        hintText: 'Nomor Laporan',
-                        hintStyle: TextStyle(fontSize: 14.sp),
-                        suffixIcon: Icon(
-                          Icons.search,
-                        )),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 8.h, horizontal: 12.w),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(6),
+                          borderSide: BorderSide.none),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(6),
+                          borderSide: BorderSide.none),
+                      hintText: 'Nomor Laporan',
+                      hintStyle: TextStyle(fontSize: 14.sp),
+                      suffixIcon: Icon(
+                        Icons.search,
+                      ),
+                    ),
                     style: TextStyle(fontSize: 14.sp),
                     onChanged: (value) async {
                       if (value.isNotEmpty) {
@@ -128,7 +130,6 @@ class _ReportScreen2State extends State<ReportScreen2> {
                           FocusScope.of(context).requestFocus(FocusNode());
                           setState(() {});
                         });
-                        // });
                       }
                     },
                   ),

@@ -29,6 +29,8 @@ class UserLoginController extends GetxController {
   var houseNumber = ''.obs;
   var name = ''.obs;
 
+  var subtitle = ''.obs;
+
   // user cordinator
   var idCordinator = ''.obs;
   var nameCordinator = ''.obs;
@@ -114,6 +116,7 @@ class UserLoginController extends GetxController {
               this.cluster = userModel.cluster.obs;
               this.rw = userModel.rw.obs;
               this.noTelp = userModel.noTelp.obs;
+              this.subtitle.value = cluster.value + ' no' + houseNumber.value;
             } else {
               status = 'logout'.obs;
               UserSecureStorage.deleteIdUser();
@@ -199,6 +202,7 @@ class UserLoginController extends GetxController {
       this.cluster = userModel.cluster.obs;
       this.rw = userModel.rw.obs;
       this.noTelp = userModel.noTelp.obs;
+      this.subtitle.value = cluster.value + ' no' + houseNumber.value;
     }
   }
 
