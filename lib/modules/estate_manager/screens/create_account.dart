@@ -3,6 +3,7 @@ import 'package:aplikasi_rw/modules/authentication/validate/validate_email_and_p
 import 'package:aplikasi_rw/modules/estate_manager/controllers/estate_manager_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
@@ -25,6 +26,7 @@ class _CreateAccountState extends State<CreateAccount> {
   RxString pathCordinator = ''.obs;
   RxString pathKontraktor = ''.obs;
   RxString bagian = ''.obs;
+  RxString kepalaBagian = ''.obs;
   final _formCordinator = GlobalKey<FormState>();
 
   Future futureBagian = CreateAccountServices.getBagian();
@@ -38,9 +40,17 @@ class _CreateAccountState extends State<CreateAccount> {
   final _formKeyNoTelp = GlobalKey<FormState>();
   final _formKeyPassword = GlobalKey<FormState>();
 
+  /// form key contractor
+  /// form key validator
+  final _formKeyUsernameContractor = GlobalKey<FormState>();
+  final _formKeyNamaContractor = GlobalKey<FormState>();
+  final _formKeyEmailContractor = GlobalKey<FormState>();
+  final _formKeyPasswordContractor = GlobalKey<FormState>();
+  final _formKeyNoTelpContractor = GlobalKey<FormState>();
+
   final emController = Get.put(EstateManagerController());
 
-  List<String> listChecked = [];
+  RxList<String> listChecked = [].obs;
 
   @override
   void didChangeDependencies() {
@@ -277,18 +287,34 @@ class _CreateAccountState extends State<CreateAccount> {
                             SizedBox(
                               height: 4.h,
                             ),
-                            TextFormField(
-                              style: TextStyle(fontSize: 14.sp),
-                              decoration: InputDecoration(
-                                isDense: true,
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 12.w, vertical: 6.h),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0xffC2C2C2),
+                            Form(
+                              key: _formKeyUsernameContractor,
+                              onChanged: () => _formKeyUsernameContractor
+                                  .currentState
+                                  .validate(),
+                              child: TextFormField(
+                                controller: emController.usernameContractor,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'username tidak boleh kosong';
+                                  } else if (value.length < 5) {
+                                    return 'username harus lebih dari 5 karakter';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                style: TextStyle(fontSize: 14.sp),
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 12.w, vertical: 6.h),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xffC2C2C2),
+                                    ),
                                   ),
+                                  border: OutlineInputBorder(),
                                 ),
-                                border: OutlineInputBorder(),
                               ),
                             ),
                             SizedBox(
@@ -306,17 +332,30 @@ class _CreateAccountState extends State<CreateAccount> {
                             SizedBox(
                               height: 4.h,
                             ),
-                            TextFormField(
-                              decoration: InputDecoration(
-                                isDense: true,
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 12.w, vertical: 6.h),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0xffC2C2C2),
+                            Form(
+                              key: _formKeyNamaContractor,
+                              onChanged: () => _formKeyNamaContractor
+                                  .currentState
+                                  .validate(),
+                              child: TextFormField(
+                                onChanged: (value) {
+                                  if (value.isEmpty) {
+                                    return 'nama tidak boleh kosong';
+                                  }
+                                  return null;
+                                },
+                                controller: emController.namaContractor,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 12.w, vertical: 6.h),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xffC2C2C2),
+                                    ),
                                   ),
+                                  border: OutlineInputBorder(),
                                 ),
-                                border: OutlineInputBorder(),
                               ),
                             ),
                             SizedBox(
@@ -334,24 +373,77 @@ class _CreateAccountState extends State<CreateAccount> {
                             SizedBox(
                               height: 4.h,
                             ),
-                            TextFormField(
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: InputDecoration(
-                                isDense: true,
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 12.w, vertical: 6.h),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0xffC2C2C2),
+                            Form(
+                              key: _formKeyEmailContractor,
+                              child: TextFormField(
+                                onChanged: (value) => _formKeyEmailContractor
+                                    .currentState
+                                    .validate(),
+                                controller: emController.emailContractor,
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'email tidak boleh kosong';
+                                  } else if (!ValidationForm.isValidEmail(
+                                      value)) {
+                                    return 'email tidak valid';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 12.w, vertical: 6.h),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xffC2C2C2),
+                                    ),
                                   ),
+                                  border: OutlineInputBorder(),
                                 ),
-                                border: OutlineInputBorder(),
                               ),
                             ),
                             SizedBox(
                               height: 16.h,
                             )
                           ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'No telpon',
+                              style: TextStyle(fontSize: 14.sp),
+                            ),
+                            SizedBox(
+                              height: 4.h,
+                            ),
+                            Form(
+                              key: _formKeyNoTelpContractor,
+                              child: TextFormField(
+                                controller: emController.noTelpContractor,
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 12.w, vertical: 6.h),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xffC2C2C2),
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 16.h,
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 4.h,
                         ),
                         Text(
                           'Bagian',
@@ -360,12 +452,12 @@ class _CreateAccountState extends State<CreateAccount> {
                         SizedBox(
                           height: 4.h,
                         ),
-
                         FutureBuilder<List<Map<String, dynamic>>>(
                             future: CreateAccountServices.getBagianContractor(),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 return CheckboxGroup(
+                                  checked: listChecked,
                                   labels: snapshot.data
                                       .map((e) => e['category'] as String)
                                       .toList(),
@@ -386,40 +478,6 @@ class _CreateAccountState extends State<CreateAccount> {
                                 );
                               }
                             }),
-
-                        // DropdownButtonFormField<String>(
-                        //   items: snapshot.data
-                        //       .map((e) => DropdownMenuItem<String>(
-                        //             enabled: true,
-                        //             value: '${e['id_master_category']}',
-                        //             child: Text(
-                        //               '${e['unit']}',
-                        //               style: TextStyle(
-                        //                   fontSize: 14.sp,
-                        //                   color: Color(0xff757575)),
-                        //             ),
-                        //           ))
-                        //       .toList(),
-                        //   onChanged: (value) {},
-                        //   hint: Text('${snapshot.data[0]['unit']}',
-                        //       style: TextStyle(
-                        //           fontSize: 14.sp, color: Color(0xff757575))),
-                        //   decoration: InputDecoration(
-                        //     isDense: true,
-                        //     contentPadding: EdgeInsets.symmetric(
-                        //         horizontal: 12.w, vertical: 6.h),
-                        //     enabledBorder: OutlineInputBorder(
-                        //       borderSide: BorderSide(
-                        //         color: Color(0xffC2C2C2),
-                        //       ),
-                        //     ),
-                        //     border: OutlineInputBorder(
-                        //       borderSide: BorderSide(
-                        //         color: Color(0xffC2C2C2),
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
                         SizedBox(
                           height: 16.h,
                         ),
@@ -427,31 +485,50 @@ class _CreateAccountState extends State<CreateAccount> {
                           'Kepala Bagian',
                           style: TextStyle(fontSize: 14.sp),
                         ),
-                        DropdownButtonFormField(
-                          itemHeight: null,
-                          items: [
-                            DropdownMenuItem(
-                                child: Text(
-                              'Iskandar',
-                              style: TextStyle(fontSize: 12.sp),
-                            ))
-                          ],
-                          onChanged: (value) {},
-                          decoration: InputDecoration(
-                            isDense: true,
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 12.w, vertical: 6.h),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0xffC2C2C2),
-                              ),
-                            ),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0xffC2C2C2),
-                              ),
-                            ),
-                          ),
+                        FutureBuilder<List<Map<String, dynamic>>>(
+                          future: CreateAccountServices.getKepalaBagian(),
+                          builder: (context, snapshot) => (snapshot.hasData)
+                              ? DropdownButtonFormField(
+                                  itemHeight: null,
+                                  items: snapshot.data
+                                      .map(
+                                        (e) => DropdownMenuItem<String>(
+                                          enabled: true,
+                                          value: '${e['id_estate_cordinator']}',
+                                          child: Text(
+                                            '${e['name_estate_cordinator']}',
+                                            style: TextStyle(
+                                                fontSize: 14.sp,
+                                                color: Color(0xff757575)),
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                  hint: Text(
+                                      '${snapshot.data[0]['name_estate_cordinator']}'),
+                                  value: snapshot.data[0]
+                                      ['id_estate_cordinator'],
+                                  onChanged: (value) {
+                                    kepalaBagian.value = value;
+                                    print(value);
+                                  },
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 12.w, vertical: 6.h),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0xffC2C2C2),
+                                      ),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0xffC2C2C2),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : SizedBox(),
                         ),
                         SizedBox(
                           height: 22.h,
@@ -466,18 +543,32 @@ class _CreateAccountState extends State<CreateAccount> {
                             SizedBox(
                               height: 4.h,
                             ),
-                            TextFormField(
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                isDense: true,
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 12.w, vertical: 6.h),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0xffC2C2C2),
+                            Form(
+                              key: _formKeyPasswordContractor,
+                              child: TextFormField(
+                                controller: emController.passwordContractor,
+                                onChanged: (value) => _formKeyPasswordContractor
+                                    .currentState
+                                    .validate(),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'password tidak boleh kosong';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 12.w, vertical: 6.h),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xffC2C2C2),
+                                    ),
                                   ),
+                                  border: OutlineInputBorder(),
                                 ),
-                                border: OutlineInputBorder(),
                               ),
                             ),
                             SizedBox(
@@ -494,7 +585,44 @@ class _CreateAccountState extends State<CreateAccount> {
                             style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(50))),
-                            onPressed: () {},
+                            onPressed: () async {
+                              if (_formKeyUsernameContractor.currentState
+                                      .validate() &&
+                                  _formKeyNamaContractor.currentState
+                                      .validate() &&
+                                  _formKeyEmailContractor.currentState
+                                      .validate() &&
+                                  _formKeyPasswordContractor.currentState
+                                      .validate()) {
+                                if (listChecked.isEmpty) {
+                                  EasyLoading.showInfo('Bagian harus dipilih');
+                                } else if (kepalaBagian.value.isEmpty) {
+                                  EasyLoading.showInfo(
+                                      'Kepala bagian harus dipilih');
+                                } else {
+                                  String result =
+                                      await CreateAccountServices.contractor(
+                                    email: emController.emailContractor.text,
+                                    fotoProfile: pathKontraktor.value,
+                                    name: emController.namaContractor.text,
+                                    noTelp: emController.noTelpContractor.text,
+                                    password:
+                                        emController.passwordContractor.text,
+                                    username:
+                                        emController.usernameContractor.text,
+                                    idEstateCord: kepalaBagian.value,
+                                    contractorJob: listChecked.join(','),
+                                  );
+
+                                  if (result == 'register successfull') {
+                                    setState(() {
+                                      emController.reset();
+                                      listChecked.clear();
+                                    });
+                                  }
+                                }
+                              }
+                            },
                             child: Text(
                               'Simpan',
                               style: TextStyle(fontSize: 16.sp),

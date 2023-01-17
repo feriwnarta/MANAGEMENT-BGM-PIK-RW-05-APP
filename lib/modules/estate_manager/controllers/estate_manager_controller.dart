@@ -9,6 +9,13 @@ class EstateManagerController extends GetxController {
   TextEditingController bagian = TextEditingController();
   TextEditingController password = TextEditingController();
 
+  TextEditingController usernameContractor = TextEditingController();
+  TextEditingController namaContractor = TextEditingController();
+  TextEditingController emailContractor = TextEditingController();
+  TextEditingController noTelpContractor = TextEditingController();
+  TextEditingController bagianContractor = TextEditingController();
+  TextEditingController passwordContractor = TextEditingController();
+
   void reset() {
     username.clear();
     nama.clear();
@@ -16,5 +23,11 @@ class EstateManagerController extends GetxController {
     noTelp.clear();
     bagian.clear();
     password.clear();
+    usernameContractor.clear();
+    namaContractor.clear();
+    emailContractor.clear();
+    noTelpContractor.clear();
+    bagianContractor.clear();
+    passwordContractor.clear();
   }
 }

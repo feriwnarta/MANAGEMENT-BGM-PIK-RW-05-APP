@@ -101,7 +101,7 @@ class CreateAccountServices {
     String result = '';
 
     String url =
-        '${ServerApp.url}src/login/login_cordinator/register_cordinator.php';
+        '${ServerApp.url}src/login/login_kontraktor/register_kontraktor.php';
 
     FormData formData;
 
@@ -141,14 +141,17 @@ class CreateAccountServices {
     var response = await dio.post(url, data: formData);
 
     final logger = Logger();
-    logger.i(response.data);
+    logger.i(formData.fields);
+
+    logger.i(formData.fields);
 
     if (response.statusCode >= 200 && response.statusCode <= 399) {
+      logger.i(response.data);
       result = jsonDecode(response.data);
 
       EasyLoading.dismiss();
 
-      if (result == 'Register Successful') {
+      if (result == 'register successfull') {
         EasyLoading.showSuccess('Akun berhasil dibuat');
       } else if (result == 'username sudah ada') {
         EasyLoading.showError('Username sudah digunakan');
@@ -208,6 +211,29 @@ class CreateAccountServices {
       List<Map<String, dynamic>> data =
           response.map<Map<String, dynamic>>((e) => e).toList();
       return data;
+    }
+  }
+
+  static Future<List<Map<String, dynamic>>> getKepalaBagian() async {
+    String url = '${ServerApp.url}src/contractor/tarik_kepala_bagian.php';
+
+    Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
+
+    String idUser = await UserSecureStorage.getIdUser();
+
+    var data = {'id_user': idUser};
+    var result = await dio.post(url, data: jsonEncode(data));
+
+    if (result.statusCode >= 200 && result.statusCode <= 399) {
+      var response = jsonDecode(result.data) as List;
+      final logger = Logger();
+      logger.i(result.data);
+
+      List<Map<String, dynamic>> dataReturn =
+          response.map<Map<String, dynamic>>((e) => e).toList();
+
+      return dataReturn;
     }
   }
 }
