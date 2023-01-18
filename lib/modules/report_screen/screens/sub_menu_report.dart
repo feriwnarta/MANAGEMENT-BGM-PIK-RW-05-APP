@@ -1,3 +1,4 @@
+import 'package:aplikasi_rw/modules/estate_manager/screens/status_peduli_lingkungan_complaint.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/add_complaint.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -10,31 +11,45 @@ import 'package:get/get.dart';
 enum SubMenu { Request, Complaint }
 
 class SubMenuReport extends StatelessWidget {
+  String typeStatusPeduliLingkungan;
+
+  SubMenuReport({this.typeStatusPeduliLingkungan});
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(360, 800));
-    SubMenu menuRequest = SubMenu.Complaint;
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff2196F3),
         systemOverlayStyle:
             SystemUiOverlayStyle(statusBarBrightness: Brightness.light),
-        title: Text(
-          'Warga peduli lingkungan',
-          style: TextStyle(color: Colors.white, fontSize: 16.sp),
-        ),
+        title:
+            (typeStatusPeduliLingkungan.isCaseInsensitiveContainsAny('warga'))
+                ? Text(
+                    'Warga peduli lingkungan',
+                    style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                  )
+                : Text(
+                    'Status Peduli Lingkungan',
+                    style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                  ),
         iconTheme: IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
-        child: MenuPeduliLingkungan(),
+        child: MenuPeduliLingkungan(
+          typeStatusPeduliLingkungan: typeStatusPeduliLingkungan,
+        ),
       ),
     );
   }
 }
 
 class MenuPeduliLingkungan extends StatefulWidget {
-  const MenuPeduliLingkungan({Key key}) : super(key: key);
+  const MenuPeduliLingkungan({Key key, this.typeStatusPeduliLingkungan})
+      : super(key: key);
+
+  final String typeStatusPeduliLingkungan;
 
   @override
   State<MenuPeduliLingkungan> createState() => _MenuPeduliLingkunganState();
@@ -48,6 +63,8 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
   final AssetImage image2 =
       AssetImage('assets/img/citizen_menu/peduli-lingkungan-umum.jpg');
 
+  RxString typeStatus = 'peduli lingkungan umum'.obs;
+
   @override
   void didChangeDependencies() {
     precacheImage(image, context);
@@ -59,12 +76,32 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        (widget.typeStatusPeduliLingkungan
+                .isCaseInsensitiveContainsAny('warga'))
+            ? SizedBox()
+            : Container(
+                margin:
+                    EdgeInsets.symmetric(horizontal: 16.w).copyWith(top: 16.h),
+                child: AutoSizeText(
+                  'Laporan masuk dan belum mendapat penanganan segera terima dan lakukan penanganan.',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    color: Color(0xff616161),
+                  ),
+                  maxLines: 5,
+                  minFontSize: 10,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
         SizedBox(
           height: 32.h,
         ),
         Obx(
           () => GestureDetector(
-            onTap: () => isActive.value = !isActive.value,
+            onTap: () {
+              isActive.value = !isActive.value;
+              typeStatus.value = 'peduli lingkungan umum';
+            },
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 16.w),
               padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 12.h),
@@ -129,7 +166,10 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
         ),
         Obx(
           () => GestureDetector(
-            onTap: () => isActive.value = !isActive.value,
+            onTap: () {
+              isActive.value = !isActive.value;
+              typeStatus.value = 'peduli lingkungan pribadi';
+            },
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 16.w),
               padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 12.h),
@@ -189,9 +229,14 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
             ),
           ),
         ),
-        SizedBox(
-          height: 360.h,
-        ),
+        (widget.typeStatusPeduliLingkungan
+                .isCaseInsensitiveContainsAny('warga'))
+            ? SizedBox(
+                height: 360.h,
+              )
+            : SizedBox(
+                height: 287.h,
+              ),
         SizedBox(
           width: 328.w,
           child: ElevatedButton(
@@ -200,8 +245,46 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
               borderRadius: BorderRadius.circular(50),
             )),
             onPressed: () {
-              if (isActive.value) {
-                Get.to(() => AddComplaint());
+              if (widget.typeStatusPeduliLingkungan
+                  .isCaseInsensitiveContainsAny('warga')) {
+                switch (typeStatus.value) {
+                  case 'peduli lingkungan umum':
+                    Get.to(() => AddComplaint());
+                    break;
+                  case 'peduli lingkungan pribadi':
+                    break;
+                  default:
+                    EasyLoading.showError('ada sesuatu yang salah');
+                    break;
+                }
+              } else if (widget.typeStatusPeduliLingkungan
+                  .isCaseInsensitiveContainsAny('em')) {
+                switch (typeStatus.value) {
+                  case 'peduli lingkungan umum':
+                    Get.to(
+                      () => StatusPeduliLingkunganComplaint(),
+                    );
+                    break;
+                  case 'peduli lingkungan pribadi':
+                    break;
+                  default:
+                    EasyLoading.showError('ada sesuatu yang salah');
+                    break;
+                }
+              } else if (widget.typeStatusPeduliLingkungan
+                  .isCaseInsensitiveContainsAny('cord')) {
+                switch (typeStatus.value) {
+                  case 'peduli lingkungan umum':
+                    Get.to(
+                      () => StatusPeduliLingkunganComplaint(),
+                    );
+                    break;
+                  case 'peduli lingkungan pribadi':
+                    break;
+                  default:
+                    EasyLoading.showError('ada sesuatu yang salah');
+                    break;
+                }
               }
             },
             child: Text(

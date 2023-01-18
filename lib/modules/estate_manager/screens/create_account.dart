@@ -50,7 +50,7 @@ class _CreateAccountState extends State<CreateAccount> {
 
   final emController = Get.put(EstateManagerController());
 
-  RxList<String> listChecked = [].obs;
+  RxList<String> listChecked = <String>[].obs;
 
   @override
   void didChangeDependencies() {

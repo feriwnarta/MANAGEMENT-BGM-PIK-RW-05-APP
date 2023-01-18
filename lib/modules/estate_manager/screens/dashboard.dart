@@ -16,7 +16,7 @@ class _DashboardEmState extends State<DashboardEm> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(360, 800));
-    print('render');
+
     return Scaffold(
       key: _scaffoldKey,
       body: SafeArea(

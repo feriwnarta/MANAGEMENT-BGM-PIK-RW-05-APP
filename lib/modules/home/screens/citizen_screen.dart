@@ -261,7 +261,10 @@ class _MyWidgetState extends State<CitizenScreen> {
                         Menu(
                           icon: 'assets/img/citizen_menu/ipl.jpg',
                           text: 'Peduli lingkungan',
-                          onTap: () => Get.to(() => SubMenuReport(),
+                          onTap: () => Get.to(
+                              () => SubMenuReport(
+                                    typeStatusPeduliLingkungan: 'warga',
+                                  ),
                               transition: Transition.rightToLeft),
                         ),
                         SizedBox(

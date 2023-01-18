@@ -1,0 +1,100 @@
+import 'dart:convert';
+
+import 'package:aplikasi_rw/modules/estate_manager/models/card_status_peduli_em_model.dart';
+import 'package:aplikasi_rw/server-app.dart';
+import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
+import 'package:dio/dio.dart';
+import 'package:dio_smart_retry/dio_smart_retry.dart';
+import 'package:logger/logger.dart';
+
+class RadioStatusPeduli {
+  String value;
+  String title;
+  String groupValue;
+
+  RadioStatusPeduli({this.value, this.groupValue, this.title});
+}
+
+class StatusPeduliEmServices {
+  static Future<List<RadioStatusPeduli>> listMasterCategory() async {
+    String idUser = await UserSecureStorage.getIdUser();
+
+    Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
+
+    String url = '${ServerApp.url}src/estate_manager/get_master_category.php';
+
+    var response = await dio.post(url, data: jsonEncode({'id_user': idUser}));
+    List<RadioStatusPeduli> rs;
+
+    if (response.statusCode >= 200 && response.statusCode <= 399) {
+      var result = jsonDecode(response.data) as List;
+
+      final logger = Logger();
+      logger.i(result);
+
+      rs = result
+          .map<RadioStatusPeduli>(
+            (e) => RadioStatusPeduli(
+              groupValue: e['id_master_category'],
+              title: e['unit'],
+              value: e['id_master_category'],
+            ),
+          )
+          .toList();
+
+      return rs;
+    }
+    return rs;
+  }
+
+  static Future<List<StatusPeduliEmModel>> getListReport(
+      {String status, int start, int limit}) async {
+    String idUser = await UserSecureStorage.getIdUser();
+
+    var data = {
+      'id_user': idUser,
+      'status': status,
+      'start': start,
+      'limit': limit
+    };
+
+    Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
+
+    String url = '${ServerApp.url}src/estate_manager/get_list_report_em.php';
+
+    var response = await dio.post(url, data: jsonEncode(data));
+
+    List<StatusPeduliEmModel> model;
+
+    if (response.statusCode >= 200 && response.statusCode <= 399) {
+      var result = jsonDecode(response.data) as List;
+
+      model = result.map<StatusPeduliEmModel>((model) {
+        var cordinator = model['cordinator'] as List;
+
+        List<Map<String, dynamic>> listCordinator =
+            cordinator.map<Map<String, dynamic>>((e) => e).toList();
+
+        return StatusPeduliEmModel(
+          address: model['address'],
+          image: model['url_image'],
+          lat: model['latitude'],
+          long: model['longitude'],
+          status: model['status'],
+          title: model['category'],
+          waktu: model['waktu'],
+          cordinatorPhone: listCordinator,
+
+          // image:
+        );
+      }).toList();
+
+      final logger = Logger();
+      logger.e(result);
+
+      return model;
+    }
+  }
+}
