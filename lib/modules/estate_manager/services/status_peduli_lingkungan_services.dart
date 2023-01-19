@@ -5,6 +5,7 @@ import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:logger/logger.dart';
 
 class RadioStatusPeduli {
@@ -64,37 +65,42 @@ class StatusPeduliEmServices {
 
     String url = '${ServerApp.url}src/estate_manager/get_list_report_em.php';
 
-    var response = await dio.post(url, data: jsonEncode(data));
+    try {
+      var response = await dio.post(url, data: jsonEncode(data));
 
-    List<StatusPeduliEmModel> model;
+      List<StatusPeduliEmModel> model;
 
-    if (response.statusCode >= 200 && response.statusCode <= 399) {
-      var result = jsonDecode(response.data) as List;
+      if (response.statusCode >= 200 && response.statusCode <= 399) {
+        var result = jsonDecode(response.data) as List;
 
-      model = result.map<StatusPeduliEmModel>((model) {
-        var cordinator = model['cordinator'] as List;
+        model = result.map<StatusPeduliEmModel>((model) {
+          var cordinator = model['cordinator'] as List;
 
-        List<Map<String, dynamic>> listCordinator =
-            cordinator.map<Map<String, dynamic>>((e) => e).toList();
+          List<Map<String, dynamic>> listCordinator =
+              cordinator.map<Map<String, dynamic>>((e) => e).toList();
 
-        return StatusPeduliEmModel(
-          address: model['address'],
-          image: model['url_image'],
-          lat: model['latitude'],
-          long: model['longitude'],
-          status: model['status'],
-          title: model['category'],
-          waktu: model['waktu'],
-          cordinatorPhone: listCordinator,
+          return StatusPeduliEmModel(
+            address: model['address'],
+            image: model['url_image'],
+            lat: model['latitude'],
+            long: model['longitude'],
+            status: model['status'],
+            title: model['category'],
+            waktu: model['waktu'],
+            cordinatorPhone: listCordinator,
 
-          // image:
-        );
-      }).toList();
+            // image:
+          );
+        }).toList();
 
-      final logger = Logger();
-      logger.e(result);
+        final logger = Logger();
+        logger.e(result);
+      }
 
       return model;
+    } on Exception {
+      EasyLoading.showError(
+          'Ada kesalahan saat mengambil laporan terbaru, silahakan hubungi admin');
     }
   }
 }

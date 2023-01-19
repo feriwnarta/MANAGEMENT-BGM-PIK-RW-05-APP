@@ -422,7 +422,7 @@ class _StepperRwState extends State<StepperRw> {
                               'address': controllerWrite.address.value,
                               'description':
                                   controllerWrite.controllerContentReport.text,
-                              'status': 'listed',
+                              'status': 'Menunggu',
                               'id_klasifikasi_category': stringKlasifikasi,
                               'id_user': idUser,
                               'type': controllerWrite.type.value
@@ -1265,71 +1265,74 @@ class CompletedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 124.h,
-              ),
-              SvgPicture.asset('assets/img/image-svg/completed.svg'),
-              SizedBox(
-                height: 16.h,
-              ),
-              AutoSizeText(
-                'Yeayyy !!',
-                style: TextStyle(
-                  fontSize: 30.sp,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 124.h,
                 ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              SizedBox(
-                height: 24.h,
-              ),
-              SizedBox(
-                width: 259.w,
-                child: AutoSizeText(
-                  'Anda sudah menjadi warga yang peduli terhadap lingkungan disekitar.',
+                SvgPicture.asset('assets/img/image-svg/completed.svg'),
+                SizedBox(
+                  height: 16.h,
+                ),
+                AutoSizeText(
+                  'Yeayyy !!',
                   style: TextStyle(
-                    fontSize: 19.sp,
+                    fontSize: 30.sp,
                   ),
-                  textAlign: TextAlign.center,
-                  maxLines: 3,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-              ),
-              SizedBox(
-                height: 148.h,
-              ),
-              SizedBox(
-                width: 328.w,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
+                SizedBox(
+                  height: 24.h,
+                ),
+                SizedBox(
+                  width: 259.w,
+                  child: AutoSizeText(
+                    'Anda sudah menjadi warga yang peduli terhadap lingkungan disekitar.',
+                    style: TextStyle(
+                      fontSize: 19.sp,
                     ),
-                  ),
-                  onPressed: () {
-                    final indexHome = Get.put(IndexScreenHomeController());
-                    final reportController = Get.put(ReportUserController());
-                    reportController.refresReport();
-                    reportController.update();
-                    indexHome.index.value = 1;
-
-                    Get.back();
-                    Get.back();
-                  },
-                  child: Text(
-                    'Kembali Keberanda',
-                    style: TextStyle(fontSize: 16.sp),
+                    textAlign: TextAlign.center,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-              )
-            ],
+                SizedBox(
+                  height: 148.h,
+                ),
+                SizedBox(
+                  width: 328.w,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                    onPressed: () {
+                      final indexHome = Get.put(IndexScreenHomeController());
+                      final reportController = Get.put(ReportUserController());
+                      reportController.refresReport();
+                      reportController.update();
+                      indexHome.index.value = 1;
+
+                      Get.back();
+                      Get.back();
+                    },
+                    child: Text(
+                      'Kembali Keberanda',
+                      style: TextStyle(fontSize: 16.sp),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

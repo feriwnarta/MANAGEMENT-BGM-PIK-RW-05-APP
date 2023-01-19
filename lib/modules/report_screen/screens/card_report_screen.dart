@@ -123,32 +123,26 @@ class CardReportScreen extends StatelessWidget {
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  color: (status.toLowerCase() == 'listed')
+                                  color: (status == 'Menunggu')
                                       ? Color(0xffEEB4B0)
-                                      : (status.toLowerCase() == 'process')
+                                      : (status == 'Diproses')
                                           ? Color(0xffEECEB0)
-                                          : (status.toLowerCase() == 'finish')
+                                          : (status == 'Selesai')
                                               ? Color(0xffB8DBCA)
                                               : Color(0xffEECEB0),
                                 ),
                                 borderRadius: BorderRadius.circular(6),
-                                color: (status.toLowerCase() == 'listed')
+                                color: (status == 'Menunggu')
                                     ? Color(0xffEEB4B0).withOpacity(0.5)
-                                    : (status.toLowerCase() == 'process')
+                                    : (status == 'Diproses')
                                         ? Color(0xffEECEB0).withOpacity(0.5)
-                                        : (status.toLowerCase() == 'finish')
+                                        : (status == 'Selesai')
                                             ? Color(0xffB8DBCA).withOpacity(0.5)
                                             : Color(0xffEECEB0)
                                                 .withOpacity(0.5),
                               ),
                               child: AutoSizeText(
-                                (status.toLowerCase() == 'listed')
-                                    ? 'Menunggu'
-                                    : (status.toLowerCase() == 'noticed')
-                                        ? 'Menunggu'
-                                        : (status.toLowerCase() == 'process')
-                                            ? 'Proses'
-                                            : 'Selesai',
+                                status,
                                 style: TextStyle(fontSize: 12.sp),
                                 overflow: TextOverflow.ellipsis,
                                 minFontSize: 10,

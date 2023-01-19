@@ -47,6 +47,8 @@ class ReportServices extends ReportModel {
                 photoComplete2: item['working_data']['photo_complete2']))
             .toList();
       }
+    } on Exception {
+      print('error decode');
     } on SocketException {
     } on HttpException {}
   }

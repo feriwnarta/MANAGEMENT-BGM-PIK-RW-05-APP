@@ -5,6 +5,7 @@ import 'package:aplikasi_rw/services/history_report_services.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -252,7 +253,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
     return Scaffold(
         backgroundColor: Colors.grey[100],
         appBar: AppBar(
-          // brightness: Brightness.light,
+          systemOverlayStyle: SystemUiOverlayStyle.light,
           title: Text(''),
           elevation: 0,
           backgroundColor: Colors.white,
@@ -620,35 +621,38 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  color:
-                                      (widget.status.toLowerCase() == 'listed')
-                                          ? Color(0xffEEB4B0)
+                                  color: (widget.status.toLowerCase() ==
+                                          'Menunggu')
+                                      ? Color(0xffEEB4B0)
+                                      : (widget.status.toLowerCase() ==
+                                              'Diproses')
+                                          ? Color(0xffEECEB0)
                                           : (widget.status.toLowerCase() ==
-                                                  'process')
-                                              ? Color(0xffEECEB0)
-                                              : (widget.status.toLowerCase() ==
-                                                      'finish')
-                                                  ? Color(0xffB8DBCA)
-                                                  : Color(0xffEECEB0),
+                                                  'Selesai')
+                                              ? Color(0xffB8DBCA)
+                                              : Color(0xffEECEB0),
                                 ),
                                 borderRadius: BorderRadius.circular(6),
-                                color: (widget.status.toLowerCase() == 'listed')
+                                color: (widget.status.toLowerCase() ==
+                                        'Menunggu')
                                     ? Color(0xffEEB4B0).withOpacity(0.5)
-                                    : (widget.status.toLowerCase() == 'process')
+                                    : (widget.status.toLowerCase() ==
+                                            'Diproses')
                                         ? Color(0xffEECEB0).withOpacity(0.5)
                                         : (widget.status.toLowerCase() ==
-                                                'finish')
+                                                'Selesai')
                                             ? Color(0xffB8DBCA).withOpacity(0.5)
                                             : Color(0xffEECEB0)
                                                 .withOpacity(0.5),
                               ),
                               child: Text(
-                                (widget.status.toLowerCase() == 'listed')
+                                (widget.status.toLowerCase() == 'Menunggu')
                                     ? 'Menunggu'
-                                    : (widget.status.toLowerCase() == 'noticed')
-                                        ? 'Menunggu'
+                                    : (widget.status.toLowerCase() ==
+                                            'Diterima')
+                                        ? 'Diterima'
                                         : (widget.status.toLowerCase() ==
-                                                'process')
+                                                'DiProses')
                                             ? 'Proses'
                                             : 'Selesai',
                                 style: TextStyle(fontSize: 12.sp),

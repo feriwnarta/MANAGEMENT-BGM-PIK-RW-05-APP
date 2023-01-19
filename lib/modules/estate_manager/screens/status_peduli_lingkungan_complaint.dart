@@ -1,11 +1,15 @@
-import 'package:aplikasi_rw/modules/estate_manager/controllers/estate_manager_controller.dart';
 import 'package:aplikasi_rw/modules/estate_manager/services/status_peduli_lingkungan_services.dart';
+import 'package:aplikasi_rw/server-app.dart';
+import 'package:aplikasi_rw/utils/view_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../controllers/estate_manager_list_peduli_controller.dart';
 
@@ -24,6 +28,8 @@ class _ListStatusPeduliLingkunganState
 
   Future future;
 
+  final logger = Logger();
+
   ListStatusPeduliEmController controllerEm =
       Get.put(ListStatusPeduliEmController());
 
@@ -32,6 +38,23 @@ class _ListStatusPeduliLingkunganState
     super.initState();
     future = StatusPeduliEmServices.listMasterCategory();
     controllerEm.getDataFromDb(status: groupSelected.value.groupValue);
+  }
+
+  final ScrollController scrollController = ScrollController();
+
+  void onScroll() {
+    if (scrollController.position.haveDimensions) {
+      if (scrollController.position.maxScrollExtent ==
+          scrollController.position.pixels) {
+        controllerEm.getDataFromDb(status: groupSelected.value.groupValue);
+      }
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    scrollController.addListener(onScroll);
+    super.didChangeDependencies();
   }
 
   @override
@@ -44,6 +67,7 @@ class _ListStatusPeduliLingkunganState
           systemOverlayStyle: SystemUiOverlayStyle.light,
         ),
         body: SingleChildScrollView(
+          controller: scrollController,
           child: FutureBuilder<List<RadioStatusPeduli>>(
               future: future,
               builder: (context, snapshot) {
@@ -83,9 +107,12 @@ class _ListStatusPeduliLingkunganState
                                     groupValue: groupSelected.value.groupValue,
                                     materialTapTargetSize:
                                         MaterialTapTargetSize.shrinkWrap,
-                                    onChanged: (value) {
+                                    onChanged: (value) async {
                                       groupSelected.value =
                                           RadioStatusPeduli(groupValue: value);
+                                      await controllerEm.changeDataRequest(
+                                          status:
+                                              groupSelected.value.groupValue);
                                     },
                                     visualDensity: const VisualDensity(
                                       horizontal: VisualDensity.minimumDensity,
@@ -117,21 +144,71 @@ class _ListStatusPeduliLingkunganState
                           () => (controllerEm.isLoading.value)
                               ? CircularProgressIndicator()
                               : ListView.builder(
-                                  itemCount:
-                                      controllerEm.listStatusPeduli.length,
+                                  itemCount: (controllerEm.isMaxReached.value)
+                                      ? controllerEm.listStatusPeduli.length
+                                      : controllerEm.listStatusPeduli.length +
+                                          1,
                                   shrinkWrap: true,
+                                  addAutomaticKeepAlives: true,
                                   physics: NeverScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) => Padding(
-                                    padding: EdgeInsets.only(bottom: 24.h),
-                                    child: CardStatusPeduliLingkunganEm(
-                                      address: controllerEm
-                                          .listStatusPeduli[index].address,
-                                      status: controllerEm
-                                          .listStatusPeduli[index].status,
-                                      title: 'asdsad',
-                                      waktu: 'asdsad',
-                                    ),
-                                  ),
+                                  itemBuilder: (context, index) => (controllerEm
+                                              .listStatusPeduli.length >
+                                          index)
+                                      ? Column(
+                                          children: [
+                                            CardStatusPeduliLingkunganEm(
+                                              address: controllerEm
+                                                  .listStatusPeduli[index]
+                                                  .address,
+                                              status: controllerEm
+                                                  .listStatusPeduli[index]
+                                                  .status,
+                                              title: controllerEm
+                                                  .listStatusPeduli[index]
+                                                  .title,
+                                              waktu: controllerEm
+                                                  .listStatusPeduli[index]
+                                                  .waktu,
+                                              image: controllerEm
+                                                  .listStatusPeduli[index]
+                                                  .image,
+                                              lat: controllerEm
+                                                  .listStatusPeduli[index].lat,
+                                              long: controllerEm
+                                                  .listStatusPeduli[index].long,
+                                              cordinatorPhone: controllerEm
+                                                  .listStatusPeduli[index]
+                                                  .cordinatorPhone,
+                                            ),
+                                            SizedBox(
+                                              height: 24.h,
+                                            ),
+                                          ],
+                                        )
+                                      : (controllerEm.listStatusPeduli.length <
+                                              10)
+                                          ? (controllerEm.listStatusPeduli
+                                                      .length ==
+                                                  0)
+                                              ? Center(
+                                                  child: Text(
+                                                    'Tidak ada laporan yang masuk',
+                                                    style: TextStyle(
+                                                      fontSize: 14.sp,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                )
+                                              : SizedBox()
+                                          : Center(
+                                              child: SizedBox(
+                                                  width: 30,
+                                                  height: 30,
+                                                  child:
+                                                      CircularProgressIndicator
+                                                          .adaptive()),
+                                            ),
                                 ),
                         ),
                       ],
@@ -161,7 +238,7 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
   }) : super(key: key);
 
   final String title, status, image, address, lat, long, waktu;
-  final List<String> cordinatorPhone;
+  final List<Map<String, dynamic>> cordinatorPhone;
 
   @override
   Widget build(BuildContext context) {
@@ -236,10 +313,24 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: 70.w,
-                height: 70.h,
-                color: Colors.grey,
+              GestureDetector(
+                onTap: () => Get.to(
+                  () => ViewImage(urlImage: '${ServerApp.url}/$image'),
+                ),
+                child: Container(
+                  width: 70.w,
+                  height: 70.h,
+                  child: CachedNetworkImage(
+                    imageUrl: '${ServerApp.url}/$image',
+                    fit: BoxFit.cover,
+                    filterQuality: FilterQuality.low,
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) =>
+                            CircularProgressIndicator(
+                                value: downloadProgress.progress),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  ),
+                ),
               ),
               SizedBox(
                 width: 16.w,
@@ -333,37 +424,53 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
                 titleStyle: TextStyle(
                   fontSize: 14.sp,
                 ),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ListTile(
-                      title: RichText(
-                        text: TextSpan(
-                          text: 'Iskandar',
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            color: Colors.black,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: '\t (085714342528)',
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
+                content: Container(
+                  height: 200.h,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: cordinatorPhone
+                          .map<Widget>(
+                            (item) => ListTile(
+                              title: RichText(
+                                text: TextSpan(
+                                  text: '${item['no_telp']}',
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: Colors.black,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text:
+                                          '\t (${item['name_estate_cordinator']})',
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
                               ),
+                              trailing: Icon(
+                                Icons.phone,
+                                size: 20,
+                              ),
+                              onTap: () {
+                                launchUrl(
+                                  Uri(
+                                    scheme: 'tel',
+                                    path: '085714342528',
+                                  ),
+                                );
+                              },
                             ),
-                          ],
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                      trailing: Icon(
-                        Icons.phone,
-                        size: 20,
-                      ),
-                    )
-                  ],
+                          )
+                          .toList(),
+                    ),
+                  ),
                 ),
               );
             },
