@@ -1,4 +1,5 @@
 import 'package:aplikasi_rw/modules/estate_manager/models/LineChartModel.dart';
+import 'package:aplikasi_rw/modules/estate_manager/services/chart_pie_services.dart';
 import 'package:aplikasi_rw/modules/estate_manager/widgets/card_line_chart.dart';
 import 'package:aplikasi_rw/modules/estate_manager/widgets/card_pie_chart.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,10 @@ class CardLine extends StatefulWidget {
 
 class _CardLineState extends State<CardLine> {
   Future future = ChartLineServices.getChart(
+      date: DateFormat('yyyy-MM-dd').format(DateTime.now().toUtc()),
+      rangeDate: '1hr');
+
+  Future futurePie = ChartPieServices.getChartPie(
       date: DateFormat('yyyy-MM-dd').format(DateTime.now().toUtc()),
       rangeDate: '1hr');
 
@@ -56,6 +61,7 @@ class _CardLineState extends State<CardLine> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     print('render ke 2');
     ScreenUtil.init(context, designSize: const Size(360, 800));
     return Column(
@@ -90,7 +96,21 @@ class _CardLineState extends State<CardLine> {
                         ),
                       )
                     : CircularProgressIndicator()),
-        CardPieChart()
+        FutureBuilder<List<ChartPieModel>>(
+          future: futurePie,
+          builder: (context, snapshot) => (snapshot.hasData)
+              ? ListView.builder(
+                  itemCount: snapshot.data.length,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) => CardPieChart(
+                    title: snapshot.data[index].title,
+                    total: snapshot.data[index].total,
+                    dataPie: snapshot.data[index].dataPie,
+                  ),
+                )
+              : CircularProgressIndicator(),
+        )
       ],
     );
   }

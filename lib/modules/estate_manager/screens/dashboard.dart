@@ -1,4 +1,6 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widgets/app_bar.dart';
 import '../widgets/statistic_chart.dart';
@@ -18,15 +20,15 @@ class _DashboardEmState extends State<DashboardEm> {
     ScreenUtil.init(context, designSize: const Size(360, 800));
 
     return Scaffold(
-      key: _scaffoldKey,
+      appBar: AppBar(
+        title: Text('Dashboard'),
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppBarEm(
-                scaffoldKey: _scaffoldKey,
-              ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Column(
@@ -44,9 +46,9 @@ class _DashboardEmState extends State<DashboardEm> {
           ),
         ),
       ),
-      endDrawer: drawerSideBar(),
+      // endDrawer: drawerSideBar(),
       // Disable opening the end drawer with a swipe gesture.
-      endDrawerEnableOpenDragGesture: false,
+      // endDrawerEnableOpenDragGesture: false,
     );
   }
 
@@ -110,18 +112,17 @@ class _DashboardEmState extends State<DashboardEm> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Selamat datang, Danu',
-          style: TextStyle(
-            fontSize: 23.sp,
-          ),
-        ),
         SizedBox(
-          height: 4.h,
+          height: 16.h,
         ),
-        Text(
+        AutoSizeText(
           'Lacak, kelola, dan perkirakan pegawai dan laporan yang ada.',
-          style: TextStyle(fontSize: 16.sp, color: Color(0xff9E9E9E)),
+          style: TextStyle(
+            fontSize: 16.sp,
+            color: Color(0xff9E9E9E),
+          ),
+          overflow: TextOverflow.ellipsis,
+          maxLines: 5,
         ),
       ],
     );

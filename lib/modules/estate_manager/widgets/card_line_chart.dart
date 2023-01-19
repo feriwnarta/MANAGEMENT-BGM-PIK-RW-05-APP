@@ -1,4 +1,5 @@
 import 'package:aplikasi_rw/modules/estate_manager/services/chart_line_services.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -41,6 +42,7 @@ class _CardLineChartState extends State<CardLineChart> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     return Card(
       elevation: 5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -52,8 +54,11 @@ class _CardLineChartState extends State<CardLineChart> {
             SizedBox(
               height: 16.h,
             ),
-            Text(
+            AutoSizeText(
               'Penilaian ${snapshot.data[index].title}',
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              minFontSize: 10,
               style: TextStyle(fontSize: 10.sp, color: Color(0xff757575)),
             ),
             SizedBox(
@@ -61,13 +66,19 @@ class _CardLineChartState extends State<CardLineChart> {
               width: double.infinity,
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
-                  hint: Text(
-                    (!isUpdate)
-                        ? '${snapshot.data[index].dropdown[0]['name_category']}'
-                        : dataUpdate['name_category'],
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16.sp,
+                  hint: SizedBox(
+                    width: 280.w,
+                    child: AutoSizeText(
+                      (!isUpdate)
+                          ? '${snapshot.data[index].dropdown[0]['name_category']}'
+                          : dataUpdate['name_category'],
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16.sp,
+                      ),
+                      maxLines: 1,
+                      minFontSize: 10,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   isDense: true,
@@ -82,7 +93,18 @@ class _CardLineChartState extends State<CardLineChart> {
                   items: snapshot.data[index].dropdown.map((e) {
                     return DropdownMenuItem<String>(
                         value: '${e['id_category']}',
-                        child: Text('${e['name_category']}'));
+                        child: SizedBox(
+                          width: 270.w,
+                          child: AutoSizeText(
+                            '${e['name_category']}',
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                            ),
+                            maxLines: 1,
+                            minFontSize: 10,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ));
                   }).toList(),
 
                   // After selecting the desired option,it will
@@ -113,11 +135,12 @@ class _CardLineChartState extends State<CardLineChart> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
                       width: 100.w,
                       height: 49.h,
-                      child: Text(
+                      child: AutoSizeText(
                         (!isUpdate)
                             ? '${snapshot.data[index].persentaseSekarang[0]}'
                             : dataUpdate['persentase_sekarang'],
@@ -125,6 +148,9 @@ class _CardLineChartState extends State<CardLineChart> {
                           fontSize: 28.sp,
                           fontWeight: FontWeight.w500,
                         ),
+                        maxLines: 2,
+                        minFontSize: 10,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     SizedBox(
@@ -132,54 +158,71 @@ class _CardLineChartState extends State<CardLineChart> {
                     ),
                     (!isUpdate)
                         ? SizedBox(
-                            width: 100.w,
-                            height: 20.h,
-                            child: Row(
-                                children: (snapshot.data[index].pic[0] != null)
-                                    ? snapshot.data[index].pic[0]
-                                        .map<Widget>((data) => Text(
-                                              '$data',
-                                              overflow: TextOverflow.ellipsis,
-                                            ))
-                                        .toList()
-                                    : [Text('-')]),
+                            width: 200.w,
+                            // height: 20.h,
+                            child: (snapshot.data[index].pic[0] != null)
+                                ? AutoSizeText(
+                                    '${snapshot.data[index].pic[0].join(', ')}',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                  )
+                                : Text('-'),
                           )
                         : SizedBox(
                             width: 100.w,
-                            height: 20.h,
-                            child: Row(
-                                children: (dataUpdate['pic'] != null)
-                                    ? dataUpdate['pic']
-                                        .map<Widget>((data) => Text(
-                                              '$data',
-                                              overflow: TextOverflow.ellipsis,
-                                            ))
-                                        .toList()
-                                    : [Text('-')]),
+                            // height: 20.h,
+                            child: (dataUpdate['pic'] != null)
+                                ? AutoSizeText(
+                                    '${dataUpdate['pic'].join(', ')}',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                  )
+                                : Text('-'),
                           ),
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      width: 96.w,
-                      child: SfSparkAreaChart(
-                        data: (snapshot.data[index].dataChart[0].length != 0)
-                            ? snapshot.data[index].dataChart[0]
-                                .map<double>((data) => double.parse(data))
-                                .toList()
-                            : [100, 100, 100, 100],
-                        color: (snapshot.data[index].status[0] == 'minus')
-                            ? Colors.red.withOpacity(0.05)
-                            : Colors.green.withOpacity(0.05),
-                        borderColor: snapshot.data[index].status[0] == 'minus'
-                            ? Colors.red
-                            : Colors.green,
-                        borderWidth: 2,
-                        axisLineColor: Colors.white,
-                      ),
-                    ),
+                    (isUpdate)
+                        ? SizedBox(
+                            width: 96.w,
+                            child: SfSparkAreaChart(
+                              data: (dataUpdate['data_chart'] != null)
+                                  ? dataUpdate['data_chart']
+                                      .map<double>((data) => double.parse(data))
+                                      .toList()
+                                  : [100, 100, 100, 100],
+                              color: (dataUpdate['status'] == 'minus')
+                                  ? Colors.red.withOpacity(0.05)
+                                  : Colors.green.withOpacity(0.05),
+                              borderColor: dataUpdate['status'] == 'minus'
+                                  ? Colors.red
+                                  : Colors.green,
+                              borderWidth: 2,
+                              axisLineColor: Colors.white,
+                            ),
+                          )
+                        : SizedBox(
+                            width: 96.w,
+                            child: SfSparkAreaChart(
+                              data: (snapshot.data[index].dataChart[0].length !=
+                                      0)
+                                  ? snapshot.data[index].dataChart[0]
+                                      .map<double>((data) => double.parse(data))
+                                      .toList()
+                                  : [100, 100, 100, 100],
+                              color: (snapshot.data[index].status[0] == 'minus')
+                                  ? Colors.red.withOpacity(0.05)
+                                  : Colors.green.withOpacity(0.05),
+                              borderColor:
+                                  snapshot.data[index].status[0] == 'minus'
+                                      ? Colors.red
+                                      : Colors.green,
+                              borderWidth: 2,
+                              axisLineColor: Colors.white,
+                            ),
+                          ),
                     SizedBox(
                       height: 15.h,
                     ),
