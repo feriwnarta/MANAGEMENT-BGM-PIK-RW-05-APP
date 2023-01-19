@@ -13,7 +13,7 @@ class DashboardEm extends StatefulWidget {
 }
 
 class _DashboardEmState extends State<DashboardEm> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  // final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {

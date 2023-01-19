@@ -209,17 +209,19 @@ class _CardLineState extends State<CardLine> {
                 initialDate: DateTime.now(),
                 firstDate: DateTime(2000),
                 lastDate: DateTime.now());
-            String dateString = datePicker.toString();
-            var split = dateString.split(' ');
-            date.value = split[0];
+            if (datePicker != null) {
+              String dateString = datePicker.toString();
+              var split = dateString.split(' ');
+              date.value = split[0];
 
-            setState(() {
-              future = ChartLineServices.getChart(
-                  date: date.value, rangeDate: rangeDate.value);
-            });
+              setState(() {
+                future = ChartLineServices.getChart(
+                    date: date.value, rangeDate: rangeDate.value);
+              });
 
-            logger.i(date.value);
-            logger.i(rangeDate.value);
+              logger.i(date.value);
+              logger.i(rangeDate.value);
+            }
           },
           icon: SvgPicture.asset('assets/img/image-svg/pilih-tanggal.svg'),
           style: OutlinedButton.styleFrom(

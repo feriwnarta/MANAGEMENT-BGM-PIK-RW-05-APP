@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../cordinator/screens/complaint/process_report.dart';
 import '../controllers/estate_manager_list_peduli_controller.dart';
 
 class StatusPeduliLingkunganComplaint extends StatefulWidget {
@@ -367,7 +368,10 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
                     Material(
                       child: InkWell(
                         splashColor: Colors.grey[200],
-                        onTap: () {},
+                        onTap: () {
+                          ProcessReportScreen.navigateTo(
+                              double.parse(lat), double.parse(long));
+                        },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
