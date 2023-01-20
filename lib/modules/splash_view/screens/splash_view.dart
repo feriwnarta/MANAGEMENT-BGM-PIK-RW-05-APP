@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
+import 'package:aplikasi_rw/modules/authentication/controllers/access_controller.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -22,6 +23,7 @@ class SplashView extends StatefulWidget {
 
 class _SplashViewState extends State<SplashView> {
   final _loginController = Get.find<UserLoginController>();
+  final _accessController = Get.put(AccessController());
   Future _future;
 
   @override
@@ -129,17 +131,13 @@ class _SplashViewState extends State<SplashView> {
       String status = await UserSecureStorage.getStatus();
       String message = 'OKE';
       final logger = Logger();
-      if (status == 'user') {
-        message = await checkLoginActive();
-        // logger.e(message);
-      }
       if (message.isCaseInsensitiveContainsAny('OKE') ||
           message.isCaseInsensitiveContainsAny('RELOG')) {
         logger.e(status);
         _loginController.connect();
         await checkOtpWhenExit();
         await _loginController.checkLogin();
-        await checkAccess();
+        checkAccess();
         await checkMaintenance();
       } else if (message.isCaseInsensitiveContainsAny('FAILL')) {
         _loginController.logout();
@@ -190,27 +188,29 @@ class _SplashViewState extends State<SplashView> {
         if (message.toString() != 'E001' && message.toString() != 'E002') {
           logger.i(message[0]['warga']);
           if (message[0]['warga'] == '1') {
-            _loginController.accessWarga = true.obs;
+            _accessController.accessAsCitizen();
           }
 
           if (message[0]['cordinator'] == '1') {
-            _loginController.accessCordinator = true.obs;
+            _accessController.accessAsCordinator();
           }
 
           if (message[0]['otp'] == '1') {
-            _loginController.enabledOtp = true.obs;
+            // _loginController.enabledOtp = true.obs;
           } else {
-            _loginController.enabledOtp = false.obs;
+            // _loginController.enabledOtp = false.obs;
           }
 
           if (message[0]['management'] == '1') {
-            _loginController.accessManagement = true.obs;
+            _accessController.accessAsPengelola();
+            // _loginController.accessManagement = true.obs;
           }
 
-          logger.i(_loginController.accessManagement.value);
-          logger.i(_loginController.accessWarga.value);
-          logger.i(_loginController.accessCordinator.value);
-          logger.i(message[0]['cordinator']);
+          if (message[0]['estate_manager'] == '1') {
+            _accessController.accessAsEm();
+          }
+
+          logger.i(_accessController.statistikPeduliLindungi.value);
         } else {
           //error
         }

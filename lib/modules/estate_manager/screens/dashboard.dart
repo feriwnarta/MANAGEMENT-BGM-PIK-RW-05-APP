@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../widgets/app_bar.dart';
 import '../widgets/statistic_chart.dart';
 
 class DashboardEm extends StatefulWidget {

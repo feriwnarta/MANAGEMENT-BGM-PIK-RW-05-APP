@@ -1,4 +1,5 @@
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
+import 'package:aplikasi_rw/modules/authentication/controllers/access_controller.dart';
 import 'package:aplikasi_rw/modules/home/services/news_service.dart';
 import 'package:aplikasi_rw/modules/home/widgets/app_bar_citizen.dart';
 import 'package:aplikasi_rw/modules/informasi_warga/screens/read_informasi_screen.dart';
@@ -61,16 +62,28 @@ class HeaderScreen extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    AutoSizeText(
-                      '${userLoginController.cluster.value} ${userLoginController.houseNumber.value}',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff616161),
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    )
+                    (userLoginController.status.value
+                            .isCaseInsensitiveContainsAny('WARGA'))
+                        ? AutoSizeText(
+                            '${userLoginController.cluster.value} ${userLoginController.houseNumber.value}',
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff616161),
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          )
+                        : AutoSizeText(
+                            '${userLoginController.status.value}',
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff616161),
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          )
                   ],
                 ),
               ),

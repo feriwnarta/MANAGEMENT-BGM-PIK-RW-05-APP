@@ -11,10 +11,8 @@ class CountDownController extends GetxController {
   Timer timer;
 
   void countDown({String iplOrEmail}) async {
-    final logger = Logger();
     count = 60.obs;
     timer = Timer.periodic(Duration(seconds: 1), (timer) async {
-      logger.e(count.value);
       if (count.value != 0) {
         count.value--;
         // update();

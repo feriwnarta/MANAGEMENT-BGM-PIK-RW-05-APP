@@ -1,4 +1,5 @@
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
+import 'package:aplikasi_rw/modules/authentication/controllers/access_controller.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/change_data_user.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/statistik_peduli_screens.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -15,6 +16,8 @@ class UserProfileScreen extends StatelessWidget {
   UserProfileScreen({Key key}) : super(key: key);
 
   final userLoginController = Get.put(UserLoginController());
+  final accessController = Get.put(AccessController());
+
   final AssetImage image = AssetImage('assets/img/logo_rw.png');
 
   @override
@@ -139,11 +142,14 @@ class UserProfileScreen extends StatelessWidget {
                             ),
                           ),
                           Container(
-                            width: 85.w,
                             height: 28.h,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(100),
                               color: Color(0xffFDF4E4),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 4.w,
+                              vertical: 8.h,
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -154,17 +160,26 @@ class UserProfileScreen extends StatelessWidget {
                                   fit: BoxFit.cover,
                                   image: AssetImage('assets/img/isuser.png'),
                                 ),
-                                SizedBox(
-                                  child: AutoSizeText(
-                                    'Warga ${userLoginController.rw.value}',
-                                    style: TextStyle(
-                                      fontSize: 10.sp,
-                                      color: Color(0xff404040),
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                )
+                                (userLoginController.status.value
+                                        .isCaseInsensitiveContainsAny('WARGA'))
+                                    ? AutoSizeText(
+                                        'Warga ${userLoginController.rw.value}',
+                                        style: TextStyle(
+                                          fontSize: 10.sp,
+                                          color: Color(0xff404040),
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    : AutoSizeText(
+                                        '${userLoginController.status.value}',
+                                        style: TextStyle(
+                                          fontSize: 10.sp,
+                                          color: Color(0xff404040),
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
                               ],
                             ),
                           )
@@ -186,30 +201,36 @@ class UserProfileScreen extends StatelessWidget {
                 SizedBox(
                   height: 16.h,
                 ),
-                ListTile(
-                  leading: SvgPicture.asset(
-                    'assets/img/image-svg/statistik_peduli_lingkungan.svg',
-                  ),
-                  dense: true,
-                  minLeadingWidth: 4.w,
-                  title: AutoSizeText(
-                    'Statistik peduli lingkungan',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  trailing: Icon(Icons.chevron_right_rounded),
-                  onTap: () => Get.to(() => StatistikPeduliScreen(),
-                      transition: Transition.rightToLeft),
-                ),
-                SizedBox(
-                  height: 8.h,
-                ),
-                Divider(
-                  thickness: 2,
-                ),
+                (accessController.statistikPeduliLindungi.value)
+                    ? Column(
+                        children: [
+                          ListTile(
+                            leading: SvgPicture.asset(
+                              'assets/img/image-svg/statistik_peduli_lingkungan.svg',
+                            ),
+                            dense: true,
+                            minLeadingWidth: 4.w,
+                            title: AutoSizeText(
+                              'Statistik peduli lingkungan',
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            trailing: Icon(Icons.chevron_right_rounded),
+                            onTap: () => Get.to(() => StatistikPeduliScreen(),
+                                transition: Transition.rightToLeft),
+                          ),
+                          SizedBox(
+                            height: 8.h,
+                          ),
+                          Divider(
+                            thickness: 2,
+                          ),
+                        ],
+                      )
+                    : SizedBox(),
                 ListTile(
                   leading: SvgPicture.asset(
                     'assets/img/image-svg/pengaturan-profil.svg',

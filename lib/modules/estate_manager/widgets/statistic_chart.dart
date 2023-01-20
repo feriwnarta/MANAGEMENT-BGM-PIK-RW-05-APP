@@ -1,7 +1,10 @@
+import 'package:aplikasi_rw/modules/estate_manager/data/chart_data_selection.dart';
 import 'package:aplikasi_rw/modules/estate_manager/models/LineChartModel.dart';
 import 'package:aplikasi_rw/modules/estate_manager/services/chart_pie_services.dart';
 import 'package:aplikasi_rw/modules/estate_manager/widgets/card_line_chart.dart';
 import 'package:aplikasi_rw/modules/estate_manager/widgets/card_pie_chart.dart';
+import 'package:async/async.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,7 +12,7 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
-
+import 'package:syncfusion_flutter_charts/charts.dart';
 import '../services/chart_line_services.dart';
 
 class CardLine extends StatefulWidget {
@@ -62,8 +65,6 @@ class _CardLineState extends State<CardLine> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(360, 800));
-    print('render ke 2');
-    ScreenUtil.init(context, designSize: const Size(360, 800));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -77,39 +78,143 @@ class _CardLineState extends State<CardLine> {
           height: 16.h,
         ),
         FutureBuilder<List<LineChartModel>>(
-            future: future,
-            builder: (context, snapshot) =>
-                (snapshot.connectionState == ConnectionState.done)
-                    ? ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (context, index) => Container(
-                          width: 328.w,
-                          margin: EdgeInsets.only(bottom: 24.h),
-                          child: CardLineChart(
-                            index: index,
-                            snapshot: snapshot,
-                            date: date.value,
-                            rangeDate: rangeDate.value,
-                          ),
+          future: future,
+          builder: (context, snapshot) =>
+              (snapshot.connectionState == ConnectionState.done)
+                  ? ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (context, index) => Container(
+                        width: 328.w,
+                        margin: EdgeInsets.only(bottom: 24.h),
+                        child: CardLineChart(
+                          index: index,
+                          snapshot: snapshot,
+                          date: date.value,
+                          rangeDate: rangeDate.value,
                         ),
-                      )
-                    : CircularProgressIndicator()),
+                      ),
+                    )
+                  : Center(
+                      child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+        ),
         FutureBuilder<List<ChartPieModel>>(
           future: futurePie,
-          builder: (context, snapshot) => (snapshot.hasData)
-              ? ListView.builder(
-                  itemCount: snapshot.data.length,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) => CardPieChart(
-                    title: snapshot.data[index].title,
-                    total: snapshot.data[index].total,
-                    dataPie: snapshot.data[index].dataPie,
+          builder: (context, snapshot) =>
+              (snapshot.connectionState == ConnectionState.done)
+                  ? ListView.builder(
+                      itemCount: snapshot.data.length,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) => CardPieChart(
+                        title: snapshot.data[index].title,
+                        total: snapshot.data[index].total,
+                        dataPie: snapshot.data[index].dataPie,
+                      ),
+                    )
+                  : SizedBox(),
+        ),
+        SizedBox(
+          height: 66.h,
+        ),
+        Card(
+          elevation: 5,
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                AutoSizeText(
+                  'Jumlah Tenaga Pekerja tiap Divisi / Hari',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
                   ),
-                )
-              : CircularProgressIndicator(),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  minFontSize: 10,
+                ),
+                SizedBox(
+                  height: 16.h,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    // horizontal: 16.w,
+                    vertical: 6.h,
+                  ).copyWith(left: 23.w),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5), //shadow color
+                        spreadRadius: 0.5, // spread radius
+                        blurRadius: 2, // shadow blur radius
+                        offset:
+                            const Offset(0, 0), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  child: DropdownButton<String>(
+                    underline: SizedBox(),
+                    isDense: true,
+                    elevation: 0,
+                    isExpanded: true,
+                    alignment: Alignment.centerLeft,
+                    borderRadius: BorderRadius.circular(4),
+                    items: [
+                      DropdownMenuItem<String>(
+                        value: '1',
+                        child: AutoSizeText(
+                          'Perawatan taman',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                          ),
+                          maxLines: 2,
+                          minFontSize: 13,
+                        ),
+                      )
+                    ],
+                    hint: AutoSizeText(
+                      'Perawatan taman',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      minFontSize: 11,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    onChanged: (value) {},
+                  ),
+                ),
+                SizedBox(
+                  height: 24.h,
+                ),
+                SfCartesianChart(
+                  primaryXAxis: CategoryAxis(),
+                  series: <CartesianSeries>[
+                    ColumnSeries<ChartDataSelection, String>(
+                      dataSource: [
+                        ChartDataSelection(label: 'Landscape', point: 10),
+                        ChartDataSelection(label: 'Em', point: 5),
+                        ChartDataSelection(label: 'Mekanikel', point: 2),
+                      ],
+                      xValueMapper: (ChartDataSelection data, _) => data.label,
+                      yValueMapper: (ChartDataSelection data, _) => data.point,
+                      // selectionBehavior: _selectionBehavior,
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
         )
       ],
     );
@@ -146,6 +251,8 @@ class _CardLineState extends State<CardLine> {
           setState(() {
             future = ChartLineServices.getChart(
                 date: date.value, rangeDate: data[index]);
+            futurePie = ChartPieServices.getChartPie(
+                date: date.value, rangeDate: data[index]);
           });
           rangeDate.value = data[index];
         },
@@ -172,7 +279,7 @@ class _CardLineState extends State<CardLine> {
           SizedBox(
             width: 12.w,
           ),
-          buttonFiter(),
+          // buttonFiter(),
         ],
       ),
       SizedBox(
@@ -216,6 +323,9 @@ class _CardLineState extends State<CardLine> {
 
               setState(() {
                 future = ChartLineServices.getChart(
+                    date: date.value, rangeDate: rangeDate.value);
+
+                futurePie = ChartPieServices.getChartPie(
                     date: date.value, rangeDate: rangeDate.value);
               });
 

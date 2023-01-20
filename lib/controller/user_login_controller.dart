@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:aplikasi_rw/model/contractor_model.dart';
 import 'package:aplikasi_rw/model/user_model.dart';
@@ -101,66 +102,113 @@ class UserLoginController extends GetxController {
     if (idUser != null && statusUser != null) {
       // cek status user apakah empty
       if (statusUser.isNotEmpty) {
-        switch (statusUser) {
-          case 'user':
-            status = 'user'.obs;
-            this.idUser = idUser.obs;
-            UserModel userModel = await GetDataUserServices.getDataUser(idUser);
+        status = statusUser.obs;
+        this.idUser = idUser.obs;
+        UserModel userModel = await GetDataUserServices.getDataUser(idUser);
+        final logger = Logger();
+        logger.w(userModel);
+        logger.w(userModel.name);
 
-            if (userModel != null) {
-              this.urlProfile = userModel.urlProfile.obs;
-              this.username = userModel.username.obs;
-              this.name = userModel.name.obs;
-              this.email = userModel.email.obs;
-              this.houseNumber = userModel.houseNumber.obs;
-              this.cluster = userModel.cluster.obs;
-              this.rw = userModel.rw.obs;
-              this.noTelp = userModel.noTelp.obs;
-              this.subtitle.value = cluster.value + ' no' + houseNumber.value;
-            } else {
-              status = 'logout'.obs;
-              UserSecureStorage.deleteIdUser();
-              UserSecureStorage.deleteStatus();
-            }
-            break;
-
-          case 'cordinator':
-            status = 'user'.obs;
-            this.idUser = idUser.obs;
-            UserModel userModel = await GetDataUserServices.getDataUser(idUser);
-
-            if (userModel != null) {
-              this.urlProfile = userModel.urlProfile.obs;
-              this.username = userModel.username.obs;
-              this.name = userModel.name.obs;
-              this.email = userModel.email.obs;
-              this.houseNumber = userModel.houseNumber.obs;
-              this.cluster = userModel.cluster.obs;
-              this.rw = userModel.rw.obs;
-              this.noTelp = userModel.noTelp.obs;
-            } else {
-              status = 'logout'.obs;
-              UserSecureStorage.deleteIdUser();
-              UserSecureStorage.deleteStatus();
-            }
-            break;
-          case 'contractor':
-            status = 'contractor'.obs;
-            this.idUser = idUser.obs;
-            ContractorModel contractorModel =
-                await GetDataContractor.getDataContractor(idUser);
-            if (contractorModel != null) {
-              this.nameContractor = contractorModel.nameContractor.obs;
-              this.jobContractor = contractorModel.job.obs;
-            } else {
-              status = 'logout'.obs;
-              UserSecureStorage.deleteIdUser();
-              UserSecureStorage.deleteStatus();
-            }
-            break;
-          default:
-            status = 'logout'.obs;
+        if (userModel != null) {
+          this.urlProfile = userModel.urlProfile.obs;
+          this.username = userModel.username.obs;
+          this.name = userModel.name.obs;
+          this.email = userModel.email.obs;
+          this.houseNumber = userModel.houseNumber.obs;
+          this.cluster = userModel.cluster.obs;
+          this.rw = userModel.rw.obs;
+          this.noTelp = userModel.noTelp.obs;
+          this.subtitle.value = cluster.value + ' no' + houseNumber.value;
+        } else {
+          status = 'logout'.obs;
+          UserSecureStorage.deleteIdUser();
+          UserSecureStorage.deleteStatus();
         }
+        // switch (statusUser) {
+        //   case 'user':
+        //     status = 'user'.obs;
+        //     this.idUser = idUser.obs;
+        //     UserModel userModel = await GetDataUserServices.getDataUser(idUser);
+        //     final logger = Logger();
+        //     logger.w(statusUser);
+
+        //     if (userModel != null) {
+        //       this.urlProfile = userModel.urlProfile.obs;
+        //       this.username = userModel.username.obs;
+        //       this.name = userModel.name.obs;
+        //       this.email = userModel.email.obs;
+        //       this.houseNumber = userModel.houseNumber.obs;
+        //       this.cluster = userModel.cluster.obs;
+        //       this.rw = userModel.rw.obs;
+        //       this.noTelp = userModel.noTelp.obs;
+        //       this.subtitle.value = cluster.value + ' no' + houseNumber.value;
+        //     } else {
+        //       status = 'logout'.obs;
+        //       UserSecureStorage.deleteIdUser();
+        //       UserSecureStorage.deleteStatus();
+        //     }
+        //     break;
+
+        //   case 'estatemanager':
+        //     status = 'estatemanager'.obs;
+        //     this.idUser = idUser.obs;
+        //     UserModel userModel = await GetDataUserServices.getDataUser(idUser);
+        //     final logger = Logger();
+        //     logger.i(userModel.cluster);
+        //     if (userModel != null) {
+        //       this.urlProfile = userModel.urlProfile.obs;
+        //       this.username = userModel.username.obs;
+        //       this.name = userModel.name.obs;
+        //       this.email = userModel.email.obs;
+        //       this.houseNumber = userModel.houseNumber.obs;
+        //       this.cluster = userModel.cluster.obs;
+        //       this.rw = userModel.rw.obs;
+        //       this.noTelp = userModel.noTelp.obs;
+        //       this.subtitle.value = cluster.value + ' no' + houseNumber.value;
+        //     } else {
+        //       status = 'logout'.obs;
+        //       UserSecureStorage.deleteIdUser();
+        //       UserSecureStorage.deleteStatus();
+        //     }
+        //     break;
+
+        //   case 'cordinator':
+        //     status = 'user'.obs;
+        //     this.idUser = idUser.obs;
+        //     UserModel userModel = await GetDataUserServices.getDataUser(idUser);
+
+        //     if (userModel != null) {
+        //       this.urlProfile = userModel.urlProfile.obs;
+        //       this.username = userModel.username.obs;
+        //       this.name = userModel.name.obs;
+        //       this.email = userModel.email.obs;
+        //       this.houseNumber = userModel.houseNumber.obs;
+        //       this.cluster = userModel.cluster.obs;
+        //       this.rw = userModel.rw.obs;
+        //       this.noTelp = userModel.noTelp.obs;
+        //     } else {
+        //       status = 'logout'.obs;
+        //       UserSecureStorage.deleteIdUser();
+        //       UserSecureStorage.deleteStatus();
+        //     }
+        //     break;
+        //   case 'contractor':
+        //     status = 'contractor'.obs;
+        //     this.idUser = idUser.obs;
+        //     ContractorModel contractorModel =
+        //         await GetDataContractor.getDataContractor(idUser);
+        //     if (contractorModel != null) {
+        //       this.nameContractor = contractorModel.nameContractor.obs;
+        //       this.jobContractor = contractorModel.job.obs;
+        //     } else {
+        //       status = 'logout'.obs;
+        //       UserSecureStorage.deleteIdUser();
+        //       UserSecureStorage.deleteStatus();
+        //     }
+        //     break;
+        //   default:
+        //     status = 'logout'.obs;
+        // }
       } else {
         status = 'logout'.obs;
       }
@@ -193,7 +241,7 @@ class UserLoginController extends GetxController {
       UserModel userModel = await GetDataUserServices.getDataUser(idUser);
 
       final logger = Logger();
-      logger.i(userModel);
+      logger.i(userModel.username);
       this.name = userModel.name.obs;
       this.urlProfile = userModel.urlProfile.obs;
       this.username = userModel.username.obs;

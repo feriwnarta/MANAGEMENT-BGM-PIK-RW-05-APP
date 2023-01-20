@@ -33,15 +33,10 @@ class _OnBoardState extends State<OnBoard> {
                       controllerIpl: TextEditingController(
                           text: _loginController.noIpl.value),
                     )
-                  : _loginController.status.value == 'user'
+                  : (!_loginController.status.value
+                          .isCaseInsensitiveContainsAny('logout'))
                       ? MainApp()
-                      : (_loginController.status.value == 'cordinator')
-                          ? MainApp()
-                          : (_loginController.status.value == 'contractor')
-                              ? HomeScreenCordinator(
-                                  name: _loginController.nameContractor.value,
-                                )
-                              : OnboardingScreen()
+                      : OnboardingScreen()
               : MaintenanceScreen();
     });
   }
