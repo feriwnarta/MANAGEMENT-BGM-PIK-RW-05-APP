@@ -98,8 +98,8 @@ class _CardLineState extends State<CardLine> {
                     )
                   : Center(
                       child: SizedBox(
-                        width: 50,
-                        height: 50,
+                        width: 30.w,
+                        height: 30.h,
                         child: CircularProgressIndicator(),
                       ),
                     ),
@@ -123,99 +123,99 @@ class _CardLineState extends State<CardLine> {
         SizedBox(
           height: 66.h,
         ),
-        Card(
-          elevation: 5,
-          child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                AutoSizeText(
-                  'Jumlah Tenaga Pekerja tiap Divisi / Hari',
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  minFontSize: 10,
-                ),
-                SizedBox(
-                  height: 16.h,
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    // horizontal: 16.w,
-                    vertical: 6.h,
-                  ).copyWith(left: 23.w),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5), //shadow color
-                        spreadRadius: 0.5, // spread radius
-                        blurRadius: 2, // shadow blur radius
-                        offset:
-                            const Offset(0, 0), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: DropdownButton<String>(
-                    underline: SizedBox(),
-                    isDense: true,
-                    elevation: 0,
-                    isExpanded: true,
-                    alignment: Alignment.centerLeft,
-                    borderRadius: BorderRadius.circular(4),
-                    items: [
-                      DropdownMenuItem<String>(
-                        value: '1',
-                        child: AutoSizeText(
-                          'Perawatan taman',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                          ),
-                          maxLines: 2,
-                          minFontSize: 13,
-                        ),
-                      )
-                    ],
-                    hint: AutoSizeText(
-                      'Perawatan taman',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      minFontSize: 11,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    onChanged: (value) {},
-                  ),
-                ),
-                SizedBox(
-                  height: 24.h,
-                ),
-                SfCartesianChart(
-                  primaryXAxis: CategoryAxis(),
-                  series: <CartesianSeries>[
-                    ColumnSeries<ChartDataSelection, String>(
-                      dataSource: [
-                        ChartDataSelection(label: 'Landscape', point: 10),
-                        ChartDataSelection(label: 'Em', point: 5),
-                        ChartDataSelection(label: 'Mekanikel', point: 2),
-                      ],
-                      xValueMapper: (ChartDataSelection data, _) => data.label,
-                      yValueMapper: (ChartDataSelection data, _) => data.point,
-                      // selectionBehavior: _selectionBehavior,
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ),
-        )
+        // Card(
+        //   elevation: 5,
+        //   child: Container(
+        //     margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+        //     child: Column(
+        //       crossAxisAlignment: CrossAxisAlignment.end,
+        //       children: [
+        //         AutoSizeText(
+        //           'Jumlah Tenaga Pekerja tiap Divisi / Hari',
+        //           style: TextStyle(
+        //             fontSize: 16.sp,
+        //             fontWeight: FontWeight.w500,
+        //           ),
+        //           overflow: TextOverflow.ellipsis,
+        //           maxLines: 2,
+        //           minFontSize: 10,
+        //         ),
+        //         SizedBox(
+        //           height: 16.h,
+        //         ),
+        // Container(
+        //   padding: EdgeInsets.symmetric(
+        //     // horizontal: 16.w,
+        //     vertical: 6.h,
+        //   ).copyWith(left: 23.w),
+        //   decoration: BoxDecoration(
+        //     color: Colors.white,
+        //     boxShadow: [
+        //       BoxShadow(
+        //         color: Colors.grey.withOpacity(0.5), //shadow color
+        //         spreadRadius: 0.5, // spread radius
+        //         blurRadius: 2, // shadow blur radius
+        //         offset:
+        //             const Offset(0, 0), // changes position of shadow
+        //       ),
+        //     ],
+        //   ),
+        //   child: DropdownButton<String>(
+        //     underline: SizedBox(),
+        //     isDense: true,
+        //     elevation: 0,
+        //     isExpanded: true,
+        //     alignment: Alignment.centerLeft,
+        //     borderRadius: BorderRadius.circular(4),
+        //     items: [
+        //       DropdownMenuItem<String>(
+        //         value: '1',
+        //         child: AutoSizeText(
+        //           'Perawatan taman',
+        //           overflow: TextOverflow.ellipsis,
+        //           style: TextStyle(
+        //             fontSize: 14.sp,
+        //           ),
+        //           maxLines: 2,
+        //           minFontSize: 13,
+        //         ),
+        //       )
+        //     ],
+        //     hint: AutoSizeText(
+        //       'Perawatan taman',
+        //       maxLines: 2,
+        //       overflow: TextOverflow.ellipsis,
+        //       minFontSize: 11,
+        //       style: TextStyle(
+        //         fontSize: 14.sp,
+        //         fontWeight: FontWeight.w500,
+        //       ),
+        //     ),
+        //     onChanged: (value) {},
+        //   ),
+        // ),
+        // SizedBox(
+        //   height: 24.h,
+        // ),
+        // SfCartesianChart(
+        //   primaryXAxis: CategoryAxis(),
+        //   series: <CartesianSeries>[
+        //     ColumnSeries<ChartDataSelection, String>(
+        //       dataSource: [
+        //         ChartDataSelection(label: 'Landscape', point: 10),
+        //         ChartDataSelection(label: 'Em', point: 5),
+        //         ChartDataSelection(label: 'Mekanikel', point: 2),
+        //       ],
+        //       xValueMapper: (ChartDataSelection data, _) => data.label,
+        //       yValueMapper: (ChartDataSelection data, _) => data.point,
+        //       // selectionBehavior: _selectionBehavior,
+        //     )
+        //   ],
+        // ),
+        // ],
+        // ),
+        // ),
+        // )
       ],
     );
   }

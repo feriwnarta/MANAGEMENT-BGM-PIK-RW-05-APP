@@ -61,7 +61,7 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
       AssetImage('assets/img/citizen_menu/peduli-lingkungan-umum.jpg');
 
   final AssetImage image2 =
-      AssetImage('assets/img/citizen_menu/peduli-lingkungan-umum.jpg');
+      AssetImage('assets/img/citizen_menu/peduli_lingkungan_pribadi.jpg');
 
   RxString typeStatus = 'peduli lingkungan umum'.obs;
 
