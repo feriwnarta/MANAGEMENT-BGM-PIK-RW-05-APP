@@ -78,6 +78,8 @@ class CreateAccountServices {
         EasyLoading.showError('Nomor telpon sudah digunakan');
       } else if (result == 'email sudah ada') {
         EasyLoading.showError('Email sudah digunakan');
+      } else if (result == 'gagal menyimpan') {
+        EasyLoading.showError('Gagal membuat akun, silahkan coba lagi');
       }
 
       return result;

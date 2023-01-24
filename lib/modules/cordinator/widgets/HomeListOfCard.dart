@@ -19,7 +19,7 @@ class HomeListOfCard extends StatefulWidget {
   final dataDropdown = [];
   Future<Map<String, dynamic>> futureLineChart =
       GetChartWorkerServices.getChart();
-  Future<Map<String, dynamic>> futurePieChart = PieChartServices.getPie();
+  // Future<Map<String, dynamic>> futurePieChart = PieChartServices.getPie();
   Future<List<TotalManPowerModel>> futureBarChart =
       TotalManPowerServices.getManPower();
 
@@ -46,7 +46,7 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
       onRefresh: () async {
         setState(() {
           widget.futureLineChart = GetChartWorkerServices.getChart();
-          widget.futurePieChart = PieChartServices.getPie();
+          // widget.futurePieChart = PieChartServices.getPie();
           widget.futureBarChart = TotalManPowerServices.getManPower();
         });
       },
@@ -59,8 +59,8 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
               children: [
                 SizedBox(height: 16.h),
                 FutureBuilder<Map<String, dynamic>>(
-                    future: widget.futureLineChart,
-                    // future: GetChartWorkerServices.getChart(),
+                    // future: widget.futureLineChart,
+                    future: GetChartWorkerServices.getChart(),
                     builder: (context, snapshot) =>
                         (snapshot.connectionState == ConnectionState.done)
                             ? lineChart(snapshot)
@@ -74,40 +74,40 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
                                 ),
                                 baseColor: Colors.grey[300],
                                 highlightColor: Colors.grey[200])),
-                FutureBuilder<Map<String, dynamic>>(
-                    future: widget.futurePieChart,
-                    // future: PieChartServices.getPie(),
-                    builder: (context, snapshot) =>
-                        (snapshot.connectionState == ConnectionState.done)
-                            ? pieChart(snapshot)
-                            : Shimmer.fromColors(
-                                child: Container(
-                                  height: 173.h,
-                                  width: 328.w,
-                                  margin: EdgeInsets.only(top: 5),
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey,
-                                      borderRadius: BorderRadius.circular(8)),
-                                ),
-                                baseColor: Colors.grey[300],
-                                highlightColor: Colors.grey[200])),
-                FutureBuilder(
-                    // future: TotalManPowerServices.getManPower(),
-                    future: widget.futureBarChart,
-                    builder: (context, snapshot) =>
-                        (snapshot.connectionState == ConnectionState.done)
-                            ? barChart(snapshot)
-                            : Shimmer.fromColors(
-                                child: Container(
-                                  height: 349.h,
-                                  width: 328.w,
-                                  margin: EdgeInsets.only(top: 5),
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey,
-                                      borderRadius: BorderRadius.circular(8)),
-                                ),
-                                baseColor: Colors.grey[300],
-                                highlightColor: Colors.grey[200])),
+                // FutureBuilder<Map<String, dynamic>>(
+                //     // future: widget.futurePieChart,
+                //     future: PieChartServices.getPie(),
+                //     builder: (context, snapshot) =>
+                //         (snapshot.connectionState == ConnectionState.done)
+                //             ? pieChart(snapshot)
+                //             : Shimmer.fromColors(
+                //                 child: Container(
+                //                   height: 173.h,
+                //                   width: 328.w,
+                //                   margin: EdgeInsets.only(top: 5),
+                //                   decoration: BoxDecoration(
+                //                       color: Colors.grey,
+                //                       borderRadius: BorderRadius.circular(8)),
+                //                 ),
+                //                 baseColor: Colors.grey[300],
+                //                 highlightColor: Colors.grey[200])),
+                // FutureBuilder(
+                //     future: TotalManPowerServices.getManPower(),
+                //     // future: widget.futureBarChart,
+                //     builder: (context, snapshot) =>
+                //         (snapshot.connectionState == ConnectionState.done)
+                //             ? barChart(snapshot)
+                //             : Shimmer.fromColors(
+                //                 child: Container(
+                //                   height: 349.h,
+                //                   width: 328.w,
+                //                   margin: EdgeInsets.only(top: 5),
+                //                   decoration: BoxDecoration(
+                //                       color: Colors.grey,
+                //                       borderRadius: BorderRadius.circular(8)),
+                //                 ),
+                //                 baseColor: Colors.grey[300],
+                //                 highlightColor: Colors.grey[200])),
                 SizedBox(
                   height: 30.h,
                 ),

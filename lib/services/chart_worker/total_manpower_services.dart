@@ -2,7 +2,10 @@ import 'dart:convert';
 
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
+import 'package:dio/dio.dart';
+import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
 class TotalManPowerModel {
   String idManPower, cluster, total, status;
@@ -14,10 +17,19 @@ class TotalManPowerServices {
     String url = '${ServerApp.url}src/chart_worker/total_manpower.php';
     String idUser = await UserSecureStorage.getIdUser();
     String typeWorker = await UserSecureStorage.getStatus();
+
+    Dio dio = Dio();
+    dio.interceptors.add(
+      RetryInterceptor(dio: dio, retries: 100),
+    );
+
     var data = {'id_user': idUser, 'type_worker': typeWorker};
-    var response = await http.post(Uri.parse(url), body: jsonEncode(data));
+    var response = await dio.post(url, data: jsonEncode(data));
     if (response.statusCode >= 200 && response.statusCode <= 399) {
-      var result = jsonDecode(response.body) as List;
+      var result = jsonDecode(response.data) as List;
+
+      final logger = Logger();
+      logger.i(result);
 
       if (result != null)
         return result

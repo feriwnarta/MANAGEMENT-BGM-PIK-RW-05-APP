@@ -46,11 +46,15 @@ class NotificationServices {
     Dio dio = Dio();
     dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
 
-    String url = '${ServerApp.url}src/list_notif/count_of_notification.php';
+    try {
+      String url = '${ServerApp.url}src/list_notif/count_of_notification.php';
 
-    var response = await dio.post(url, data: jsonEncode({'id_user': idUser}));
+      var response = await dio.post(url, data: jsonEncode({'id_user': idUser}));
 
-    return (jsonDecode(response.data)['count']);
+      return (jsonDecode(response.data)['count']);
+    } on Exception catch (e) {
+      print(e);
+    }
 
     // return response.data['count'];
   }

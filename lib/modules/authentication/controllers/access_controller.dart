@@ -15,6 +15,11 @@ class AccessController extends GetxController {
   RxBool tambahAkunEm = false.obs;
   RxBool statusPeduliLingkunganEm = false.obs;
 
+  // access cordinator
+  RxBool dashboardCord = false.obs;
+  RxBool statusPeduliLingkunganCord = false.obs;
+  RxBool absensiCord = false.obs;
+
   void accessAsEm() {
     statistikPeduliLindungi = false.obs;
     peduliLingkungan = false.obs;
@@ -31,7 +36,19 @@ class AccessController extends GetxController {
 
   void accessAsCitizen() {}
 
-  void accessAsCordinator() {}
+  void accessAsCordinator() {
+    statistikPeduliLindungi = false.obs;
+    peduliLingkungan = false.obs;
+    statusPeduliLingkungan = false.obs;
+    statusIpl = false.obs;
+    informasiWarga = false.obs;
+    informasiUmum = false.obs;
+    sosialMedia = false.obs;
+
+    dashboardCord = true.obs;
+    statusPeduliLingkunganCord = true.obs;
+    absensiCord = true.obs;
+  }
 
   void accessAsContractor() {}
 

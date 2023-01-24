@@ -1,3 +1,4 @@
+import 'package:aplikasi_rw/modules/cordinator/screens/cordinator_home_folder_screen.dart';
 import 'package:aplikasi_rw/modules/estate_manager/screens/menu_folder_screens_em.dart';
 import 'package:aplikasi_rw/modules/home/screens/citizen_screen.dart';
 import 'package:aplikasi_rw/modules/home/widgets/header_screen.dart';
@@ -73,7 +74,12 @@ class _HomeScreenFolderState extends State<HomeScreenFolder> {
                       Menu(
                         icon: 'assets/img/menu-estate-kordinator.jpg',
                         text: 'Estate Koordinator',
-                        onTap: () {},
+                        onTap: () {
+                          Get.to(
+                            () => MenuFolderCordinator(),
+                            transition: Transition.rightToLeft,
+                          );
+                        },
                       ),
                     ],
                   ),
