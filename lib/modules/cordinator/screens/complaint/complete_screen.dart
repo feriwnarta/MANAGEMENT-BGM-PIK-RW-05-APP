@@ -3,8 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../home_screen_cordinator.dart';
-
 //ignore: must_be_immutable
 class CompleteScreen extends StatelessWidget {
   CompleteScreen({Key key, this.time, this.name}) : super(key: key);
@@ -44,12 +42,9 @@ class CompleteScreen extends StatelessWidget {
               width: 328.w,
               height: 40.h,
               child: TextButton(
-                onPressed: () =>
-                    // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    //     builder: (context) => HomeScreenCordinator(
-                    //           name: name,
-                    //         )))
-                    Get.offAll(HomeScreenCordinator(name: name)),
+                onPressed: () {
+                  Get.back();
+                },
                 style: TextButton.styleFrom(
                   backgroundColor: Color(0xff2094F3),
                 ),

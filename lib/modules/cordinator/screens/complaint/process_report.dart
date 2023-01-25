@@ -2,10 +2,12 @@ import 'dart:io';
 import 'package:aplikasi_rw/services/cordinator/process_report_services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
 import '../../../../controller/user_login_controller.dart';
@@ -59,23 +61,19 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
 
   PickedFile imageFile;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _userLoginController = Get.put(UserLoginController());
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(360, 800));
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Color(0xffE0E0E0),
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(104.h),
-        child: AppBar(
-          backgroundColor: Color(0xFF2094F3),
-          title: Text(
-            'Proses Laporan',
-            style: TextStyle(fontSize: 19.sp, fontWeight: FontWeight.w500),
-          ),
+      appBar: AppBar(
+        backgroundColor: Color(0xFF2094F3),
+        title: Text(
+          'Proses Laporan',
+          style: TextStyle(fontSize: 19.sp, fontWeight: FontWeight.w500),
         ),
+        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -131,22 +129,6 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
                                   ),
                                 ),
                                 SizedBox(height: 13.h),
-                                // GestureDetector(
-                                //   onTap: () => ProcessReportScreen.navigateTo(
-                                //       double.parse(widget.latitude),
-                                //       double.parse(widget.longitude)),
-                                //   child: Row(
-                                //     children: [
-                                //       SvgPicture.asset(
-                                //           'assets/img/image-svg/Icon-map.svg'),
-                                //       SizedBox(width: 4.w),
-                                //       Text('Lihat peta lokasi',
-                                //           style: TextStyle(
-                                //               color: Color(0xff2094F3),
-                                //               fontSize: 10.sp))
-                                //     ],
-                                //   ),
-                                // ),
                                 TextButton.icon(
                                   onPressed: () {
                                     ProcessReportScreen.navigateTo(
@@ -273,105 +255,68 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
                       ],
                     ),
                     SizedBox(height: 110.h),
-                    Visibility(
-                      visible: (_userLoginController.status.value ==
-                                  'cordinator' ||
-                              _userLoginController.status.value == 'contractor')
-                          ? true
-                          : false,
-                      child: SizedBox(
-                        width: 328.w,
-                        height: 40.h,
-                        child: TextButton(
-                          // color: Color(0xff2094F3),
-                          style: TextButton.styleFrom(
-                              backgroundColor: Color(0xff2094F3)),
-                          child: Text(
-                            'Proses Laporan',
-                            style:
-                                TextStyle(fontSize: 16.sp, color: Colors.white),
+                    SizedBox(
+                      width: 328.w,
+                      height: 40.h,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: Color(0xff2094F3),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
                           ),
-                          onPressed: () async {
-                            // insert process work ke tb process
-                            if (imagePathCond1.isNotEmpty ||
-                                imagePathCond2.isNotEmpty) {
-                              EasyLoading.show(status: 'loading');
-                              String message =
-                                  await ProcessReportServices.insertProcessWork(
-                                      idReport: widget.idReport,
-                                      img1: imagePathCond1,
-                                      img2: imagePathCond2,
-                                      message: 'Laporan sedang dikerjakan');
-                              if (message != null && message.isNotEmpty) {
-                                if (message
-                                    .isCaseInsensitiveContainsAny('OKE')) {
-                                  EasyLoading.dismiss();
-                                  var dataFinish =
-                                      await ProcessReportServices.getDataFinish(
-                                          idReport: widget.idReport);
-                                  if (dataFinish != null) {
-                                    Get.off(() => FinishReportScreen(
-                                          idReport: widget.idReport,
-                                          time: dataFinish.currentTimeWork,
-                                          name: widget.name,
-                                        ));
-                                  }
-                                } else {
-                                  EasyLoading.showError(
-                                      'Gagal memproses laporan, silahkan coba ulang');
-                                }
+                        ),
+                        child: Text(
+                          'Proses Laporan',
+                          style:
+                              TextStyle(fontSize: 16.sp, color: Colors.white),
+                        ),
+                        onPressed: () async {
+                          // insert process work ke tb process
+                          if (imagePathCond1.isNotEmpty ||
+                              imagePathCond2.isNotEmpty) {
+                            EasyLoading.show(status: 'loading');
+                            Map<String, dynamic> message =
+                                await ProcessReportServices.insertProcessWork(
+                              idReport: widget.idReport,
+                              img1: imagePathCond1,
+                              img2: imagePathCond2,
+                              message: 'Laporan anda sedang dikerjakan',
+                            );
+
+                            if (message != null && message.isNotEmpty) {
+                              if (message['status'] == 'success') {
+                                EasyLoading.dismiss();
+                                final logger = Logger();
+                                logger.i(message['data']);
+                                Get.off(
+                                  () => FinishReportScreen(
+                                    description: widget.description,
+                                    idReport: widget.idReport,
+                                    latitude: widget.latitude,
+                                    location: widget.location,
+                                    longitude: widget.longitude,
+                                    name: widget.name,
+                                    time: '${message['data']['create_at']}',
+                                    title: widget.title,
+                                    url: widget.url,
+                                  ),
+                                  transition: Transition.cupertino,
+                                );
                               } else {
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                    content: Text(
-                                        'harap masukan foto terlebih dahulu')));
+                                EasyLoading.showError(
+                                    'Gagal memproses laporan, silahkan coba ulang');
                               }
-                              // ProcessReportServices.insertProcessWork(
-                              //         idReport: widget.idReport,
-                              //         img1: imagePathCond1,
-                              //         img2: imagePathCond2,
-                              //         message: 'Laporan sedang dikerjakan')
-                              //     .then((value) {
-                              //   value.send().then((value) {
-                              //     http.Response.fromStream(value).then((value) {
-                              //       String message = json.decode(value.body);
-                              //       if (message != null && message.isNotEmpty) {
-                              //         if (message == 'OKE') {
-                              //           ProcessReportServices.getDataFinish(
-                              //                   idReport: widget.idReport)
-                              //               .then((value) {
-                              //             print(
-                              //                 'current time ${value.currentTimeWork}');
-                              //             if (value != null) {
-                              //               Navigator.of(context)
-                              //                   .push(MaterialPageRoute(
-                              //                       builder: (context) =>
-                              //                           FinishReportScreen(
-                              //                               idReport:
-                              //                                   widget.idReport,
-                              //                               time: value
-                              //                                   .currentTimeWork,
-                              //                               name: widget.name)))
-                              //                   .then((value) =>
-                              //                       Navigator.of(context)
-                              //                         ..pop()
-                              //                         ..pop());
-                              //             }
-                              //           });
-                              //         }
-                              //       }
-                              //     });
-                              //   });
-                              // });
                             } else {
-                              // _scaffoldKey.currentState.showSnackBar(SnackBar(
-                              //     content: Text(
-                              //         'harap masukan foto terlebih dahulu')));
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                   content: Text(
                                       'harap masukan foto terlebih dahulu')));
                             }
-                          },
-                        ),
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text(
+                                    'harap masukan foto terlebih dahulu')));
+                          }
+                        },
                       ),
                     ),
                     SizedBox(height: 32.h)

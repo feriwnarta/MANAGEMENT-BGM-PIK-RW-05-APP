@@ -1,12 +1,15 @@
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/cordinator/screens/complaint/process_report.dart';
 import 'package:aplikasi_rw/services/cordinator/process_report_services.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 // import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -44,18 +47,14 @@ class DetailReportScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(360, 800));
-    // logger.i('${explodeTitle().length}');
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(104.h),
-        child: AppBar(
-          backgroundColor: Color(0xFF2094F3),
-          title: Text(
-            'Detail Laporan',
-            style: TextStyle(fontSize: 19.sp, fontWeight: FontWeight.w500),
-          ),
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+        title: Text(
+          'Detail Laporan',
+          style: TextStyle(fontSize: 19.sp, fontWeight: FontWeight.w500),
         ),
       ),
       body: SingleChildScrollView(
@@ -76,8 +75,11 @@ class DetailReportScreen extends StatelessWidget {
                     ),
                     SizedBox(width: 8.w),
                     Expanded(
-                      child: Text(
+                      child: AutoSizeText(
                         location,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 5,
+                        minFontSize: 13,
                         style: TextStyle(
                             fontSize: 14.sp, fontWeight: FontWeight.w400),
                       ),
@@ -98,7 +100,16 @@ class DetailReportScreen extends StatelessWidget {
                               SvgPicture.asset(
                                   'assets/img/image-svg/Icon-warning.svg'),
                               SizedBox(width: 8.w),
-                              Expanded(child: Text('${explodeTitle()[index]}'))
+                              Expanded(
+                                child: AutoSizeText(
+                                  '${explodeTitle()[index]}',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                  ),
+                                  maxLines: 2,
+                                ),
+                              )
                             ],
                           ),
                         ),
@@ -149,57 +160,61 @@ class DetailReportScreen extends StatelessWidget {
               ),
               SizedBox(height: 16.h),
               SizedBox(
-                  width: 319.w,
-                  child: Text(
-                    description,
-                    style: TextStyle(color: Color(0xff757575), fontSize: 12.sp),
-                  )),
+                width: 319.w,
+                child: Text(
+                  description,
+                  style: TextStyle(
+                    color: Color(0xff757575),
+                    fontSize: 12.sp,
+                  ),
+                ),
+              ),
               SizedBox(height: 122.h),
-              Visibility(
-                visible: (userLogin.status.value == 'cordinator' ||
-                        userLogin.status.value == 'contractor')
-                    ? true
-                    : false,
-                child: SizedBox(
-                  width: 328.w,
-                  height: 40.h,
-                  child: TextButton(
-                    onPressed: () async {
-                      EasyLoading.show(status: 'loading');
-                      String message = await ProcessReportServices.insertProcessReport(
+              SizedBox(
+                width: 328.w,
+                height: 40.h,
+                child: TextButton(
+                  onPressed: () async {
+                    EasyLoading.show(status: 'loading');
+                    String message = await ProcessReportServices.insertProcessReport(
+                        idReport: idReport,
+                        message: (userLogin.status.value == 'CORRDINATOR')
+                            ? 'Laporan diterima oleh estate cordinator (${userLogin.name.value})'
+                            : 'Laporan diterima oleh contractor (${userLogin.name.value}');
+                    final logger = Logger();
+                    logger.i(message);
+                    if (message == 'OKE') {
+                      EasyLoading.dismiss();
+                      Get.off(
+                        () => ProcessReportScreen(
+                          url: url,
+                          title: title,
+                          description: description,
                           idReport: idReport,
-                          message: (userLogin.status.value == 'cordinator')
-                              ? 'Laporan diterima oleh estate cordinator (${userLogin.nameCordinator.value})'
-                              : 'Laporan diterima oleh contractor (${userLogin.nameCordinator.value}');
-                      if (message == 'OKE') {
-                        EasyLoading.dismiss();
-                        Get.off(
-                          () => ProcessReportScreen(
-                            url: url,
-                            title: title,
-                            description: description,
-                            idReport: idReport,
-                            latitude: latitude,
-                            location: location,
-                            longitude: longitude,
-                            time: time,
-                            name: (userLogin.status.value == 'cordinator'
-                                ? userLogin.nameCordinator.value
-                                : userLogin.nameContractor.value),
-                          ),
-                        );
-                      } else {
-                        EasyLoading.showError(
-                            'Gagal menerima laporan, silahkan coba lagi');
-                        EasyLoading.dismiss();
-                      }
-                    },
-                    child: Text(
-                      'Terima Laporan',
-                      style: TextStyle(fontSize: 16.sp, color: Colors.white),
+                          latitude: latitude,
+                          location: location,
+                          longitude: longitude,
+                          time: time,
+                          name: (userLogin.status.value == 'cordinator'
+                              ? userLogin.nameCordinator.value
+                              : userLogin.nameContractor.value),
+                        ),
+                      );
+                    } else {
+                      EasyLoading.showError(
+                          'Gagal menerima laporan, silahkan coba lagi');
+                      EasyLoading.dismiss();
+                    }
+                  },
+                  child: Text(
+                    'Terima Laporan',
+                    style: TextStyle(fontSize: 16.sp, color: Colors.white),
+                  ),
+                  style: TextButton.styleFrom(
+                    backgroundColor: Color(0xff2094F3),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
                     ),
-                    style: TextButton.styleFrom(
-                        backgroundColor: Color(0xff2094F3)),
                   ),
                 ),
               )

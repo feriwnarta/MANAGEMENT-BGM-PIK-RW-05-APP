@@ -2,6 +2,7 @@ import 'package:aplikasi_rw/modules/authentication/controllers/access_controller
 import 'package:aplikasi_rw/modules/cordinator/screens/dashboard_cordinator_screen.dart';
 import 'package:aplikasi_rw/modules/cordinator/widgets/HomeListOfCard.dart';
 import 'package:aplikasi_rw/modules/home/widgets/header_screen.dart';
+import 'package:aplikasi_rw/modules/report_screen/screens/sub_menu_report.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -66,7 +67,14 @@ class _CordinatorHomeFolderScreenState extends State<MenuFolderCordinator> {
                                 ? Menu(
                                     icon:
                                         'assets/img/estate_manager_menu/status_peduli_lingkungan.jpg',
-                                    onTap: () {},
+                                    onTap: () {
+                                      Get.to(
+                                        () => SubMenuReport(
+                                          typeStatusPeduliLingkungan: 'cord',
+                                        ),
+                                        transition: Transition.cupertino,
+                                      );
+                                    },
                                     text: 'Status Peduli Lingkungan',
                                   )
                                 : Menu(

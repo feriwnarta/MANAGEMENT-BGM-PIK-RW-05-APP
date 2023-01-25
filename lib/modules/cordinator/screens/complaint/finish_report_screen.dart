@@ -5,6 +5,7 @@ import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/cordinator/process_report_services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -81,15 +82,11 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
     ScreenUtil.init(context, designSize: const Size(360, 800));
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Color(0xffE0E0E0),
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(104.h),
-        child: AppBar(
-          backgroundColor: Color(0xFF2094F3),
-          title: Text(
-            'Laporan Selesai',
-            style: TextStyle(fontSize: 19.sp, fontWeight: FontWeight.w500),
-          ),
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+        title: Text(
+          'Laporan Selesai',
+          style: TextStyle(fontSize: 19.sp, fontWeight: FontWeight.w500),
         ),
       ),
       body: SingleChildScrollView(
@@ -112,7 +109,8 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                       SizedBox(width: 16.w),
                       FutureBuilder<FinishWorkCordinator>(
                           future: ProcessReportServices.getDataFinish(
-                              idReport: widget.idReport),
+                            idReport: widget.idReport,
+                          ),
                           builder: (context, snapshot) => (snapshot.hasData)
                               ? (snapshot.data.photo1 != null &&
                                       snapshot.data.photo1.isNotEmpty)
@@ -133,7 +131,8 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                       SizedBox(width: 16.w),
                       FutureBuilder<FinishWorkCordinator>(
                           future: ProcessReportServices.getDataFinish(
-                              idReport: widget.idReport),
+                            idReport: widget.idReport,
+                          ),
                           builder: (context, snapshot) => (snapshot.hasData)
                               ? (snapshot.data.photo2 != null &&
                                       snapshot.data.photo2.isNotEmpty)
@@ -306,89 +305,57 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                       ],
                     ),
                     SizedBox(height: 110.h),
-                    Visibility(
-                      visible: (widget.userLogin.status.value == 'cordinator' ||
-                              widget.userLogin.status.value == 'contractor')
-                          ? true
-                          : false,
-                      child: SizedBox(
-                        width: 328.w,
-                        height: 40.h,
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                              backgroundColor: Color(0xff2094F3)),
-                          child: Text(
-                            'Laporan selesai',
-                            style:
-                                TextStyle(fontSize: 16.sp, color: Colors.white),
+                    SizedBox(
+                      width: 328.w,
+                      height: 40.h,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: Color(0xff2094F3),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
                           ),
-                          onPressed: () async {
-                            if (widget.imagePathCond1.isNotEmpty ||
-                                widget.imagePathCond2.isNotEmpty) {
-                              String dateNow = DateTime.now().toString();
-                              final logger = Logger();
-                              EasyLoading.show(status: 'loading');
-                              String message =
-                                  await ProcessReportServices.completeWorks(
-                                      duration: widget.displayTime,
-                                      finishTime: dateNow,
-                                      idReport: widget.idReport,
-                                      img1: widget.imagePathCond1,
-                                      img2: widget.imagePathCond2,
-                                      message: (widget
-                                                  .userLogin.status.value) ==
-                                              'cordinator'
-                                          ? 'Laporan telah selesai, divalidasi oleh estate cordinator (${widget.userLogin.nameCordinator.value})'
-                                          : 'Laporan telah selesai, divalidasi oleh contractor (${widget.userLogin.nameContractor.value})');
+                        ),
+                        child: Text(
+                          'Laporan selesai',
+                          style:
+                              TextStyle(fontSize: 16.sp, color: Colors.white),
+                        ),
+                        onPressed: () async {
+                          if (widget.imagePathCond1.isNotEmpty ||
+                              widget.imagePathCond2.isNotEmpty) {
+                            String dateNow = DateTime.now().toString();
+                            final logger = Logger();
+                            EasyLoading.show(status: 'loading');
+                            String message =
+                                await ProcessReportServices.completeWorks(
+                                    duration: widget.displayTime,
+                                    finishTime: dateNow,
+                                    idReport: widget.idReport,
+                                    img1: widget.imagePathCond1,
+                                    img2: widget.imagePathCond2,
+                                    message:
+                                        'Laporan telah selesai, divalidasi oleh (${widget.userLogin.name.value})');
 
-                              logger.i(message);
-                              EasyLoading.dismiss();
+                            logger.i(message);
+                            EasyLoading.dismiss();
 
-                              if (message != null && message == 'OKE') {
-                                Get.off(CompleteScreen(
+                            if (message != null && message == 'OKE') {
+                              Get.off(
+                                CompleteScreen(
                                   time: widget.displayTime,
                                   name: widget.name,
-                                ));
-                              }
-                              // ProcessReportServices.completeWorks(
-                              //         duration: widget.displayTime,
-                              //         finishTime: dateNow,
-                              //         idReport: widget.idReport,
-                              //         img1: widget.imagePathCond1,
-                              //         img2: widget.imagePathCond2,
-                              //         message: (widget
-                              //                     .userLogin.status.value) ==
-                              //                 'cordinator'
-                              //             ? 'Laporan telah selesai, divalidasi oleh estate cordinator (${widget.userLogin.nameCordinator.value})'
-                              //             : 'Laporan telah selesai, divalidasi oleh contractor (${widget.userLogin.nameContractor.value})')
-                              //     .then((value) {
-                              //   value.send().then((value) {
-                              //     http.Response.fromStream(value).then((value) {
-                              //       String message = json.decode(value.body);
-
-                              //       if (message != null && message == 'OKE') {
-                              //         Navigator.of(context).push(
-                              //             MaterialPageRoute(
-                              //                 builder: (context) =>
-                              //                     CompleteScreen(
-                              //                         time: widget.displayTime,
-                              //                         name: widget.name)));
-                              //       } else {
-                              //         print('gagal');
-                              //       }
-                              //     });
-                              //   });
-                              // });
-                            } else {
-                              // _scaffoldKey.currentState.showSnackBar(SnackBar(
-                              //     content: Text(
-                              //         'harap masukan foto terlebih dahulu')));
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                  content: Text(
-                                      'harap masukan foto terlebih dahulu')));
+                                ),
+                              );
                             }
-                          },
-                        ),
+                          } else {
+                            // _scaffoldKey.currentState.showSnackBar(SnackBar(
+                            //     content: Text(
+                            //         'harap masukan foto terlebih dahulu')));
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text(
+                                    'harap masukan foto terlebih dahulu')));
+                          }
+                        },
                       ),
                     ),
                     SizedBox(height: 32.h)

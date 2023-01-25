@@ -25,7 +25,7 @@ class ProcessReportServices {
     var response = await dio.post(url, data: jsonEncode(data));
     if (response.statusCode >= 200 && response.statusCode <= 299) {
       String rs = jsonDecode(response.data);
-      if (rs == 'OK') {
+      if (rs == 'success') {
         return 'OKE';
       } else {
         return 'FALSE';
@@ -35,7 +35,7 @@ class ProcessReportServices {
     }
   }
 
-  static Future<String> checkExistProcess(String idReport) async {
+  static Future<Map<String, dynamic>> checkExistProcess(String idReport) async {
     String url = '${ServerApp.url}src/cordinator/check_process_exist.php';
     String idCordinator = await UserSecureStorage.getIdUser();
     var data = {'id_report': idReport, 'id_estate_cordinator': idCordinator};
@@ -44,18 +44,14 @@ class ProcessReportServices {
 
     var response = await dio.post(url, data: jsonEncode(data));
     if (response.statusCode >= 200 && response.statusCode <= 299) {
-      String rs = jsonDecode(response.data);
-      if (rs == 'EXIST') {
-        return 'FALSE';
-      } else {
-        return 'OKE';
-      }
+      Map<String, dynamic> rs = jsonDecode(response.data);
+      return rs;
     } else {
       print('error chek xsist');
     }
   }
 
-  static Future<String> insertProcessWork(
+  static Future<Map<String, dynamic>> insertProcessWork(
       {String idReport, String message, String img1, String img2}) async {
     Dio dio = Dio();
     dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
@@ -107,7 +103,7 @@ class ProcessReportServices {
 
     logger.e(request.data);
     logger.i('message');
-    return request.data;
+    return jsonDecode(request.data);
 
     // request.fields['id_report'] = idReport;
     // request.fields['id_estate_cordinator'] = idCordinator;

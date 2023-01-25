@@ -406,7 +406,7 @@ class CardListReport extends StatelessWidget {
                   ProcessReportServices.checkExistProcess(idReport)
                       .then((value) {
                     if (value == 'FALSE') {
-                      print(value);
+                      // print(value);
                       // Navigator.of(context).push(MaterialPageRoute(
                       //     builder: (context) => ProcessReportScreen(
                       //           url: url,
@@ -420,20 +420,22 @@ class CardListReport extends StatelessWidget {
                       //           name: (userLogin.status.value == 'cordinator')
                       //               ? userLogin.nameCordinator.value
                       //               : userLogin.nameContractor.value,
-                      //         )));
-                      Get.to(() => ProcessReportScreen(
-                            url: url,
-                            title: title,
-                            description: description,
-                            idReport: idReport,
-                            latitude: latitude,
-                            location: location,
-                            longitude: longitude,
-                            time: time,
-                            name: (userLogin.status.value == 'cordinator')
-                                ? userLogin.nameCordinator.value
-                                : userLogin.nameContractor.value,
-                          ));
+                      //         ),),);
+                      Get.to(
+                        () => ProcessReportScreen(
+                          url: url,
+                          title: title,
+                          description: description,
+                          idReport: idReport,
+                          latitude: latitude,
+                          location: location,
+                          longitude: longitude,
+                          time: time,
+                          name: (userLogin.status.value == 'cordinator')
+                              ? userLogin.nameCordinator.value
+                              : userLogin.nameContractor.value,
+                        ),
+                      );
                     } else {
                       // Navigator.of(context).push(MaterialPageRoute(
                       //   builder: (context) => DetailReportScreen(
@@ -449,18 +451,20 @@ class CardListReport extends StatelessWidget {
                       //           ? userLogin.nameCordinator.value
                       //           : userLogin.nameContractor.value),
                       // ));
-                      Get.to(() => DetailReportScreen(
-                          description: description,
-                          idReport: idReport,
-                          latitude: latitude,
-                          location: location,
-                          longitude: longitude,
-                          time: time,
-                          title: title,
-                          url: url,
-                          name: (userLogin.status.value == 'cordinator')
-                              ? userLogin.nameCordinator.value
-                              : userLogin.nameContractor.value));
+                      Get.to(
+                        () => DetailReportScreen(
+                            description: description,
+                            idReport: idReport,
+                            latitude: latitude,
+                            location: location,
+                            longitude: longitude,
+                            time: time,
+                            title: title,
+                            url: url,
+                            name: (userLogin.status.value == 'cordinator')
+                                ? userLogin.nameCordinator.value
+                                : userLogin.nameContractor.value),
+                      );
                     }
                   });
                 } else {
@@ -509,9 +513,12 @@ class CardListReport extends StatelessWidget {
                   ),
                 ),
                 placeholder: (context, url) => SizedBox(
-                    height: 70.h,
-                    width: 70.w,
-                    child: Center(child: CircularProgressIndicator())),
+                  height: 70.h,
+                  width: 70.w,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
               SizedBox(width: 16.w),
