@@ -79,6 +79,10 @@ class CordinatorReportServices {
     if (response.statusCode >= 200 && response.statusCode <= 299) {
       if (response.data.isNotEmpty) {
         var message = jsonDecode(response.data) as List;
+
+        final logger = Logger();
+        logger.i(message);
+
         return message
             .map((item) => CordinatorReportModel(
                 description: item['description'],

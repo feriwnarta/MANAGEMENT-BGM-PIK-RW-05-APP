@@ -3,6 +3,7 @@ import 'package:aplikasi_rw/services/cordinator/cordinator_report_services.dart'
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 class ReportCordinatorComplaint extends GetxController {
   // data cordinator
@@ -17,35 +18,34 @@ class ReportCordinatorComplaint extends GetxController {
     data++;
   }
 
-  void realtimeData(String user) async {
+  void realtimeData() async {
     String idUser = await UserSecureStorage.getIdUser();
     List<CordinatorReportModel> listBaru = <CordinatorReportModel>[].obs;
 
-    if (user.isCaseInsensitiveContainsAny('cordinator')) {
-      if (listReport.length <= 10) {
-        listBaru = await CordinatorReportServices.getReportCordinator(
-            idUser, 0, 10, 'cordinator');
-      } else {
-        listBaru = await CordinatorReportServices.getReportCordinator(
-            idUser, 0, listReport.length, 'cordinator');
-      }
-    } else if (user.isCaseInsensitiveContainsAny('contractor')) {
-      if (listReport.length <= 10) {
-        listBaru =
-            await ContractorReportServices.getReportContractor(idUser, 0, 10);
-      } else {
-        listBaru = await ContractorReportServices.getReportContractor(
-            idUser, 0, listReport.length);
-      }
+    if (listReport.length <= 10) {
+      listBaru = await CordinatorReportServices.getReportCordinator(
+          idUser, 0, 10, 'cordinator');
     } else {
-      if (listReport.length <= 10) {
-        listBaru = await CordinatorReportServices.getReportCordinator(
-            idUser, 0, 10, 'user');
-      } else {
-        listBaru = await CordinatorReportServices.getReportCordinator(
-            idUser, 0, listReport.length, 'user');
-      }
+      listBaru = await CordinatorReportServices.getReportCordinator(
+          idUser, 0, listReport.length, 'cordinator');
     }
+    // } else if (user.isCaseInsensitiveContainsAny('contractor')) {
+    //   if (listReport.length <= 10) {
+    //     listBaru =
+    //         await ContractorReportServices.getReportContractor(idUser, 0, 10);
+    //   } else {
+    //     listBaru = await ContractorReportServices.getReportContractor(
+    //         idUser, 0, listReport.length);
+    //   }
+    // } else {
+    //   if (listReport.length <= 10) {
+    //     listBaru = await CordinatorReportServices.getReportCordinator(
+    //         idUser, 0, 10, 'user');
+    //   } else {
+    //     listBaru = await CordinatorReportServices.getReportCordinator(
+    //         idUser, 0, listReport.length, 'user');
+    //   }
+    // }
 
     listReport.assignAll(listBaru);
     listBaru.clear();
@@ -69,16 +69,11 @@ class ReportCordinatorComplaint extends GetxController {
     String idUser = await UserSecureStorage.getIdUser();
 
     if (isLoading.value) {
-      if (status == 'cordinator') {
-        listReport.assignAll(await CordinatorReportServices.getReportCordinator(
-            idUser, 0, 10, 'cordinator'));
-      } else if (status == 'contractor') {
-        listReport.assignAll(
-            await ContractorReportServices.getReportContractor(idUser, 0, 10));
-      } else {
-        listReport.assignAll(await CordinatorReportServices.getReportCordinator(
-            idUser, 0, 10, 'user'));
-      }
+      listReport.assignAll(await CordinatorReportServices.getReportCordinator(
+          idUser, 0, 10, 'CORDINATOR'));
+
+      final logger = Logger();
+      logger.i(listReport);
 
       if (listReport.isNotEmpty) {
         isLoading.value = false;
@@ -86,22 +81,9 @@ class ReportCordinatorComplaint extends GetxController {
         isLoading.value = false;
       }
     } else {
-      if (status == 'cordinator') {
-        listReportNew.assignAll(
-            await CordinatorReportServices.getReportCordinator(
-                idUser, listReport.length, 10, 'cordinator'));
-      } else if (status == 'contractor') {
-        listReportNew
-            .assignAll(await ContractorReportServices.getReportContractor(
-          idUser,
-          0,
-          10,
-        ));
-      } else {
-        listReportNew.assignAll(
-            await CordinatorReportServices.getReportCordinator(
-                idUser, listReport.length, 10, 'contractor'));
-      }
+      listReportNew.assignAll(
+          await CordinatorReportServices.getReportCordinator(
+              idUser, listReport.length, 10, 'cordinator'));
 
       if (listReportNew.isEmpty) {
         isMaxReached.value = true;

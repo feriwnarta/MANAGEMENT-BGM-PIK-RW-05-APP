@@ -291,14 +291,7 @@ class _CardReportState extends State<CardReport>
   didChangeDependencies() async {
     super.didChangeDependencies();
     timer = Timer.periodic(Duration(seconds: 1), (second) {
-      if (userLoginController.status.value == 'cordinator') {
-        reportCordinatorController.realtimeData('cordinator');
-      } else if (userLoginController.status.value == 'contractor') {
-        reportCordinatorController.realtimeData('contractor');
-        logger.i(reportCordinatorController.listReport.length);
-      } else {
-        reportCordinatorController.realtimeData('user');
-      }
+      reportCordinatorController.realtimeData();
     });
     reportCordinatorController.scrollController.addListener(onScroll);
   }
