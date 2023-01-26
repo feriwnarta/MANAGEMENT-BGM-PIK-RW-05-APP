@@ -282,7 +282,7 @@ class ButtonDropdown extends StatefulWidget {
       : super(key: key);
   final List<String> items;
   final Map<String, String> value;
-  Future<Map<String, dynamic>> future;
+  Future<List<Map<String, dynamic>>> future;
 
   @override
   State<ButtonDropdown> createState() => _ButtonDropdownState();

@@ -27,6 +27,7 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
   final loginController = Get.find<UserLoginController>();
 
   Future future;
+  bool isUpdate = false;
 
   @override
   void initState() {
@@ -75,11 +76,11 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
               SizedBox(
                 height: 32.h,
               ),
-              FutureBuilder<Map<String, dynamic>>(
+              FutureBuilder<List<Map<String, dynamic>>>(
                 future: future,
                 builder: (context, snapshot) => (snapshot.hasData)
                     ? (snapshot.data != null)
-                        ? lineChart(snapshot)
+                        ? lineChart(snapshot.data)
                         : Text(
                             'Fitur ini hanya khusus untuk estate cordinator',
                           )
@@ -97,43 +98,42 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
               FutureBuilder<Map<String, dynamic>>(
                 // future: widget.futurePieChart,
                 future: PieChartServices.getPie(),
-                builder: (context, snapshot) =>
-                    (snapshot.connectionState == ConnectionState.done)
-                        ? pieChart(snapshot)
-                        : Shimmer.fromColors(
-                            child: Container(
-                              height: 173.h,
-                              width: 328.w,
-                              margin: EdgeInsets.only(top: 5),
-                              decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(8)),
-                            ),
-                            baseColor: Colors.grey[300],
-                            highlightColor: Colors.grey[200],
-                          ),
+                builder: (context, snapshot) => (snapshot.hasData)
+                    ? pieChart(snapshot)
+                    : Shimmer.fromColors(
+                        child: Container(
+                          height: 173.h,
+                          width: 328.w,
+                          margin: EdgeInsets.only(top: 5),
+                          decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(8)),
+                        ),
+                        baseColor: Colors.grey[300],
+                        highlightColor: Colors.grey[200],
+                      ),
               ),
-              FutureBuilder(
-                future: TotalManPowerServices.getManPower(),
-                // future: widget.futureBarChart,
-                builder: (context, snapshot) =>
-                    (snapshot.connectionState == ConnectionState.done)
-                        ? (snapshot.data != null)
-                            ? barChart(snapshot)
-                            : SizedBox()
-                        : Shimmer.fromColors(
-                            child: Container(
-                              height: 349.h,
-                              width: 328.w,
-                              margin: EdgeInsets.only(top: 5),
-                              decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(8)),
-                            ),
-                            baseColor: Colors.grey[300],
-                            highlightColor: Colors.grey[200],
-                          ),
-              ),
+              // FutureBuilder(
+              //   future: TotalManPowerServices.getManPower(),
+              //   // future: widget.futureBarChart,
+              //   builder: (context, snapshot) =>
+              //       (snapshot.connectionState == ConnectionState.done)
+              //           ? (snapshot.data != null)
+              //               ? barChart(snapshot)
+              //               : SizedBox()
+              //           : Shimmer.fromColors(
+              //               child: Container(
+              //                 height: 349.h,
+              //                 width: 328.w,
+              //                 margin: EdgeInsets.only(top: 5),
+              //                 decoration: BoxDecoration(
+              //                     color: Colors.grey,
+              //                     borderRadius: BorderRadius.circular(8)),
+              //               ),
+              //               baseColor: Colors.grey[300],
+              //               highlightColor: Colors.grey[200],
+              //             ),
+              // ),
             ],
           ),
         ),
@@ -141,7 +141,7 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
     );
   }
 
-  Card lineChart(AsyncSnapshot<Map<String, dynamic>> snapshot) {
+  Card lineChart(List<Map<String, dynamic>> snapshot) {
     return Card(
         elevation: 3,
         shadowColor: Colors.grey,
@@ -155,7 +155,7 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                 children: [
                   SizedBox(height: 16.h),
                   AutoSizeText(
-                    '${snapshot.data['title']}',
+                    '${snapshot[0]['title']}',
                     style: TextStyle(
                       fontSize: 10.sp,
                       color: Color(0xff757575),
@@ -170,7 +170,7 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             // Initial Value
-                            value: '${snapshot.data['subtitle']}',
+                            value: '${snapshot[0]['subtitle']}',
                             isDense: true,
                             underline: null,
                             style: TextStyle(
@@ -180,13 +180,13 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                             // Down Arrow Icon
                             icon: const Icon(Icons.keyboard_arrow_down),
                             // Array list of items
-                            items: snapshot.data['data_dropdown']
-                                .map<DropdownMenuItem<String>>((data) =>
-                                    DropdownMenuItem(
-                                      value: data['name_category'].toString(),
-                                      child: Text(
-                                          '${data['name_category'].toString()}'),
-                                    ))
+                            items: snapshot
+                                .map<DropdownMenuItem<String>>(
+                                    (data) => DropdownMenuItem(
+                                          value: data['subtitle'].toString(),
+                                          child: Text(
+                                              '${data['subtitle'].toString()}'),
+                                        ))
                                 .toList(),
 
                             // After selecting the desired option,it will
@@ -199,7 +199,7 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                             },
                           ),
                         ),
-                      ),
+                      )
                     ],
                   ),
                   SizedBox(
@@ -214,7 +214,7 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             AutoSizeText(
-                              '${snapshot.data['persentase']} %',
+                              '${snapshot[0]['persentase']} %',
                               style: TextStyle(
                                 fontSize: 33.sp,
                                 fontWeight: FontWeight.w500,
@@ -224,7 +224,7 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                             ),
                             SizedBox(height: 19.h),
                             AutoSizeText(
-                              '${snapshot.data['pic']}',
+                              '${snapshot[0]['pic']}',
                               style: TextStyle(
                                 fontSize: 14.sp,
                               ),
@@ -236,23 +236,27 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           SizedBox(
                             width: 96.w,
                             child: SfSparkAreaChart(
-                              data: snapshot.data['chart'].cast<num>(),
+                              data: snapshot[0]['chart'].cast<num>(),
                               color: Colors.red.withOpacity(0.05),
                               borderColor: Colors.red,
                               borderWidth: 2,
                               axisLineColor: Colors.white,
                             ),
                           ),
-                          (snapshot.data['persentase_indicator'] == 0)
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          (snapshot[0]['persentase_indicator'] == 0)
                               ? SizedBox()
                               : Row(
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
-                                    ('${snapshot.data['status_indicator']}' ==
+                                    ('${snapshot[0]['status_indicator']}' ==
                                             'minus')
                                         ? SvgPicture.asset(
                                             'assets/img/image-svg/trending-down.svg',
@@ -264,7 +268,7 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                                       width: 5.w,
                                     ),
                                     AutoSizeText(
-                                      '${snapshot.data['persentase_indicator']}',
+                                      '${snapshot[0]['persentase_indicator']}%',
                                       style: TextStyle(
                                         fontSize: 14.sp,
                                         fontWeight: FontWeight.w500,

@@ -7,7 +7,8 @@ import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:logger/logger.dart';
 
 class UpdateChartWorkerServices {
-  static Future<Map<String, dynamic>> updateChart({String category}) async {
+  static Future<List<Map<String, dynamic>>> updateChart(
+      {String category}) async {
     String url = '${ServerApp.url}src/chart_worker/update_chart_worker.php';
     String idUser = await UserSecureStorage.getIdUser();
     String status = await UserSecureStorage.getStatus();
@@ -17,15 +18,17 @@ class UpdateChartWorkerServices {
       RetryInterceptor(dio: dio, retries: 100),
     );
 
-    Map<String, dynamic> response;
+    List<Map<String, dynamic>> response = [];
     var data = {'id_user': idUser, 'type_worker': status, 'category': category};
 
     try {
       var request = await dio.post(url, data: jsonEncode(data));
       if (request.statusCode >= 200 && request.statusCode <= 299) {
-        response = jsonDecode(request.data);
+        var result = jsonDecode(request.data) as List;
+        response = result.map<Map<String, dynamic>>((e) => e).toList();
         final logger = Logger();
         logger.w(response);
+
         if (response.isNotEmpty) {
           return response;
         }

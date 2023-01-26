@@ -1,108 +1,124 @@
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
-import 'package:aplikasi_rw/services/contractor/contractor_report_services.dart';
-import 'package:aplikasi_rw/services/cordinator/cordinator_report_services.dart';
-import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
+import 'package:aplikasi_rw/modules/contractor/models/contractor_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import '../services/contractor_services.dart';
 
 class ContractorController extends GetxController {
-  
-  List<CordinatorReportModel> listReport = <CordinatorReportModel>[].obs;
+  List<ContractorModel> listReport = <ContractorModel>[].obs;
   var isLoading = true.obs;
   var isMaxReached = false.obs;
-  var data = 0.obs;
-  List<CordinatorReportModel> listReportNew = <CordinatorReportModel>[].obs;
+
+  List<ContractorModel> listReportNew = <ContractorModel>[].obs;
   final ScrollController scrollcontroller = ScrollController();
   final controller = Get.put(UserLoginController());
+  final logger = Logger();
 
-  void increment() {
-    data++;
+  void realTimeComplaintDiterimaDanProses() async {
+    List<ContractorModel> listBaru;
+
+    if (listReport.length <= 0) {
+      listBaru =
+          await ContractorServices.getComplaintDiterimaDanProsesContractor(
+              0, 10);
+    } else {
+      listBaru =
+          await ContractorServices.getComplaintDiterimaDanProsesContractor(
+              0, listReport.length);
+    }
+
+    listReport.assignAll(listBaru);
+
+    logger.i(listReport);
   }
 
-  void realtimeData() async {
-    final logger = Logger();
+  void realTimeComplaintDiproses() async {
+    List<ContractorModel> listBaru;
 
-    String idCordinator = await UserSecureStorage.getIdUser();
-
-    List<CordinatorReportModel> listBaru;
-
-    if (controller.status.value == 'cordinator') {
-      if (listReport.length <= 0) {
-        listBaru = await CordinatorReportServices.getReportCordinatorProcess(
-            idCordinator, 0, 10, 'cordinator');
-      } else {
-        listBaru = await CordinatorReportServices.getReportCordinatorProcess(
-            idCordinator, 0, listReport.length, 'cordinator');
-      }
-    } else if (controller.status.value == 'contractor') {
-      if (listReport.length <= 0) {
-        listBaru = await ContractorReportServices.getReportContractorProcess(
-            idCordinator, 0, 10);
-      } else {
-        listBaru = await ContractorReportServices.getReportContractorProcess(
-            idCordinator, 0, listReport.length);
-      }
+    if (listReport.length <= 0) {
+      listBaru = await ContractorServices.getComplaintContractorProcess(0, 10);
     } else {
-      if (listReport.length <= 0) {
-        listBaru = await CordinatorReportServices.getReportCordinatorProcess(
-            idCordinator, 0, 10, 'user');
-        logger.i(listBaru.length);
-      } else {
-        listBaru = await CordinatorReportServices.getReportCordinatorProcess(
-            idCordinator, 0, listReport.length, 'user');
-      }
+      listBaru = await ContractorServices.getComplaintContractorProcess(
+          0, listReport.length);
+    }
+
+    listReport.assignAll(listBaru);
+
+    logger.i(listReport);
+  }
+
+  void realTimeComplaintSelesai() async {
+    List<ContractorModel> listBaru;
+
+    if (listReport.length <= 0) {
+      listBaru = await ContractorServices.getComplaintContractorFinish(0, 10);
+    } else {
+      listBaru = await ContractorServices.getComplaintContractorFinish(
+          0, listReport.length);
     }
 
     listReport.assignAll(listBaru);
   }
 
-  void addReport() async {
-    String idCordinator = await UserSecureStorage.getIdUser();
-    List<CordinatorReportModel> lisStatusBru =
-        await CordinatorReportServices.getReportCordinatorProcess(
-            idCordinator, 0, 10, 'cordinator');
-    lisStatusBru.addAll(listReport);
-    listReport.assignAll(lisStatusBru);
-  }
-
-  void getDataFromDb() async {
-    String idCordinator = await UserSecureStorage.getIdUser();
-
+  void getComplaintDiterimaDanProses() async {
     if (isLoading.value) {
-      if (controller.status.value == 'cordinator') {
-        listReport.assignAll(
-            await CordinatorReportServices.getReportCordinatorProcess(
-                idCordinator, 0, 10, 'cordinator'));
-      } else if (controller.status.value == 'contractor') {
-        listReport.assignAll(
-            await ContractorReportServices.getReportContractorProcess(
-                idCordinator, 0, 10));
-      } else {
-        listReport.assignAll(
-            await CordinatorReportServices.getReportCordinatorProcess(
-                idCordinator, 0, 10, 'user'));
-      }
-
+      listReport.assignAll(
+          await ContractorServices.getComplaintDiterimaDanProsesContractor(
+              0, 10));
       if (listReport.isNotEmpty) {
         isLoading.value = false;
       } else {
         isLoading.value = false;
       }
     } else {
-      if (controller.status.value == 'cordinator') {
-        listReportNew.assignAll(
-            await CordinatorReportServices.getReportCordinatorProcess(
-                idCordinator, listReport.length, 10, 'cordinator'));
-      } else if (controller.status.value == 'contractor') {
-        listReportNew.assignAll(
-            await ContractorReportServices.getReportContractorProcess(
-                idCordinator, listReport.length, 10));
+      listReportNew.assignAll(
+          await ContractorServices.getComplaintDiterimaDanProsesContractor(
+              listReport.length, 10));
+
+      if (listReportNew.isEmpty) {
+        isMaxReached.value = true;
       } else {
-        listReportNew.assignAll(
-            await CordinatorReportServices.getReportCordinatorProcess(
-                idCordinator, listReport.length, 10, 'user'));
+        listReport.addAll(listReportNew);
       }
+    }
+  }
+
+  void getComplaintDiproses() async {
+    if (isLoading.value) {
+      listReport.assignAll(
+          await ContractorServices.getComplaintContractorProcess(0, 10));
+      if (listReport.isNotEmpty) {
+        isLoading.value = false;
+      } else {
+        isLoading.value = false;
+      }
+    } else {
+      listReportNew.assignAll(
+          await ContractorServices.getComplaintContractorProcess(
+              listReport.length, 10));
+
+      if (listReportNew.isEmpty) {
+        isMaxReached.value = true;
+      } else {
+        listReport.addAll(listReportNew);
+      }
+    }
+  }
+
+  void getComplaintFinish() async {
+    if (isLoading.value) {
+      listReport.assignAll(
+          await ContractorServices.getComplaintContractorFinish(0, 10));
+      if (listReport.isNotEmpty) {
+        isLoading.value = false;
+      } else {
+        isLoading.value = false;
+      }
+    } else {
+      listReportNew.assignAll(
+          await ContractorServices.getComplaintContractorFinish(
+              listReport.length, 10));
 
       if (listReportNew.isEmpty) {
         isMaxReached.value = true;

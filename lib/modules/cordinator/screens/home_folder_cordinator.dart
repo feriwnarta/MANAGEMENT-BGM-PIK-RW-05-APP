@@ -1,6 +1,5 @@
 import 'package:aplikasi_rw/modules/authentication/controllers/access_controller.dart';
 import 'package:aplikasi_rw/modules/contractor/screens/dashboard_cordinator_screen.dart';
-import 'package:aplikasi_rw/modules/contractor/widgets/HomeListOfCard.dart';
 import 'package:aplikasi_rw/modules/home/widgets/header_screen.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/sub_menu_report.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +37,7 @@ class _CordinatorHomeFolderScreenState extends State<MenuFolderCordinator> {
                       children: [
                         Row(
                           children: [
-                            (accessController.dashboardCord.value)
+                            (accessController.dashboardKepalaCon.value)
                                 ? Menu(
                                     icon:
                                         'assets/img/estate_manager_menu/dashboard-em.jpg',
@@ -63,7 +62,8 @@ class _CordinatorHomeFolderScreenState extends State<MenuFolderCordinator> {
                             SizedBox(
                               width: 16.w,
                             ),
-                            (accessController.statusPeduliLingkunganCord.value)
+                            (accessController
+                                    .statusPeduliLingkunganKepalaCon.value)
                                 ? Menu(
                                     icon:
                                         'assets/img/estate_manager_menu/status_peduli_lingkungan.jpg',
@@ -90,27 +90,27 @@ class _CordinatorHomeFolderScreenState extends State<MenuFolderCordinator> {
                             SizedBox(
                               width: 16.w,
                             ),
-                            // (accessController.absensiKepalaCon.value)
-                            //     ? Menu(
-                            //         icon:
-                            //             'assets/img/estate_manager_menu/absensi_cord.jpg',
-                            //         onTap: () {
-                            //           EasyLoading.showInfo(
-                            //             'Fitur ini sedang dalam pengembangan',
-                            //           );
-                            //         },
-                            //         text: 'Absensi',
-                            //       )
-                            //     : Menu(
-                            //         icon:
-                            //             'assets/img/estate_manager_menu/absensi_cord.jpg',
-                            //         onTap: () {
-                            //           EasyLoading.showInfo(
-                            //               'Fitur ini hanya bisa diakses oleh contractor',
-                            //               dismissOnTap: true);
-                            //         },
-                            //         text: 'Absensi',
-                            //       ),
+                            (accessController.absensiKepalaCon.value)
+                                ? Menu(
+                                    icon:
+                                        'assets/img/estate_manager_menu/absensi_cord.jpg',
+                                    onTap: () {
+                                      EasyLoading.showInfo(
+                                        'Fitur ini sedang dalam pengembangan',
+                                      );
+                                    },
+                                    text: 'Absensi',
+                                  )
+                                : Menu(
+                                    icon:
+                                        'assets/img/estate_manager_menu/absensi_cord.jpg',
+                                    onTap: () {
+                                      EasyLoading.showInfo(
+                                          'Fitur ini hanya bisa diakses oleh contractor',
+                                          dismissOnTap: true);
+                                    },
+                                    text: 'Absensi',
+                                  ),
                           ],
                         )
                       ],

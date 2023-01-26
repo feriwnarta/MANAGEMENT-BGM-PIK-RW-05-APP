@@ -3,6 +3,7 @@ import 'package:aplikasi_rw/modules/estate_manager/screens/menu_folder_screens_e
 import 'package:aplikasi_rw/modules/home/screens/citizen_screen.dart';
 import 'package:aplikasi_rw/modules/home/widgets/header_screen.dart';
 import 'package:aplikasi_rw/modules/home/widgets/menu.dart';
+import 'package:aplikasi_rw/modules/manager_contractor/screens/home_folder_manager_contractor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -74,7 +75,12 @@ class _HomeScreenFolderState extends State<HomeScreenFolder> {
                       Menu(
                         icon: 'assets/img/menu-estate-kordinator.jpg',
                         text: 'Estate Koordinator',
-                        onTap: () {},
+                        onTap: () {
+                          Get.to(
+                            () => MenuFolderCordinator(),
+                            transition: Transition.rightToLeft,
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -83,6 +89,19 @@ class _HomeScreenFolderState extends State<HomeScreenFolder> {
                   ),
                   Row(
                     children: [
+                      Menu(
+                        icon: 'assets/img/manager-kontraktor.jpg',
+                        text: 'Manager Kontraktor',
+                        onTap: () {
+                          Get.to(
+                            () => MenuFolderManagerContractor(),
+                            transition: Transition.rightToLeft,
+                          );
+                        },
+                      ),
+                      SizedBox(
+                        width: 16.w,
+                      ),
                       Menu(
                         icon: 'assets/img/menu-kontraktor.jpg',
                         text: 'Kepala Kontraktor',

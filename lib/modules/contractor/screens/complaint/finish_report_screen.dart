@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
+import 'package:aplikasi_rw/modules/contractor/services/contractor_proses_complain_services.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/cordinator/process_report_services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -71,14 +72,9 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
 
   final stopWatchTimer = StopWatchTimer();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  // final logger = Logger(printer: PrettyPrinter());
 
   @override
   Widget build(BuildContext context) {
-    // ProcessReportServices.getDataFinish(idReport: widget.idReport)
-    //     .then((value) => print('id estate ${value.photo1}'));
-
-    // logger.i(widget.name);
     ScreenUtil.init(context, designSize: const Size(360, 800));
     return Scaffold(
       key: _scaffoldKey,
@@ -107,8 +103,8 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                   Row(
                     children: [
                       SizedBox(width: 16.w),
-                      FutureBuilder<FinishWorkCordinator>(
-                          future: ProcessReportServices.getDataFinish(
+                      FutureBuilder<FinishWorkContractor>(
+                          future: ContractorProcessComplaint.getFinishComplaint(
                             idReport: widget.idReport,
                           ),
                           builder: (context, snapshot) => (snapshot.hasData)
@@ -129,8 +125,8 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                                   : SizedBox()
                               : CircularProgressIndicator()),
                       SizedBox(width: 16.w),
-                      FutureBuilder<FinishWorkCordinator>(
-                          future: ProcessReportServices.getDataFinish(
+                      FutureBuilder<FinishWorkContractor>(
+                          future: ContractorProcessComplaint.getFinishComplaint(
                             idReport: widget.idReport,
                           ),
                           builder: (context, snapshot) => (snapshot.hasData)
@@ -326,15 +322,14 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                             String dateNow = DateTime.now().toString();
                             final logger = Logger();
                             EasyLoading.show(status: 'loading');
-                            String message =
-                                await ProcessReportServices.completeWorks(
-                                    duration: widget.displayTime,
-                                    finishTime: dateNow,
-                                    idReport: widget.idReport,
-                                    img1: widget.imagePathCond1,
-                                    img2: widget.imagePathCond2,
-                                    message:
-                                        'Laporan telah selesai, divalidasi oleh (${widget.userLogin.name.value})');
+                            String message = await ContractorProcessComplaint
+                                .finishComplaint(
+                              duration: widget.displayTime,
+                              finishTime: dateNow,
+                              idReport: widget.idReport,
+                              img1: widget.imagePathCond1,
+                              img2: widget.imagePathCond2,
+                            );
 
                             logger.i(message);
                             EasyLoading.dismiss();
@@ -348,12 +343,12 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                               );
                             }
                           } else {
-                            // _scaffoldKey.currentState.showSnackBar(SnackBar(
-                            //     content: Text(
-                            //         'harap masukan foto terlebih dahulu')));
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text(
-                                    'harap masukan foto terlebih dahulu')));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content:
+                                    Text('harap masukan foto terlebih dahulu'),
+                              ),
+                            );
                           }
                         },
                       ),

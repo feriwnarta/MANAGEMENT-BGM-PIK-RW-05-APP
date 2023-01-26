@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:aplikasi_rw/modules/contractor/services/contractor_proses_complain_services.dart';
 import 'package:aplikasi_rw/services/cordinator/process_report_services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -276,11 +277,10 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
                               imagePathCond2.isNotEmpty) {
                             EasyLoading.show(status: 'loading');
                             Map<String, dynamic> message =
-                                await ProcessReportServices.insertProcessWork(
+                                await ContractorProcessComplaint.processComplaint(
                               idReport: widget.idReport,
                               img1: imagePathCond1,
                               img2: imagePathCond2,
-                              message: 'Laporan anda sedang dikerjakan',
                             );
 
                             if (message != null && message.isNotEmpty) {

@@ -206,8 +206,16 @@ class _SplashViewState extends State<SplashView> {
             // _loginController.accessManagement = true.obs;
           }
 
+          if (message[0]['manager_kontraktor'] == '1') {
+            _accessController.accessManagerCon();
+          }
+
           if (message[0]['estate_manager'] == '1') {
             _accessController.accessAsEm();
+          }
+
+          if (message[0]['kepala_contractor'] == '1') {
+            _accessController.accessAsKepalaContractor();
           }
 
           logger.i(_accessController.statistikPeduliLindungi.value);

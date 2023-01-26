@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:aplikasi_rw/model/contractor_model.dart';
+import 'package:aplikasi_rw/modules/contractor/controller/contractor_controller.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -22,12 +25,12 @@ class _CardReportFinish extends State<CardReportFinish>
   Timer timer;
 
   // final ScrollController scrollcontroller = ScrollController();
-  final controller = Get.put(ReportCordinatorFinish());
+  final controller = Get.put(ContractorController());
 
   void onScroll() {
     if (controller.scrollcontroller.position.maxScrollExtent ==
         controller.scrollcontroller.position.pixels) {
-      controller.getDataFromDb();
+      controller.getComplaintFinish();
     }
   }
 
@@ -36,6 +39,8 @@ class _CardReportFinish extends State<CardReportFinish>
     if (timer.isActive) {
       timer.cancel();
     }
+
+    Get.delete<ContractorModel>();
     super.dispose();
   }
 
@@ -46,7 +51,7 @@ class _CardReportFinish extends State<CardReportFinish>
   didChangeDependencies() async {
     super.didChangeDependencies();
     timer = Timer.periodic(Duration(seconds: 1), (second) {
-      controller.realtimeData();
+      controller.realTimeComplaintSelesai();
     });
     controller.scrollcontroller.addListener(onScroll);
   }
@@ -59,61 +64,95 @@ class _CardReportFinish extends State<CardReportFinish>
         title: Text('Laporan Selesai'),
         systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
-      body: GetX<ReportCordinatorFinish>(
-          init: ReportCordinatorFinish(),
-          initState: (state) => controller.getDataFromDb(),
-          builder: (controller) {
-            if (controller.isLoading.value) {
-              return Center(
-                child: SizedBox(
-                    height: 30, width: 30, child: CircularProgressIndicator()),
-              );
-            } else {
-              return ListView.builder(
-                  controller: controller.scrollcontroller,
-                  itemCount: (controller.isMaxReached.value)
-                      ? controller.listReport.length + 1
-                      : controller.listReport.length + 1,
-                  // itemCount: loaded.listReport.length,
-                  itemBuilder: (context, index) => (controller
-                              .listReport.length ==
-                          0)
-                      ? Center(
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 20.h),
-                            child: Text(
-                              'Tidak ada laporan yang selesai dikerjakan',
-                            ),
-                          ),
-                        )
-                      : (index < controller.listReport.length)
-                          ? CardListReport(
-                              description:
-                                  controller.listReport[index].description,
-                              location: controller.listReport[index].address,
-                              time: controller.listReport[index].time,
-                              title: controller.listReport[index].title,
-                              url:
-                                  '${ServerApp.url}${controller.listReport[index].urlImage}',
-                              idReport: controller.listReport[index].idReport,
-                              latitude: controller.listReport[index].latitude,
-                              longitude: controller.listReport[index].longitude,
-                              name: widget.name,
-                              status: null,
-                            )
-                          : (index == controller.listReport.length)
-                              ? SizedBox()
-                              : Center(
-                                  child: SizedBox(
-                                    height: 30,
-                                    width: 30,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 1.5,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+          child: Column(
+            children: [
+              AutoSizeText(
+                'Jumlah laporan yang masuk dan sedang diproses oleh kontraktor lapangan.',
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: Color(0xff616161),
+                ),
+              ),
+              SizedBox(
+                height: 32.h,
+              ),
+              GetX<ContractorController>(
+                  init: ContractorController(),
+                  initState: (state) => controller.getComplaintFinish(),
+                  builder: (controller) {
+                    if (controller.isLoading.value) {
+                      return Center(
+                        child: SizedBox(
+                          height: 30,
+                          width: 30,
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    } else {
+                      return ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          controller: controller.scrollcontroller,
+                          itemCount: (controller.isMaxReached.value)
+                              ? controller.listReport.length + 1
+                              : controller.listReport.length + 1,
+                          // itemCount: loaded.listReport.length,
+                          itemBuilder: (context, index) => (controller
+                                      .listReport.length ==
+                                  0)
+                              ? Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 20.h),
+                                    child: Text(
+                                      'Tidak ada laporan yang selesai dikerjakan',
                                     ),
                                   ),
-                                ));
-            }
-          }),
+                                )
+                              : (index < controller.listReport.length)
+                                  ? Padding(
+                                      padding: EdgeInsets.only(bottom: 16.h),
+                                      child: CardListReport(
+                                        description: controller
+                                            .listReport[index].description,
+                                        location: controller
+                                            .listReport[index].address,
+                                        time: controller.listReport[index].time,
+                                        title:
+                                            controller.listReport[index].title,
+                                        url:
+                                            '${ServerApp.url}${controller.listReport[index].urlImage}',
+                                        idReport: controller
+                                            .listReport[index].idReport,
+                                        latitude: controller
+                                            .listReport[index].latitude,
+                                        longitude: controller
+                                            .listReport[index].longitude,
+                                        statusComplaint: controller
+                                            .listReport[index].statusComplaint,
+                                        name: widget.name,
+                                        status: null,
+                                      ),
+                                    )
+                                  : (index == controller.listReport.length)
+                                      ? SizedBox()
+                                      : Center(
+                                          child: SizedBox(
+                                            height: 30,
+                                            width: 30,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 1.5,
+                                            ),
+                                          ),
+                                        ));
+                    }
+                  }),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

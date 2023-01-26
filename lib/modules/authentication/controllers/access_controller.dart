@@ -20,6 +20,28 @@ class AccessController extends GetxController {
   RxBool statusPeduliLingkunganCord = false.obs;
   RxBool absensiCord = false.obs;
 
+  // access manager contractor
+  RxBool dashboardManagerCon = false.obs;
+  RxBool statusPeduliLingkunganManagerCord = false.obs;
+
+  // access Kepala Kontraktor
+  RxBool dashboardKepalaCon = false.obs;
+  RxBool statusPeduliLingkunganKepalaCon = false.obs;
+  RxBool absensiKepalaCon = false.obs;
+
+  void accessManagerCon() {
+    statistikPeduliLindungi = false.obs;
+    peduliLingkungan = false.obs;
+    statusPeduliLingkungan = false.obs;
+    statusIpl = false.obs;
+    informasiWarga = false.obs;
+    informasiUmum = false.obs;
+    sosialMedia = false.obs;
+
+    dashboardManagerCon = true.obs;
+    statusPeduliLingkunganManagerCord = true.obs;
+  }
+
   void accessAsEm() {
     statistikPeduliLindungi = false.obs;
     peduliLingkungan = false.obs;
@@ -50,7 +72,19 @@ class AccessController extends GetxController {
     absensiCord = true.obs;
   }
 
-  void accessAsContractor() {}
+  void accessAsKepalaContractor() {
+    statistikPeduliLindungi = false.obs;
+    peduliLingkungan = false.obs;
+    statusPeduliLingkungan = false.obs;
+    statusIpl = false.obs;
+    informasiWarga = false.obs;
+    informasiUmum = false.obs;
+    sosialMedia = false.obs;
+
+    dashboardKepalaCon = true.obs;
+    statusPeduliLingkunganKepalaCon = true.obs;
+    absensiKepalaCon = true.obs;
+  }
 
   void accessAsPengelola() {}
 }

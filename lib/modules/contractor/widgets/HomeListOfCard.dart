@@ -17,7 +17,7 @@ class HomeListOfCard extends StatefulWidget {
   HomeListOfCard({Key key}) : super(key: key);
 
   final dataDropdown = [];
-  Future<Map<String, dynamic>> futureLineChart =
+  Future<List<Map<String, dynamic>>> futureLineChart =
       GetChartWorkerServices.getChart();
   // Future<Map<String, dynamic>> futurePieChart = PieChartServices.getPie();
   Future<List<TotalManPowerModel>> futureBarChart =
@@ -58,56 +58,24 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 16.h),
-                FutureBuilder<Map<String, dynamic>>(
-                    // future: widget.futureLineChart,
-                    future: GetChartWorkerServices.getChart(),
-                    builder: (context, snapshot) =>
-                        (snapshot.connectionState == ConnectionState.done)
-                            ? lineChart(snapshot)
-                            : Shimmer.fromColors(
-                                child: Container(
-                                  height: 173.h,
-                                  width: 328.w,
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey,
-                                      borderRadius: BorderRadius.circular(8)),
-                                ),
-                                baseColor: Colors.grey[300],
-                                highlightColor: Colors.grey[200])),
-                // FutureBuilder<Map<String, dynamic>>(
-                //     // future: widget.futurePieChart,
-                //     future: PieChartServices.getPie(),
-                //     builder: (context, snapshot) =>
-                //         (snapshot.connectionState == ConnectionState.done)
-                //             ? pieChart(snapshot)
-                //             : Shimmer.fromColors(
-                //                 child: Container(
-                //                   height: 173.h,
-                //                   width: 328.w,
-                //                   margin: EdgeInsets.only(top: 5),
-                //                   decoration: BoxDecoration(
-                //                       color: Colors.grey,
-                //                       borderRadius: BorderRadius.circular(8)),
-                //                 ),
-                //                 baseColor: Colors.grey[300],
-                //                 highlightColor: Colors.grey[200])),
-                // FutureBuilder(
-                //     future: TotalManPowerServices.getManPower(),
-                //     // future: widget.futureBarChart,
-                //     builder: (context, snapshot) =>
-                //         (snapshot.connectionState == ConnectionState.done)
-                //             ? barChart(snapshot)
-                //             : Shimmer.fromColors(
-                //                 child: Container(
-                //                   height: 349.h,
-                //                   width: 328.w,
-                //                   margin: EdgeInsets.only(top: 5),
-                //                   decoration: BoxDecoration(
-                //                       color: Colors.grey,
-                //                       borderRadius: BorderRadius.circular(8)),
-                //                 ),
-                //                 baseColor: Colors.grey[300],
-                //                 highlightColor: Colors.grey[200])),
+                FutureBuilder<List<Map<String, dynamic>>>(
+                  // future: widget.futureLineChart,
+                  future: GetChartWorkerServices.getChart(),
+                  builder: (context, snapshot) =>
+                      (snapshot.connectionState == ConnectionState.done)
+                          ? Text('asdasd')
+                          : Shimmer.fromColors(
+                              child: Container(
+                                height: 173.h,
+                                width: 328.w,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey,
+                                    borderRadius: BorderRadius.circular(8)),
+                              ),
+                              baseColor: Colors.grey[300],
+                              highlightColor: Colors.grey[200],
+                            ),
+                ),
                 SizedBox(
                   height: 30.h,
                 ),
@@ -319,7 +287,7 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
         ));
   }
 
-  Card lineChart(AsyncSnapshot<Map<String, dynamic>> snapshot) {
+  Card lineChart(List<Map<String, dynamic>> snapshot) {
     return Card(
         elevation: 3,
         shadowColor: Colors.grey,
@@ -334,54 +302,54 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: Text(
-                    '${snapshot.data['title']}',
+                    '${snapshot[0]['title']}',
                     style: TextStyle(fontSize: 10.sp, color: Color(0xff757575)),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            // Initial Value
-                            value: '${snapshot.data['subtitle']}',
-                            isDense: true,
-                            underline: null,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w500),
-                            // Down Arrow Icon
-                            icon: const Icon(Icons.keyboard_arrow_down),
-                            // Array list of items
-                            items: snapshot.data['data_dropdown']
-                                .map<DropdownMenuItem<String>>((data) =>
-                                    DropdownMenuItem(
-                                      value: data['name_category'].toString(),
-                                      child: Text(
-                                          '${data['name_category'].toString()}'),
-                                    ))
-                                .toList(),
+                // Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: 16.w),
+                //   child: Row(
+                //     children: [
+                //       Expanded(
+                //         child: DropdownButtonHideUnderline(
+                //           child: DropdownButton<String>(
+                //             // Initial Value
+                //             value: '${snapshot.data['subtitle']}',
+                //             isDense: true,
+                //             underline: null,
+                //             style: TextStyle(
+                //                 color: Colors.black,
+                //                 fontSize: 16.sp,
+                //                 fontWeight: FontWeight.w500),
+                //             // Down Arrow Icon
+                //             icon: const Icon(Icons.keyboard_arrow_down),
+                //             // Array list of items
+                //             items: snapshot.data['data_dropdown']
+                //                 .map<DropdownMenuItem<String>>((data) =>
+                //                     DropdownMenuItem(
+                //                       value: data['name_category'].toString(),
+                //                       child: Text(
+                //                           '${data['name_category'].toString()}'),
+                //                     ))
+                //                 .toList(),
 
-                            // After selecting the desired option,it will
-                            // change button value to selected value
-                            onChanged: (String category) async {
-                              setState(() {
-                                widget.futureLineChart =
-                                    UpdateChartWorkerServices.updateChart(
-                                        category: category);
-                              });
+                //             // After selecting the desired option,it will
+                //             // change button value to selected value
+                //             onChanged: (String category) async {
+                //               setState(() {
+                //                 widget.futureLineChart =
+                //                     UpdateChartWorkerServices.updateChart(
+                //                         category: category);
+                //               });
 
-                              // widget.future = await UpdateChartWorkerServices.updateChart(category: category);
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                //               // widget.future = await UpdateChartWorkerServices.updateChart(category: category);
+                //             },
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ],
             ),
             SizedBox(height: 16.h),
@@ -390,36 +358,36 @@ class _HomeListOfCardState extends State<HomeListOfCard> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    children: [
-                      Text(
-                        '${snapshot.data['persentase']} %',
-                        style: TextStyle(
-                            fontSize: 33.sp, fontWeight: FontWeight.w500),
-                      ),
-                      SizedBox(height: 19.h),
-                      Text(
-                        '${snapshot.data['pic']}',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      SizedBox(
-                        width: 96.w,
-                        child: SfSparkAreaChart(
-                          data: snapshot.data['chart'].cast<num>(),
-                          color: Colors.red.withOpacity(0.05),
-                          borderColor: Colors.red,
-                          borderWidth: 2,
-                          axisLineColor: Colors.white,
-                        ),
-                      ),
-                    ],
-                  )
+                  // Column(
+                  //   children: [
+                  //     Text(
+                  //       '${snapshot.data['persentase']} %',
+                  //       style: TextStyle(
+                  //           fontSize: 33.sp, fontWeight: FontWeight.w500),
+                  //     ),
+                  //     SizedBox(height: 19.h),
+                  //     Text(
+                  //       '${snapshot.data['pic']}',
+                  //       style: TextStyle(
+                  //         fontSize: 14.sp,
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  // Column(
+                  //   children: [
+                  //     SizedBox(
+                  //       width: 96.w,
+                  //       child: SfSparkAreaChart(
+                  //         data: snapshot.data['chart'].cast<num>(),
+                  //         color: Colors.red.withOpacity(0.05),
+                  //         borderColor: Colors.red,
+                  //         borderWidth: 2,
+                  //         axisLineColor: Colors.white,
+                  //       ),
+                  //     ),
+                  //   ],
+                  // )
                 ],
               ),
             ),

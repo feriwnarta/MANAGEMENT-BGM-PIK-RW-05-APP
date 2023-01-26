@@ -259,6 +259,7 @@ class UserProfileScreen extends StatelessWidget {
                         await UserSecureStorage.deleteIdUser();
                         await UserSecureStorage.deleteStatus();
                         userLoginController.logout();
+                        Get.delete<AccessController>();
                         Get.offAllNamed(RouteName.home);
                       },
                       style: OutlinedButton.styleFrom(
