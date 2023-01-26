@@ -9,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../authentication/screens/login_screen.dart';
 import '../authentication/widgets/onboarding_screen.dart';
-import '../cordinator/screens/home_screen_cordinator.dart';
+import '../contractor/screens/home_screen_cordinator.dart';
 import '../maintenance/screens/maintenance_screen.dart';
 
 class OnBoard extends StatefulWidget {

@@ -1,4 +1,4 @@
-import 'package:aplikasi_rw/modules/cordinator/screens/peduli_lingkungan_cord.dart';
+import 'package:aplikasi_rw/modules/contractor/screens/peduli_lingkungan_cord.dart';
 import 'package:aplikasi_rw/modules/estate_manager/screens/status_peduli_lingkungan_complaint.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/add_complaint.dart';
 import 'package:auto_size_text/auto_size_text.dart';

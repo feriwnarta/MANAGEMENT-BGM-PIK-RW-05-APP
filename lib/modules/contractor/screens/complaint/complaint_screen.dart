@@ -3,7 +3,7 @@ import 'package:aplikasi_rw/controller/report_cordinator_complaint_controller.da
 import 'package:aplikasi_rw/controller/report_cordinator_finish.dart';
 import 'package:aplikasi_rw/controller/report_cordinator_process.dart';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
-import 'package:aplikasi_rw/modules/cordinator/screens/complaint/process_report.dart';
+import 'package:aplikasi_rw/modules/contractor/screens/complaint/process_report.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/cordinator/process_report_services.dart';
 import 'package:cached_network_image/cached_network_image.dart';

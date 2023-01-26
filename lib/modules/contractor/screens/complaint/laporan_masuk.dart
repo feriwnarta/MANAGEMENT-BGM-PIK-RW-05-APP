@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:aplikasi_rw/modules/cordinator/screens/complaint/finish_report_screen.dart';
-import 'package:aplikasi_rw/modules/cordinator/screens/complaint/process_report.dart';
+import 'package:aplikasi_rw/modules/contractor/screens/complaint/finish_report_screen.dart';
+import 'package:aplikasi_rw/modules/contractor/screens/complaint/process_report.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';

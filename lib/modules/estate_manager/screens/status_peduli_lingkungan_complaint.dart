@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../cordinator/screens/complaint/process_report.dart';
+import '../../contractor/screens/complaint/process_report.dart';
 import '../controllers/estate_manager_list_peduli_controller.dart';
 
 class StatusPeduliLingkunganComplaint extends StatefulWidget {

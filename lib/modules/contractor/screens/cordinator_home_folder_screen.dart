@@ -1,6 +1,6 @@
 import 'package:aplikasi_rw/modules/authentication/controllers/access_controller.dart';
-import 'package:aplikasi_rw/modules/cordinator/screens/dashboard_cordinator_screen.dart';
-import 'package:aplikasi_rw/modules/cordinator/widgets/HomeListOfCard.dart';
+import 'package:aplikasi_rw/modules/contractor/screens/dashboard_cordinator_screen.dart';
+import 'package:aplikasi_rw/modules/contractor/widgets/HomeListOfCard.dart';
 import 'package:aplikasi_rw/modules/home/widgets/header_screen.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/sub_menu_report.dart';
 import 'package:flutter/material.dart';

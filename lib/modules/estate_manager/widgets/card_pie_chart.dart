@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../../cordinator/screens/home_screen_cordinator.dart';
+import '../../contractor/screens/home_screen_cordinator.dart';
 
 class CardPieChart extends StatefulWidget {
   const CardPieChart({Key key, this.title, this.total, this.dataPie})
