@@ -37,7 +37,7 @@ class _CordinatorHomeFolderScreenState extends State<MenuFolderCordinator> {
                       children: [
                         Row(
                           children: [
-                            (accessController.dashboardKepalaCon.value)
+                            (accessController.dashboardCord.value)
                                 ? Menu(
                                     icon:
                                         'assets/img/estate_manager_menu/dashboard-em.jpg',
@@ -62,8 +62,7 @@ class _CordinatorHomeFolderScreenState extends State<MenuFolderCordinator> {
                             SizedBox(
                               width: 16.w,
                             ),
-                            (accessController
-                                    .statusPeduliLingkunganKepalaCon.value)
+                            (accessController.statusPeduliLingkunganCord.value)
                                 ? Menu(
                                     icon:
                                         'assets/img/estate_manager_menu/status_peduli_lingkungan.jpg',
@@ -90,7 +89,7 @@ class _CordinatorHomeFolderScreenState extends State<MenuFolderCordinator> {
                             SizedBox(
                               width: 16.w,
                             ),
-                            (accessController.absensiKepalaCon.value)
+                            (accessController.absensiCord.value)
                                 ? Menu(
                                     icon:
                                         'assets/img/estate_manager_menu/absensi_cord.jpg',
@@ -106,8 +105,8 @@ class _CordinatorHomeFolderScreenState extends State<MenuFolderCordinator> {
                                         'assets/img/estate_manager_menu/absensi_cord.jpg',
                                     onTap: () {
                                       EasyLoading.showInfo(
-                                          'Fitur ini hanya bisa diakses oleh contractor',
-                                          dismissOnTap: true);
+                                        'Fitur ini sedang dalam pengembangan',
+                                      );
                                     },
                                     text: 'Absensi',
                                   ),

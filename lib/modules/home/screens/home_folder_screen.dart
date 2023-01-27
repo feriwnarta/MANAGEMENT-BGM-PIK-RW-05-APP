@@ -1,4 +1,5 @@
 import 'package:aplikasi_rw/modules/contractor/screens/cordinator_home_folder_screen.dart';
+import 'package:aplikasi_rw/modules/cordinator/screens/home_folder_cordinator.dart';
 import 'package:aplikasi_rw/modules/estate_manager/screens/menu_folder_screens_em.dart';
 import 'package:aplikasi_rw/modules/home/screens/citizen_screen.dart';
 import 'package:aplikasi_rw/modules/home/widgets/header_screen.dart';
@@ -107,7 +108,7 @@ class _HomeScreenFolderState extends State<HomeScreenFolder> {
                         text: 'Kepala Kontraktor',
                         onTap: () {
                           Get.to(
-                            () => MenuFolderCordinator(),
+                            () => MenuFolderContractor(),
                             transition: Transition.rightToLeft,
                           );
                         },

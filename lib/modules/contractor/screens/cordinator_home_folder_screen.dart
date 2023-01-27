@@ -9,15 +9,14 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../home/widgets/menu.dart';
 
-class MenuFolderCordinator extends StatefulWidget {
-  const MenuFolderCordinator({Key key}) : super(key: key);
+class MenuFolderContractor extends StatefulWidget {
+  const MenuFolderContractor({Key key}) : super(key: key);
 
   @override
-  State<MenuFolderCordinator> createState() =>
-      _CordinatorHomeFolderScreenState();
+  State<MenuFolderContractor> createState() => _MenuFolderContractorState();
 }
 
-class _CordinatorHomeFolderScreenState extends State<MenuFolderCordinator> {
+class _MenuFolderContractorState extends State<MenuFolderContractor> {
   final accessController = Get.find<AccessController>();
 
   @override
@@ -38,7 +37,7 @@ class _CordinatorHomeFolderScreenState extends State<MenuFolderCordinator> {
                       children: [
                         Row(
                           children: [
-                            (accessController.dashboardCord.value)
+                            (accessController.dashboardKepalaCon.value)
                                 ? Menu(
                                     icon:
                                         'assets/img/estate_manager_menu/dashboard-em.jpg',
@@ -55,7 +54,7 @@ class _CordinatorHomeFolderScreenState extends State<MenuFolderCordinator> {
                                         'assets/img/estate_manager_menu/dashboard-em.jpg',
                                     onTap: () {
                                       EasyLoading.showInfo(
-                                          'Fitur ini hanya bisa diakses oleh contractor',
+                                          'Fitur ini hanya bisa diakses oleh estate cordinator',
                                           dismissOnTap: true);
                                     },
                                     text: 'Dashboard',
@@ -63,7 +62,8 @@ class _CordinatorHomeFolderScreenState extends State<MenuFolderCordinator> {
                             SizedBox(
                               width: 16.w,
                             ),
-                            (accessController.statusPeduliLingkunganCord.value)
+                            (accessController
+                                    .statusPeduliLingkunganKepalaCon.value)
                                 ? Menu(
                                     icon:
                                         'assets/img/estate_manager_menu/status_peduli_lingkungan.jpg',
@@ -82,7 +82,7 @@ class _CordinatorHomeFolderScreenState extends State<MenuFolderCordinator> {
                                         'assets/img/estate_manager_menu/status_peduli_lingkungan.jpg',
                                     onTap: () {
                                       EasyLoading.showInfo(
-                                          'Fitur ini hanya bisa diakses oleh contractor',
+                                          'Fitur ini hanya bisa diakses oleh estate cordinator',
                                           dismissOnTap: true);
                                     },
                                     text: 'Status Peduli Lingkungan',

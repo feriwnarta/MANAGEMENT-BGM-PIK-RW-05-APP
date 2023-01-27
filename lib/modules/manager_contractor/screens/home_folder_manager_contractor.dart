@@ -22,6 +22,7 @@ class _CordinatorHomeFolderScreenState
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     return Scaffold(
       body: SafeArea(
         child: SafeArea(
@@ -71,7 +72,8 @@ class _CordinatorHomeFolderScreenState
                                     onTap: () {
                                       Get.to(
                                         () => SubMenuReport(
-                                          typeStatusPeduliLingkungan: 'cord',
+                                          typeStatusPeduliLingkungan:
+                                              'managercon',
                                         ),
                                         transition: Transition.cupertino,
                                       );

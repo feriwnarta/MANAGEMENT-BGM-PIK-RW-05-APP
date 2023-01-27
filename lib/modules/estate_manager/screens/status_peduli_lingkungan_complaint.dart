@@ -466,7 +466,7 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
                                 launchUrl(
                                   Uri(
                                     scheme: 'tel',
-                                    path: '085714342528',
+                                    path: '${item['no_telp']}',
                                   ),
                                 );
                               },
