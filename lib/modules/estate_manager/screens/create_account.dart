@@ -10,7 +10,7 @@ import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:image_picker/image_picker.dart';
 import '../services/create_account_services.dart';
 
-enum TypeAccount { em, kontraktor }
+enum TypeAccount { em, kontraktor, manajerKontraktor }
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({Key key}) : super(key: key);
@@ -25,8 +25,10 @@ class _CreateAccountState extends State<CreateAccount> {
   RxString condition = 'estatekordinator'.obs;
   RxString pathCordinator = ''.obs;
   RxString pathKontraktor = ''.obs;
+  RxString pathManajerCon = ''.obs;
   RxString bagian = ''.obs;
   RxString kepalaBagian = ''.obs;
+  RxString kepalaKontraktor = ''.obs;
   final _formCordinator = GlobalKey<FormState>();
 
   Future futureBagian = CreateAccountServices.getBagian();
@@ -48,6 +50,12 @@ class _CreateAccountState extends State<CreateAccount> {
   final _formKeyPasswordContractor = GlobalKey<FormState>();
   final _formKeyNoTelpContractor = GlobalKey<FormState>();
 
+  /// form key contractor
+  final _formKeyUsernameManajerCon = GlobalKey<FormState>();
+  final _formKeyNamaManajerCon = GlobalKey<FormState>();
+  final _formKeyEmailManajerCon = GlobalKey<FormState>();
+  final _formKeyPasswordManajerCon = GlobalKey<FormState>();
+  final _formKeyNoTelpManajerCon = GlobalKey<FormState>();
   final emController = Get.put(EstateManagerController());
 
   RxList<String> listChecked = <String>[].obs;
@@ -119,6 +127,25 @@ class _CreateAccountState extends State<CreateAccount> {
                               Radio<TypeAccount>(
                                   materialTapTargetSize:
                                       MaterialTapTargetSize.shrinkWrap,
+                                  value: TypeAccount.manajerKontraktor,
+                                  groupValue: akun,
+                                  onChanged: (akun) {
+                                    setState(() {
+                                      this.akun = akun;
+                                    });
+                                    condition.value = 'manajerKontraktor';
+                                  }),
+                              Expanded(child: Text('Manajer Kontraktor'))
+                            ],
+                          ),
+                          flex: 1,
+                        ),
+                        Expanded(
+                          child: Row(
+                            children: [
+                              Radio<TypeAccount>(
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
                                   value: TypeAccount.kontraktor,
                                   groupValue: akun,
                                   onChanged: (akun) {
@@ -127,7 +154,7 @@ class _CreateAccountState extends State<CreateAccount> {
                                     });
                                     condition.value = 'kontraktor';
                                   }),
-                              Expanded(child: Text('Kontraktor'))
+                              Expanded(child: Text('Kepala Kontraktor'))
                             ],
                           ),
                           flex: 1,
@@ -140,7 +167,9 @@ class _CreateAccountState extends State<CreateAccount> {
                     Obx(
                       () => (condition.value == 'estatekordinator')
                           ? estateKordinator()
-                          : kontraktor(),
+                          : (condition.value == 'manajerKontraktor')
+                              ? manajerKontraktor()
+                              : kontraktor(),
                     ),
                   ],
                 ),
@@ -202,6 +231,8 @@ class _CreateAccountState extends State<CreateAccount> {
     if (pickedFile != null) {
       if (path == 'cordinator') {
         pathCordinator.value = pickedFile.path;
+      } else if (path == 'manajerkontraktor') {
+        pathManajerCon.value = pickedFile.path;
       } else {
         pathKontraktor.value = pickedFile.path;
       }
@@ -422,8 +453,22 @@ class _CreateAccountState extends State<CreateAccount> {
                             Form(
                               key: _formKeyNoTelpContractor,
                               child: TextFormField(
+                                onChanged: (value) {
+                                  _formKeyNoTelpContractor.currentState
+                                      .validate();
+                                },
                                 controller: emController.noTelpContractor,
                                 keyboardType: TextInputType.number,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'no telpon tidak boleh kosong';
+                                  } else if (!ValidationForm.isValidPhone(
+                                      value)) {
+                                    return 'no telpon tidak valid';
+                                  } else {
+                                    return null;
+                                  }
+                                },
                                 decoration: InputDecoration(
                                   isDense: true,
                                   contentPadding: EdgeInsets.symmetric(
@@ -621,6 +666,513 @@ class _CreateAccountState extends State<CreateAccount> {
                                     });
                                   }
                                 }
+                              } else {
+                                EasyLoading.showInfo('mohon semua field diisi');
+                              }
+                            },
+                            child: Text(
+                              'Simpan',
+                              style: TextStyle(fontSize: 16.sp),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 16.h,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              )
+            : Center(
+                child: CircularProgressIndicator(),
+              ));
+  }
+
+  FutureBuilder manajerKontraktor() {
+    return FutureBuilder<List<dynamic>>(
+        future: futureBagian,
+        builder: (context, snapshot) => (snapshot.hasData)
+            ? Column(
+                children: [
+                  Center(
+                    child: Obx(
+                      () => Column(
+                        children: [
+                          CircleAvatar(
+                            backgroundImage: (pathManajerCon.isEmpty)
+                                ? image
+                                : FileImage(File(pathManajerCon.value)),
+                            radius: 124.h / 2,
+                          ),
+                          SizedBox(
+                            height: 24.h,
+                          ),
+                          OutlinedButton(
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (context) =>
+                                    bottomImagePicker('managerkontraktor'),
+                              );
+                            },
+                            child: Text(
+                              'Pilih gambar',
+                              style: TextStyle(
+                                  fontSize: 16.sp, color: Color(0xff9E9E9E)),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 32.h,
+                          ),
+                          SizedBox(
+                            width: 216.w,
+                            child: Column(children: [
+                              Text(
+                                'Ukuran gambar : maks. 1MB',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: Color(0xff9E9E9E),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 4.h,
+                              ),
+                              Text(
+                                'Format gambar : .JPG, .PNG',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: Color(0xff9E9E9E),
+                                ),
+                              )
+                            ]),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 38.h,
+                  ),
+                  Form(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Username',
+                              style: TextStyle(fontSize: 14.sp),
+                            ),
+                            SizedBox(
+                              height: 4.h,
+                            ),
+                            Form(
+                              key: _formKeyUsernameManajerCon,
+                              onChanged: () => _formKeyUsernameManajerCon
+                                  .currentState
+                                  .validate(),
+                              child: TextFormField(
+                                controller: emController.usernameManagerCon,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'username tidak boleh kosong';
+                                  } else if (value.length < 5) {
+                                    return 'username harus lebih dari 5 karakter';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                style: TextStyle(fontSize: 14.sp),
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 12.w, vertical: 6.h),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xffC2C2C2),
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 16.h,
+                            )
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Nama',
+                              style: TextStyle(fontSize: 14.sp),
+                            ),
+                            SizedBox(
+                              height: 4.h,
+                            ),
+                            Form(
+                              key: _formKeyNamaManajerCon,
+                              onChanged: () => _formKeyNamaManajerCon
+                                  .currentState
+                                  .validate(),
+                              child: TextFormField(
+                                onChanged: (value) {
+                                  if (value.isEmpty) {
+                                    return 'nama tidak boleh kosong';
+                                  }
+                                  return null;
+                                },
+                                controller: emController.namaManagerCon,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 12.w, vertical: 6.h),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xffC2C2C2),
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 16.h,
+                            )
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Email',
+                              style: TextStyle(fontSize: 14.sp),
+                            ),
+                            SizedBox(
+                              height: 4.h,
+                            ),
+                            Form(
+                              key: _formKeyEmailManajerCon,
+                              child: TextFormField(
+                                onChanged: (value) => _formKeyEmailManajerCon
+                                    .currentState
+                                    .validate(),
+                                controller: emController.emailManagerCon,
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'email tidak boleh kosong';
+                                  } else if (!ValidationForm.isValidEmail(
+                                      value)) {
+                                    return 'email tidak valid';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 12.w, vertical: 6.h),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xffC2C2C2),
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 16.h,
+                            )
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'No telpon',
+                              style: TextStyle(fontSize: 14.sp),
+                            ),
+                            SizedBox(
+                              height: 4.h,
+                            ),
+                            Form(
+                              key: _formKeyNoTelpManajerCon,
+                              child: TextFormField(
+                                onChanged: (value) {
+                                  _formKeyNoTelpManajerCon.currentState
+                                      .validate();
+                                },
+                                controller: emController.noTelpManagerCon,
+                                keyboardType: TextInputType.number,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'no telpon tidak boleh kosong';
+                                  } else if (!ValidationForm.isValidPhone(
+                                      value)) {
+                                    return 'no telpon tidak valid';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 12.w, vertical: 6.h),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xffC2C2C2),
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 16.h,
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 4.h,
+                        ),
+                        Text(
+                          'Bagian',
+                          style: TextStyle(fontSize: 14.sp),
+                        ),
+                        SizedBox(
+                          height: 4.h,
+                        ),
+                        FutureBuilder<List<Map<String, dynamic>>>(
+                            future: CreateAccountServices.getBagianContractor(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return CheckboxGroup(
+                                  checked: listChecked,
+                                  labels: snapshot.data
+                                      .map((e) => e['category'] as String)
+                                      .toList(),
+                                  labelStyle: TextStyle(fontSize: 12.sp),
+                                  onChange: (isChecked, label, index) {
+                                    if (isChecked) {
+                                      listChecked.add(label);
+                                    } else {
+                                      listChecked.remove(label);
+                                    }
+
+                                    print(listChecked);
+                                  },
+                                );
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator.adaptive(),
+                                );
+                              }
+                            }),
+                        SizedBox(
+                          height: 16.h,
+                        ),
+                        Text(
+                          'Kepala Bagian',
+                          style: TextStyle(fontSize: 14.sp),
+                        ),
+                        FutureBuilder<List<Map<String, dynamic>>>(
+                          future: CreateAccountServices.getKepalaBagian(),
+                          builder: (context, snapshot) => (snapshot.hasData)
+                              ? DropdownButtonFormField(
+                                  itemHeight: null,
+                                  items: snapshot.data
+                                      .map(
+                                        (e) => DropdownMenuItem<String>(
+                                          enabled: true,
+                                          value: '${e['id_estate_cordinator']}',
+                                          child: Text(
+                                            '${e['name_estate_cordinator']}',
+                                            style: TextStyle(
+                                                fontSize: 14.sp,
+                                                color: Color(0xff757575)),
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                  hint: Text(
+                                      '${snapshot.data[0]['name_estate_cordinator']}'),
+                                  value: snapshot.data[0]
+                                      ['id_estate_cordinator'],
+                                  onChanged: (value) {
+                                    kepalaBagian.value = value;
+                                    print(value);
+                                  },
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 12.w, vertical: 6.h),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0xffC2C2C2),
+                                      ),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0xffC2C2C2),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : SizedBox(),
+                        ),
+                        SizedBox(
+                          height: 16.h,
+                        ),
+                        Text(
+                          'Kepala Kontraktor',
+                          style: TextStyle(fontSize: 14.sp),
+                        ),
+                        FutureBuilder<List<Map<String, dynamic>>>(
+                          future: CreateAccountServices.getKepalaKontraktor(),
+                          builder: (context, snapshot) => (snapshot.hasData)
+                              ? DropdownButtonFormField(
+                                  itemHeight: null,
+                                  items: snapshot.data
+                                      .map(
+                                        (e) => DropdownMenuItem<String>(
+                                          enabled: true,
+                                          value: '${e['id_contractor']}',
+                                          child: Text(
+                                            '${e['name_contractor']}',
+                                            style: TextStyle(
+                                                fontSize: 14.sp,
+                                                color: Color(0xff757575)),
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                  hint: Text(
+                                      '${snapshot.data[0]['name_contractor']}'),
+                                  value: snapshot.data[0]['id_contractor'],
+                                  onChanged: (value) {
+                                    kepalaKontraktor.value = value;
+                                    print(value);
+                                  },
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 12.w, vertical: 6.h),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0xffC2C2C2),
+                                      ),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0xffC2C2C2),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : SizedBox(),
+                        ),
+                        SizedBox(
+                          height: 22.h,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Password',
+                              style: TextStyle(fontSize: 14.sp),
+                            ),
+                            SizedBox(
+                              height: 4.h,
+                            ),
+                            Form(
+                              key: _formKeyPasswordManajerCon,
+                              child: TextFormField(
+                                controller: emController.passwordManagerCon,
+                                onChanged: (value) => _formKeyPasswordManajerCon
+                                    .currentState
+                                    .validate(),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'password tidak boleh kosong';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 12.w, vertical: 6.h),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xffC2C2C2),
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 16.h,
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 32.h,
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50))),
+                            onPressed: () async {
+                              if (_formKeyUsernameManajerCon.currentState
+                                      .validate() &&
+                                  _formKeyNamaManajerCon.currentState
+                                      .validate() &&
+                                  _formKeyEmailManajerCon.currentState
+                                      .validate() &&
+                                  _formKeyPasswordManajerCon.currentState
+                                      .validate()) {
+                                if (listChecked.isEmpty) {
+                                  EasyLoading.showInfo('Bagian harus dipilih');
+                                } else if (kepalaBagian.value.isEmpty) {
+                                  EasyLoading.showInfo(
+                                      'Kepala bagian harus dipilih');
+                                } else if (kepalaKontraktor.value.isEmpty) {
+                                  EasyLoading.showInfo(
+                                      'Kepala kontraktor harus dipilih');
+                                } else {
+                                  String result = await CreateAccountServices
+                                      .manajerKontraktor(
+                                    email: emController.emailManagerCon.text,
+                                    fotoProfile: pathManajerCon.value,
+                                    name: emController.namaManagerCon.text,
+                                    noTelp: emController.noTelpManagerCon.text,
+                                    password:
+                                        emController.passwordManagerCon.text,
+                                    username:
+                                        emController.usernameManagerCon.text,
+                                    idEstateCord: kepalaBagian.value,
+                                    contractorJob: listChecked.join(','),
+                                    idKepalaCon: kepalaKontraktor.value,
+                                  );
+
+                                  if (result == 'register successfull') {
+                                    setState(() {
+                                      emController.reset();
+                                      listChecked.clear();
+                                    });
+                                  }
+                                }
+                              } else {
+                                EasyLoading.showInfo('Mohon semua field diisi');
                               }
                             },
                             child: Text(
@@ -1007,6 +1559,8 @@ class _CreateAccountState extends State<CreateAccount> {
                                 pathCordinator.value = '';
                                 FocusScope.of(context).unfocus();
                               }
+                            } else {
+                              EasyLoading.showInfo('mohon semua field diisi');
                             }
                           },
                           child: Text(

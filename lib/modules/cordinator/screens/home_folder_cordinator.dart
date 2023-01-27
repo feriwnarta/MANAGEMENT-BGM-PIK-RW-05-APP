@@ -54,7 +54,7 @@ class _CordinatorHomeFolderScreenState extends State<MenuFolderCordinator> {
                                         'assets/img/estate_manager_menu/dashboard-em.jpg',
                                     onTap: () {
                                       EasyLoading.showInfo(
-                                          'Fitur ini hanya bisa diakses oleh contractor',
+                                          'Fitur ini hanya bisa diakses oleh estate cordinator',
                                           dismissOnTap: true);
                                     },
                                     text: 'Dashboard',
@@ -81,7 +81,7 @@ class _CordinatorHomeFolderScreenState extends State<MenuFolderCordinator> {
                                         'assets/img/estate_manager_menu/status_peduli_lingkungan.jpg',
                                     onTap: () {
                                       EasyLoading.showInfo(
-                                          'Fitur ini hanya bisa diakses oleh contractor',
+                                          'Fitur ini hanya bisa diakses oleh estate cordinator',
                                           dismissOnTap: true);
                                     },
                                     text: 'Status Peduli Lingkungan',

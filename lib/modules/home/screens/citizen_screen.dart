@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
+import 'package:aplikasi_rw/modules/authentication/controllers/access_controller.dart';
 import 'package:aplikasi_rw/modules/home/services/news_service.dart';
 import 'package:aplikasi_rw/modules/home/widgets/menu.dart';
 import 'package:aplikasi_rw/modules/informasi_warga/screens/informasi_warga_screen.dart';
@@ -12,6 +13,7 @@ import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -31,6 +33,7 @@ class CitizenScreen extends StatefulWidget {
 
 class _MyWidgetState extends State<CitizenScreen> {
   final userLoginController = Get.put(UserLoginController());
+  final accesController = Get.put(AccessController());
 
   final AssetImage image = AssetImage('assets/img/logo_rw.png');
 
@@ -251,78 +254,126 @@ class _MyWidgetState extends State<CitizenScreen> {
               SizedBox(
                 height: 24.h,
               ),
-              Container(
-                height: 236.h,
-                margin: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Menu(
-                          icon: 'assets/img/citizen_menu/ipl.jpg',
-                          text: 'Peduli lingkungan',
-                          onTap: () => Get.to(
-                              () => SubMenuReport(
-                                    typeStatusPeduliLingkungan: 'warga',
+              Obx(
+                () => Container(
+                  height: 236.h,
+                  margin: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          (accesController.statusPeduliLingkungan.value)
+                              ? Menu(
+                                  icon: 'assets/img/citizen_menu/ipl.jpg',
+                                  text: 'Peduli lingkungan',
+                                  onTap: () => Get.to(
+                                      () => SubMenuReport(
+                                            typeStatusPeduliLingkungan: 'warga',
+                                          ),
+                                      transition: Transition.rightToLeft),
+                                )
+                              : Menu(
+                                  icon: 'assets/img/citizen_menu/ipl.jpg',
+                                  text: 'Peduli lingkungan',
+                                  onTap: () => EasyLoading.showInfo(
+                                      'Fitur ini hanya bisa diakses oleh warga'),
+                                ),
+                          SizedBox(
+                            width: 14.w,
+                          ),
+                          (accesController.statusPeduliLingkungan.value)
+                              ? Menu(
+                                  icon:
+                                      'assets/img/citizen_menu/status-peduli-lingkungan.jpg',
+                                  text: 'Status peduli lingkungan',
+                                  onTap: () => Get.to(() => ReportScreen2(),
+                                      transition: Transition.rightToLeft),
+                                )
+                              : Menu(
+                                  icon:
+                                      'assets/img/citizen_menu/status-peduli-lingkungan.jpg',
+                                  text: 'Status peduli lingkungan',
+                                  onTap: () => EasyLoading.showInfo(
+                                      'Fitur ini hanya bisa diakses oleh warga'),
+                                ),
+                          SizedBox(
+                            width: 14.w,
+                          ),
+                          (accesController.statusIpl.value)
+                              ? Menu(
+                                  icon: 'assets/img/citizen_menu/ipl.jpg',
+                                  text: 'Status IPL\n',
+                                  onTap: () => Get.to(
+                                    () => PaymentIplHistory(),
+                                    transition: Transition.rightToLeft,
                                   ),
-                              transition: Transition.rightToLeft),
-                        ),
-                        SizedBox(
-                          width: 14.w,
-                        ),
-                        Menu(
-                          icon:
-                              'assets/img/citizen_menu/status-peduli-lingkungan.jpg',
-                          text: 'Status peduli lingkungan',
-                          onTap: () => Get.to(() => ReportScreen2(),
-                              transition: Transition.rightToLeft),
-                        ),
-                        SizedBox(
-                          width: 14.w,
-                        ),
-                        Menu(
-                          icon: 'assets/img/citizen_menu/ipl.jpg',
-                          text: 'Status IPL\n',
-                          onTap: () => Get.to(
-                            () => PaymentIplHistory(),
-                            transition: Transition.rightToLeft,
+                                )
+                              : Menu(
+                                  icon: 'assets/img/citizen_menu/ipl.jpg',
+                                  text: 'Status IPL\n',
+                                  onTap: () => EasyLoading.showInfo(
+                                      'Fitur ini hanya bisa diakses oleh warga'),
+                                ),
+                          SizedBox(
+                            width: 14.w,
                           ),
-                        ),
-                        SizedBox(
-                          width: 14.w,
-                        ),
-                        Menu(
-                          icon: 'assets/img/citizen_menu/informasi-warga.jpg',
-                          text: 'Informasi Warga',
-                          onTap: () => Get.to(
-                            () => InformasiWargaScreen(),
-                            transition: Transition.rightToLeft,
+                          (accesController.informasiWarga.value)
+                              ? Menu(
+                                  icon:
+                                      'assets/img/citizen_menu/informasi-warga.jpg',
+                                  text: 'Informasi Warga',
+                                  onTap: () => Get.to(
+                                    () => InformasiWargaScreen(),
+                                    transition: Transition.rightToLeft,
+                                  ),
+                                )
+                              : Menu(
+                                  icon:
+                                      'assets/img/citizen_menu/informasi-warga.jpg',
+                                  text: 'Informasi Warga',
+                                  onTap: () => EasyLoading.showInfo(
+                                      'Fitur ini hanya bisa diakses oleh warga')),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 16.h,
+                      ),
+                      Row(
+                        children: [
+                          (accesController.informasiUmum.value)
+                              ? Menu(
+                                  icon:
+                                      'assets/img/citizen_menu/informasi-umum.jpg',
+                                  text: 'Informasi Umum',
+                                  onTap: () {},
+                                )
+                              : Menu(
+                                  icon:
+                                      'assets/img/citizen_menu/informasi-umum.jpg',
+                                  text: 'Informasi Umum',
+                                  onTap: () => EasyLoading.showInfo(
+                                      'Fitur ini hanya bisa diakses oleh warga'),
+                                ),
+                          SizedBox(
+                            width: 14.w,
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    Row(
-                      children: [
-                        Menu(
-                          icon: 'assets/img/citizen_menu/informasi-umum.jpg',
-                          text: 'Informasi Umum',
-                          onTap: () {},
-                        ),
-                        SizedBox(
-                          width: 14.w,
-                        ),
-                        Menu(
-                          icon: 'assets/img/citizen_menu/media.jpg',
-                          text: 'Sosial Media',
-                          onTap: () => Get.to(() => SocialMedia(),
-                              transition: Transition.rightToLeft),
-                        ),
-                      ],
-                    ),
-                  ],
+                          (accesController.sosialMedia.value)
+                              ? Menu(
+                                  icon: 'assets/img/citizen_menu/media.jpg',
+                                  text: 'Sosial Media',
+                                  onTap: () => Get.to(() => SocialMedia(),
+                                      transition: Transition.rightToLeft),
+                                )
+                              : Menu(
+                                  icon: 'assets/img/citizen_menu/media.jpg',
+                                  text: 'Sosial Media',
+                                  onTap: () => EasyLoading.showInfo(
+                                      'Fitur ini hanya bisa diakses oleh warga'),
+                                ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(

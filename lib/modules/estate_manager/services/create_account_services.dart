@@ -168,6 +168,90 @@ class CreateAccountServices {
     return result;
   }
 
+  static Future<String> manajerKontraktor(
+      {String username,
+      String name,
+      String password,
+      String contractorJob,
+      String email,
+      String noTelp,
+      String idEstateCord,
+      String idKepalaCon,
+      String fotoProfile}) async {
+    Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
+
+    String result = '';
+
+    String url =
+        '${ServerApp.url}src/login/login_manager_kontraktor/register_manager_contractor.php';
+
+    FormData formData;
+
+    if (fotoProfile.isNotEmpty) {
+      formData = FormData.fromMap(
+        {
+          'username': username,
+          'name_manager': name,
+          'password': password,
+          'manager_job': contractorJob,
+          'id_estate_cordinator': idEstateCord,
+          'id_contractor': idKepalaCon,
+          'email': email,
+          'no_telp': noTelp,
+          'foto_profile': MultipartFileRecreatable.fromFileSync(
+            fotoProfile,
+            filename: fotoProfile,
+            contentType: MediaType('image', 'jpg'),
+          )
+        },
+      );
+    } else {
+      formData = FormData.fromMap(
+        {
+          'username': username,
+          'name_manager': name,
+          'password': password,
+          'manager_job': contractorJob,
+          'id_estate_cordinator': idEstateCord,
+          'id_contractor': idKepalaCon,
+          'email': email,
+          'no_telp': noTelp,
+          'foto_profile': '',
+        },
+      );
+    }
+
+    EasyLoading.show(status: 'loading');
+    var response = await dio.post(url, data: formData);
+
+    final logger = Logger();
+    logger.i(formData.fields);
+
+    logger.i(formData.fields);
+
+    if (response.statusCode >= 200 && response.statusCode <= 399) {
+      logger.i(response.data);
+      result = jsonDecode(response.data);
+
+      EasyLoading.dismiss();
+
+      if (result == 'register successfull') {
+        EasyLoading.showSuccess('Akun berhasil dibuat');
+      } else if (result == 'username sudah ada') {
+        EasyLoading.showError('Username sudah digunakan');
+      } else if (result == 'no telpon sudah ada') {
+        EasyLoading.showError('Nomor telpon sudah digunakan');
+      } else if (result == 'email sudah ada') {
+        EasyLoading.showError('Email sudah digunakan');
+      }
+
+      return result;
+    }
+
+    return result;
+  }
+
   static Future<List<dynamic>> getBagian() async {
     String idUser = await UserSecureStorage.getIdUser();
     if (idUser == null) {
@@ -233,6 +317,30 @@ class CreateAccountServices {
 
       List<Map<String, dynamic>> dataReturn =
           response.map<Map<String, dynamic>>((e) => e).toList();
+
+      return dataReturn;
+    }
+  }
+
+  static Future<List<Map<String, dynamic>>> getKepalaKontraktor() async {
+    String url = '${ServerApp.url}src/contractor/tarik_kepala_contractor.php';
+
+    Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
+
+    String idUser = await UserSecureStorage.getIdUser();
+
+    var data = {'id_user': idUser};
+    var result = await dio.post(url, data: jsonEncode(data));
+
+    if (result.statusCode >= 200 && result.statusCode <= 399) {
+      var response = jsonDecode(result.data) as List;
+      final logger = Logger();
+
+      List<Map<String, dynamic>> dataReturn =
+          response.map<Map<String, dynamic>>((e) => e).toList();
+
+      logger.i(dataReturn);
 
       return dataReturn;
     }

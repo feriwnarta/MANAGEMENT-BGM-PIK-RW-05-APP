@@ -248,8 +248,7 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
               borderRadius: BorderRadius.circular(50),
             )),
             onPressed: () {
-              if (widget.typeStatusPeduliLingkungan
-                  .isCaseInsensitiveContainsAny('warga')) {
+              if (widget.typeStatusPeduliLingkungan == 'warga') {
                 switch (typeStatus.value) {
                   case 'peduli lingkungan umum':
                     Get.to(() => AddComplaint());
@@ -260,8 +259,7 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                     EasyLoading.showError('ada sesuatu yang salah');
                     break;
                 }
-              } else if (widget.typeStatusPeduliLingkungan
-                  .isCaseInsensitiveContainsAny('em')) {
+              } else if (widget.typeStatusPeduliLingkungan == 'em') {
                 switch (typeStatus.value) {
                   case 'peduli lingkungan umum':
                     Get.to(
@@ -274,8 +272,7 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                     EasyLoading.showError('ada sesuatu yang salah');
                     break;
                 }
-              } else if (widget.typeStatusPeduliLingkungan
-                  .isCaseInsensitiveContainsAny('con')) {
+              } else if (widget.typeStatusPeduliLingkungan == 'con') {
                 switch (typeStatus.value) {
                   case 'peduli lingkungan umum':
                     Get.to(
@@ -289,8 +286,7 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                     EasyLoading.showError('ada sesuatu yang salah');
                     break;
                 }
-              } else if (widget.typeStatusPeduliLingkungan
-                  .isCaseInsensitiveContainsAny('managercon')) {
+              } else if (widget.typeStatusPeduliLingkungan == 'managercon') {
                 switch (typeStatus.value) {
                   case 'peduli lingkungan umum':
                     Get.to(
@@ -304,8 +300,7 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                     EasyLoading.showError('ada sesuatu yang salah');
                     break;
                 }
-              } else if (widget.typeStatusPeduliLingkungan
-                  .isCaseInsensitiveContainsAny('cord')) {
+              } else if (widget.typeStatusPeduliLingkungan == 'cord') {
                 switch (typeStatus.value) {
                   case 'peduli lingkungan umum':
                     Get.to(

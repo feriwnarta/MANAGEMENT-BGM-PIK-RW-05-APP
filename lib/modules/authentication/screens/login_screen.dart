@@ -1001,7 +1001,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
               if (idUser.isNotEmpty) {
                 // Navigator.of(context).pop();
                 EasyLoading.dismiss();
-                authController.dispose();
+                // authController.dispose();
                 registerController.resetController();
                 registerController.update();
                 Get.offAllNamed(RouteName.home);

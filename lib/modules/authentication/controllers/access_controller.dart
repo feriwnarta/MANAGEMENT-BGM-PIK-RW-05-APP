@@ -2,13 +2,13 @@ import 'package:get/get.dart';
 
 class AccessController extends GetxController {
   // access warga
-  RxBool statistikPeduliLindungi = true.obs;
-  RxBool peduliLingkungan = true.obs;
-  RxBool statusPeduliLingkungan = true.obs;
-  RxBool statusIpl = true.obs;
-  RxBool informasiWarga = true.obs;
-  RxBool informasiUmum = true.obs;
-  RxBool sosialMedia = true.obs;
+  RxBool statistikPeduliLindungi = false.obs;
+  RxBool peduliLingkungan = false.obs;
+  RxBool statusPeduliLingkungan = false.obs;
+  RxBool statusIpl = false.obs;
+  RxBool informasiWarga = false.obs;
+  RxBool informasiUmum = false.obs;
+  RxBool sosialMedia = false.obs;
 
   // access estate manager
   RxBool dashboardEm = false.obs;
@@ -56,7 +56,15 @@ class AccessController extends GetxController {
     statusPeduliLingkunganEm = true.obs;
   }
 
-  void accessAsCitizen() {}
+  void accessAsCitizen() {
+    statistikPeduliLindungi = true.obs;
+    peduliLingkungan = true.obs;
+    statusPeduliLingkungan = true.obs;
+    statusIpl = true.obs;
+    informasiWarga = true.obs;
+    informasiUmum = true.obs;
+    sosialMedia = true.obs;
+  }
 
   void accessAsCordinator() {
     statistikPeduliLindungi = false.obs;
