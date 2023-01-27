@@ -124,25 +124,42 @@ class _SplashViewState extends State<SplashView> {
   }
 
   Future<void> checkConnectivity() async {
-    var connection = await (Connectivity().checkConnectivity());
-    if (connection == ConnectivityResult.none) {
-      await _loginController.noConnection();
-    } else {
-      String status = await UserSecureStorage.getStatus();
-      String message = 'OKE';
+    try {
       final logger = Logger();
-      if (message.isCaseInsensitiveContainsAny('OKE') ||
-          message.isCaseInsensitiveContainsAny('RELOG')) {
-        logger.e(status);
-        _loginController.connect();
-        await checkOtpWhenExit();
-        await _loginController.checkLogin();
-        checkAccess();
-        await checkMaintenance();
-      } else if (message.isCaseInsensitiveContainsAny('FAILL')) {
-        _loginController.logout();
-        Get.snackbar('message', 'your account has been logged out');
-      } else {}
+      var checkConnection = await InternetAddress.lookup('${ServerApp.ip}');
+      logger.i(checkConnection);
+
+      if (checkConnection.isNotEmpty &&
+          checkConnection[0].rawAddress.isNotEmpty) {
+        var connection = await (Connectivity().checkConnectivity());
+        final logger = Logger();
+
+        logger.d(connection);
+
+        if (connection == ConnectivityResult.none) {
+          await _loginController.noConnection();
+        } else {
+          String status = await UserSecureStorage.getStatus();
+          String message = 'OKE';
+          final logger = Logger();
+          if (message.isCaseInsensitiveContainsAny('OKE') ||
+              message.isCaseInsensitiveContainsAny('RELOG')) {
+            logger.e(status);
+            _loginController.connect();
+            await checkOtpWhenExit();
+            await _loginController.checkLogin();
+            checkAccess();
+            await checkMaintenance();
+          } else if (message.isCaseInsensitiveContainsAny('FAILL')) {
+            _loginController.logout();
+            Get.snackbar('message', 'your account has been logged out');
+          } else {}
+        }
+      } else {
+        await _loginController.noConnection();
+      }
+    } on SocketException catch (_) {
+      await _loginController.noConnection();
     }
   }
 

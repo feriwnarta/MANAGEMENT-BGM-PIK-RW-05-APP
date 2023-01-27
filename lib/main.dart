@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:aplikasi_rw/controller/home_screen_controller.dart';
 import 'package:aplikasi_rw/controller/indexscreen_home_controller.dart';
+import 'package:aplikasi_rw/controller/network_check_controller.dart';
 import 'package:aplikasi_rw/controller/report_user_controller.dart';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/home/screens/home_folder_screen.dart';
@@ -235,6 +238,31 @@ class _MainAppState extends State<MainApp> {
   final homeController = Get.put(HomeScreenController());
   final reportController = Get.put(ReportUserController());
   final indexScreen = Get.put(IndexScreenHomeController());
+  final networkCheck = Get.put(NetworkCheckController());
+
+  Timer timer;
+  final logger = Logger();
+
+  @override
+  void didChangeDependencies() {
+    timer = Timer.periodic(Duration(seconds: 5), (_) {
+      networkCheck.checkConnection();
+
+      if (!networkCheck.connectionExist.value) {
+        Get.showSnackbar(
+          GetSnackBar(
+            title: 'Tidak ada internet',
+            message: 'Tidak ada koneksi internet',
+            icon: Icon(
+              Icons.refresh,
+              color: Colors.white,
+            ),
+          ),
+        );
+      }
+    });
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
