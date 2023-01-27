@@ -2,8 +2,6 @@ import 'package:aplikasi_rw/modules/estate_manager/models/card_status_peduli_em_
 import 'package:aplikasi_rw/modules/estate_manager/services/status_peduli_lingkungan_services.dart';
 import 'package:get/get.dart';
 
-import '../../../utils/UserSecureStorage.dart';
-
 class ListStatusPeduliEmController extends GetxController {
   List<StatusPeduliEmModel> listStatusPeduli = <StatusPeduliEmModel>[].obs;
   List<StatusPeduliEmModel> listStatusNew = <StatusPeduliEmModel>[].obs;

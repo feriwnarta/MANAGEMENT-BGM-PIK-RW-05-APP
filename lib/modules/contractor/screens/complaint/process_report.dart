@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:aplikasi_rw/modules/contractor/services/contractor_proses_complain_services.dart';
-import 'package:aplikasi_rw/services/cordinator/process_report_services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,7 +10,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
-import '../../../../controller/user_login_controller.dart';
 import 'finish_report_screen.dart';
 
 //ignore: must_be_immutable
@@ -277,7 +275,8 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
                               imagePathCond2.isNotEmpty) {
                             EasyLoading.show(status: 'loading');
                             Map<String, dynamic> message =
-                                await ContractorProcessComplaint.processComplaint(
+                                await ContractorProcessComplaint
+                                    .processComplaint(
                               idReport: widget.idReport,
                               img1: imagePathCond1,
                               img2: imagePathCond2,

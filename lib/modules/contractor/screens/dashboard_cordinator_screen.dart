@@ -1,5 +1,4 @@
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
-import 'package:aplikasi_rw/modules/estate_manager/widgets/statistic_chart.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +11,6 @@ import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 import '../../../services/chart_worker/get_chart_worker.dart';
 import '../../../services/chart_worker/get_pie_chart_worker.dart';
-import '../../../services/chart_worker/total_manpower_services.dart';
 import '../../../services/chart_worker/update_chart_worker.dart';
 import 'home_screen_cordinator.dart';
 

@@ -1,20 +1,20 @@
-import 'package:aplikasi_rw/modules/manager_contractor/screens/laporan_masuk_manager_con.dart';
-import 'package:aplikasi_rw/modules/manager_contractor/screens/laporan_proses_manager_con.dart';
-import 'package:aplikasi_rw/modules/manager_contractor/screens/laporan_selesai_manager_contractor.dart';
+import 'package:aplikasi_rw/modules/cordinator/screens/laporan_diproses_cordinator.dart';
+import 'package:aplikasi_rw/modules/cordinator/screens/laporan_masuk_cordinator.dart';
+import 'package:aplikasi_rw/modules/cordinator/screens/laporan_selesai_cordinator.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class PeduliLingkunganManagerCon extends StatefulWidget {
-  const PeduliLingkunganManagerCon({Key key}) : super(key: key);
+class PeduliLingkunganCordinator extends StatefulWidget {
+  const PeduliLingkunganCordinator({Key key}) : super(key: key);
 
   @override
-  State<PeduliLingkunganManagerCon> createState() => _MyWidgetState();
+  State<PeduliLingkunganCordinator> createState() => _MyWidgetState();
 }
 
-class _MyWidgetState extends State<PeduliLingkunganManagerCon> {
+class _MyWidgetState extends State<PeduliLingkunganCordinator> {
   final AssetImage imageLaporanMasuk = AssetImage(
     'assets/img/cordinator/laporan-masuk.jpg',
   );
@@ -68,7 +68,7 @@ class _MyWidgetState extends State<PeduliLingkunganManagerCon> {
                   InkWell(
                     onTap: () {
                       Get.to(
-                        () => LaporanMasukManagerCon(
+                        () => LaporanMasukCordinator(
                           status: 'bukan finish',
                         ),
                         transition: Transition.rightToLeft,
@@ -104,7 +104,7 @@ class _MyWidgetState extends State<PeduliLingkunganManagerCon> {
                   InkWell(
                     onTap: () {
                       Get.to(
-                        () => LaporanDiprosesManagerCon(),
+                        () => LaporanDiprosesCordinator(),
                         transition: Transition.cupertino,
                       );
                     },
@@ -137,8 +137,8 @@ class _MyWidgetState extends State<PeduliLingkunganManagerCon> {
                   InkWell(
                     onTap: () {
                       Get.to(
-                        () => LaporanSelesaiManagerContractor(),
-                        transition: Transition.rightToLeft,
+                        () => LaporanSelesaiCordinator(status: 'SELESAI'),
+                        transition: Transition.cupertino,
                       );
                     },
                     child: SizedBox(

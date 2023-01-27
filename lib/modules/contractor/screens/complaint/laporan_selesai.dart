@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'package:aplikasi_rw/model/contractor_model.dart';
 import 'package:aplikasi_rw/modules/contractor/controller/contractor_controller.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../controller/report_cordinator_finish.dart';
 import '../../../../server-app.dart';
 import 'laporan_masuk.dart';
 
@@ -40,7 +38,7 @@ class _CardReportFinish extends State<CardReportFinish>
       timer.cancel();
     }
 
-    Get.delete<ContractorModel>();
+    Get.delete<ContractorController>();
     super.dispose();
   }
 

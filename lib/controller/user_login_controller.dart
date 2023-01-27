@@ -1,11 +1,8 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:aplikasi_rw/model/contractor_model.dart';
 import 'package:aplikasi_rw/model/user_model.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/get_data_contractor.dart';
-import 'package:aplikasi_rw/services/get_data_cordinator_services.dart';
 import 'package:aplikasi_rw/services/get_data_user_services.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -259,10 +256,10 @@ class UserLoginController extends GetxController {
     String statusUser = await UserSecureStorage.getStatus();
     if (idUser != null && statusUser != null) {
       status = 'cordinator'.obs;
-      CordinatorModel cordinatorModel =
-          await GetDataCordinatorServices.getDataCordinator(idUser);
-      this.nameCordinator = cordinatorModel.nameCordinator.obs;
-      this.job = cordinatorModel.job.obs;
+      // CordinatorModel cordinatorModel =
+      //     await GetDataCordinatorServices.getDataCordinator(idUser);
+      // this.nameCordinator = cordinatorModel.nameCordinator.obs;
+      // this.job = cordinatorModel.job.obs;
     }
   }
 
@@ -279,11 +276,11 @@ class UserLoginController extends GetxController {
     }
   }
 
-  Future<CordinatorModel> getCordinatorModel(String idUser) async {
-    CordinatorModel model =
-        await GetDataCordinatorServices.getDataCordinator(idUser);
-    return Future.value(model);
-  }
+  // Future<CordinatorModel> getCordinatorModel(String idUser) async {
+  //   CordinatorModel model =
+  //       await GetDataCordinatorServices.getDataCordinator(idUser);
+  //   return Future.value(model);
+  // }
 
   Future<UserModel> getUserModel(String idUser) async {
     UserModel userModel = await GetDataUserServices.getDataUser(idUser);

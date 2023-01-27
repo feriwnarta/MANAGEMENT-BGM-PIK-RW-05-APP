@@ -49,8 +49,7 @@ class ReportServices extends ReportModel {
       }
     } on Exception {
       print('error decode');
-    } on SocketException {
-    } on HttpException {}
+    }
   }
 
   static Future<http.MultipartRequest> sendDataReport(

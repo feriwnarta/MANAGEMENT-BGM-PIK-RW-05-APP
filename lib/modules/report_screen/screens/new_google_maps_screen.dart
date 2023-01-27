@@ -10,7 +10,6 @@ import 'package:aplikasi_rw/services/location_services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:logger/logger.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_maps_webservice/places.dart';
 
 class NewGoogleMaps extends StatefulWidget {

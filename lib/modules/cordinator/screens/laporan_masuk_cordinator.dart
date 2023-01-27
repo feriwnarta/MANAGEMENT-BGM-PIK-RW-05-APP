@@ -1,22 +1,18 @@
 import 'dart:async';
-import 'package:aplikasi_rw/modules/contractor/controller/contractor_controller.dart';
-import 'package:aplikasi_rw/modules/contractor/screens/complaint/finish_report_screen.dart';
-import 'package:aplikasi_rw/modules/contractor/screens/complaint/process_report.dart';
-import 'package:aplikasi_rw/modules/contractor/widgets/card_worker.dart';
+import 'package:aplikasi_rw/modules/cordinator/controller/cordinator_controller.dart';
+import 'package:aplikasi_rw/modules/cordinator/widgets/card_cordinator.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../controller/user_login_controller.dart';
 import '../../../../server-app.dart';
-import '../../../../services/cordinator/process_report_services.dart';
-import 'detail_report_screen.dart';
 
-class CardReport extends StatefulWidget {
-  CardReport({Key key, this.name, this.status}) : super(key: key);
+class LaporanMasukCordinator extends StatefulWidget {
+  LaporanMasukCordinator({Key key, this.name, this.status}) : super(key: key);
 
   String name, status;
 
@@ -24,12 +20,12 @@ class CardReport extends StatefulWidget {
   _CardReportState createState() => _CardReportState();
 }
 
-class _CardReportState extends State<CardReport>
+class _CardReportState extends State<LaporanMasukCordinator>
     with AutomaticKeepAliveClientMixin {
   Timer timer;
 
   // final ScrollController scrollController = ScrollController();
-  final contractorController = Get.put(ContractorController());
+  final contractorController = Get.put(CordinatorController());
   final userLoginController = Get.put(UserLoginController());
 
   void onScroll() {
@@ -47,7 +43,7 @@ class _CardReportState extends State<CardReport>
     if (timer.isActive) {
       timer.cancel();
     }
-    Get.delete<ContractorController>();
+    Get.delete<CordinatorController>();
     super.dispose();
   }
 
@@ -70,14 +66,15 @@ class _CardReportState extends State<CardReport>
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 800));
     super.build(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Laporan Masuk'),
         systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
-      body: GetX<ContractorController>(
-        init: ContractorController(),
+      body: GetX<CordinatorController>(
+        init: CordinatorController(),
         builder: (controller) {
           if (controller.isLoading.value) {
             return Center(
@@ -116,7 +113,7 @@ class _CardReportState extends State<CardReport>
                           : (index < controller.listReport.length)
                               ? Padding(
                                   padding: EdgeInsets.only(bottom: 16.h),
-                                  child: CardListReport(
+                                  child: CardListCordinator(
                                     description: controller
                                         .listReport[index].description,
                                     location:
@@ -135,6 +132,8 @@ class _CardReportState extends State<CardReport>
                                         .listReport[index].statusComplaint,
                                     name: widget.name,
                                     status: '',
+                                    phone: controller
+                                        .listReport[index].managerContractor,
                                   ),
                                 )
                               : (index == controller.listReport.length)
@@ -159,8 +158,8 @@ class _CardReportState extends State<CardReport>
 }
 
 //ignore: must_be_immutable
-class CardListReport extends StatelessWidget {
-  CardListReport(
+class CardListCordinator extends StatelessWidget {
+  CardListCordinator(
       {Key key,
       this.url,
       this.title,
@@ -173,7 +172,8 @@ class CardListReport extends StatelessWidget {
       this.status,
       this.statusComplaint,
       this.longitude,
-      this.management})
+      this.management,
+      this.phone})
       : super(key: key);
 
   String url,
@@ -189,68 +189,74 @@ class CardListReport extends StatelessWidget {
       status,
       management;
 
+  List<Map<String, dynamic>> phone;
+
   final userLogin = UserLoginController();
   Map<String, dynamic> result;
+  final logger = Logger();
 
   void onCardTap() async {
-    if (status == null) {
-      EasyLoading.showSuccess('Laporan ini sudah selesai dikerjakan');
-    } else {
-      EasyLoading.show(status: 'loading');
-      result = await ProcessReportServices.checkExistProcess(idReport);
-      final logger = Logger();
-      logger.e(result);
-      EasyLoading.dismiss();
-      if (result['status'] == 'NOT EXIST') {
-        Get.to(
-          () => DetailReportScreen(
-            description: description,
-            idReport: idReport,
-            latitude: latitude,
-            location: location,
-            longitude: longitude,
-            time: time,
-            title: title,
-            url: url,
+    Get.defaultDialog(
+      title: 'Pilih cordinator',
+      radius: 5,
+      titleStyle: TextStyle(
+        fontSize: 14.sp,
+      ),
+      content: Container(
+        height: 200.h,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: phone
+                .map<Widget>(
+                  (item) => ListTile(
+                    title: RichText(
+                      text: TextSpan(
+                        text: '${item['no_telp']}',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: Colors.black,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: '\t (${item['name_pic']})',
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                    trailing: Icon(
+                      Icons.phone,
+                      size: 20,
+                    ),
+                    onTap: () {
+                      launchUrl(
+                        Uri(
+                          scheme: 'tel',
+                          path: '${item['no_telp']}',
+                        ),
+                      );
+                    },
+                  ),
+                )
+                .toList(),
           ),
-          transition: Transition.cupertino,
-        );
-      } else if (result['status'] == 'BEEN PROCESSED') {
-        Get.to(
-          () => FinishReportScreen(
-            description: description,
-            idReport: idReport,
-            latitude: latitude,
-            longitude: longitude,
-            time: result['data']['create_at'],
-            title: title,
-            url: url,
-          ),
-          transition: Transition.cupertino,
-        );
-      } else {
-        Get.to(
-          () => ProcessReportScreen(
-            description: description,
-            idReport: idReport,
-            latitude: latitude,
-            location: location,
-            longitude: longitude,
-            time: time,
-            title: title,
-            url: url,
-          ),
-          transition: Transition.cupertino,
-        );
-      }
-    }
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {},
-      child: CardWorker(
+      child: CardCordinator(
         address: location,
         image: url,
         lat: latitude,

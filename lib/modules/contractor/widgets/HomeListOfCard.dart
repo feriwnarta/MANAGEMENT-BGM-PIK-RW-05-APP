@@ -2,15 +2,12 @@ import 'dart:async';
 
 import 'package:aplikasi_rw/modules/contractor/screens/home_screen_cordinator.dart';
 import 'package:aplikasi_rw/services/chart_worker/get_chart_worker.dart';
-import 'package:aplikasi_rw/services/chart_worker/get_pie_chart_worker.dart';
 import 'package:aplikasi_rw/services/chart_worker/total_manpower_services.dart';
-import 'package:aplikasi_rw/services/chart_worker/update_chart_worker.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 //ignore: must_be_immutable
 class HomeListOfCard extends StatefulWidget {

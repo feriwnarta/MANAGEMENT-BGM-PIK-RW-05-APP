@@ -1,4 +1,5 @@
 import 'package:aplikasi_rw/modules/contractor/screens/peduli_lingkungan_cord.dart';
+import 'package:aplikasi_rw/modules/cordinator/screens/peduli_lingkunga_cordinator.dart';
 import 'package:aplikasi_rw/modules/estate_manager/screens/status_peduli_lingkungan_complaint.dart';
 import 'package:aplikasi_rw/modules/manager_contractor/screens/peduli_lingkungan_manager_con.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/add_complaint.dart';
@@ -274,7 +275,7 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                     break;
                 }
               } else if (widget.typeStatusPeduliLingkungan
-                  .isCaseInsensitiveContainsAny('cord')) {
+                  .isCaseInsensitiveContainsAny('con')) {
                 switch (typeStatus.value) {
                   case 'peduli lingkungan umum':
                     Get.to(
@@ -294,6 +295,21 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                   case 'peduli lingkungan umum':
                     Get.to(
                       () => PeduliLingkunganManagerCon(),
+                      transition: Transition.rightToLeft,
+                    );
+                    break;
+                  case 'peduli lingkungan pribadi':
+                    break;
+                  default:
+                    EasyLoading.showError('ada sesuatu yang salah');
+                    break;
+                }
+              } else if (widget.typeStatusPeduliLingkungan
+                  .isCaseInsensitiveContainsAny('cord')) {
+                switch (typeStatus.value) {
+                  case 'peduli lingkungan umum':
+                    Get.to(
+                      () => PeduliLingkunganCordinator(),
                       transition: Transition.rightToLeft,
                     );
                     break;

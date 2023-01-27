@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:aplikasi_rw/modules/manager_contractor/controller/manager_controller.dart';
+import 'package:aplikasi_rw/modules/cordinator/controller/cordinator_controller.dart';
 import 'package:aplikasi_rw/modules/manager_contractor/screens/laporan_masuk_manager_con.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/services.dart';
@@ -9,8 +9,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../server-app.dart';
 
 //ignore: must_be_immutable
-class LaporanDiprosesManagerCon extends StatefulWidget {
-  LaporanDiprosesManagerCon({Key key, this.name, this.status})
+class LaporanDiprosesCordinator extends StatefulWidget {
+  LaporanDiprosesCordinator({Key key, this.name, this.status})
       : super(key: key);
 
   String name, status;
@@ -19,10 +19,10 @@ class LaporanDiprosesManagerCon extends StatefulWidget {
   _CardReportProcessState createState() => _CardReportProcessState();
 }
 
-class _CardReportProcessState extends State<LaporanDiprosesManagerCon>
+class _CardReportProcessState extends State<LaporanDiprosesCordinator>
     with AutomaticKeepAliveClientMixin {
   Timer timer;
-  final controllerReportProcess = Get.put(ManagerController());
+  final controllerReportProcess = Get.put(CordinatorController());
 
   void onScroll() {
     if (controllerReportProcess.scrollcontroller.position.maxScrollExtent ==
@@ -37,7 +37,7 @@ class _CardReportProcessState extends State<LaporanDiprosesManagerCon>
     if (timer.isActive) {
       timer.cancel();
     }
-    Get.delete<ManagerController>();
+    Get.delete<CordinatorController>();
     super.dispose();
   }
 
@@ -78,8 +78,8 @@ class _CardReportProcessState extends State<LaporanDiprosesManagerCon>
               SizedBox(
                 height: 32.h,
               ),
-              GetX<ManagerController>(
-                  init: ManagerController(),
+              GetX<CordinatorController>(
+                  init: CordinatorController(),
                   initState: (state) =>
                       controllerReportProcess.getComplaintDiproses(),
                   builder: (controller) {
@@ -132,8 +132,8 @@ class _CardReportProcessState extends State<LaporanDiprosesManagerCon>
                                       statusComplaint: controller
                                           .listReport[index].statusComplaint,
                                       status: '',
-                                      phone: controller.listReport[index]
-                                          .kepalaContratorPhone,
+                                      phone: controller
+                                          .listReport[index].managerContractor,
                                     ),
                                   )
                                 : (index == controller.listReport.length)
