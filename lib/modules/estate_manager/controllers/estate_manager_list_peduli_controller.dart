@@ -42,6 +42,20 @@ class ListStatusPeduliEmController extends GetxController {
     update();
   }
 
+  void realTime({String status}) async {
+    List<StatusPeduliEmModel> listBaru;
+
+    if (listStatusPeduli.length <= 10) {
+      listBaru = await StatusPeduliEmServices.getListReport(
+          limit: 10, start: 0, status: status);
+    } else {
+      listBaru = await StatusPeduliEmServices.getListReport(
+          start: 0, limit: listStatusPeduli.length, status: status);
+    }
+
+    listStatusPeduli.assignAll(listBaru);
+  }
+
   Future<void> getDataFromDb({String status}) async {
     if (isLoading.value) {
       listStatusPeduli.assignAll(await StatusPeduliEmServices.getListReport(

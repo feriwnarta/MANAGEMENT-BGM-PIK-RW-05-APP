@@ -7,7 +7,10 @@ import 'package:get/get.dart';
 
 class NotificationController extends GetxController {
   var listNotif = <NotificationModel>[].obs;
-  Rx<Timer> timer;
+  Rx<Timer> timer = Timer(
+    Duration(minutes: 1),
+    () {},
+  ).obs;
 
   RxString count = ''.obs;
 

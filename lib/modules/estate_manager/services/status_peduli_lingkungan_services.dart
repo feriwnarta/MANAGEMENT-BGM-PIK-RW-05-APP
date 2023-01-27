@@ -84,7 +84,9 @@ class StatusPeduliEmServices {
             image: model['url_image'],
             lat: model['latitude'],
             long: model['longitude'],
-            status: model['status'],
+            status: (model['status_eskalasi'] == ''
+                ? model['status']
+                : model['status_eskalasi']),
             title: model['category'],
             waktu: model['waktu'],
             cordinatorPhone: listCordinator,

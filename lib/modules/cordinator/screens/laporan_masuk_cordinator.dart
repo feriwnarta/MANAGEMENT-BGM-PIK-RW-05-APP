@@ -73,85 +73,87 @@ class _CardReportState extends State<LaporanMasukCordinator>
         title: Text('Laporan Masuk'),
         systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
-      body: GetX<CordinatorController>(
-        init: CordinatorController(),
-        builder: (controller) {
-          if (controller.isLoading.value) {
-            return Center(
-              child: SizedBox(
-                  height: 30, width: 30, child: CircularProgressIndicator()),
-            );
-          } else {
-            return Container(
-              margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-              child: Column(
-                children: [
-                  AutoSizeText(
-                    'Jumlah laporan yang masuk di lingkungan RW 05.',
-                    style: TextStyle(fontSize: 16.sp),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(
-                    height: 16.h,
-                  ),
-                  ListView.builder(
-                      shrinkWrap: true,
-                      controller: contractorController.scrollcontroller,
-                      itemCount: (controller.isMaxReached.value)
-                          ? controller.listReport.length + 1
-                          : controller.listReport.length + 1,
-                      // itemCount: loaded.listReport.length,
-                      itemBuilder: (context, index) => (controller
-                                  .listReport.length ==
-                              0)
-                          ? Center(
-                              child: Padding(
-                              padding: EdgeInsets.only(top: 20.h),
-                              child: Text('Tidak ada laporan yang masuk'),
-                            ))
-                          : (index < controller.listReport.length)
-                              ? Padding(
-                                  padding: EdgeInsets.only(bottom: 16.h),
-                                  child: CardListCordinator(
-                                    description: controller
-                                        .listReport[index].description,
-                                    location:
-                                        controller.listReport[index].address,
-                                    time: controller.listReport[index].time,
-                                    title: controller.listReport[index].title,
-                                    url:
-                                        '${ServerApp.url}${controller.listReport[index].urlImage}',
-                                    idReport:
-                                        controller.listReport[index].idReport,
-                                    latitude:
-                                        controller.listReport[index].latitude,
-                                    longitude:
-                                        controller.listReport[index].longitude,
-                                    statusComplaint: controller
-                                        .listReport[index].statusComplaint,
-                                    name: widget.name,
-                                    status: '',
-                                    phone: controller
-                                        .listReport[index].managerContractor,
-                                  ),
-                                )
-                              : (index == controller.listReport.length)
-                                  ? SizedBox()
-                                  : Center(
-                                      child: SizedBox(
-                                        height: 30.h,
-                                        width: 30.h,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 1.5,
+      body: SingleChildScrollView(
+        child: GetX<CordinatorController>(
+          init: CordinatorController(),
+          builder: (controller) {
+            if (controller.isLoading.value) {
+              return Center(
+                child: SizedBox(
+                    height: 30, width: 30, child: CircularProgressIndicator()),
+              );
+            } else {
+              return Container(
+                margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                child: Column(
+                  children: [
+                    AutoSizeText(
+                      'Jumlah laporan yang masuk di lingkungan RW 05.',
+                      style: TextStyle(fontSize: 16.sp),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(
+                      height: 16.h,
+                    ),
+                    ListView.builder(
+                        shrinkWrap: true,
+                        controller: contractorController.scrollcontroller,
+                        itemCount: (controller.isMaxReached.value)
+                            ? controller.listReport.length + 1
+                            : controller.listReport.length + 1,
+                        // itemCount: loaded.listReport.length,
+                        itemBuilder: (context, index) => (controller
+                                    .listReport.length ==
+                                0)
+                            ? Center(
+                                child: Padding(
+                                padding: EdgeInsets.only(top: 20.h),
+                                child: Text('Tidak ada laporan yang masuk'),
+                              ))
+                            : (index < controller.listReport.length)
+                                ? Padding(
+                                    padding: EdgeInsets.only(bottom: 16.h),
+                                    child: CardListCordinator(
+                                      description: controller
+                                          .listReport[index].description,
+                                      location:
+                                          controller.listReport[index].address,
+                                      time: controller.listReport[index].time,
+                                      title: controller.listReport[index].title,
+                                      url:
+                                          '${ServerApp.url}${controller.listReport[index].urlImage}',
+                                      idReport:
+                                          controller.listReport[index].idReport,
+                                      latitude:
+                                          controller.listReport[index].latitude,
+                                      longitude: controller
+                                          .listReport[index].longitude,
+                                      statusComplaint: controller
+                                          .listReport[index].statusComplaint,
+                                      name: widget.name,
+                                      status: '',
+                                      phone: controller
+                                          .listReport[index].managerContractor,
+                                    ),
+                                  )
+                                : (index == controller.listReport.length)
+                                    ? SizedBox()
+                                    : Center(
+                                        child: SizedBox(
+                                          height: 30.h,
+                                          width: 30.h,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 1.5,
+                                          ),
                                         ),
-                                      ),
-                                    )),
-                ],
-              ),
-            );
-          }
-        },
+                                      )),
+                  ],
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }

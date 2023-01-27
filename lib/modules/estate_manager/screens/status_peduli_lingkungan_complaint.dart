@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:aplikasi_rw/modules/contractor/controller/contractor_controller.dart';
 import 'package:aplikasi_rw/modules/estate_manager/services/status_peduli_lingkungan_services.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/view_image.dart';
@@ -34,11 +37,25 @@ class _ListStatusPeduliLingkunganState
   ListStatusPeduliEmController controllerEm =
       Get.put(ListStatusPeduliEmController());
 
+  Timer timer;
+
   @override
   void initState() {
     super.initState();
     future = StatusPeduliEmServices.listMasterCategory();
     controllerEm.getDataFromDb(status: groupSelected.value.groupValue);
+  }
+
+  @override
+  void dispose() {
+    if (timer != null) {
+      if (timer.isActive) {
+        timer.cancel();
+      }
+    }
+
+    Get.delete<ListStatusPeduliEmController>();
+    super.dispose();
   }
 
   final ScrollController scrollController = ScrollController();
@@ -54,6 +71,9 @@ class _ListStatusPeduliLingkunganState
 
   @override
   void didChangeDependencies() {
+    timer = Timer.periodic(Duration(seconds: 1), (_) {
+      controllerEm.realTime(status: groupSelected.value.groupValue);
+    });
     scrollController.addListener(onScroll);
     super.didChangeDependencies();
   }
@@ -280,11 +300,32 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: Color(
-                      0xffEECEB0,
-                    ),
+                    color: (status.isCaseInsensitiveContainsAny('Menunggu'))
+                        ? Color(
+                            0xffFF6A6A,
+                          )
+                        : status.isCaseInsensitiveContainsAny('Diterima')
+                            ? Color(0xff90C5F0)
+                            : status.isCaseInsensitiveContainsAny('Diproses')
+                                ? Color(0xffFCC870)
+                                : (status.isCaseInsensitiveContainsAny(
+                                        'Selesai'))
+                                    ? Color(0xff5AFD79)
+                                    : Color(
+                                        0xffFF6A6A,
+                                      ),
                   ),
-                  color: Color(0xffFFF9F2),
+                  color: (status.isCaseInsensitiveContainsAny('Menunggu'))
+                      ? Color(
+                          0xffFFC9C9,
+                        )
+                      : status.isCaseInsensitiveContainsAny('Diterima')
+                          ? Color(0xffF2F9FF)
+                          : status.isCaseInsensitiveContainsAny('Diproses')
+                              ? Color(0xffFFEBC9)
+                              : status.isCaseInsensitiveContainsAny('Selesai')
+                                  ? Color(0xffD6FFDD)
+                                  : Color(0xffFFC9C9),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Center(
@@ -296,6 +337,20 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w500,
+                      color: (status.isCaseInsensitiveContainsAny('Menunggu'))
+                          ? Color(
+                              0xffF32020,
+                            )
+                          : status.isCaseInsensitiveContainsAny('Diterima')
+                              ? Color(0xff2094F3)
+                              : status.isCaseInsensitiveContainsAny('Diproses')
+                                  ? Color(0xffF3A520)
+                                  : (status.isCaseInsensitiveContainsAny(
+                                          'Selesai'))
+                                      ? Color(0xff20F348)
+                                      : Color(
+                                          0xffF32020,
+                                        ),
                     ),
                   ),
                 ),

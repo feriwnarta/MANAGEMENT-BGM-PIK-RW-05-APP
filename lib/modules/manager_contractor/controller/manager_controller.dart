@@ -18,7 +18,7 @@ class ManagerController extends GetxController {
   void realTimeComplaintDiterimaDanProses() async {
     List<ManagerContractorModel> listBaru;
 
-    if (listReport.length <= 0) {
+    if (listReport.length <= 10) {
       listBaru =
           await ManagerConServices.getComplaintDiterimaDanProsesContractor(
               0, 10);

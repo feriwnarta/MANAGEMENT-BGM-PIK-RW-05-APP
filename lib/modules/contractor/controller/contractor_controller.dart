@@ -36,7 +36,7 @@ class ContractorController extends GetxController {
   void realTimeComplaintDiproses() async {
     List<ContractorModel> listBaru;
 
-    if (listReport.length <= 0) {
+    if (listReport.length <= 10) {
       listBaru = await ContractorServices.getComplaintContractorProcess(0, 10);
     } else {
       listBaru = await ContractorServices.getComplaintContractorProcess(
@@ -45,13 +45,13 @@ class ContractorController extends GetxController {
 
     listReport.assignAll(listBaru);
 
-    logger.i(listReport);
+    logger.i(listReport.length);
   }
 
   void realTimeComplaintSelesai() async {
     List<ContractorModel> listBaru;
 
-    if (listReport.length <= 0) {
+    if (listReport.length <= 10) {
       listBaru = await ContractorServices.getComplaintContractorFinish(0, 10);
     } else {
       listBaru = await ContractorServices.getComplaintContractorFinish(

@@ -81,7 +81,12 @@ class _CardWorkerState extends State<CardCordinator> {
                             : widget.status
                                     .isCaseInsensitiveContainsAny('Diproses')
                                 ? Color(0xffFCC870)
-                                : Color(0xff5AFD79),
+                                : (widget.status.isCaseInsensitiveContainsAny(
+                                        'Selesai'))
+                                    ? Color(0xff5AFD79)
+                                    : Color(
+                                        0xffFF6A6A,
+                                      ),
                   ),
                   color: (widget.status
                           .isCaseInsensitiveContainsAny('Menunggu'))
@@ -93,7 +98,10 @@ class _CardWorkerState extends State<CardCordinator> {
                           : widget.status
                                   .isCaseInsensitiveContainsAny('Diproses')
                               ? Color(0xffFFEBC9)
-                              : Color(0xffD6FFDD),
+                              : widget.status
+                                      .isCaseInsensitiveContainsAny('Selesai')
+                                  ? Color(0xffD6FFDD)
+                                  : Color(0xffFFC9C9),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Center(
@@ -116,7 +124,12 @@ class _CardWorkerState extends State<CardCordinator> {
                               : widget.status
                                       .isCaseInsensitiveContainsAny('Diproses')
                                   ? Color(0xffF3A520)
-                                  : Color(0xff20F348),
+                                  : (widget.status.isCaseInsensitiveContainsAny(
+                                          'Selesai'))
+                                      ? Color(0xff20F348)
+                                      : Color(
+                                          0xffF32020,
+                                        ),
                     ),
                   ),
                 ),

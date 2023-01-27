@@ -22,12 +22,12 @@ class _AppBarCitizenState extends State<AppBarCitizen> {
 
   @override
   void initState() {
-    controller.timer = Timer.periodic(
-      Duration(seconds: 1),
+    controller.timer.value = Timer.periodic(
+      Duration(seconds: 5),
       (_) {
         controller.getCountNotif();
       },
-    ).obs;
+    );
     super.initState();
   }
 
