@@ -245,20 +245,28 @@ class _MainAppState extends State<MainApp> {
 
   @override
   void didChangeDependencies() {
-    timer = Timer.periodic(Duration(seconds: 5), (_) {
+    timer = Timer.periodic(Duration(seconds: 1), (_) {
       networkCheck.checkConnection();
 
+      logger.e('${networkCheck.connectionExist.value}');
+
       if (!networkCheck.connectionExist.value) {
-        Get.showSnackbar(
-          GetSnackBar(
-            title: 'Tidak ada internet',
-            message: 'Tidak ada koneksi internet',
-            icon: Icon(
-              Icons.refresh,
-              color: Colors.white,
+        if (!Get.isSnackbarOpen) {
+          Get.showSnackbar(
+            GetSnackBar(
+              title: 'Tidak ada internet',
+              message: 'Tidak ada koneksi internet',
+              icon: Icon(
+                Icons.refresh,
+                color: Colors.white,
+              ),
             ),
-          ),
-        );
+          );
+        }
+      } else {
+        if (Get.isSnackbarOpen) {
+          Get.closeAllSnackbars();
+        }
       }
     });
     super.didChangeDependencies();
