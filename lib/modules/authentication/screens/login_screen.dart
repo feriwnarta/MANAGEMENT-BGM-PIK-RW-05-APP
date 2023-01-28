@@ -60,11 +60,13 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
   String otpKey;
   bool isLogin = true;
   final _scaffoldkey = new GlobalKey<ScaffoldState>();
-  final registerController = Get.put(RegisterController());
-  final loginController = Get.put(UserLoginController());
-  final countDownController = Get.put(CountDownController());
-  final authController = Get.put(AuthController(), permanent: false);
-  final accessController = Get.put(AccessController(), permanent: true);
+  RegisterController registerController;
+  UserLoginController loginController;
+  CountDownController countDownController;
+  AuthController authController;
+  AccessController accessController;
+
+  final logger = Logger();
 
   bool passwordWrong = false;
   String email, noTelp;
@@ -89,6 +91,14 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
   @override
   initState() {
     super.initState();
+    registerController = Get.put(RegisterController(), permanent: true);
+    loginController = Get.put(UserLoginController());
+    countDownController = Get.put(CountDownController());
+    authController = Get.put(AuthController(), permanent: false);
+    accessController = Get.put(AccessController(), permanent: true);
+
+    logger.i('init state login');
+
     if (email != null && noTelp != null) {
       if (email.isNotEmpty && noTelp.isNotEmpty) {
         registerController.otpWhenExit = true.obs;
@@ -136,9 +146,9 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                         } else if (registerController.toOtp.value) {
                           return Otp(
                             controllerIpl: controllerIpl,
-                            email: controller.email.value,
+                            email: registerController.email.value,
                             errorController: errorController,
-                            noTelp: controller.noTelp.value,
+                            noTelp: registerController.noTelp.value,
                             otpKey: otpKey,
                             resendOtp: resendOtp,
                             validateOtp: validateOtp,
@@ -851,6 +861,11 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
               logger.i(message);
               registerController.email.value = email;
               registerController.noTelp.value = noTelp;
+
+              logger.e('whatsapp');
+              logger.e(registerController.email.value);
+              logger.e(registerController.noTelp.value);
+              logger.e(registerController.methodVerifChose.value);
             } else {
               registerController.toOtpVerif = false.obs;
               registerController.toOtp = true.obs;
@@ -1024,6 +1039,10 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
               registerController.noTelp.value = message['no_telp'];
               authController.controllerEmail.text = message['email'];
               authController.controllerNoTelp.text = message['no_telp'];
+
+              logger.d(registerController.email.value);
+              logger.d(registerController.noTelp.value);
+
               registerController.update();
             }
 
@@ -1035,28 +1054,17 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
             // Navigator.of(context).pop();
             print('password salah');
             EasyLoading.dismiss();
-            // EasyLoading.showError('Nomor IPL atau email salah',
-            //     dismissOnTap: true);
-            // buildShowDialogAnimation('Nomor IPL atau email salah', 'OKE',
-            //     'assets/animation/error-animation.json', 15.0);
           }
         } else {
-          // Navigator.of(context).pop();
           EasyLoading.dismiss();
           EasyLoading.showError('Response error, silahkan hubungi admin',
               dismissOnTap: true);
-          // buildShowDialogAnimation('Http Response Error', 'OKE',
-          //     'assets/animation/error-animation.json', 15.0);
         }
       } on io.SocketException {
         EasyLoading.showError('Tidak ada internet', dismissOnTap: true);
-        // buildShowDialogAnimation('Tidak ada internet', 'OKE',
-        //     'assets/animation/error-animation.json', 15.0);
       } on io.HttpException {
         EasyLoading.showError('Server error, tolong hubungin admin',
             dismissOnTap: true);
-        // buildShowDialogAnimation('Server sedang error', 'OKE',
-        //     'assets/animation/error-animation.json', 15.0);
       }
     }
   }

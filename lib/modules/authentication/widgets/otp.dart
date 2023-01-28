@@ -104,11 +104,9 @@ class _OtpState extends State<Otp> {
                   style: TextStyle(fontSize: 12.sp, color: Colors.grey),
                   children: <TextSpan>[
                     TextSpan(
-                        text: (controller.methodVerifChose.value
-                                .isCaseInsensitiveContainsAny('EMAIL'))
+                        text: (controller.methodVerifChose.value == 'EMAIL')
                             ? '$email'
-                            : (controller.methodVerifChose.value
-                                    .isCaseInsensitiveContainsAny('SMS'))
+                            : (controller.methodVerifChose.value == 'SMS')
                                 ? 'SMS $noTelp'
                                 : 'WhatsApp $noTelp',
                         style: TextStyle(
@@ -199,13 +197,13 @@ class _OtpState extends State<Otp> {
                           style: TextStyle(
                               fontWeight: FontWeight.w700, color: Colors.blue),
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () {
+                            ..onTap = () async {
                               countDownController.reset();
 
                               final logger = Logger();
                               logger.d('clicked resend otp');
 
-                              resendOtp(
+                              await resendOtp(
                                   noIpl: controllerIpl.text,
                                   status: controller.methodVerifChose.value);
 
@@ -273,9 +271,12 @@ class _OtpState extends State<Otp> {
                 onPressed: (countDownController.count.value == 0)
                     ? () {
                         controller.toOtp = false.obs;
-                        controller.otpWhenExit = true.obs;
+                        controller.toOtpVerif = true.obs;
                         controller.isWrong = false.obs;
                         controller.isEmpty = false.obs;
+
+                        final logger = Logger();
+                        logger.e('${controller.toOtpVerif.value}');
 
                         controller.update();
                       }
