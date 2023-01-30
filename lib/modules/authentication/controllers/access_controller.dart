@@ -30,27 +30,11 @@ class AccessController extends GetxController {
   RxBool absensiKepalaCon = false.obs;
 
   void accessManagerCon() {
-    statistikPeduliLindungi = false.obs;
-    peduliLingkungan = false.obs;
-    statusPeduliLingkungan = false.obs;
-    statusIpl = false.obs;
-    informasiWarga = false.obs;
-    informasiUmum = false.obs;
-    sosialMedia = false.obs;
-
     dashboardManagerCon = true.obs;
     statusPeduliLingkunganManagerCord = true.obs;
   }
 
   void accessAsEm() {
-    statistikPeduliLindungi = false.obs;
-    peduliLingkungan = false.obs;
-    statusPeduliLingkungan = false.obs;
-    statusIpl = false.obs;
-    informasiWarga = false.obs;
-    informasiUmum = false.obs;
-    sosialMedia = false.obs;
-
     dashboardEm = true.obs;
     tambahAkunEm = true.obs;
     statusPeduliLingkunganEm = true.obs;
@@ -67,28 +51,12 @@ class AccessController extends GetxController {
   }
 
   void accessAsCordinator() {
-    statistikPeduliLindungi = false.obs;
-    peduliLingkungan = false.obs;
-    statusPeduliLingkungan = false.obs;
-    statusIpl = false.obs;
-    informasiWarga = false.obs;
-    informasiUmum = false.obs;
-    sosialMedia = false.obs;
-
     dashboardCord = true.obs;
     statusPeduliLingkunganCord = true.obs;
     absensiCord = true.obs;
   }
 
   void accessAsKepalaContractor() {
-    statistikPeduliLindungi = false.obs;
-    peduliLingkungan = false.obs;
-    statusPeduliLingkungan = false.obs;
-    statusIpl = false.obs;
-    informasiWarga = false.obs;
-    informasiUmum = false.obs;
-    sosialMedia = false.obs;
-
     dashboardKepalaCon = true.obs;
     statusPeduliLingkunganKepalaCon = true.obs;
     absensiKepalaCon = true.obs;
