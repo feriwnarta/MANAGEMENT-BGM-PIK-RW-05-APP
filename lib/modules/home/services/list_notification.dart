@@ -51,7 +51,14 @@ class NotificationServices {
 
       var response = await dio.post(url, data: jsonEncode({'id_user': idUser}));
 
-      return (jsonDecode(response.data)['count']);
+      if (response.data != null) {
+        var message = jsonDecode(response.data)['count'];
+        print(message);
+        print(idUser);
+        return message;
+      } else {
+        return '0';
+      }
     } on Exception catch (e) {
       print(e);
     }

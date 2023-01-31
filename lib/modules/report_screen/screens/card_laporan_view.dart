@@ -7,6 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -71,8 +72,8 @@ class CardLaporanView extends StatefulWidget {
 
 class _CardLaporanViewState extends State<CardLaporanView> {
   bool isVisibilityExpansion = false;
-  TextEditingController controllerComment = TextEditingController();
-  double rating = 0;
+  Rx<TextEditingController> controllerComment = TextEditingController().obs;
+  Rx<double> rating = 0.0.obs;
   final ReportUserController reportController = Get.put(ReportUserController());
 
   @override
@@ -82,112 +83,101 @@ class _CardLaporanViewState extends State<CardLaporanView> {
     logger.i(widget.photoComplete2);
     logger.i(widget.photoProcess1);
     logger.i(widget.photoProcess2);
-    super.initState();
-  }
 
-  @override
-  didChangeDependencies() async {
-    super.didChangeDependencies();
-    String idUser = await UserSecureStorage.getIdUser();
-    if ((idUser == widget.idUser && widget.status == 'finish') &&
-        widget.star == '0') {
-      _showDialog();
-    }
+    // call alert dialog penilaian
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      String idUser = await UserSecureStorage.getIdUser();
+      if ((idUser == widget.idUser && widget.status == 'Selesai') &&
+          widget.star == '0') {
+        _showDialog();
+      }
+    });
+    super.initState();
   }
 
   _showDialog() async {
     await Future.delayed(Duration(milliseconds: 50));
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            insetPadding: EdgeInsets.zero,
-            contentPadding: EdgeInsets.zero,
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            content: Container(
-              margin: EdgeInsets.only(top: 15.h, left: 15.w, right: 15.w),
-              height: 310.h,
-              child: Column(
-                children: [
-                  SizedBox(height: 10.h),
-                  Text(
-                    'Ayo, nilai hasil kerjanya',
-                    style:
-                        TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  RatingBar.builder(
-                    initialRating: 0,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                    itemBuilder: (context, _) => Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    onRatingUpdate: (rating) {
-                      this.rating = rating;
-                    },
-                  ),
-                  SizedBox(height: 10.h),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5.w),
-                    child: TextField(
-                      controller: controllerComment,
-                      maxLines: 3,
-                      decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 50.h, horizontal: 10.w),
-                          border: OutlineInputBorder(),
-                          isDense: true,
-                          hintText: 'Komentar Anda',
-                          hintStyle: TextStyle(fontSize: 12.sp)),
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                  Padding(
-                    padding: EdgeInsets.only(right: 5.w),
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          EasyLoading.show(status: 'loading');
-                          String result = await sendRating();
-                          EasyLoading.dismiss();
-                          if (result == 'OKE') {
-                            Get.back();
-                            Get.back();
-                            Get.back();
-                            reportController.refresReport();
-                            reportController.update();
-                            EasyLoading.showSuccess(
-                                'Rating berhasil diberikan');
-                          } else {
-                            EasyLoading.showSuccess('Rating gagal diberikan');
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5)),
-                          foregroundColor: Colors.blue,
-                        ),
-                        child: Text(
-                          'Kirim',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
+
+    Get.defaultDialog(
+      title: '',
+      titlePadding: EdgeInsets.zero,
+      content: Container(
+        color: Colors.white,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Ayo, nilai hasil kerjanya',
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            RatingBar.builder(
+              initialRating: 0,
+              minRating: 1,
+              direction: Axis.horizontal,
+              allowHalfRating: true,
+              itemCount: 5,
+              itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+              itemBuilder: (context, _) => Icon(
+                Icons.star,
+                color: Colors.amber,
+              ),
+              onRatingUpdate: (rating) {
+                this.rating.value = rating;
+              },
+            ),
+            SizedBox(height: 10.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5.w),
+              child: TextField(
+                controller: controllerComment.value,
+                maxLines: 3,
+                decoration: InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 50.h, horizontal: 10.w),
+                    border: OutlineInputBorder(),
+                    isDense: true,
+                    hintText: 'Komentar Anda',
+                    hintStyle: TextStyle(fontSize: 12.sp)),
               ),
             ),
-            actions: <Widget>[],
-          );
-        });
+            SizedBox(height: 5),
+            Padding(
+              padding: EdgeInsets.only(right: 5.w),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    EasyLoading.show(status: 'loading');
+                    String result = await sendRating();
+                    EasyLoading.dismiss();
+                    if (result == 'OKE') {
+                      Get.back();
+                      reportController.refresReport();
+                      reportController.update();
+                      EasyLoading.showSuccess('Rating berhasil diberikan');
+                    } else {
+                      EasyLoading.showSuccess('Rating gagal diberikan');
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5)),
+                    foregroundColor: Colors.blue,
+                  ),
+                  child: Text(
+                    'Kirim',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   Future<String> sendRating() async {
@@ -197,8 +187,8 @@ class _CardLaporanViewState extends State<CardLaporanView> {
     var data = {
       'id_user': idUser,
       'id_report': widget.idReport,
-      'star': rating,
-      'comment': controllerComment.text
+      'star': rating.value,
+      'comment': controllerComment.value.text
     };
 
     var response = await http.post(Uri.parse(url), body: jsonEncode(data));
@@ -401,7 +391,10 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                     ? true
                     : false,
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 15),
+                  padding: EdgeInsets.symmetric(
+                    vertical: 16.h,
+                    horizontal: 16.w,
+                  ),
                   width: double.infinity,
                   color: Colors.white,
                   child: Column(
@@ -422,14 +415,25 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                           children: [
                             (widget.photoProcess1 != null)
                                 ? (widget.photoProcess1.isNotEmpty)
-                                    ? CachedNetworkImage(
-                                        height: 156.h,
-                                        width: 156.w,
-                                        imageUrl:
-                                            '${ServerApp.url}${widget.photoProcess1}',
-                                        progressIndicatorBuilder:
-                                            (context, url, progress) =>
-                                                CircularProgressIndicator(),
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          Get.to(
+                                            () => ViewImage(
+                                                urlImage:
+                                                    '${ServerApp.url}${widget.photoProcess1}'),
+                                            transition: Transition.fadeIn,
+                                          );
+                                        },
+                                        child: CachedNetworkImage(
+                                          height: 156.h,
+                                          width: 156.w,
+                                          fit: BoxFit.cover,
+                                          imageUrl:
+                                              '${ServerApp.url}${widget.photoProcess1}',
+                                          progressIndicatorBuilder:
+                                              (context, url, progress) =>
+                                                  CircularProgressIndicator(),
+                                        ),
                                       )
                                     : Spacer()
                                 : Spacer(),
@@ -438,14 +442,26 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                             ),
                             (widget.photoProcess2 != null)
                                 ? (widget.photoProcess2.isNotEmpty)
-                                    ? CachedNetworkImage(
-                                        height: 156.h,
-                                        width: 156.w,
-                                        imageUrl:
-                                            '${ServerApp.url}${widget.photoProcess2}',
-                                        progressIndicatorBuilder:
-                                            (context, url, progress) =>
-                                                CircularProgressIndicator(),
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          Get.to(
+                                            () => ViewImage(
+                                              urlImage:
+                                                  '${ServerApp.url}${widget.photoProcess2}',
+                                            ),
+                                            transition: Transition.fadeIn,
+                                          );
+                                        },
+                                        child: CachedNetworkImage(
+                                          height: 156.h,
+                                          width: 156.w,
+                                          fit: BoxFit.cover,
+                                          imageUrl:
+                                              '${ServerApp.url}${widget.photoProcess2}',
+                                          progressIndicatorBuilder:
+                                              (context, url, progress) =>
+                                                  CircularProgressIndicator(),
+                                        ),
                                       )
                                     : Spacer()
                                 : Spacer()
@@ -465,7 +481,8 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                     ? true
                     : false,
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 15),
+                  padding:
+                      EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
                   width: double.infinity,
                   color: Colors.white,
                   child: Column(
@@ -489,14 +506,26 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                           children: [
                             (widget.photoComplete1 != null)
                                 ? (widget.photoComplete1.isNotEmpty)
-                                    ? CachedNetworkImage(
-                                        height: 156.h,
-                                        width: 156.w,
-                                        imageUrl:
-                                            '${ServerApp.url}${widget.photoComplete1}',
-                                        progressIndicatorBuilder:
-                                            (context, url, progress) =>
-                                                CircularProgressIndicator(),
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          Get.to(
+                                            () => ViewImage(
+                                              urlImage:
+                                                  '${ServerApp.url}${widget.photoComplete1}',
+                                            ),
+                                            transition: Transition.fadeIn,
+                                          );
+                                        },
+                                        child: CachedNetworkImage(
+                                          height: 156.h,
+                                          width: 156.w,
+                                          fit: BoxFit.cover,
+                                          imageUrl:
+                                              '${ServerApp.url}${widget.photoComplete1}',
+                                          progressIndicatorBuilder:
+                                              (context, url, progress) =>
+                                                  CircularProgressIndicator(),
+                                        ),
                                       )
                                     : Spacer()
                                 : Spacer(),
@@ -505,14 +534,26 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                             ),
                             (widget.photoComplete2 != null)
                                 ? (widget.photoComplete2.isNotEmpty)
-                                    ? CachedNetworkImage(
-                                        height: 156.h,
-                                        width: 156.w,
-                                        imageUrl:
-                                            '${ServerApp.url}${widget.photoComplete2}',
-                                        progressIndicatorBuilder:
-                                            (context, url, progress) =>
-                                                CircularProgressIndicator(),
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          Get.to(
+                                            () => ViewImage(
+                                              urlImage:
+                                                  '${ServerApp.url}${widget.photoComplete2}',
+                                            ),
+                                            transition: Transition.fadeIn,
+                                          );
+                                        },
+                                        child: CachedNetworkImage(
+                                          height: 156.h,
+                                          width: 156.w,
+                                          fit: BoxFit.cover,
+                                          imageUrl:
+                                              '${ServerApp.url}${widget.photoComplete2}',
+                                          progressIndicatorBuilder:
+                                              (context, url, progress) =>
+                                                  CircularProgressIndicator(),
+                                        ),
                                       )
                                     : Spacer()
                                 : Spacer()
@@ -547,20 +588,24 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    Row(
-                      children: [
-                        SizedBox(width: 15.w),
-                        RatingBarIndicator(
-                          rating: double.parse(widget.star),
-                          itemBuilder: (context, index) => Icon(
-                            Icons.star,
-                            color: Colors.amber,
+                    Obx(
+                      () => Row(
+                        children: [
+                          SizedBox(width: 15.w),
+                          RatingBarIndicator(
+                            rating: (rating.value != 0)
+                                ? rating.value
+                                : double.parse(widget.star),
+                            itemBuilder: (context, index) => Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                            itemCount: 5,
+                            itemSize: 35.0,
+                            direction: Axis.horizontal,
                           ),
-                          itemCount: 5,
-                          itemSize: 35.0,
-                          direction: Axis.horizontal,
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     SizedBox(height: 10.h),
                     Container(
@@ -571,14 +616,21 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                           color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(10)),
                       width: 200.w,
-                      child: Text(
-                        (widget.comment.isEmpty)
-                            ? (widget.star.isEmpty)
-                                ? 'Belum ada penilaian'
-                                : 'Tanpa keterangan'
-                            : '${widget.comment}',
-                        style: TextStyle(fontSize: 12.0.sp),
-                      ),
+                      child: (controllerComment.value.text.isNotEmpty)
+                          ? Text(
+                              controllerComment.value.text.isEmpty
+                                  ? 'Tanpa keterangan'
+                                  : controllerComment.value.text,
+                              style: TextStyle(fontSize: 12.0.sp),
+                            )
+                          : Text(
+                              (widget.comment.isEmpty)
+                                  ? (widget.star.isEmpty)
+                                      ? 'Belum ada penilaian'
+                                      : 'Tanpa keterangan'
+                                  : '${widget.comment}',
+                              style: TextStyle(fontSize: 12.0.sp),
+                            ),
                     ),
                     SizedBox(height: 10.h),
                   ],
@@ -646,31 +698,13 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                                                 .withOpacity(0.5),
                               ),
                               child: Text(
-                                (widget.status.toLowerCase() == 'Menunggu')
-                                    ? 'Menunggu'
-                                    : (widget.status.toLowerCase() ==
-                                            'Diterima')
-                                        ? 'Diterima'
-                                        : (widget.status.toLowerCase() ==
-                                                'DiProses')
-                                            ? 'Proses'
-                                            : 'Selesai',
+                                widget.status,
                                 style: TextStyle(fontSize: 12.sp),
                               ),
                             ),
                             SizedBox(
                               width: 10.w,
                             ),
-                            // Visibility(
-                            //   visible: isVisibilityExpansion,
-                            //   child: Expanded(
-                            //     child: Text(
-                            //       '${snapshot.data.last.statusProcess}',
-                            //       maxLines: 2,
-                            //       style: TextStyle(fontSize: 11.0.sp),
-                            //     ),
-                            //   ),
-                            // )
                           ],
                         ),
                         children: [

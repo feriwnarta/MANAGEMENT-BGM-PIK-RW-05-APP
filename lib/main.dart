@@ -248,8 +248,6 @@ class _MainAppState extends State<MainApp> {
     timer = Timer.periodic(Duration(seconds: 1), (_) {
       networkCheck.checkConnection();
 
-      logger.e('${networkCheck.connectionExist.value}');
-
       if (!networkCheck.connectionExist.value) {
         if (!Get.isSnackbarOpen) {
           Get.showSnackbar(

@@ -200,35 +200,37 @@ class _CreateStatusState extends State<CreateStatus> {
                           SizedBox(
                             height: 4.h,
                           ),
-                          Obx(() => (socialMediaControllers.location.isNotEmpty)
-                              ? Container(
-                                  margin:
-                                      EdgeInsets.symmetric(horizontal: 28.w),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SvgPicture.asset(
-                                        'assets/img/image-svg/location-marker.svg',
-                                        color: Colors.blue,
-                                      ),
-                                      SizedBox(
-                                        width: 4.w,
-                                      ),
-                                      SizedBox(
-                                        width: 255.w,
-                                        child: AutoSizeText(
-                                          '${socialMediaControllers.location.value}',
-                                          maxLines: 4,
-                                          style: TextStyle(
-                                              fontSize: 10.sp,
-                                              color: Colors.blue),
+                          Obx(
+                            () => (socialMediaControllers.location.isNotEmpty)
+                                ? Container(
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 28.w),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SvgPicture.asset(
+                                          'assets/img/image-svg/location-marker.svg',
+                                          color: Colors.blue,
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : SizedBox())
+                                        SizedBox(
+                                          width: 4.w,
+                                        ),
+                                        SizedBox(
+                                          width: 255.w,
+                                          child: AutoSizeText(
+                                            '${socialMediaControllers.location.value}',
+                                            maxLines: 4,
+                                            style: TextStyle(
+                                                fontSize: 10.sp,
+                                                color: Colors.blue),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : SizedBox(),
+                          )
                         ],
                       ),
                       Container(

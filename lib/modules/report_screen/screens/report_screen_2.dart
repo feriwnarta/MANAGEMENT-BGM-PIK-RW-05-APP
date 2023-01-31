@@ -86,6 +86,7 @@ class _ReportScreen2State extends State<ReportScreen2> {
         onRefresh: () async => loadReport(),
         child: SafeArea(
           child: SingleChildScrollView(
+            controller: controller,
             child: Stack(children: [
               Container(
                 width: 328.w,

@@ -225,6 +225,9 @@ class UserLoginController extends GetxController {
       accessManagement = false.obs;
       if (controller.timer.value != null && controller.timer.value.isActive) {
         controller.timer.value.cancel();
+        if (controller.initialized) {
+          Get.delete<NotificationController>();
+        }
       }
     }
   }
