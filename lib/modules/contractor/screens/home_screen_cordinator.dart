@@ -381,17 +381,3 @@ class ButtonIconCordinator extends StatelessWidget {
     );
   }
 }
-
-class ListOfCard extends StatefulWidget {
-  const ListOfCard({Key key}) : super(key: key);
-
-  @override
-  State<ListOfCard> createState() => _ListOfCardState();
-}
-
-class _ListOfCardState extends State<ListOfCard> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}

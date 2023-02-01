@@ -5,6 +5,7 @@ import 'package:aplikasi_rw/controller/indexscreen_home_controller.dart';
 import 'package:aplikasi_rw/controller/network_check_controller.dart';
 import 'package:aplikasi_rw/controller/report_user_controller.dart';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
+import 'package:aplikasi_rw/modules/home/screens/citizen_screen.dart';
 import 'package:aplikasi_rw/modules/home/screens/home_folder_screen.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/UserProfileScreens.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/profile_settings_screen.dart';
@@ -231,9 +232,15 @@ class _MainAppState extends State<MainApp> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
   // int _index = 0;
   var colorTabBar = Color(0xff2196F3);
+
   // ReportBloc _reportBloc;
   // list screen untuk menu
-  List<Widget> screens;
+  List<Widget> screens = [
+    HomeScreenFolder(),
+    UserProfileScreen(),
+    ProfileSettings(),
+  ];
+
   final controller = Get.put(UserLoginController());
   final homeController = Get.put(HomeScreenController());
   final reportController = Get.put(ReportUserController());
@@ -242,6 +249,18 @@ class _MainAppState extends State<MainApp> {
 
   Timer timer;
   final logger = Logger();
+
+  @override
+  void initState() {
+    if (controller.status.value == 'WARGA') {
+      screens = [
+        CitizenScreen(),
+        UserProfileScreen(),
+        ProfileSettings(),
+      ];
+    } else if (controller.status.value == 'BETA TEST') {}
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
@@ -272,12 +291,6 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    screens = [
-      HomeScreenFolder(),
-      UserProfileScreen(),
-      ProfileSettings(),
-    ];
-
     return Scaffold(
       key: scaffoldKey,
       // membuat sidebar dan drawer

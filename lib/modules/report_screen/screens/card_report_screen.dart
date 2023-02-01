@@ -129,7 +129,9 @@ class CardReportScreen extends StatelessWidget {
                                           ? Color(0xffEECEB0)
                                           : (status == 'Selesai')
                                               ? Color(0xffB8DBCA)
-                                              : Color(0xffEECEB0),
+                                              : Color(
+                                                  0xffFF6A6A,
+                                                ),
                                 ),
                                 borderRadius: BorderRadius.circular(6),
                                 color: (status == 'Menunggu')
@@ -138,14 +140,21 @@ class CardReportScreen extends StatelessWidget {
                                         ? Color(0xffEECEB0).withOpacity(0.5)
                                         : (status == 'Selesai')
                                             ? Color(0xffB8DBCA).withOpacity(0.5)
-                                            : Color(0xffEECEB0)
+                                            : Color(0xffFFC9C9)
                                                 .withOpacity(0.5),
                               ),
                               child: AutoSizeText(
                                 status,
-                                style: TextStyle(fontSize: 12.sp),
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: (status == 'Eskalasi tingkat 1' ||
+                                          status == 'Eskalasi tingkat 2' ||
+                                          status == 'Eskalasi tingkat 3')
+                                      ? Color(0xffF32020)
+                                      : Colors.black,
+                                ),
                                 overflow: TextOverflow.ellipsis,
-                                minFontSize: 10,
+                                minFontSize: 11,
                                 maxLines: 1,
                               ),
                             ),
@@ -159,10 +168,9 @@ class CardReportScreen extends StatelessWidget {
                                 ? 'Laporan tentang : ' + category
                                 : description,
                             maxLines: 3,
-                            stepGranularity: 10,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontSize: 12.sp),
-                            minFontSize: 10,
+                            minFontSize: 12,
                           ),
                         ),
                         SizedBox(

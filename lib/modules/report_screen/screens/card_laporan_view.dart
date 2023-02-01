@@ -320,7 +320,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                                   Row(
                                     children: [
                                       Icon(
-                                        FontAwesomeIcons.exclamationCircle,
+                                        FontAwesomeIcons.circleExclamation,
                                         color: Colors.blue,
                                         size: 15.h,
                                       ),
@@ -386,8 +386,8 @@ class _CardLaporanViewState extends State<CardLaporanView> {
               ),
 
               Visibility(
-                visible: (widget.photoProcess1 != null ||
-                        widget.photoProcess2 != null)
+                visible: (widget.photoProcess1.isNotEmpty ||
+                        widget.photoProcess2.isNotEmpty)
                     ? true
                     : false,
                 child: Container(
@@ -667,39 +667,44 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
-                              width: 78.w,
                               padding: EdgeInsets.symmetric(
                                   vertical: 2.h, horizontal: 8.w),
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  color: (widget.status.toLowerCase() ==
-                                          'Menunggu')
+                                  color: (widget.status == 'Menunggu')
                                       ? Color(0xffEEB4B0)
-                                      : (widget.status.toLowerCase() ==
-                                              'Diproses')
+                                      : (widget.status == 'Diproses')
                                           ? Color(0xffEECEB0)
-                                          : (widget.status.toLowerCase() ==
-                                                  'Selesai')
+                                          : (widget.status == 'Selesai')
                                               ? Color(0xffB8DBCA)
-                                              : Color(0xffEECEB0),
+                                              : Color(
+                                                  0xffFF6A6A,
+                                                ),
                                 ),
                                 borderRadius: BorderRadius.circular(6),
-                                color: (widget.status.toLowerCase() ==
-                                        'Menunggu')
+                                color: (widget.status == 'Menunggu')
                                     ? Color(0xffEEB4B0).withOpacity(0.5)
-                                    : (widget.status.toLowerCase() ==
-                                            'Diproses')
+                                    : (widget.status == 'Diproses')
                                         ? Color(0xffEECEB0).withOpacity(0.5)
-                                        : (widget.status.toLowerCase() ==
-                                                'Selesai')
+                                        : (widget.status == 'Selesai')
                                             ? Color(0xffB8DBCA).withOpacity(0.5)
-                                            : Color(0xffEECEB0)
+                                            : Color(0xffFFC9C9)
                                                 .withOpacity(0.5),
                               ),
                               child: Text(
                                 widget.status,
-                                style: TextStyle(fontSize: 12.sp),
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color:
+                                      (widget.status == 'Eskalasi tingkat 1' ||
+                                              widget.status ==
+                                                  'Eskalasi tingkat 2' ||
+                                              widget.status ==
+                                                  'Eskalasi tingkat 3')
+                                          ? Color(0xffF32020)
+                                          : Colors.black,
+                                ),
                               ),
                             ),
                             SizedBox(

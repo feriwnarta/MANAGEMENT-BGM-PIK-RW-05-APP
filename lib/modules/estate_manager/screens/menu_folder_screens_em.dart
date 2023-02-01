@@ -1,6 +1,7 @@
 import 'package:aplikasi_rw/modules/authentication/controllers/access_controller.dart';
 import 'package:aplikasi_rw/modules/estate_manager/screens/create_account.dart';
 import 'package:aplikasi_rw/modules/estate_manager/screens/dashboard.dart';
+import 'package:aplikasi_rw/modules/estate_manager/screens/menu_folder_create_account.dart';
 import 'package:aplikasi_rw/modules/home/widgets/menu.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/sub_menu_report.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +70,7 @@ class _MenuFolderEmState extends State<MenuFolderEm> {
                                       'assets/img/estate_manager_menu/add_account.jpg',
                                   onTap: () {
                                     Get.to(
-                                      () => CreateAccount(),
+                                      () => MenuFolderCreateAccout(),
                                       transition: Transition.rightToLeft,
                                     );
                                   },
