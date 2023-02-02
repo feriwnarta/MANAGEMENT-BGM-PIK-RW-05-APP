@@ -48,7 +48,13 @@ class _MenuFolderCreateAccoutState extends State<MenuFolderCreateAccout> {
                             'assets/img/estate_manager_menu/perawatan-lanskap.jpg',
                         text: 'Perawatan Lanskap',
                         onTap: () {
-                          Get.to(() => CreateAccountEmployee(),
+                          Get.to(
+                              () => CreateAccountEmployee(
+                                    division: 'Landscape',
+                                    title:
+                                        'Tambah personil di bagian perawatan lanskap.',
+                                    job: '1',
+                                  ),
                               transition: Transition.cupertino);
                         },
                       ),
@@ -59,6 +65,16 @@ class _MenuFolderCreateAccoutState extends State<MenuFolderCreateAccout> {
                         icon:
                             'assets/img/estate_manager_menu/mekanikel_elektrikel.jpg',
                         text: 'Mekanikel & Elektrikel',
+                        onTap: () {
+                          Get.to(
+                              () => CreateAccountEmployee(
+                                    division: 'ME',
+                                    title:
+                                        'Tambah personil di bagian mekanikel dan elektrikel.',
+                                    job: '2',
+                                  ),
+                              transition: Transition.cupertino);
+                        },
                       ),
                       SizedBox(
                         width: 20.w,
@@ -67,6 +83,16 @@ class _MenuFolderCreateAccoutState extends State<MenuFolderCreateAccout> {
                         icon:
                             'assets/img/estate_manager_menu/building_controll.jpg',
                         text: 'Building Controll',
+                        onTap: () {
+                          Get.to(
+                              () => CreateAccountEmployee(
+                                    division: 'Building controll dan perizinan',
+                                    title:
+                                        'Tambah personil di bagian building controll.',
+                                    job: '3',
+                                  ),
+                              transition: Transition.cupertino);
+                        },
                       ),
                     ],
                   ),
@@ -79,6 +105,15 @@ class _MenuFolderCreateAccoutState extends State<MenuFolderCreateAccout> {
                         icon:
                             'assets/img/estate_manager_menu/permasalahan-keamanan.jpg',
                         text: 'Masalah Keamanan',
+                        onTap: () {
+                          Get.to(
+                              () => CreateAccountEmployee(
+                                    division: 'Kemanan / Security',
+                                    title: 'Tambah personil di bagian kemanan',
+                                    job: '3',
+                                  ),
+                              transition: Transition.cupertino);
+                        },
                       ),
                     ],
                   ),

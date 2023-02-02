@@ -51,9 +51,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
       ),
       body: SingleChildScrollView(
         child: Obx(
-          () =>
-              (controller.listNotif != null && controller.listNotif.length == 0)
-                  ? LinearProgressIndicator()
+          () => (controller.listNotif == null)
+              ? LinearProgressIndicator()
+              : (controller.listNotif.length == 0)
+                  ? Center(child: Text('Tidak ada notifikasi'))
                   : Container(
                       margin: EdgeInsets.symmetric(
                         horizontal: 16.w,

@@ -21,11 +21,11 @@ class ContractorController extends GetxController {
     if (listReport.length <= 0) {
       listBaru =
           await ContractorServices.getComplaintDiterimaDanProsesContractor(
-              0, 10);
+              0, 10, controller.status.value);
     } else {
       listBaru =
           await ContractorServices.getComplaintDiterimaDanProsesContractor(
-              0, listReport.length);
+              0, listReport.length, controller.status.value);
     }
 
     listReport.assignAll(listBaru);
@@ -37,10 +37,11 @@ class ContractorController extends GetxController {
     List<ContractorModel> listBaru;
 
     if (listReport.length <= 10) {
-      listBaru = await ContractorServices.getComplaintContractorProcess(0, 10);
+      listBaru = await ContractorServices.getComplaintContractorProcess(
+          0, 10, controller.status.value);
     } else {
       listBaru = await ContractorServices.getComplaintContractorProcess(
-          0, listReport.length);
+          0, listReport.length, controller.status.value);
     }
 
     listReport.assignAll(listBaru);
@@ -52,10 +53,11 @@ class ContractorController extends GetxController {
     List<ContractorModel> listBaru;
 
     if (listReport.length <= 10) {
-      listBaru = await ContractorServices.getComplaintContractorFinish(0, 10);
+      listBaru = await ContractorServices.getComplaintContractorFinish(
+          0, 10, controller.status.value);
     } else {
       listBaru = await ContractorServices.getComplaintContractorFinish(
-          0, listReport.length);
+          0, listReport.length, controller.status.value);
     }
 
     listReport.assignAll(listBaru);
@@ -65,7 +67,7 @@ class ContractorController extends GetxController {
     if (isLoading.value) {
       listReport.assignAll(
           await ContractorServices.getComplaintDiterimaDanProsesContractor(
-              0, 10));
+              0, 10, controller.status.value));
       if (listReport.isNotEmpty) {
         isLoading.value = false;
       } else {
@@ -74,7 +76,7 @@ class ContractorController extends GetxController {
     } else {
       listReportNew.assignAll(
           await ContractorServices.getComplaintDiterimaDanProsesContractor(
-              listReport.length, 10));
+              listReport.length, 10, controller.status.value));
 
       if (listReportNew.isEmpty) {
         isMaxReached.value = true;
@@ -87,7 +89,8 @@ class ContractorController extends GetxController {
   void getComplaintDiproses() async {
     if (isLoading.value) {
       listReport.assignAll(
-          await ContractorServices.getComplaintContractorProcess(0, 10));
+          await ContractorServices.getComplaintContractorProcess(
+              0, 10, controller.status.value));
       if (listReport.isNotEmpty) {
         isLoading.value = false;
       } else {
@@ -96,7 +99,7 @@ class ContractorController extends GetxController {
     } else {
       listReportNew.assignAll(
           await ContractorServices.getComplaintContractorProcess(
-              listReport.length, 10));
+              listReport.length, 10, controller.status.value));
 
       if (listReportNew.isEmpty) {
         isMaxReached.value = true;
@@ -109,7 +112,8 @@ class ContractorController extends GetxController {
   void getComplaintFinish() async {
     if (isLoading.value) {
       listReport.assignAll(
-          await ContractorServices.getComplaintContractorFinish(0, 10));
+          await ContractorServices.getComplaintContractorFinish(
+              0, 10, controller.status.value));
       if (listReport.isNotEmpty) {
         isLoading.value = false;
       } else {
@@ -118,7 +122,7 @@ class ContractorController extends GetxController {
     } else {
       listReportNew.assignAll(
           await ContractorServices.getComplaintContractorFinish(
-              listReport.length, 10));
+              listReport.length, 10, controller.status.value));
 
       if (listReportNew.isEmpty) {
         isMaxReached.value = true;

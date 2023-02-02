@@ -500,8 +500,7 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
                                   ),
                                   children: [
                                     TextSpan(
-                                      text:
-                                          '\t (${item['name_estate_cordinator']})',
+                                      text: '\t (${item['name']})',
                                       style: TextStyle(
                                         fontSize: 12.sp,
                                         color: Colors.black,

@@ -81,7 +81,7 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.light,
         title: Text(
-          'Laporan Selesai',
+          'Laporan Sedang Proses',
           style: TextStyle(fontSize: 19.sp, fontWeight: FontWeight.w500),
         ),
       ),
@@ -97,7 +97,7 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                 children: [
                   Container(
                     margin: EdgeInsets.only(top: 24.h, left: 16.w),
-                    child: Text('Laporan Sedang Proses'),
+                    child: Text('Laporan Sedang Di Proses'),
                   ),
                   SizedBox(height: 10.h),
                   Row(

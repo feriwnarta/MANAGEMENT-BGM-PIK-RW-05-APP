@@ -7,7 +7,8 @@ class ContractorModel {
       address,
       latitude,
       statusComplaint,
-      longitude;
+      longitude,
+      processTime;
   List<String> categoryDetail;
 
   ContractorModel(
@@ -20,5 +21,6 @@ class ContractorModel {
       this.latitude,
       this.statusComplaint,
       this.categoryDetail,
-      this.longitude});
+      this.longitude,
+      this.processTime});
 }

@@ -19,19 +19,23 @@ class NotificationServices {
       var result = await dio.post(url, data: jsonEncode({'id_user': idUser}));
 
       if (result.statusCode >= 200 && result.statusCode <= 399) {
-        var response = jsonDecode(result.data) as List;
+        if (jsonDecode(result.data) != "EMPTY") {
+          var response = jsonDecode(result.data) as List;
 
-        return response
-            .map<NotificationModel>(
-              (rs) => NotificationModel(
-                caption: rs['caption'],
-                time: rs['time'],
-                title: rs['title'],
-                urlImage: rs['url_profile'],
-                content: rs['content'],
-              ),
-            )
-            .toList();
+          return response
+              .map<NotificationModel>(
+                (rs) => NotificationModel(
+                  caption: rs['caption'],
+                  time: rs['time'],
+                  title: rs['title'],
+                  urlImage: rs['url_profile'],
+                  content: rs['content'],
+                ),
+              )
+              .toList();
+        } else {
+          return [];
+        }
       } else {
         // print error server
       }

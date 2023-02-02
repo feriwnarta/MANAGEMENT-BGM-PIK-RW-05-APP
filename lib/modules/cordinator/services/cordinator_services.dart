@@ -8,14 +8,15 @@ import '../../../utils/UserSecureStorage.dart';
 
 class CordinatorServices {
   static Future<List<CordinatorModel>> getComplaintDiterimaDanProsesContractor(
-      int start, int limit) async {
+      int start, int limit, String type) async {
     String url = '${ServerApp.url}src/contractor/report_pull/report_pull.php';
     String idCordinator = await UserSecureStorage.getIdUser();
     var data = {
       'id_contractor': idCordinator,
       'start': start,
       'limit': limit,
-      'id_user': idCordinator
+      'id_user': idCordinator,
+      'type': type
     };
 
     Dio dio = Dio();

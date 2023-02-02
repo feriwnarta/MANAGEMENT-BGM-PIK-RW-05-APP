@@ -1,6 +1,6 @@
 class ServerApp {
-  static String ip = 'next-g.website';
-  static String url = 'https://$ip/app/';
-  // static String ip = '192.168.3.96';
-  // static String url = 'http://$ip/nextg_mobileapp/';
+  // static String ip = 'next-g.website';
+  // static String url = 'https://$ip/app/';
+  static String ip = '192.168.3.93';
+  static String url = 'http://$ip/nextg_mobileapp/';
 }

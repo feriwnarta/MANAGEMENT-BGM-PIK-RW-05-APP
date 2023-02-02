@@ -8,14 +8,15 @@ import '../models/contractor_model.dart';
 
 class ContractorServices {
   static Future<List<ContractorModel>> getComplaintDiterimaDanProsesContractor(
-      int start, int limit) async {
+      int start, int limit, status) async {
     String url = '${ServerApp.url}src/contractor/report_pull/report_pull.php';
     String idCordinator = await UserSecureStorage.getIdUser();
     var data = {
       'id_contractor': idCordinator,
       'start': start,
       'limit': limit,
-      'id_user': idCordinator
+      'id_user': idCordinator,
+      'status': status
     };
 
     Dio dio = Dio();
@@ -41,6 +42,7 @@ class ContractorServices {
                 title: item['category'],
                 address: item['address'],
                 statusComplaint: item['status'],
+                processTime: item['process_time'],
               ),
             )
             .toList();
@@ -51,7 +53,7 @@ class ContractorServices {
   }
 
   static Future<List<ContractorModel>> getComplaintContractorProcess(
-      int start, int limit) async {
+      int start, int limit, String status) async {
     String idCordinator = await UserSecureStorage.getIdUser();
     String url =
         '${ServerApp.url}src/contractor/report_pull/report_pull_process.php';
@@ -59,7 +61,8 @@ class ContractorServices {
       'id_contractor': idCordinator,
       'start': start,
       'limit': limit,
-      'id_user': idCordinator
+      'id_user': idCordinator,
+      'status': status
     };
 
     Dio dio = Dio();
@@ -80,6 +83,7 @@ class ContractorServices {
                 title: item['category'],
                 address: item['address'],
                 statusComplaint: item['status'],
+                processTime: item['process_time'],
               ),
             )
             .toList();
@@ -90,7 +94,7 @@ class ContractorServices {
   }
 
   static Future<List<ContractorModel>> getComplaintContractorFinish(
-      int start, int limit) async {
+      int start, int limit, String status) async {
     String idCordinator = await UserSecureStorage.getIdUser();
     String url =
         '${ServerApp.url}src/contractor/report_pull/report_pull_finish.php';
@@ -99,7 +103,8 @@ class ContractorServices {
       'id_contractor': idCordinator,
       'start': start,
       'limit': limit,
-      'id_user': idCordinator
+      'id_user': idCordinator,
+      'status': status
     };
 
     Dio dio = Dio();

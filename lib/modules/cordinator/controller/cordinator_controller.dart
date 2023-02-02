@@ -21,11 +21,11 @@ class CordinatorController extends GetxController {
     if (listReport.length <= 0) {
       listBaru =
           await CordinatorServices.getComplaintDiterimaDanProsesContractor(
-              0, 10);
+              0, 10, controller.status.value);
     } else {
       listBaru =
           await CordinatorServices.getComplaintDiterimaDanProsesContractor(
-              0, listReport.length);
+              0, listReport.length, controller.status.value);
     }
 
     listReport.assignAll(listBaru);
@@ -65,7 +65,7 @@ class CordinatorController extends GetxController {
     if (isLoading.value) {
       listReport.assignAll(
           await CordinatorServices.getComplaintDiterimaDanProsesContractor(
-              0, 10));
+              0, 10, controller.status.value));
       if (listReport.isNotEmpty) {
         isLoading.value = false;
       } else {
@@ -74,7 +74,7 @@ class CordinatorController extends GetxController {
     } else {
       listReportNew.assignAll(
           await CordinatorServices.getComplaintDiterimaDanProsesContractor(
-              listReport.length, 10));
+              listReport.length, 10, controller.status.value));
 
       if (listReportNew.isEmpty) {
         isMaxReached.value = true;

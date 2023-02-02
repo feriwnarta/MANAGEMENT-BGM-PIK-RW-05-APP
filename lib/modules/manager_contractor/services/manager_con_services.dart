@@ -8,15 +8,18 @@ import '../../../utils/UserSecureStorage.dart';
 
 class ManagerConServices {
   static Future<List<ManagerContractorModel>>
-      getComplaintDiterimaDanProsesContractor(int start, int limit) async {
+      getComplaintDiterimaDanProsesContractor(
+          int start, int limit, String type) async {
     String url = '${ServerApp.url}src/contractor/report_pull/report_pull.php';
     String idCordinator = await UserSecureStorage.getIdUser();
     var data = {
       'id_contractor': idCordinator,
       'start': start,
       'limit': limit,
-      'id_user': idCordinator
+      'status': type,
     };
+    final logger = Logger();
+    logger.e(data);
 
     Dio dio = Dio();
     dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
@@ -26,10 +29,11 @@ class ManagerConServices {
     var response = await dio.post(url, data: jsonEncode(data));
     if (response.statusCode >= 200 && response.statusCode <= 299) {
       if (response.data.isNotEmpty) {
+        logger.i(response.data);
         var message = jsonDecode(response.data) as List;
 
-        final logger = Logger();
         logger.i(message);
+        logger.e(response.data);
 
         List<ManagerContractorModel> model;
         List<Map<String, dynamic>> phone;
@@ -62,7 +66,7 @@ class ManagerConServices {
   }
 
   static Future<List<ManagerContractorModel>> getComplaintContractorProcess(
-      int start, int limit) async {
+      int start, int limit, status) async {
     String idCordinator = await UserSecureStorage.getIdUser();
     String url =
         '${ServerApp.url}src/contractor/report_pull/report_pull_process.php';
@@ -70,7 +74,8 @@ class ManagerConServices {
       'id_contractor': idCordinator,
       'start': start,
       'limit': limit,
-      'id_user': idCordinator
+      'id_user': idCordinator,
+      'status': status,
     };
 
     Dio dio = Dio();
@@ -112,7 +117,7 @@ class ManagerConServices {
   }
 
   static Future<List<ManagerContractorModel>> getComplaintContractorFinish(
-      int start, int limit) async {
+      int start, int limit, String status) async {
     String idCordinator = await UserSecureStorage.getIdUser();
     String url =
         '${ServerApp.url}src/contractor/report_pull/report_pull_finish.php';
@@ -121,7 +126,8 @@ class ManagerConServices {
       'id_contractor': idCordinator,
       'start': start,
       'limit': limit,
-      'id_user': idCordinator
+      'id_user': idCordinator,
+      'status': status
     };
 
     Dio dio = Dio();

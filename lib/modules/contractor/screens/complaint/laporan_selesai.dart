@@ -59,7 +59,7 @@ class _CardReportFinish extends State<CardReportFinish>
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Laporan Selesai'),
+        title: Text('Laporan Diproses'),
         systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       body: SingleChildScrollView(
@@ -131,6 +131,7 @@ class _CardReportFinish extends State<CardReportFinish>
                                         statusComplaint: controller
                                             .listReport[index].statusComplaint,
                                         name: widget.name,
+                                        processTime: controller.listReport[index].processTime,
                                         status: null,
                                       ),
                                     )

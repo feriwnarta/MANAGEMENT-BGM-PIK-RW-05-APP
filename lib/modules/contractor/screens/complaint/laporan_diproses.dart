@@ -131,6 +131,8 @@ class _CardReportProcessState extends State<CardReportProcess>
                                         name: widget.name,
                                         statusComplaint: controller
                                             .listReport[index].statusComplaint,
+                                        processTime: controller
+                                            .listReport[index].processTime,
                                         status: '',
                                       ),
                                     )

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:aplikasi_rw/modules/estate_manager/data/position_employee.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
@@ -10,6 +11,106 @@ import 'package:logger/logger.dart';
 import '../../../utils/UserSecureStorage.dart';
 
 class CreateAccountServices {
+  static Future<List<PositionEmployee>> getPosition({String type}) async {
+    String idUser = await UserSecureStorage.getIdUser();
+
+    String url = '${ServerApp.url}src/employee/get_position.php';
+
+    Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
+
+    var data = {'id_user': idUser, 'type': type};
+
+    List<PositionEmployee> result = [];
+
+    try {
+      var response = await dio.post(url, data: jsonEncode(data));
+
+      if (response.statusCode >= 200 && response.statusCode <= 299) {
+        var responseData = jsonDecode(response.data) as List;
+
+        result = responseData
+            .map<PositionEmployee>((item) => PositionEmployee.fromJson(item))
+            .toList();
+
+        return result;
+      }
+    } on DioError catch (e) {
+      print(e);
+    }
+
+    return result;
+  }
+
+  static Future<String> saveEmployee({
+    String username,
+    String name,
+    String password,
+    String job,
+    String email,
+    String noTelp,
+    String idPosition,
+    String division,
+    String fotoProfile,
+  }) async {
+    Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
+
+    String url = '${ServerApp.url}src/employee/add_employee.php';
+
+    FormData formData;
+
+    if (fotoProfile.isNotEmpty) {
+      formData = FormData.fromMap(
+        {
+          'username': username,
+          'name': name,
+          'password': password,
+          'job': job,
+          'email': email,
+          'notelp': noTelp,
+          'id_position': idPosition,
+          'division': division,
+          'foto_profile': MultipartFileRecreatable.fromFileSync(
+            fotoProfile,
+            filename: fotoProfile,
+            contentType: MediaType('image', 'jpg'),
+          )
+        },
+      );
+    } else {
+      formData = FormData.fromMap(
+        {
+          'username': username,
+          'name': name,
+          'password': password,
+          'job': job,
+          'email': email,
+          'notelp': noTelp,
+          'id_position': idPosition,
+          'division': division,
+        },
+      );
+    }
+
+    String message = '';
+    final logger = Logger();
+
+    try {
+      var response = await dio.post(url, data: formData);
+
+      if (response.statusCode >= 200 && response.statusCode <= 299) {
+        message = jsonDecode(response.data);
+        logger.e(message);
+      }
+      return message;
+    } on DioError catch (e) {
+      print(e);
+    }
+
+    return message;
+  }
+
   static Future<String> cordinator(
       {String username,
       String name,

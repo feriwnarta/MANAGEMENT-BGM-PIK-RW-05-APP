@@ -74,7 +74,7 @@ class StatusPeduliEmServices {
         var result = jsonDecode(response.data) as List;
 
         model = result.map<StatusPeduliEmModel>((model) {
-          var cordinator = model['cordinator'] as List;
+          var cordinator = model['pic'] as List;
 
           List<Map<String, dynamic>> listCordinator =
               cordinator.map<Map<String, dynamic>>((e) => e).toList();

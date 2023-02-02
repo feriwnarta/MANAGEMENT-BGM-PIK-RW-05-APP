@@ -176,6 +176,7 @@ class CardListReport extends StatelessWidget {
       this.status,
       this.statusComplaint,
       this.longitude,
+      this.processTime,
       this.management})
       : super(key: key);
 
@@ -190,6 +191,7 @@ class CardListReport extends StatelessWidget {
       idReport,
       name,
       status,
+      processTime,
       management;
 
   final userLogin = UserLoginController();
@@ -225,7 +227,7 @@ class CardListReport extends StatelessWidget {
             idReport: idReport,
             latitude: latitude,
             longitude: longitude,
-            time: result['data']['create_at'],
+            time: processTime,
             title: title,
             url: url,
           ),

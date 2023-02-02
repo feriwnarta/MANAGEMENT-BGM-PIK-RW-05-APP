@@ -7,6 +7,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
@@ -287,6 +288,7 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
                                 EasyLoading.dismiss();
                                 final logger = Logger();
                                 logger.i(message['data']);
+
                                 Get.off(
                                   () => FinishReportScreen(
                                     description: widget.description,
@@ -295,7 +297,7 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
                                     location: widget.location,
                                     longitude: widget.longitude,
                                     name: widget.name,
-                                    time: '${message['data']['create_at']}',
+                                    time: DateTime.now().toString(),
                                     title: widget.title,
                                     url: widget.url,
                                   ),
