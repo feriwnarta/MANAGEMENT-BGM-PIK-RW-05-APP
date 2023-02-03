@@ -7,8 +7,10 @@ class ManagerContractorModel {
       address,
       latitude,
       statusComplaint,
-      longitude;
+      longitude,
+      processTime;
   List<String> categoryDetail;
+
   List<Map<String, dynamic>> kepalaContratorPhone;
 
   ManagerContractorModel(
@@ -21,5 +23,7 @@ class ManagerContractorModel {
       this.latitude,
       this.statusComplaint,
       this.categoryDetail,
-      this.longitude, this.kepalaContratorPhone});
+      this.longitude,
+      this.processTime,
+      this.kepalaContratorPhone});
 }

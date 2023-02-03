@@ -32,6 +32,7 @@ class DetailReportScreen extends StatelessWidget {
       longitude,
       idReport,
       name;
+  bool isContractor;
 
   DetailReportScreen(
       {this.url,
@@ -42,7 +43,8 @@ class DetailReportScreen extends StatelessWidget {
       this.latitude,
       this.longitude,
       this.idReport,
-      this.name});
+      this.name,
+      this.isContractor});
 
   @override
   Widget build(BuildContext context) {
@@ -170,49 +172,52 @@ class DetailReportScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 122.h),
-              SizedBox(
-                width: 328.w,
-                height: 40.h,
-                child: TextButton(
-                  onPressed: () async {
-                    EasyLoading.show(status: 'loading');
-                    String message =
-                        await ContractorProcessComplaint.acceptComplaint(
-                      idReport: idReport,
-                    );
-                    final logger = Logger();
-                    logger.i(message);
-                    if (message == 'OKE') {
-                      EasyLoading.dismiss();
-                      Get.off(
-                        () => ProcessReportScreen(
-                          url: url,
-                          title: title,
-                          description: description,
-                          idReport: idReport,
-                          latitude: latitude,
-                          location: location,
-                          longitude: longitude,
-                          time: time,
-                          name: (userLogin.status.value == 'cordinator'
-                              ? userLogin.nameCordinator.value
-                              : userLogin.nameContractor.value),
-                        ),
+              Visibility(
+                visible: isContractor,
+                child: SizedBox(
+                  width: 328.w,
+                  height: 40.h,
+                  child: TextButton(
+                    onPressed: () async {
+                      EasyLoading.show(status: 'loading');
+                      String message =
+                          await ContractorProcessComplaint.acceptComplaint(
+                        idReport: idReport,
                       );
-                    } else {
-                      EasyLoading.showError(
-                          'Gagal menerima laporan, silahkan coba lagi');
-                      EasyLoading.dismiss();
-                    }
-                  },
-                  child: Text(
-                    'Terima Laporan',
-                    style: TextStyle(fontSize: 16.sp, color: Colors.white),
-                  ),
-                  style: TextButton.styleFrom(
-                    backgroundColor: Color(0xff2094F3),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
+                      final logger = Logger();
+                      logger.i(message);
+                      if (message == 'OKE') {
+                        EasyLoading.dismiss();
+                        Get.off(
+                          () => ProcessReportScreen(
+                            url: url,
+                            title: title,
+                            description: description,
+                            idReport: idReport,
+                            latitude: latitude,
+                            location: location,
+                            longitude: longitude,
+                            time: time,
+                            name: (userLogin.status.value == 'cordinator'
+                                ? userLogin.nameCordinator.value
+                                : userLogin.nameContractor.value),
+                          ),
+                        );
+                      } else {
+                        EasyLoading.showError(
+                            'Gagal menerima laporan, silahkan coba lagi');
+                        EasyLoading.dismiss();
+                      }
+                    },
+                    child: Text(
+                      'Terima Laporan',
+                      style: TextStyle(fontSize: 16.sp, color: Colors.white),
+                    ),
+                    style: TextButton.styleFrom(
+                      backgroundColor: Color(0xff2094F3),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
                     ),
                   ),
                 ),

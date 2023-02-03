@@ -25,7 +25,8 @@ class ProcessReportScreen extends StatefulWidget {
       this.location,
       this.idReport,
       this.longitude,
-      this.name})
+      this.name,
+      this.isCon})
       : super(key: key);
   String url,
       title,
@@ -36,6 +37,7 @@ class ProcessReportScreen extends StatefulWidget {
       longitude,
       idReport,
       name;
+  bool isCon;
   @override
   _ProcessReportScreenState createState() => _ProcessReportScreenState();
 
@@ -255,69 +257,72 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
                       ],
                     ),
                     SizedBox(height: 110.h),
-                    SizedBox(
-                      width: 328.w,
-                      height: 40.h,
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                          backgroundColor: Color(0xff2094F3),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
+                    Visibility(
+                      visible: widget.isCon,
+                      child: SizedBox(
+                        width: 328.w,
+                        height: 40.h,
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            backgroundColor: Color(0xff2094F3),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
                           ),
-                        ),
-                        child: Text(
-                          'Proses Laporan',
-                          style:
-                              TextStyle(fontSize: 16.sp, color: Colors.white),
-                        ),
-                        onPressed: () async {
-                          // insert process work ke tb process
-                          if (imagePathCond1.isNotEmpty ||
-                              imagePathCond2.isNotEmpty) {
-                            EasyLoading.show(status: 'loading');
-                            Map<String, dynamic> message =
-                                await ContractorProcessComplaint
-                                    .processComplaint(
-                              idReport: widget.idReport,
-                              img1: imagePathCond1,
-                              img2: imagePathCond2,
-                            );
+                          child: Text(
+                            'Proses Laporan',
+                            style:
+                                TextStyle(fontSize: 16.sp, color: Colors.white),
+                          ),
+                          onPressed: () async {
+                            // insert process work ke tb process
+                            if (imagePathCond1.isNotEmpty ||
+                                imagePathCond2.isNotEmpty) {
+                              EasyLoading.show(status: 'loading');
+                              Map<String, dynamic> message =
+                                  await ContractorProcessComplaint
+                                      .processComplaint(
+                                idReport: widget.idReport,
+                                img1: imagePathCond1,
+                                img2: imagePathCond2,
+                              );
 
-                            if (message != null && message.isNotEmpty) {
-                              if (message['status'] == 'success') {
-                                EasyLoading.dismiss();
-                                final logger = Logger();
-                                logger.i(message['data']);
+                              if (message != null && message.isNotEmpty) {
+                                if (message['status'] == 'success') {
+                                  EasyLoading.dismiss();
+                                  final logger = Logger();
+                                  logger.i(message['data']);
 
-                                Get.off(
-                                  () => FinishReportScreen(
-                                    description: widget.description,
-                                    idReport: widget.idReport,
-                                    latitude: widget.latitude,
-                                    location: widget.location,
-                                    longitude: widget.longitude,
-                                    name: widget.name,
-                                    time: DateTime.now().toString(),
-                                    title: widget.title,
-                                    url: widget.url,
-                                  ),
-                                  transition: Transition.cupertino,
-                                );
+                                  Get.off(
+                                    () => FinishReportScreen(
+                                      description: widget.description,
+                                      idReport: widget.idReport,
+                                      latitude: widget.latitude,
+                                      location: widget.location,
+                                      longitude: widget.longitude,
+                                      name: widget.name,
+                                      time: DateTime.now().toString(),
+                                      title: widget.title,
+                                      url: widget.url,
+                                    ),
+                                    transition: Transition.cupertino,
+                                  );
+                                } else {
+                                  EasyLoading.showError(
+                                      'Gagal memproses laporan, silahkan coba ulang');
+                                }
                               } else {
-                                EasyLoading.showError(
-                                    'Gagal memproses laporan, silahkan coba ulang');
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Text(
+                                        'harap masukan foto terlebih dahulu')));
                               }
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                   content: Text(
                                       'harap masukan foto terlebih dahulu')));
                             }
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text(
-                                    'harap masukan foto terlebih dahulu')));
-                          }
-                        },
+                          },
+                        ),
                       ),
                     ),
                     SizedBox(height: 32.h)

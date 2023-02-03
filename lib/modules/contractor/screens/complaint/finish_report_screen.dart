@@ -30,6 +30,7 @@ class FinishReportScreen extends StatefulWidget {
       this.latitude,
       this.longitude,
       this.idReport,
+      this.isCon,
       name})
       : super(key: key);
 
@@ -42,6 +43,7 @@ class FinishReportScreen extends StatefulWidget {
       longitude,
       idReport,
       name;
+  bool isCon;
   var pickedFile;
   ImagePicker _picker = ImagePicker();
   String imagePathCond1 = '';
@@ -301,56 +303,59 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                       ],
                     ),
                     SizedBox(height: 110.h),
-                    SizedBox(
-                      width: 328.w,
-                      height: 40.h,
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                          backgroundColor: Color(0xff2094F3),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
+                    Visibility(
+                      visible: widget.isCon,
+                      child: SizedBox(
+                        width: 328.w,
+                        height: 40.h,
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            backgroundColor: Color(0xff2094F3),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
                           ),
-                        ),
-                        child: Text(
-                          'Laporan selesai',
-                          style:
-                              TextStyle(fontSize: 16.sp, color: Colors.white),
-                        ),
-                        onPressed: () async {
-                          if (widget.imagePathCond1.isNotEmpty ||
-                              widget.imagePathCond2.isNotEmpty) {
-                            String dateNow = DateTime.now().toString();
-                            final logger = Logger();
-                            EasyLoading.show(status: 'loading');
-                            String message = await ContractorProcessComplaint
-                                .finishComplaint(
-                              duration: widget.displayTime,
-                              finishTime: dateNow,
-                              idReport: widget.idReport,
-                              img1: widget.imagePathCond1,
-                              img2: widget.imagePathCond2,
-                            );
+                          child: Text(
+                            'Laporan selesai',
+                            style:
+                                TextStyle(fontSize: 16.sp, color: Colors.white),
+                          ),
+                          onPressed: () async {
+                            if (widget.imagePathCond1.isNotEmpty ||
+                                widget.imagePathCond2.isNotEmpty) {
+                              String dateNow = DateTime.now().toString();
+                              final logger = Logger();
+                              EasyLoading.show(status: 'loading');
+                              String message = await ContractorProcessComplaint
+                                  .finishComplaint(
+                                duration: widget.displayTime,
+                                finishTime: dateNow,
+                                idReport: widget.idReport,
+                                img1: widget.imagePathCond1,
+                                img2: widget.imagePathCond2,
+                              );
 
-                            logger.i(message);
-                            EasyLoading.dismiss();
+                              logger.i(message);
+                              EasyLoading.dismiss();
 
-                            if (message != null && message == 'OKE') {
-                              Get.off(
-                                CompleteScreen(
-                                  time: widget.displayTime,
-                                  name: widget.name,
+                              if (message != null && message == 'OKE') {
+                                Get.off(
+                                  CompleteScreen(
+                                    time: widget.displayTime,
+                                    name: widget.name,
+                                  ),
+                                );
+                              }
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      'harap masukan foto terlebih dahulu'),
                                 ),
                               );
                             }
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content:
-                                    Text('harap masukan foto terlebih dahulu'),
-                              ),
-                            );
-                          }
-                        },
+                          },
+                        ),
                       ),
                     ),
                     SizedBox(height: 32.h)

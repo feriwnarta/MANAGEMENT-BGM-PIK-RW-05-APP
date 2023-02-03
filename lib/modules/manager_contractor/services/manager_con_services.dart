@@ -104,6 +104,7 @@ class ManagerConServices {
             title: item['category'],
             address: item['address'],
             statusComplaint: item['status'],
+            processTime: item['process_time'],
             kepalaContratorPhone: phone,
           );
         }).toList();

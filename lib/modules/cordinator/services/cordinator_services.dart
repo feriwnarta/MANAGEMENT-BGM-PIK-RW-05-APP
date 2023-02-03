@@ -16,7 +16,7 @@ class CordinatorServices {
       'start': start,
       'limit': limit,
       'id_user': idCordinator,
-      'type': type
+      'status': type
     };
 
     Dio dio = Dio();
@@ -27,10 +27,9 @@ class CordinatorServices {
     var response = await dio.post(url, data: jsonEncode(data));
     if (response.statusCode >= 200 && response.statusCode <= 299) {
       if (response.data.isNotEmpty) {
-        var message = jsonDecode(response.data) as List;
-
         final logger = Logger();
-        logger.i(message);
+        logger.i(response.data);
+        var message = jsonDecode(response.data) as List;
 
         List<CordinatorModel> model;
         List<Map<String, dynamic>> phone;
@@ -63,7 +62,7 @@ class CordinatorServices {
   }
 
   static Future<List<CordinatorModel>> getComplaintContractorProcess(
-      int start, int limit) async {
+      int start, int limit, String status) async {
     String idCordinator = await UserSecureStorage.getIdUser();
     String url =
         '${ServerApp.url}src/contractor/report_pull/report_pull_process.php';
@@ -71,16 +70,19 @@ class CordinatorServices {
       'id_contractor': idCordinator,
       'start': start,
       'limit': limit,
-      'id_user': idCordinator
+      'id_user': idCordinator,
+      'status': status
     };
 
     Dio dio = Dio();
     dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
     var response = await dio.post(url, data: jsonEncode(data));
     List<CordinatorModel> model = [];
+    final logger = Logger();
 
     if (response.statusCode >= 200 && response.statusCode <= 299) {
       if (response.data.isNotEmpty) {
+        logger.d(response.data);
         var message = jsonDecode(response.data) as List;
 
         List<Map<String, dynamic>> phone;
@@ -91,17 +93,17 @@ class CordinatorServices {
           phone = kepalaContractor.map<Map<String, dynamic>>((e) => e).toList();
 
           return CordinatorModel(
-            description: item['description'],
-            idReport: item['id_report'],
-            latitude: item['latitude'],
-            longitude: item['longitude'],
-            urlImage: item['url_image'],
-            time: item['time_post'],
-            title: item['category'],
-            address: item['address'],
-            statusComplaint: item['status'],
-            managerContractor: phone,
-          );
+              description: item['description'],
+              idReport: item['id_report'],
+              latitude: item['latitude'],
+              longitude: item['longitude'],
+              urlImage: item['url_image'],
+              time: item['time_post'],
+              title: item['category'],
+              address: item['address'],
+              statusComplaint: item['status'],
+              managerContractor: phone,
+              processTime: item['process_time']);
         }).toList();
         return model;
       } else {
@@ -113,7 +115,10 @@ class CordinatorServices {
   }
 
   static Future<List<CordinatorModel>> getComplaintContractorFinish(
-      int start, int limit) async {
+    int start,
+    int limit,
+    String status,
+  ) async {
     String idCordinator = await UserSecureStorage.getIdUser();
     String url =
         '${ServerApp.url}src/contractor/report_pull/report_pull_finish.php';
@@ -122,16 +127,19 @@ class CordinatorServices {
       'id_contractor': idCordinator,
       'start': start,
       'limit': limit,
-      'id_user': idCordinator
+      'id_user': idCordinator,
+      'status': status,
     };
 
     Dio dio = Dio();
     dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
     var response = await dio.post(url, data: jsonEncode(data));
     List<CordinatorModel> model = [];
+    final logger = Logger();
 
     if (response.statusCode >= 200 && response.statusCode <= 299) {
       if (response.data.isNotEmpty) {
+        logger.i(response.data);
         var message = jsonDecode(response.data) as List;
 
         List<Map<String, dynamic>> phone;

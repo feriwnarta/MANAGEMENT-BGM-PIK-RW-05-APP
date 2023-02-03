@@ -7,7 +7,8 @@ class CordinatorModel {
       address,
       latitude,
       statusComplaint,
-      longitude;
+      longitude,
+      processTime;
   List<String> categoryDetail;
   List<Map<String, dynamic>> managerContractor;
 
@@ -22,5 +23,6 @@ class CordinatorModel {
       this.statusComplaint,
       this.categoryDetail,
       this.longitude,
+      this.processTime,
       this.managerContractor});
 }

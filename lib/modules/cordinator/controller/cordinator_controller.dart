@@ -37,10 +37,11 @@ class CordinatorController extends GetxController {
     List<CordinatorModel> listBaru;
 
     if (listReport.length <= 0) {
-      listBaru = await CordinatorServices.getComplaintContractorProcess(0, 10);
+      listBaru = await CordinatorServices.getComplaintContractorProcess(
+          0, 10, controller.status.value);
     } else {
       listBaru = await CordinatorServices.getComplaintContractorProcess(
-          0, listReport.length);
+          0, listReport.length, controller.status.value);
     }
 
     listReport.assignAll(listBaru);
@@ -52,10 +53,11 @@ class CordinatorController extends GetxController {
     List<CordinatorModel> listBaru;
 
     if (listReport.length <= 0) {
-      listBaru = await CordinatorServices.getComplaintContractorFinish(0, 10);
+      listBaru = await CordinatorServices.getComplaintContractorFinish(
+          0, 10, controller.status.value);
     } else {
       listBaru = await CordinatorServices.getComplaintContractorFinish(
-          0, listReport.length);
+          0, listReport.length, controller.status.value);
     }
 
     listReport.assignAll(listBaru);
@@ -87,7 +89,8 @@ class CordinatorController extends GetxController {
   void getComplaintDiproses() async {
     if (isLoading.value) {
       listReport.assignAll(
-          await CordinatorServices.getComplaintContractorProcess(0, 10));
+          await CordinatorServices.getComplaintContractorProcess(
+              0, 10, controller.status.value));
       if (listReport.isNotEmpty) {
         isLoading.value = false;
       } else {
@@ -96,7 +99,7 @@ class CordinatorController extends GetxController {
     } else {
       listReportNew.assignAll(
           await CordinatorServices.getComplaintContractorProcess(
-              listReport.length, 10));
+              listReport.length, 10, controller.status.value));
 
       if (listReportNew.isEmpty) {
         isMaxReached.value = true;
@@ -109,7 +112,8 @@ class CordinatorController extends GetxController {
   void getComplaintFinish() async {
     if (isLoading.value) {
       listReport.assignAll(
-          await CordinatorServices.getComplaintContractorFinish(0, 10));
+          await CordinatorServices.getComplaintContractorFinish(
+              0, 10, controller.status.value));
       if (listReport.isNotEmpty) {
         isLoading.value = false;
       } else {
@@ -118,7 +122,7 @@ class CordinatorController extends GetxController {
     } else {
       listReportNew.assignAll(
           await CordinatorServices.getComplaintContractorFinish(
-              listReport.length, 10));
+              listReport.length, 10, controller.status.value));
 
       if (listReportNew.isEmpty) {
         isMaxReached.value = true;

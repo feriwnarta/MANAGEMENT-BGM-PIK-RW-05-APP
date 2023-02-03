@@ -134,6 +134,8 @@ class _CardReportProcessState extends State<LaporanDiprosesManagerCon>
                                       status: '',
                                       phone: controller.listReport[index]
                                           .kepalaContratorPhone,
+                                      processTime: controller
+                                          .listReport[index].processTime,
                                     ),
                                   )
                                 : (index == controller.listReport.length)

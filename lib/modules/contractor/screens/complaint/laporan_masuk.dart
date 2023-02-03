@@ -221,6 +221,7 @@ class CardListReport extends StatelessWidget {
             time: time,
             title: title,
             url: url,
+            isContractor: true,
           ),
           transition: Transition.cupertino,
         );
@@ -234,6 +235,7 @@ class CardListReport extends StatelessWidget {
             time: processTime,
             title: title,
             url: url,
+            isCon: true,
           ),
           transition: Transition.cupertino,
         );
@@ -248,6 +250,7 @@ class CardListReport extends StatelessWidget {
             time: time,
             title: title,
             url: url,
+            isCon: true,
           ),
           transition: Transition.cupertino,
         );
