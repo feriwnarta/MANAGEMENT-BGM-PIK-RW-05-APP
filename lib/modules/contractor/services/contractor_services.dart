@@ -113,7 +113,6 @@ class ContractorServices {
     var response = await dio.post(url, data: jsonEncode(data));
     if (response.statusCode >= 200 && response.statusCode <= 299) {
       if (response.data.isNotEmpty) {
-        print(response.data);
         var message = jsonDecode(response.data) as List;
         return message
             .map(

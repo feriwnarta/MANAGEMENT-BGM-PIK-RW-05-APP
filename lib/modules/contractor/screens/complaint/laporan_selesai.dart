@@ -131,7 +131,8 @@ class _CardReportFinish extends State<CardReportFinish>
                                         statusComplaint: controller
                                             .listReport[index].statusComplaint,
                                         name: widget.name,
-                                        processTime: controller.listReport[index].processTime,
+                                        processTime: controller
+                                            .listReport[index].processTime,
                                         status: null,
                                       ),
                                     )

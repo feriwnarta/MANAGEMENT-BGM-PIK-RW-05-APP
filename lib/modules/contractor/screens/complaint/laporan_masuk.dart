@@ -3,6 +3,7 @@ import 'package:aplikasi_rw/modules/contractor/controller/contractor_controller.
 import 'package:aplikasi_rw/modules/contractor/screens/complaint/finish_report_screen.dart';
 import 'package:aplikasi_rw/modules/contractor/screens/complaint/process_report.dart';
 import 'package:aplikasi_rw/modules/contractor/widgets/card_worker.dart';
+import 'package:aplikasi_rw/modules/contractor/widgets/detail_report_finished.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -199,7 +200,10 @@ class CardListReport extends StatelessWidget {
 
   void onCardTap() async {
     if (status == null) {
-      EasyLoading.showSuccess('Laporan ini sudah selesai dikerjakan');
+      Get.to(
+        () => DetailLaporanSelesai(idReport: idReport),
+        transition: Transition.cupertino,
+      );
     } else {
       EasyLoading.show(status: 'loading');
       result = await ProcessReportServices.checkExistProcess(idReport);
