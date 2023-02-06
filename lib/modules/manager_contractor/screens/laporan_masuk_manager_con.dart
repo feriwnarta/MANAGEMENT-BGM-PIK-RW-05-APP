@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:aplikasi_rw/modules/contractor/screens/complaint/detail_report_screen.dart';
 import 'package:aplikasi_rw/modules/contractor/screens/complaint/finish_report_screen.dart';
 import 'package:aplikasi_rw/modules/contractor/screens/complaint/process_report.dart';
+import 'package:aplikasi_rw/modules/contractor/widgets/detail_report_finished.dart';
 import 'package:aplikasi_rw/modules/manager_contractor/controller/manager_controller.dart';
 import 'package:aplikasi_rw/modules/manager_contractor/widget/card_manager_con.dart';
 import 'package:aplikasi_rw/services/cordinator/process_report_services.dart';
@@ -205,7 +206,6 @@ class CardListReportManagerCon extends StatelessWidget {
   final logger = Logger();
 
   void onCardTap() async {
-    logger.e(url);
     Get.defaultDialog(
       title: 'Pilih cordinator',
       radius: 5,
@@ -245,13 +245,25 @@ class CardListReportManagerCon extends StatelessWidget {
                       Icons.phone,
                       size: 20,
                     ),
-                    onTap: () {
-                      launchUrl(
-                        Uri(
-                          scheme: 'tel',
-                          path: '${item['no_telp']}',
-                        ),
-                      );
+                    onTap: () async {
+                      String noTelp =
+                          replaceCountryNumberPhone(item['no_telp']);
+
+                      var whatsappAndroid =
+                          Uri.parse("whatsapp://send?phone=$noTelp");
+
+                      if (await canLaunchUrl(whatsappAndroid)) {
+                        await launchUrl(whatsappAndroid);
+                      } else {
+                        EasyLoading.showInfo(
+                            'Aplikasi whatsapp tidak terinstal di perangkat anda');
+                      }
+                      // launchUrl(
+                      //   Uri(
+                      //     scheme: 'tel',
+                      //     path: '${item['no_telp']}',
+                      //   ),
+                      // );
                     },
                   ),
                 )
@@ -262,61 +274,82 @@ class CardListReportManagerCon extends StatelessWidget {
     );
   }
 
+  String replaceCountryNumberPhone(String phone) {
+    var phoneNum = phone.substring(1);
+
+    String code = '+62';
+
+    code += phoneNum;
+
+    print(code);
+
+    return code;
+  }
+
+  void onTapDetail() async {
+    if (status == null) {
+      Get.to(
+        () => DetailLaporanSelesai(idReport: idReport),
+        transition: Transition.cupertino,
+      );
+    } else {
+      EasyLoading.show(status: 'loading');
+      result = await ProcessReportServices.checkExistProcess(idReport);
+      final logger = Logger();
+      logger.e(result);
+      EasyLoading.dismiss();
+      if (result['status'] == 'NOT EXIST') {
+        Get.to(
+          () => DetailReportScreen(
+            description: description,
+            idReport: idReport,
+            latitude: latitude,
+            location: location,
+            longitude: longitude,
+            time: time,
+            title: title,
+            url: url,
+            isContractor: false,
+          ),
+          transition: Transition.cupertino,
+        );
+      } else if (result['status'] == 'BEEN PROCESSED') {
+        Get.to(
+          () => FinishReportScreen(
+            description: description,
+            idReport: idReport,
+            latitude: latitude,
+            longitude: longitude,
+            time: processTime,
+            title: title,
+            url: url,
+            isCon: false,
+          ),
+          transition: Transition.cupertino,
+        );
+      } else {
+        Get.to(
+          () => ProcessReportScreen(
+            description: description,
+            idReport: idReport,
+            latitude: latitude,
+            location: location,
+            longitude: longitude,
+            time: time,
+            title: title,
+            url: url,
+            isCon: false,
+          ),
+          transition: Transition.cupertino,
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async {
-        EasyLoading.show(status: 'loading');
-        result = await ProcessReportServices.checkExistProcess(idReport);
-        final logger = Logger();
-        logger.e(result);
-        EasyLoading.dismiss();
-        if (result['status'] == 'NOT EXIST') {
-          Get.to(
-            () => DetailReportScreen(
-              description: description,
-              idReport: idReport,
-              latitude: latitude,
-              location: location,
-              longitude: longitude,
-              time: time,
-              title: title,
-              url: url,
-              isContractor: false,
-            ),
-            transition: Transition.cupertino,
-          );
-        } else if (result['status'] == 'BEEN PROCESSED') {
-          Get.to(
-            () => FinishReportScreen(
-              description: description,
-              idReport: idReport,
-              latitude: latitude,
-              longitude: longitude,
-              time: processTime,
-              title: title,
-              url: url,
-              isCon : false,
-            ),
-            transition: Transition.cupertino,
-          );
-        } else {
-          Get.to(
-            () => ProcessReportScreen(
-              description: description,
-              idReport: idReport,
-              latitude: latitude,
-              location: location,
-              longitude: longitude,
-              time: time,
-              title: title,
-              url: url,
-              isCon: false,
-            ),
-            transition: Transition.cupertino,
-          );
-        }
-      },
+      onTap: onTapDetail,
       child: CardManagerCon(
         address: location,
         image: url,
@@ -325,7 +358,7 @@ class CardListReportManagerCon extends StatelessWidget {
         status: statusComplaint,
         title: title,
         waktu: time,
-        onTap: onCardTap,
+        onTap: (status) == null ? onTapDetail : onCardTap,
       ),
     );
   }

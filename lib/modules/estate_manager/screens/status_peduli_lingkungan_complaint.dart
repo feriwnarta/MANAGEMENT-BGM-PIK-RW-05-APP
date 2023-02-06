@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:aplikasi_rw/modules/contractor/controller/contractor_controller.dart';
+import 'package:aplikasi_rw/modules/contractor/screens/complaint/detail_report_screen.dart';
+import 'package:aplikasi_rw/modules/contractor/screens/complaint/finish_report_screen.dart';
+import 'package:aplikasi_rw/modules/contractor/widgets/detail_report_finished.dart';
 import 'package:aplikasi_rw/modules/estate_manager/services/status_peduli_lingkungan_services.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/view_image.dart';
@@ -8,6 +11,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -197,6 +201,9 @@ class _ListStatusPeduliLingkunganState
                                                   .listStatusPeduli[index].lat,
                                               long: controllerEm
                                                   .listStatusPeduli[index].long,
+                                              idReport: controllerEm
+                                                  .listStatusPeduli[index]
+                                                  .idReport,
                                               cordinatorPhone: controllerEm
                                                   .listStatusPeduli[index]
                                                   .cordinatorPhone,
@@ -246,7 +253,7 @@ class _ListStatusPeduliLingkunganState
 }
 
 class CardStatusPeduliLingkunganEm extends StatelessWidget {
-  const CardStatusPeduliLingkunganEm({
+  CardStatusPeduliLingkunganEm({
     Key key,
     this.title,
     this.status,
@@ -255,297 +262,351 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
     this.lat,
     this.long,
     this.waktu,
+    this.idReport,
     this.cordinatorPhone,
   }) : super(key: key);
 
-  final String title, status, image, address, lat, long, waktu;
+  final String title, status, image, address, lat, long, waktu, idReport;
   final List<Map<String, dynamic>> cordinatorPhone;
+
+  final logger = Logger();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5), //shadow color
-            spreadRadius: 0.5, // spread radius
-            blurRadius: 2, // shadow blur radius
-            offset: const Offset(0, 0), // changes position of shadow
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: 148.w,
-                child: AutoSizeText(
-                  title,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 5,
-                  style: TextStyle(
-                    fontSize: 19.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              Container(
-                width: 103.w,
-                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: (status.isCaseInsensitiveContainsAny('Menunggu'))
-                        ? Color(
-                            0xffFF6A6A,
-                          )
-                        : status.isCaseInsensitiveContainsAny('Diterima')
-                            ? Color(0xff90C5F0)
-                            : status.isCaseInsensitiveContainsAny('Diproses')
-                                ? Color(0xffFCC870)
-                                : (status.isCaseInsensitiveContainsAny(
-                                        'Selesai'))
-                                    ? Color(0xff5AFD79)
-                                    : Color(
-                                        0xffFF6A6A,
-                                      ),
-                  ),
-                  color: (status.isCaseInsensitiveContainsAny('Menunggu'))
-                      ? Color(
-                          0xffFFC9C9,
-                        )
-                      : status.isCaseInsensitiveContainsAny('Diterima')
-                          ? Color(0xffF2F9FF)
-                          : status.isCaseInsensitiveContainsAny('Diproses')
-                              ? Color(0xffFFEBC9)
-                              : status.isCaseInsensitiveContainsAny('Selesai')
-                                  ? Color(0xffD6FFDD)
-                                  : Color(0xffFFC9C9),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Center(
+    return GestureDetector(
+      onTap: () async {
+        EasyLoading.show(status: 'loading');
+
+        var rs =
+            await StatusPeduliEmServices.getDataReportCard(idReport: idReport);
+
+        /**
+         * cek dulu tidak null dan tidak voleh kosong
+         */
+
+        EasyLoading.dismiss();
+
+        if (rs['status'] == 'Menunggu' || rs['status'] == 'Diterima') {
+          Get.to(
+            () => DetailReportScreen(
+              description: rs['description'],
+              idReport: rs['id_report'],
+              latitude: rs['latitude'],
+              location: rs['address'],
+              longitude: rs['longitude'],
+              time: rs['time'],
+              title: rs['description'],
+              url: '${ServerApp.url}${rs['url']}',
+              isContractor: false,
+            ),
+            transition: Transition.cupertino,
+          );
+        } else if (rs['status'] == 'Diproses') {
+          Get.to(
+            () => FinishReportScreen(
+              description: rs['description'],
+              idReport: rs['id_report'],
+              latitude: rs['latitude'],
+              longitude: rs['longitude'],
+              time: rs['process_time'],
+              title: rs['description'],
+              url: '${ServerApp.url}${rs['url']}',
+              isCon: false,
+            ),
+            transition: Transition.cupertino,
+          );
+        } else {
+          Get.to(
+            () => DetailLaporanSelesai(idReport: idReport),
+            transition: Transition.cupertino,
+          );
+        }
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5), //shadow color
+              spreadRadius: 0.5, // spread radius
+              blurRadius: 2, // shadow blur radius
+              offset: const Offset(0, 0), // changes position of shadow
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: 148.w,
                   child: AutoSizeText(
-                    status,
+                    title,
                     overflow: TextOverflow.ellipsis,
-                    minFontSize: 10,
-                    maxLines: 1,
+                    maxLines: 5,
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: 19.sp,
                       fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 103.w,
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                  decoration: BoxDecoration(
+                    border: Border.all(
                       color: (status.isCaseInsensitiveContainsAny('Menunggu'))
                           ? Color(
-                              0xffF32020,
+                              0xffFF6A6A,
                             )
                           : status.isCaseInsensitiveContainsAny('Diterima')
-                              ? Color(0xff2094F3)
+                              ? Color(0xff90C5F0)
                               : status.isCaseInsensitiveContainsAny('Diproses')
-                                  ? Color(0xffF3A520)
+                                  ? Color(0xffFCC870)
                                   : (status.isCaseInsensitiveContainsAny(
                                           'Selesai'))
-                                      ? Color(0xff20F348)
+                                      ? Color(0xff5AFD79)
                                       : Color(
-                                          0xffF32020,
+                                          0xffFF6A6A,
                                         ),
                     ),
+                    color: (status.isCaseInsensitiveContainsAny('Menunggu'))
+                        ? Color(
+                            0xffFFC9C9,
+                          )
+                        : status.isCaseInsensitiveContainsAny('Diterima')
+                            ? Color(0xffF2F9FF)
+                            : status.isCaseInsensitiveContainsAny('Diproses')
+                                ? Color(0xffFFEBC9)
+                                : status.isCaseInsensitiveContainsAny('Selesai')
+                                    ? Color(0xffD6FFDD)
+                                    : Color(0xffFFC9C9),
+                    borderRadius: BorderRadius.circular(6),
                   ),
-                ),
-              )
-            ],
-          ),
-          SizedBox(
-            height: 16.h,
-          ),
-          Divider(
-            thickness: 1,
-          ),
-          SizedBox(
-            height: 16.h,
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: () => Get.to(
-                  () => ViewImage(urlImage: '${ServerApp.url}/$image'),
-                ),
-                child: Container(
-                  width: 70.w,
-                  height: 70.h,
-                  child: CachedNetworkImage(
-                    imageUrl: '${ServerApp.url}/$image',
-                    fit: BoxFit.cover,
-                    filterQuality: FilterQuality.low,
-                    progressIndicatorBuilder:
-                        (context, url, downloadProgress) =>
-                            CircularProgressIndicator(
-                                value: downloadProgress.progress),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 16.w,
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SvgPicture.asset(
-                            'assets/img/estate_manager_menu/location-marker-em.svg'),
-                        SizedBox(
-                          width: 8.w,
-                        ),
-                        Expanded(
-                          child: AutoSizeText(
-                            address,
-                            maxLines: 5,
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                            ),
-                            minFontSize: 10,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 8.h,
-                    ),
-                    Material(
-                      child: InkWell(
-                        splashColor: Colors.grey[200],
-                        onTap: () {
-                          ProcessReportScreen.navigateTo(
-                              double.parse(lat), double.parse(long));
-                        },
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SvgPicture.asset(
-                              'assets/img/image-svg/Icon-map.svg',
-                            ),
-                            SizedBox(width: 4.w),
-                            AutoSizeText(
-                              'Lihat peta lokasi',
-                              maxLines: 1,
-                              style: TextStyle(
-                                fontSize: 10.sp,
-                                color: Color(0xff2094F3),
-                              ),
-                            )
-                          ],
-                        ),
+                  child: Center(
+                    child: AutoSizeText(
+                      status,
+                      overflow: TextOverflow.ellipsis,
+                      minFontSize: 10,
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w500,
+                        color: (status.isCaseInsensitiveContainsAny('Menunggu'))
+                            ? Color(
+                                0xffF32020,
+                              )
+                            : status.isCaseInsensitiveContainsAny('Diterima')
+                                ? Color(0xff2094F3)
+                                : status.isCaseInsensitiveContainsAny(
+                                        'Diproses')
+                                    ? Color(0xffF3A520)
+                                    : (status.isCaseInsensitiveContainsAny(
+                                            'Selesai'))
+                                        ? Color(0xff20F348)
+                                        : Color(
+                                            0xffF32020,
+                                          ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 8.h,
-          ),
-          AutoSizeText.rich(
-            TextSpan(
-              text: 'Waktu laporan : ',
-              style: TextStyle(
-                fontSize: 10.sp,
-                fontWeight: FontWeight.w400,
-              ),
+                  ),
+                )
+              ],
+            ),
+            SizedBox(
+              height: 16.h,
+            ),
+            Divider(
+              thickness: 1,
+            ),
+            SizedBox(
+              height: 16.h,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextSpan(
-                  text: waktu,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w700,
+                GestureDetector(
+                  onTap: () => Get.to(
+                    () => ViewImage(urlImage: '${ServerApp.url}/$image'),
+                  ),
+                  child: Container(
+                    width: 70.w,
+                    height: 70.h,
+                    child: CachedNetworkImage(
+                      imageUrl: '${ServerApp.url}/$image',
+                      fit: BoxFit.cover,
+                      filterQuality: FilterQuality.low,
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) =>
+                              CircularProgressIndicator(
+                                  value: downloadProgress.progress),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 16.w,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SvgPicture.asset(
+                              'assets/img/estate_manager_menu/location-marker-em.svg'),
+                          SizedBox(
+                            width: 8.w,
+                          ),
+                          Expanded(
+                            child: AutoSizeText(
+                              address,
+                              maxLines: 5,
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                              ),
+                              minFontSize: 10,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 8.h,
+                      ),
+                      Material(
+                        child: InkWell(
+                          splashColor: Colors.grey[200],
+                          onTap: () {
+                            ProcessReportScreen.navigateTo(
+                                double.parse(lat), double.parse(long));
+                          },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/img/image-svg/Icon-map.svg',
+                              ),
+                              SizedBox(width: 4.w),
+                              AutoSizeText(
+                                'Lihat peta lokasi',
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  color: Color(0xff2094F3),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-          ),
-          SizedBox(
-            height: 16.h,
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Get.defaultDialog(
-                title: 'Pilih cordinator',
-                radius: 5,
-                titleStyle: TextStyle(
-                  fontSize: 14.sp,
+            SizedBox(
+              height: 8.h,
+            ),
+            AutoSizeText.rich(
+              TextSpan(
+                text: 'Waktu laporan : ',
+                style: TextStyle(
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.w400,
                 ),
-                content: Container(
-                  height: 200.h,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: cordinatorPhone
-                          .map<Widget>(
-                            (item) => ListTile(
-                              title: RichText(
-                                text: TextSpan(
-                                  text: '${item['no_telp']}',
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
-                                    color: Colors.black,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: '\t (${item['name']})',
-                                      style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                              ),
-                              trailing: Icon(
-                                Icons.phone,
-                                size: 20,
-                              ),
-                              onTap: () {
-                                launchUrl(
-                                  Uri(
-                                    scheme: 'tel',
-                                    path: '${item['no_telp']}',
-                                  ),
-                                );
-                              },
-                            ),
-                          )
-                          .toList(),
+                children: [
+                  TextSpan(
+                    text: waktu,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 16.h,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Get.defaultDialog(
+                  title: 'Pilih cordinator',
+                  radius: 5,
+                  titleStyle: TextStyle(
+                    fontSize: 14.sp,
+                  ),
+                  content: Container(
+                    height: 200.h,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: cordinatorPhone
+                            .map<Widget>(
+                              (item) => ListTile(
+                                title: RichText(
+                                  text: TextSpan(
+                                    text: '${item['no_telp']}',
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: Colors.black,
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: '\t (${item['name']})',
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                                trailing: Icon(
+                                  Icons.phone,
+                                  size: 20,
+                                ),
+                                onTap: () {
+                                  launchUrl(
+                                    Uri(
+                                      scheme: 'tel',
+                                      path: '${item['no_telp']}',
+                                    ),
+                                  );
+                                },
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
                 ),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Text(
+                'Hubungi Kordinator',
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
-            child: Text(
-              'Hubungi Kordinator',
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

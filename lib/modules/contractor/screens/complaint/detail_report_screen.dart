@@ -197,6 +197,7 @@ class DetailReportScreen extends StatelessWidget {
                             latitude: latitude,
                             location: location,
                             longitude: longitude,
+                            isCon: true,
                             time: time,
                             name: (userLogin.status.value == 'cordinator'
                                 ? userLogin.nameCordinator.value

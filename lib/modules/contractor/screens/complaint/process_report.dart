@@ -301,6 +301,7 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
                                       location: widget.location,
                                       longitude: widget.longitude,
                                       name: widget.name,
+                                      isCon: true,
                                       time: DateTime.now().toString(),
                                       title: widget.title,
                                       url: widget.url,

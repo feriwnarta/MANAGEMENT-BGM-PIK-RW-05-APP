@@ -264,7 +264,9 @@ class _CardWorkerState extends State<CardManagerCon> {
             ),
             icon: Icon(Icons.phone, size: 16.w),
             label: Text(
-              'Kepala Kontraktor',
+              (widget.status == 'Selesai')
+                  ? 'Detail Laporan'
+                  : 'Kepala Kontraktor',
               style: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w500,

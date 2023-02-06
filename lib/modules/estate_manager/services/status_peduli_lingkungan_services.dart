@@ -88,15 +88,13 @@ class StatusPeduliEmServices {
                 ? model['status']
                 : model['status_eskalasi']),
             title: model['category'],
+            idReport: model['id_report'],
             waktu: model['waktu'],
             cordinatorPhone: listCordinator,
 
             // image:
           );
         }).toList();
-
-        final logger = Logger();
-        logger.e(result);
       }
 
       return model;
@@ -104,5 +102,31 @@ class StatusPeduliEmServices {
       EasyLoading.showError(
           'Ada kesalahan saat mengambil laporan terbaru, silahakan hubungi admin');
     }
+  }
+
+  static Future<Map<String, dynamic>> getDataReportCard(
+      {String idReport}) async {
+    String url = '${ServerApp.url}src/estate_manager/get_data_report_card.php';
+
+    Dio dio = Dio();
+    dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
+
+    var data = {'id_report': idReport};
+
+    Map<String, dynamic> result = {};
+
+    try {
+      var response = await dio.post(url, data: jsonEncode(data));
+
+      if (response.statusCode >= 200 && response.statusCode <= 299) {
+        result = jsonDecode(response.data);
+
+        return result;
+      } else {}
+    } on DioError catch (e) {
+      print(e);
+    }
+
+    return result;
   }
 }

@@ -177,7 +177,6 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                                       widget.displayTime,
                                       style: TextStyle(
                                           fontSize: 20.sp,
-                                          fontFamily: 'inter',
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ],

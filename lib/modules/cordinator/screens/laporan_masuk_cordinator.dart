@@ -1,8 +1,14 @@
 import 'dart:async';
+import 'package:aplikasi_rw/modules/contractor/screens/complaint/detail_report_screen.dart';
+import 'package:aplikasi_rw/modules/contractor/screens/complaint/finish_report_screen.dart';
+import 'package:aplikasi_rw/modules/contractor/screens/complaint/process_report.dart';
+import 'package:aplikasi_rw/modules/contractor/widgets/detail_report_finished.dart';
 import 'package:aplikasi_rw/modules/cordinator/controller/cordinator_controller.dart';
 import 'package:aplikasi_rw/modules/cordinator/widgets/card_cordinator.dart';
+import 'package:aplikasi_rw/services/cordinator/process_report_services.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -257,7 +263,65 @@ class CardListCordinator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async {},
+      onTap: () async {
+        if (status == null) {
+          Get.to(
+            () => DetailLaporanSelesai(idReport: idReport),
+            transition: Transition.cupertino,
+          );
+        } else {
+          EasyLoading.show(status: 'loading');
+          result = await ProcessReportServices.checkExistProcess(idReport);
+          final logger = Logger();
+          logger.e(result);
+          EasyLoading.dismiss();
+          if (result['status'] == 'NOT EXIST') {
+            Get.to(
+              () => DetailReportScreen(
+                description: description,
+                idReport: idReport,
+                latitude: latitude,
+                location: location,
+                longitude: longitude,
+                time: time,
+                title: title,
+                url: url,
+                isContractor: false,
+              ),
+              transition: Transition.cupertino,
+            );
+          } else if (result['status'] == 'BEEN PROCESSED') {
+            Get.to(
+              () => FinishReportScreen(
+                description: description,
+                idReport: idReport,
+                latitude: latitude,
+                longitude: longitude,
+                // time: processTime,
+                title: title,
+                url: url,
+                isCon: false,
+              ),
+              transition: Transition.cupertino,
+            );
+          } else {
+            Get.to(
+              () => ProcessReportScreen(
+                description: description,
+                idReport: idReport,
+                latitude: latitude,
+                location: location,
+                longitude: longitude,
+                time: time,
+                title: title,
+                url: url,
+                isCon: false,
+              ),
+              transition: Transition.cupertino,
+            );
+          }
+        }
+      },
       child: CardCordinator(
         address: location,
         image: url,

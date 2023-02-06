@@ -1,5 +1,5 @@
 class StatusPeduliEmModel {
-  String title, status, image, address, lat, long, waktu;
+  String title, status, image, address, lat, long, waktu, idReport;
   List<Map<String, dynamic>> cordinatorPhone;
 
   StatusPeduliEmModel({
@@ -7,6 +7,7 @@ class StatusPeduliEmModel {
     this.status,
     this.image,
     this.address,
+    this.idReport,
     this.lat,
     this.long,
     this.waktu,
