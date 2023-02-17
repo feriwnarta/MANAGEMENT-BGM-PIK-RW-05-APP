@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:aplikasi_rw/controller/report_user_controller.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/history_report_services.dart';
@@ -878,7 +879,7 @@ class _GoogleMapViewReportState extends State<GoogleMapViewReport> {
     return Container(
       height: 300.h,
       child: GoogleMap(
-        liteModeEnabled: true,
+        liteModeEnabled: (Platform.isAndroid) ? true : false,
         initialCameraPosition: CameraPosition(
             bearing: 192.8334901395799,
             target: LatLng(

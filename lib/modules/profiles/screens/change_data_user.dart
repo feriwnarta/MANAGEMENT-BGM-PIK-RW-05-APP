@@ -64,9 +64,7 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Pengaturan profil'),
-          systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarBrightness: Brightness.light,
-          ),
+          systemOverlayStyle: SystemUiOverlayStyle.light,
         ),
         body: FutureBuilder<UserChangeModel>(
           future: UserChangeServices.getDataUser('${loginController.idUser}'),

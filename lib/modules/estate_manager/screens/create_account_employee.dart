@@ -80,13 +80,15 @@ class _CreateAccountEmployeeState extends State<CreateAccountEmployee> {
                               SizedBox(
                                 height: 34.h,
                               ),
-                              CircleAvatar(
-                                backgroundImage: (pathAvatar.value.isEmpty)
-                                    ? image
-                                    : FileImage(
-                                        File(pathAvatar.value),
-                                      ),
-                                radius: 124.h / 2,
+                              Center(
+                                child: CircleAvatar(
+                                  backgroundImage: (pathAvatar.value.isEmpty)
+                                      ? image
+                                      : FileImage(
+                                          File(pathAvatar.value),
+                                        ),
+                                  radius: 124.h / 2,
+                                ),
                               ),
                               SizedBox(
                                 height: 24.h,

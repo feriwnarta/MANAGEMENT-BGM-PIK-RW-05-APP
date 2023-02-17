@@ -25,8 +25,7 @@ class SubMenuReport extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff2196F3),
-        systemOverlayStyle:
-            SystemUiOverlayStyle(statusBarBrightness: Brightness.light),
+        systemOverlayStyle: SystemUiOverlayStyle.light,
         title:
             (typeStatusPeduliLingkungan.isCaseInsensitiveContainsAny('warga'))
                 ? Text(

@@ -5,8 +5,12 @@ import 'package:aplikasi_rw/controller/indexscreen_home_controller.dart';
 import 'package:aplikasi_rw/controller/network_check_controller.dart';
 import 'package:aplikasi_rw/controller/report_user_controller.dart';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
+import 'package:aplikasi_rw/modules/contractor/screens/cordinator_home_folder_screen.dart';
+import 'package:aplikasi_rw/modules/cordinator/screens/home_folder_cordinator.dart';
+import 'package:aplikasi_rw/modules/estate_manager/screens/menu_folder_screens_em.dart';
 import 'package:aplikasi_rw/modules/home/screens/citizen_screen.dart';
 import 'package:aplikasi_rw/modules/home/screens/home_folder_screen.dart';
+import 'package:aplikasi_rw/modules/manager_contractor/screens/home_folder_manager_contractor.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/UserProfileScreens.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/profile_settings_screen.dart';
 import 'package:aplikasi_rw/routes/app_pages.dart';
@@ -29,6 +33,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:logger/logger.dart';
+import 'package:upgrader/upgrader.dart';
 import 'dart:io';
 import 'lifecyle_manager.dart';
 import 'modules/management/screens/management_screen.dart';
@@ -212,7 +217,7 @@ class _MyApp extends State<MyApp> {
               appBarTheme: AppBarTheme(
                 systemOverlayStyle: SystemUiOverlayStyle.dark,
               ),
-              fontFamily: 'open sans',
+              fontFamily: 'Inter',
               scaffoldBackgroundColor: Colors.white),
           builder: EasyLoading.init(), // set background color theme
         ),
@@ -258,7 +263,38 @@ class _MainAppState extends State<MainApp> {
         UserProfileScreen(),
         ProfileSettings(),
       ];
-    } else if (controller.status.value == 'BETA TEST') {}
+    } else if (controller.status.value == 'BETA TEST') {
+    } else if (controller.status.value == 'ESTATEMANAGER') {
+      screens = [
+        MenuFolderEm(),
+        UserProfileScreen(),
+        ProfileSettings(),
+      ];
+    } else if (controller.status.value == 'MANDOR / KEPALA KONTRAKTOR') {
+      screens = [
+        MenuFolderContractor(),
+        UserProfileScreen(),
+        ProfileSettings(),
+      ];
+    } else if (controller.status.value == 'MANAGER KONTRAKTOR') {
+      screens = [
+        MenuFolderManagerContractor(),
+        UserProfileScreen(),
+        ProfileSettings(),
+      ];
+    } else if (controller.status.value == 'SUPERVISOR / ESTATE KOORDINATOR') {
+      screens = [
+        MenuFolderCordinator(),
+        UserProfileScreen(),
+        ProfileSettings(),
+      ];
+    } else if (controller.status.value == 'DANRU') {
+      screens = [
+        MenuFolderContractor(),
+        UserProfileScreen(),
+        ProfileSettings(),
+      ];
+    }
     super.initState();
   }
 
@@ -291,69 +327,82 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      // membuat sidebar dan drawer
-      // endDrawer: drawerSideBar(),
-      body: Obx(
-        () => IndexedStack(children: screens, index: indexScreen.index.value),
+    return UpgradeAlert(
+      upgrader: Upgrader(
+        dialogStyle: (Platform.isAndroid)
+            ? UpgradeDialogStyle.material
+            : UpgradeDialogStyle.cupertino,
+        languageCode: 'id',
+        durationUntilAlertAgain: Duration(days: 1),
+        minAppVersion: '1.0.3',
+        shouldPopScope: () => true,
+        canDismissDialog: true,
+        debugLogging: true,
       ),
+      child: Scaffold(
+        key: scaffoldKey,
+        // membuat sidebar dan drawer
+        // endDrawer: drawerSideBar(),
+        body: Obx(
+          () => IndexedStack(children: screens, index: indexScreen.index.value),
+        ),
 
-      bottomNavigationBar: Obx(
-        () => Container(
-          // decoration: BoxDecoration(
-          //   boxShadow: [
-          //     BoxShadow(color: Colors.grey, blurRadius: 5),
-          //   ],
-          // ),
-          child: BottomNavigationBar(
-            backgroundColor: Color(0xff2094F3),
-            type: BottomNavigationBarType.fixed,
-            iconSize: 12.sp,
-            showSelectedLabels: true,
-            showUnselectedLabels: true,
-            selectedItemColor: Colors.white,
-            unselectedItemColor: Colors.white,
-            currentIndex: indexScreen.index.value,
-            onTap: (index) {
-              indexScreen.index.value = index;
-              if (indexScreen.index.value == 1) {
-                reportController.refresReport();
-                reportController.update();
-              }
-            },
-            items: [
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  'assets/img/image-svg/home-deactive.svg',
-                ),
-                activeIcon: SvgPicture.asset(
-                  'assets/img/image-svg/home-active.svg',
-                  color: Colors.white,
-                ),
-                label: 'Beranda',
-              ),
-              BottomNavigationBarItem(
+        bottomNavigationBar: Obx(
+          () => Container(
+            // decoration: BoxDecoration(
+            //   boxShadow: [
+            //     BoxShadow(color: Colors.grey, blurRadius: 5),
+            //   ],
+            // ),
+            child: BottomNavigationBar(
+              backgroundColor: Color(0xff2094F3),
+              type: BottomNavigationBarType.fixed,
+              iconSize: 12.sp,
+              showSelectedLabels: true,
+              showUnselectedLabels: true,
+              selectedItemColor: Colors.white,
+              unselectedItemColor: Colors.white,
+              currentIndex: indexScreen.index.value,
+              onTap: (index) {
+                indexScreen.index.value = index;
+                if (indexScreen.index.value == 1) {
+                  reportController.refresReport();
+                  reportController.update();
+                }
+              },
+              items: [
+                BottomNavigationBarItem(
                   icon: SvgPicture.asset(
-                    'assets/img/image-svg/user-deactive.svg',
-                    color: Colors.white,
+                    'assets/img/image-svg/home-deactive.svg',
                   ),
                   activeIcon: SvgPicture.asset(
-                    'assets/img/image-svg/user-active.svg',
+                    'assets/img/image-svg/home-active.svg',
                     color: Colors.white,
                   ),
-                  label: 'Profil'),
-              BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                    'assets/img/image-svg/setting-deactive.svg',
-                    color: Colors.white,
-                  ),
-                  activeIcon: SvgPicture.asset(
-                    'assets/img/image-svg/setting-active.svg',
-                    color: Colors.white,
-                  ),
-                  label: 'Pengaturan'),
-            ],
+                  label: 'Beranda',
+                ),
+                BottomNavigationBarItem(
+                    icon: SvgPicture.asset(
+                      'assets/img/image-svg/user-deactive.svg',
+                      color: Colors.white,
+                    ),
+                    activeIcon: SvgPicture.asset(
+                      'assets/img/image-svg/user-active.svg',
+                      color: Colors.white,
+                    ),
+                    label: 'Profil'),
+                BottomNavigationBarItem(
+                    icon: SvgPicture.asset(
+                      'assets/img/image-svg/setting-deactive.svg',
+                      color: Colors.white,
+                    ),
+                    activeIcon: SvgPicture.asset(
+                      'assets/img/image-svg/setting-active.svg',
+                      color: Colors.white,
+                    ),
+                    label: 'Pengaturan'),
+              ],
+            ),
           ),
         ),
       ),

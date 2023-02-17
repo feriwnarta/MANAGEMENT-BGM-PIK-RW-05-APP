@@ -75,13 +75,11 @@ class _ReportScreen2State extends State<ReportScreen2> {
     ScreenUtil.init(context, designSize: const Size(360, 800));
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Status Peduli Lingkungan',
-        ),
-        titleTextStyle: TextStyle(fontSize: 19.sp),
-        systemOverlayStyle:
-            SystemUiOverlayStyle(statusBarBrightness: Brightness.light),
-      ),
+          title: Text(
+            'Status Peduli Lingkungan',
+          ),
+          titleTextStyle: TextStyle(fontSize: 19.sp),
+          systemOverlayStyle: SystemUiOverlayStyle.light),
       body: RefreshIndicator(
         onRefresh: () async => loadReport(),
         child: SafeArea(

@@ -68,6 +68,9 @@ class StatusPeduliEmServices {
     try {
       var response = await dio.post(url, data: jsonEncode(data));
 
+      final logger = Logger();
+      // logger.e(response.data);
+
       List<StatusPeduliEmModel> model;
 
       if (response.statusCode >= 200 && response.statusCode <= 399) {
@@ -76,8 +79,14 @@ class StatusPeduliEmServices {
         model = result.map<StatusPeduliEmModel>((model) {
           var cordinator = model['pic'] as List;
 
-          List<Map<String, dynamic>> listCordinator =
-              cordinator.map<Map<String, dynamic>>((e) => e).toList();
+          List<Map<String, dynamic>> listCordinator;
+          if (cordinator != null) {
+            listCordinator =
+                cordinator.map<Map<String, dynamic>>((e) => e).toList();
+            logger.e(listCordinator);
+          } else {
+            listCordinator = [];
+          }
 
           return StatusPeduliEmModel(
             address: model['address'],

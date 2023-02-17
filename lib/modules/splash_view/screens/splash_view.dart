@@ -140,7 +140,7 @@ class _SplashViewState extends State<SplashView> {
           await _loginController.noConnection();
         } else {
           String status = await UserSecureStorage.getStatus();
-          String message = 'OKE';
+          String message = await checkLoginActive();
           final logger = Logger();
           if (message.isCaseInsensitiveContainsAny('OKE') ||
               message.isCaseInsensitiveContainsAny('RELOG')) {
@@ -152,7 +152,7 @@ class _SplashViewState extends State<SplashView> {
             await checkMaintenance();
           } else if (message.isCaseInsensitiveContainsAny('FAILL')) {
             _loginController.logout();
-            Get.snackbar('message', 'your account has been logged out');
+            Get.snackbar('message', 'Akun anda telah keluar');
           } else {}
         }
       } else {
@@ -232,6 +232,10 @@ class _SplashViewState extends State<SplashView> {
           }
 
           if (message[0]['kepala_contractor'] == '1') {
+            _accessController.accessAsKepalaContractor();
+          }
+
+          if (message[0]['danru'] == '1') {
             _accessController.accessAsKepalaContractor();
           }
 

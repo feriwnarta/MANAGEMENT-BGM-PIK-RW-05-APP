@@ -52,8 +52,7 @@ class _SocialMediaState extends State<SocialMedia> {
     ScreenUtil.init(context, designSize: const Size(360, 800));
     return Scaffold(
       appBar: AppBar(
-        systemOverlayStyle:
-            SystemUiOverlayStyle(statusBarBrightness: Brightness.light),
+        systemOverlayStyle: SystemUiOverlayStyle.light,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

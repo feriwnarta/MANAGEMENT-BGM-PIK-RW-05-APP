@@ -2,28 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>In order to access your photo library</string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>googlechromes</string>
-		<string>comgooglemaps</string>
-	</array>
-	<!-- Permission for acces camera using camera package -->
-	<key>NSCameraUsageDescription</key>
-	<string>Aplikasi membutuhkan ijin kamera untuk untuk membuat complaint</string>
-	<!-- Permission options for the `camera` group -->	
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Aplikasi membutuhkan ijin galeri untuk menambahkan gambar</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Aplikasi membutuhkan ijin kamera untuk menambahkan foto</string>
-	<key>io.flutter.embedded_views_previce</key>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
-	<!-- Permission options for the `location` group -->
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Aplikasi membutuhkan ijin lokasi untuk mengambil lokasi laporan</string>
-    <key>NSLocationUsageDescription</key>
-    <string>Perangkat lama membutuhkan lokasi</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -42,28 +22,34 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>googlechromes</string>
+		<string>comgooglemaps</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Aplikasi membutuhkan ijin kamera untuk menambahkan foto</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Perangkat lama membutuhkan lokasi</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Aplikasi membutuhkan ijin lokasi untuk mengambil lokasi laporan</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Aplikasi membutuhkan ijin galeri untuk menambahkan gambar</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>UIStatusBarStyle</key>
+	<string></string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UISupportedInterfaceOrientations~ipad</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<key>io.flutter.embedded_views_previce</key>
 	<true/>
 </dict>
 </plist>

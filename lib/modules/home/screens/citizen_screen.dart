@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/authentication/controllers/access_controller.dart';
+import 'package:aplikasi_rw/modules/home/controller/notification_controller.dart';
+import 'package:aplikasi_rw/modules/home/screens/notification_screen.dart';
 import 'package:aplikasi_rw/modules/home/services/news_service.dart';
 import 'package:aplikasi_rw/modules/home/widgets/menu.dart';
 import 'package:aplikasi_rw/modules/informasi_warga/screens/informasi_warga_screen.dart';
@@ -21,6 +24,7 @@ import 'package:logger/logger.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../server-app.dart';
+import '../../informasi_warga/screens/read_informasi_screen.dart';
 import '../models/card_news.dart';
 import '../widgets/header_screen.dart';
 
@@ -34,8 +38,23 @@ class CitizenScreen extends StatefulWidget {
 class _MyWidgetState extends State<CitizenScreen> {
   final userLoginController = Get.put(UserLoginController());
   final accesController = Get.put(AccessController());
+  NotificationController controller = Get.put(NotificationController());
 
   final AssetImage image = AssetImage('assets/img/logo_rw.png');
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (Platform.isIOS) {
+      controller.timer.value = Timer.periodic(
+        Duration(seconds: 5),
+        (_) {
+          controller.getCountNotif();
+        },
+      );
+    }
+  }
 
   @override
   void didChangeDependencies() {
@@ -58,7 +77,7 @@ class _MyWidgetState extends State<CitizenScreen> {
               iconTheme: IconThemeData(
                 color: Color(0xff2094F3),
               ),
-              titleSpacing: 1,
+              titleSpacing: 10,
               title: Row(
                 children: [
                   AutoSizeText(
@@ -72,7 +91,7 @@ class _MyWidgetState extends State<CitizenScreen> {
                     overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(
-                    width: 10.w,
+                    width: 40.w,
                   ),
                   Image(
                     width: 34.w,
@@ -85,25 +104,33 @@ class _MyWidgetState extends State<CitizenScreen> {
               ),
               actions: [
                 Padding(
-                  padding: EdgeInsets.only(right: 16.w),
-                  child: InkWell(
-                    splashColor: Colors.white,
-                    borderRadius: BorderRadius.circular(200),
-                    radius: 15.h,
-                    onTap: () {},
-                    child: Badge(
-                      badgeColor: Colors.red,
-                      // showBadge: () ? true : false,
-                      badgeContent: Text(
-                        '0',
-                        style: TextStyle(color: Colors.white),
+                  padding: EdgeInsets.only(right: 25.w),
+                  child: Obx(
+                    () => InkWell(
+                      splashColor: Colors.white,
+                      borderRadius: BorderRadius.circular(200),
+                      radius: 15.h,
+                      onTap: () {
+                        Get.to(
+                          () => NotificationScreen(),
+                          transition: Transition.rightToLeft,
+                        );
+                      },
+                      child: Badge(
+                        badgeColor: Colors.red,
+                        padding: EdgeInsets.all(3),
+                        badgeContent: Text(
+                          '${controller.count.value}',
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 11.sp),
+                        ),
+                        position: BadgePosition.topEnd(top: 0, end: -10),
+                        child: SvgPicture.asset(
+                          'assets/img/image-svg/bell.svg',
+                          color: Color(0xff404040),
+                        ),
+                        animationType: BadgeAnimationType.fade,
                       ),
-                      position: BadgePosition.topEnd(top: -2, end: -10),
-                      child: SvgPicture.asset(
-                        'assets/img/image-svg/bell.svg',
-                        color: Color(0xff404040),
-                      ),
-                      animationType: BadgeAnimationType.scale,
                     ),
                   ),
                 ),
@@ -136,7 +163,7 @@ class _MyWidgetState extends State<CitizenScreen> {
                                 width: 48.w,
                                 child: CircleAvatar(
                                     backgroundImage: CachedNetworkImageProvider(
-                                        '${ServerApp.url}imageuser/default_profile/blank_profile_picture.jpg')),
+                                        '${ServerApp.url}${userLoginController.urlProfile.value}')),
                               ),
                               SizedBox(
                                 width: 14.w,
@@ -147,7 +174,7 @@ class _MyWidgetState extends State<CitizenScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     AutoSizeText(
-                                      '${userLoginController.username.value}',
+                                      '${userLoginController.name.value}',
                                       style: TextStyle(
                                         fontSize: 16.sp,
                                         fontWeight: FontWeight.w500,
@@ -194,13 +221,22 @@ class _MyWidgetState extends State<CitizenScreen> {
                                   items: snapshot.data.map((e) {
                                     return Builder(
                                       builder: (BuildContext context) {
-                                        return Container(
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          margin: EdgeInsets.only(right: 16.w),
-                                          child: CachedNetworkImage(
-                                            imageUrl:
-                                                '${ServerApp.url}${e.url}',
+                                        return GestureDetector(
+                                          onTap: () => Get.to(
+                                              () => ReadInformation(),
+                                              transition:
+                                                  Transition.rightToLeft,
+                                              arguments: [e.content]),
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            margin:
+                                                EdgeInsets.only(right: 16.w),
+                                            child: CachedNetworkImage(
+                                              imageUrl:
+                                                  '${ServerApp.url}${e.url}',
+                                            ),
                                           ),
                                         );
                                       },
