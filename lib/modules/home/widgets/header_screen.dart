@@ -24,7 +24,7 @@ class HeaderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: ScreenSize.designSize(context));
+    ScreenSize.designSize(context);
 
     return Column(
       children: [

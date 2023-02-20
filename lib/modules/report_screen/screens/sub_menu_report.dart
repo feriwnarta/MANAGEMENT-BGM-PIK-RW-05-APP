@@ -3,6 +3,7 @@ import 'package:aplikasi_rw/modules/cordinator/screens/peduli_lingkunga_cordinat
 import 'package:aplikasi_rw/modules/estate_manager/screens/status_peduli_lingkungan_complaint.dart';
 import 'package:aplikasi_rw/modules/manager_contractor/screens/peduli_lingkungan_manager_con.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/add_complaint.dart';
+import 'package:aplikasi_rw/utils/screen_size.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -76,6 +77,8 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenSize.designSize(context);
+
     return Column(
       children: [
         (widget.typeStatusPeduliLingkungan
@@ -128,8 +131,7 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                   SizedBox(
                     width: 16.w,
                   ),
-                  SizedBox(
-                    width: 221.w,
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -196,8 +198,7 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                   SizedBox(
                     width: 16.w,
                   ),
-                  SizedBox(
-                    width: 221.w,
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -234,10 +235,10 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
         (widget.typeStatusPeduliLingkungan
                 .isCaseInsensitiveContainsAny('warga'))
             ? SizedBox(
-                height: 360.h,
+                height: MediaQuery.of(context).size.height * 0.38,
               )
             : SizedBox(
-                height: 287.h,
+                height: 187.h,
               ),
         SizedBox(
           width: 328.w,

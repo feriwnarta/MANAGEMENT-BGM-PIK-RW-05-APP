@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ScreenSize {
-  static Size designSize(BuildContext context) {
-    return Size(
+  static void designSize(BuildContext context) {
+    var size = Size(
         MediaQuery.of(context).size.width, MediaQuery.of(context).size.height);
+    ScreenUtil.init(context, designSize: size);
   }
 
   static double realWidth(BuildContext context) {

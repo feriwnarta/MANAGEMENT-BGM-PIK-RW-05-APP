@@ -67,9 +67,7 @@ class _AppBarCitizenState extends State<AppBarCitizen> {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          SizedBox(
-            width: 28.w,
-          ),
+          Spacer(flex: 1),
           Image(
             width: 34.w,
             height: 40.h,
@@ -77,9 +75,7 @@ class _AppBarCitizenState extends State<AppBarCitizen> {
             fit: BoxFit.cover,
             repeat: ImageRepeat.noRepeat,
           ),
-          SizedBox(
-            width: 130.w,
-          ),
+          Spacer(flex: 3),
           Obx(
             () => InkWell(
               splashColor: Colors.white,
@@ -98,7 +94,7 @@ class _AppBarCitizenState extends State<AppBarCitizen> {
                   '${controller.count.value}',
                   style: TextStyle(color: Colors.white, fontSize: 11.sp),
                 ),
-                position: BadgePosition.topEnd(top: -18, end: -10),
+                position: BadgePosition.topEnd(top: -10, end: -10),
                 child: SvgPicture.asset(
                   'assets/img/image-svg/bell.svg',
                   color: Color(0xff404040),

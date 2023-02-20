@@ -10,6 +10,7 @@ import 'package:aplikasi_rw/modules/report_screen/widgets/camera_complaint.dart'
 import 'package:aplikasi_rw/services/category_services.dart';
 import 'package:aplikasi_rw/services/klasifikasi_category_services.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
+import 'package:aplikasi_rw/utils/screen_size.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart' as sidio;
@@ -63,7 +64,7 @@ class _AddComplaintState extends State<AddComplaint> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(360, 800));
+    ScreenSize.designSize(context);
     return Scaffold(
         appBar: AppBar(
           systemOverlayStyle:
@@ -133,6 +134,7 @@ class _StepperRwState extends State<StepperRw> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenSize.designSize(context);
     return WillPopScope(
       onWillPop: () async {
         if (stepperController.index.value == 3) {
@@ -505,7 +507,7 @@ class _StepperRwState extends State<StepperRw> {
                             horizontal: 16.w,
                             vertical: 16.h,
                           ),
-                          height: 500.h,
+                          height: 400.h,
                           child: SingleChildScrollView(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
