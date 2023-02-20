@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:aplikasi_rw/modules/home/controller/notification_controller.dart';
 import 'package:aplikasi_rw/modules/home/screens/notification_screen.dart';
+import 'package:aplikasi_rw/utils/screen_size.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,9 +48,12 @@ class _AppBarCitizenState extends State<AppBarCitizen> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(360, 800));
+    ScreenUtil.init(
+      context,
+      designSize: Size(360, 800),
+      minTextAdapt: false,
+    );
     return Container(
-      width: 328.w,
       margin: EdgeInsets.symmetric(horizontal: 16.w),
       child: Row(
         children: [
@@ -64,7 +68,7 @@ class _AppBarCitizenState extends State<AppBarCitizen> {
             overflow: TextOverflow.ellipsis,
           ),
           SizedBox(
-            width: 38.w,
+            width: 28.w,
           ),
           Image(
             width: 34.w,
@@ -74,7 +78,7 @@ class _AppBarCitizenState extends State<AppBarCitizen> {
             repeat: ImageRepeat.noRepeat,
           ),
           SizedBox(
-            width: 127.w,
+            width: 130.w,
           ),
           Obx(
             () => InkWell(

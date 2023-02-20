@@ -21,8 +21,10 @@ import 'package:aplikasi_rw/services/check_session.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +33,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:logger/logger.dart';
 import 'package:upgrader/upgrader.dart';
@@ -63,6 +66,7 @@ void main() async {
   // runApp(DevicePreview(enabled: !kReleaseMode, builder: (context) => MyApp()));
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
+  await ScreenUtil.ensureScreenSize();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -142,7 +146,11 @@ void main() async {
   SecurityContext.defaultContext
       .setTrustedCertificatesBytes(data.buffer.asUint8List());
 
-  runApp(MyApp());
+  // runApp(MyApp());
+  runApp(DevicePreview(
+    enabled: !kReleaseMode,
+    builder: (ctx) => MyApp(),
+  ));
   configLoading();
 }
 
@@ -203,11 +211,13 @@ class _MyApp extends State<MyApp> {
     initializeDateFormatting('id_ID', null);
 
     return ScreenUtilInit(
-      designSize: const Size(360, 800),
+      designSize: Size(360, 800),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) => AppLifecycleManager(
         child: GetMaterialApp(
+          useInheritedMediaQuery: true,
+          locale: DevicePreview.locale(context),
           debugShowCheckedModeBanner: false,
           initialRoute: AppPage.INITIAL_ROUTE,
           getPages: AppPage.pages,
@@ -219,7 +229,13 @@ class _MyApp extends State<MyApp> {
               ),
               fontFamily: 'Inter',
               scaffoldBackgroundColor: Colors.white),
-          builder: EasyLoading.init(), // set background color theme
+          builder: (context, child) {
+            // do your initialization here
+            child = EasyLoading.init()(context, child);
+            child = DevicePreview.appBuilder(context, child);
+
+            return child;
+          },
         ),
       ),
     );
@@ -332,6 +348,7 @@ class _MainAppState extends State<MainApp> {
         dialogStyle: (Platform.isAndroid)
             ? UpgradeDialogStyle.material
             : UpgradeDialogStyle.cupertino,
+        debugDisplayAlways: false,
         languageCode: 'id',
         durationUntilAlertAgain: Duration(days: 1),
         minAppVersion: '1.0.3',

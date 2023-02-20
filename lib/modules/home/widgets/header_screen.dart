@@ -2,6 +2,7 @@ import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/home/services/news_service.dart';
 import 'package:aplikasi_rw/modules/home/widgets/app_bar_citizen.dart';
 import 'package:aplikasi_rw/modules/informasi_warga/screens/read_informasi_screen.dart';
+import 'package:aplikasi_rw/utils/screen_size.dart';
 import 'package:aplikasi_rw/utils/view_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -23,7 +24,8 @@ class HeaderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(360, 800));
+    ScreenUtil.init(context, designSize: ScreenSize.designSize(context));
+
     return Column(
       children: [
         SizedBox(
@@ -34,7 +36,7 @@ class HeaderScreen extends StatelessWidget {
           height: 32.h,
         ),
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 16.h),
+          margin: EdgeInsets.symmetric(horizontal: 16.w),
           child: Row(
             children: [
               GestureDetector(

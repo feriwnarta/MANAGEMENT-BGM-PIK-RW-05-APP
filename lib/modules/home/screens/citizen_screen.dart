@@ -67,7 +67,9 @@ class _MyWidgetState extends State<CitizenScreen> {
     final logger = Logger();
     logger.i(userLoginController.accessCordinator.value);
 
-    ScreenUtil.init(context, designSize: const Size(360, 800));
+    ScreenUtil.init(context,
+        designSize: Size(MediaQuery.of(context).size.width,
+            MediaQuery.of(context).size.height));
 
     return Scaffold(
       appBar: (Platform.isIOS)
@@ -91,7 +93,7 @@ class _MyWidgetState extends State<CitizenScreen> {
                     overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(
-                    width: 40.w,
+                    width: 20.w,
                   ),
                   Image(
                     width: 34.w,
@@ -292,11 +294,11 @@ class _MyWidgetState extends State<CitizenScreen> {
               ),
               Obx(
                 () => Container(
-                  height: 236.h,
-                  margin: EdgeInsets.symmetric(horizontal: 16.w),
                   child: Column(
                     children: [
-                      Row(
+                      Wrap(
+                        alignment: WrapAlignment.start,
+                        runSpacing: 16.h,
                         children: [
                           (accesController.statusPeduliLingkungan.value)
                               ? Menu(
@@ -369,13 +371,6 @@ class _MyWidgetState extends State<CitizenScreen> {
                                   text: 'Informasi Warga',
                                   onTap: () => EasyLoading.showInfo(
                                       'Fitur ini hanya bisa diakses oleh warga')),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 16.h,
-                      ),
-                      Row(
-                        children: [
                           (accesController.informasiUmum.value)
                               ? Menu(
                                   icon:
@@ -408,6 +403,41 @@ class _MyWidgetState extends State<CitizenScreen> {
                                 ),
                         ],
                       ),
+
+                      // Row(
+                      //   children: [
+                      //     (accesController.informasiUmum.value)
+                      //         ? Menu(
+                      //             icon:
+                      //                 'assets/img/citizen_menu/informasi-umum.jpg',
+                      //             text: 'Informasi Umum',
+                      //             onTap: () {},
+                      //           )
+                      //         : Menu(
+                      //             icon:
+                      //                 'assets/img/citizen_menu/informasi-umum.jpg',
+                      //             text: 'Informasi Umum',
+                      //             onTap: () => EasyLoading.showInfo(
+                      //                 'Fitur ini hanya bisa diakses oleh warga'),
+                      //           ),
+                      //     SizedBox(
+                      //       width: 14.w,
+                      //     ),
+                      //     (accesController.sosialMedia.value)
+                      //         ? Menu(
+                      //             icon: 'assets/img/citizen_menu/media.jpg',
+                      //             text: 'Sosial Media',
+                      //             onTap: () => Get.to(() => SocialMedia(),
+                      //                 transition: Transition.rightToLeft),
+                      //           )
+                      //         : Menu(
+                      //             icon: 'assets/img/citizen_menu/media.jpg',
+                      //             text: 'Sosial Media',
+                      //             onTap: () => EasyLoading.showInfo(
+                      //                 'Fitur ini hanya bisa diakses oleh warga'),
+                      //           ),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),
