@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:aplikasi_rw/modules/home/controller/notification_controller.dart';
 import 'package:aplikasi_rw/modules/home/screens/notification_screen.dart';
+import 'package:aplikasi_rw/modules/theme/sizer.dart';
 import 'package:aplikasi_rw/utils/screen_size.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -54,13 +56,13 @@ class _AppBarCitizenState extends State<AppBarCitizen> {
       minTextAdapt: false,
     );
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w),
+      margin: EdgeInsets.symmetric(horizontal: Sizer.gapHorizontal16),
       child: Row(
         children: [
           AutoSizeText(
             'BGM RW 05',
             style: TextStyle(
-              fontSize: 19.sp,
+              fontSize: (19 / Sizer.designText) * SizeConfig.textMultiplier,
               fontWeight: FontWeight.w500,
               color: Color(0xff2094F3),
             ),
@@ -69,8 +71,8 @@ class _AppBarCitizenState extends State<AppBarCitizen> {
           ),
           Spacer(flex: 1),
           Image(
-            width: 34.w,
-            height: 40.h,
+            width:
+                (34 / SizeConfig.widthMultiplier) * SizeConfig.widthMultiplier,
             image: image,
             fit: BoxFit.cover,
             repeat: ImageRepeat.noRepeat,
@@ -80,7 +82,8 @@ class _AppBarCitizenState extends State<AppBarCitizen> {
             () => InkWell(
               splashColor: Colors.white,
               borderRadius: BorderRadius.circular(200),
-              radius: 15.h,
+              radius: (15 / SizeConfig.heightMultiplier) *
+                  SizeConfig.heightMultiplier,
               onTap: () {
                 Get.to(
                   () => NotificationScreen(),
@@ -92,7 +95,10 @@ class _AppBarCitizenState extends State<AppBarCitizen> {
                 padding: EdgeInsets.all(3),
                 badgeContent: Text(
                   '${controller.count.value}',
-                  style: TextStyle(color: Colors.white, fontSize: 11.sp),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: (11 / SizeConfig.textMultiplier) *
+                          SizeConfig.textMultiplier),
                 ),
                 position: BadgePosition.topEnd(top: -10, end: -10),
                 child: SvgPicture.asset(

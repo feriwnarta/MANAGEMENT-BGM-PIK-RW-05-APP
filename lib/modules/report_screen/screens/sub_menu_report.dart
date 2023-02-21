@@ -3,7 +3,9 @@ import 'package:aplikasi_rw/modules/cordinator/screens/peduli_lingkunga_cordinat
 import 'package:aplikasi_rw/modules/estate_manager/screens/status_peduli_lingkungan_complaint.dart';
 import 'package:aplikasi_rw/modules/manager_contractor/screens/peduli_lingkungan_manager_con.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/add_complaint.dart';
+import 'package:aplikasi_rw/modules/theme/sizer.dart';
 import 'package:aplikasi_rw/utils/screen_size.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,17 +27,25 @@ class SubMenuReport extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xff2196F3),
-        systemOverlayStyle: SystemUiOverlayStyle.light,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        systemOverlayStyle: Theme.of(context).appBarTheme.systemOverlayStyle,
         title:
             (typeStatusPeduliLingkungan.isCaseInsensitiveContainsAny('warga'))
                 ? Text(
-                    'Warga peduli lingkungan',
-                    style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                    'Warga Peduli Lingkungan',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: (16 / SizeConfig.textMultiplier) *
+                          SizeConfig.textMultiplier,
+                    ),
                   )
                 : Text(
                     'Status Peduli Lingkungan',
-                    style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: (16 / SizeConfig.textMultiplier) *
+                          SizeConfig.textMultiplier,
+                    ),
                   ),
         iconTheme: IconThemeData(color: Colors.white),
       ),
@@ -89,17 +99,17 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                     EdgeInsets.symmetric(horizontal: 16.w).copyWith(top: 16.h),
                 child: AutoSizeText(
                   'Laporan masuk dan belum mendapat penanganan segera terima dan lakukan penanganan.',
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    color: Color(0xff616161),
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      .copyWith(color: Color(0xff616161)),
                   maxLines: 5,
                   minFontSize: 10,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
         SizedBox(
-          height: 32.h,
+          height: Sizer.gapVertical32,
         ),
         Obx(
           () => GestureDetector(
@@ -108,8 +118,10 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
               typeStatus.value = 'peduli lingkungan umum';
             },
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 16.w),
-              padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 12.h),
+              margin: EdgeInsets.symmetric(horizontal: Sizer.gapHorizontal16),
+              padding: EdgeInsets.symmetric(
+                  horizontal: Sizer.gapHorizontal6,
+                  vertical: Sizer.gapVertical12),
               decoration: (isActive.value)
                   ? BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
@@ -120,8 +132,10 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
               child: Row(
                 children: [
                   Container(
-                    width: 70.w,
-                    height: 72.h,
+                    width: (70 / SizeConfig.widthMultiplier) *
+                        SizeConfig.widthMultiplier,
+                    height: (72 / SizeConfig.heightMultiplier) *
+                        SizeConfig.heightMultiplier,
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: image,
@@ -129,7 +143,8 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                     ),
                   ),
                   SizedBox(
-                    width: 16.w,
+                    width: (16 / SizeConfig.widthMultiplier) *
+                        SizeConfig.widthMultiplier,
                   ),
                   Expanded(
                     child: Column(
@@ -137,23 +152,17 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                       children: [
                         AutoSizeText(
                           'Peduli Lingkungan Umum',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: Theme.of(context).textTheme.button,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                         SizedBox(
-                          height: 4.h,
+                          height: (4 / SizeConfig.heightMultiplier) *
+                              SizeConfig.heightMultiplier,
                         ),
                         AutoSizeText(
                           'Kepedulian lingkungan yang di tujukan untuk area lingkungan umum yang ada di Bukit Golf Mediterania RW 05.',
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff616161),
-                          ),
+                          style: Theme.of(context).textTheme.caption,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                         )
@@ -166,7 +175,8 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
           ),
         ),
         SizedBox(
-          height: 16.h,
+          height:
+              (16 / SizeConfig.heightMultiplier) * SizeConfig.heightMultiplier,
         ),
         Obx(
           () => GestureDetector(
@@ -175,8 +185,10 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
               typeStatus.value = 'peduli lingkungan pribadi';
             },
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 16.w),
-              padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 12.h),
+              margin: EdgeInsets.symmetric(horizontal: Sizer.gapHorizontal16),
+              padding: EdgeInsets.symmetric(
+                  horizontal: Sizer.gapHorizontal16,
+                  vertical: Sizer.gapVertical12),
               decoration: (!isActive.value)
                   ? BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
@@ -187,8 +199,10 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
               child: Row(
                 children: [
                   Container(
-                    width: 70.w,
-                    height: 72.h,
+                    width: (70 / SizeConfig.widthMultiplier) *
+                        SizeConfig.widthMultiplier,
+                    height: (72 / SizeConfig.heightMultiplier) *
+                        SizeConfig.heightMultiplier,
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: image2,
@@ -196,7 +210,8 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                     ),
                   ),
                   SizedBox(
-                    width: 16.w,
+                    width: (16.w / SizeConfig.widthMultiplier) *
+                        SizeConfig.widthMultiplier,
                   ),
                   Expanded(
                     child: Column(
@@ -204,26 +219,20 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                       children: [
                         AutoSizeText(
                           'Peduli Lingkungan Pribadi',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: Theme.of(context).textTheme.button,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                         SizedBox(
-                          height: 4.h,
+                          height: (4 / SizeConfig.heightMultiplier) *
+                              SizeConfig.heightMultiplier,
                         ),
                         AutoSizeText(
                           'Kepedulian lingkungan yang di tujukan untuk area lingkungan pribadi warga Bukit Golf Mediterania RW 05. ',
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff616161),
-                          ),
+                          style: Theme.of(context).textTheme.caption,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
-                        )
+                        ),
                       ],
                     ),
                   )
@@ -235,13 +244,16 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
         (widget.typeStatusPeduliLingkungan
                 .isCaseInsensitiveContainsAny('warga'))
             ? SizedBox(
-                height: MediaQuery.of(context).size.height * 0.38,
+                height: (200 / SizeConfig.heightMultiplier) *
+                    SizeConfig.heightMultiplier,
               )
             : SizedBox(
-                height: 187.h,
+                height: (248 / SizeConfig.heightMultiplier) *
+                    SizeConfig.heightMultiplier,
               ),
         SizedBox(
-          width: 328.w,
+          width:
+              (328 / SizeConfig.widthMultiplier) * SizeConfig.widthMultiplier,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(

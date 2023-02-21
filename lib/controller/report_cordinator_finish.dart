@@ -22,8 +22,6 @@ class ReportCordinatorFinish extends GetxController {
   void realtimeData() async {
     String idCordinator = await UserSecureStorage.getIdUser();
     List<CordinatorReportModel> listBaru;
-    final logger = Logger();
-    logger.i(controller.status.value);
 
     if (controller.status.value == 'cordinator') {
       if (listReport.length <= 10) {

@@ -1,17 +1,14 @@
 import 'dart:io';
 
 import 'package:aplikasi_rw/server-app.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 
 class NetworkCheckController extends GetxController {
   RxBool connectionExist = true.obs;
 
   void checkConnection() async {
     try {
-      final logger = Logger();
       var checkConnection = await InternetAddress.lookup('${ServerApp.ip}');
 
       if (checkConnection.isNotEmpty &&

@@ -3,7 +3,6 @@ import 'package:aplikasi_rw/services/cordinator/cordinator_report_services.dart'
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 
 class ReportCordinatorComplaint extends GetxController {
   // data cordinator
@@ -71,9 +70,6 @@ class ReportCordinatorComplaint extends GetxController {
     if (isLoading.value) {
       listReport.assignAll(await CordinatorReportServices.getReportCordinator(
           idUser, 0, 10, 'CORDINATOR'));
-
-      final logger = Logger();
-      logger.i(listReport);
 
       if (listReport.isNotEmpty) {
         isLoading.value = false;

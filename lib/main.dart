@@ -13,18 +13,19 @@ import 'package:aplikasi_rw/modules/home/screens/home_folder_screen.dart';
 import 'package:aplikasi_rw/modules/manager_contractor/screens/home_folder_manager_contractor.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/UserProfileScreens.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/profile_settings_screen.dart';
+import 'package:aplikasi_rw/modules/theme/app_theme.dart';
 import 'package:aplikasi_rw/routes/app_pages.dart';
 import 'package:aplikasi_rw/routes/app_routes.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/change_data_user.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/check_session.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -33,9 +34,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:http_parser/http_parser.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:logger/logger.dart';
 import 'package:upgrader/upgrader.dart';
 import 'dart:io';
 import 'lifecyle_manager.dart';
@@ -95,16 +94,9 @@ void main() async {
       ],
       debug: false);
 
-  final token = await FirebaseMessaging.instance.getToken();
-  final logger = Logger();
-  logger.e(token);
-
   FirebaseMessaging m = FirebaseMessaging.instance;
 
   FirebaseMessaging.onMessage.listen((event) {
-    final logger = Logger();
-    logger.w(event.messageId);
-
     AwesomeNotifications().createNotification(
       content: NotificationContent(
         id: 10,
@@ -148,7 +140,7 @@ void main() async {
 
   // runApp(MyApp());
   runApp(DevicePreview(
-    enabled: true,
+    enabled: false,
     builder: (ctx) => MyApp(),
   ));
   configLoading();
@@ -214,29 +206,30 @@ class _MyApp extends State<MyApp> {
       designSize: Size(360, 800),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context, child) => AppLifecycleManager(
-        child: GetMaterialApp(
-          useInheritedMediaQuery: true,
-          locale: DevicePreview.locale(context),
-          debugShowCheckedModeBanner: false,
-          initialRoute: AppPage.INITIAL_ROUTE,
-          getPages: AppPage.pages,
-          // home: CreateAccount(),
+      builder: (context, child) => LayoutBuilder(
+        builder: (ctx, constraints) =>
+            OrientationBuilder(builder: (context, orientation) {
+          SizeConfig().init(constraints, orientation);
+          return AppLifecycleManager(
+            child: GetMaterialApp(
+              useInheritedMediaQuery: true,
+              locale: DevicePreview.locale(context),
+              debugShowCheckedModeBanner: false,
+              initialRoute: AppPage.INITIAL_ROUTE,
+              getPages: AppPage.pages,
+              // home: CreateAccount(),
 
-          theme: ThemeData(
-              appBarTheme: AppBarTheme(
-                systemOverlayStyle: SystemUiOverlayStyle.dark,
-              ),
-              fontFamily: 'Inter',
-              scaffoldBackgroundColor: Colors.white),
-          builder: (context, child) {
-            // do your initialization here
-            child = EasyLoading.init()(context, child);
-            child = DevicePreview.appBuilder(context, child);
+              theme: AppTheme.lightTheme,
+              builder: (context, child) {
+                // do your initialization here
+                child = EasyLoading.init()(context, child);
+                child = DevicePreview.appBuilder(context, child);
 
-            return child;
-          },
-        ),
+                return child;
+              },
+            ),
+          );
+        }),
       ),
     );
   }
@@ -269,7 +262,6 @@ class _MainAppState extends State<MainApp> {
   final networkCheck = Get.put(NetworkCheckController());
 
   Timer timer;
-  final logger = Logger();
 
   @override
   void initState() {

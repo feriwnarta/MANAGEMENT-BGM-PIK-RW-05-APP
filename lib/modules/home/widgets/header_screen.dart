@@ -3,6 +3,7 @@ import 'package:aplikasi_rw/modules/home/services/news_service.dart';
 import 'package:aplikasi_rw/modules/home/widgets/app_bar_citizen.dart';
 import 'package:aplikasi_rw/modules/informasi_warga/screens/read_informasi_screen.dart';
 import 'package:aplikasi_rw/utils/screen_size.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:aplikasi_rw/utils/view_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -29,14 +30,17 @@ class HeaderScreen extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 16.h,
+          height: 1.9 * SizeConfig.heightMultiplier,
         ),
         AppBarCitizen(),
         SizedBox(
-          height: 32.h,
+          height:
+              (32 / SizeConfig.heightMultiplier) * SizeConfig.heightMultiplier,
         ),
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 16.w),
+          margin: EdgeInsets.symmetric(
+              horizontal: (16 / SizeConfig.widthMultiplier) *
+                  SizeConfig.widthMultiplier),
           child: Row(
             children: [
               GestureDetector(
@@ -50,8 +54,10 @@ class HeaderScreen extends StatelessWidget {
                   );
                 },
                 child: SizedBox(
-                  height: 48.h,
-                  width: 48.w,
+                  height: (48 / SizeConfig.heightMultiplier) *
+                      SizeConfig.heightMultiplier,
+                  width: (48 / SizeConfig.widthMultiplier) *
+                      SizeConfig.widthMultiplier,
                   child: CircleAvatar(
                     backgroundImage: CachedNetworkImageProvider(
                         '${ServerApp.url}${userLoginController.urlProfile.value}'),
@@ -59,17 +65,20 @@ class HeaderScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: 14.w,
+                width: (14 / SizeConfig.widthMultiplier) *
+                    SizeConfig.widthMultiplier,
               ),
               SizedBox(
-                width: 257.w,
+                width: (257 / SizeConfig.widthMultiplier) *
+                    SizeConfig.widthMultiplier,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     AutoSizeText(
                       '${userLoginController.name.value}',
                       style: TextStyle(
-                        fontSize: 16.sp,
+                        fontSize: (16 / SizeConfig.textMultiplier) *
+                            SizeConfig.textMultiplier,
                         fontWeight: FontWeight.w500,
                       ),
                       maxLines: 2,
@@ -80,7 +89,8 @@ class HeaderScreen extends StatelessWidget {
                         ? AutoSizeText(
                             '${userLoginController.cluster.value} ${userLoginController.houseNumber.value}',
                             style: TextStyle(
-                              fontSize: 14.sp,
+                              fontSize: (14 / SizeConfig.textMultiplier) *
+                                  SizeConfig.textMultiplier,
                               fontWeight: FontWeight.w500,
                               color: Color(0xff616161),
                             ),
@@ -90,7 +100,8 @@ class HeaderScreen extends StatelessWidget {
                         : AutoSizeText(
                             '${userLoginController.status.value}',
                             style: TextStyle(
-                              fontSize: 14.sp,
+                              fontSize: (14 / SizeConfig.textMultiplier) *
+                                  SizeConfig.textMultiplier,
                               fontWeight: FontWeight.w500,
                               color: Color(0xff616161),
                             ),
@@ -104,13 +115,15 @@ class HeaderScreen extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 24.h,
+          height:
+              (24 / SizeConfig.heightMultiplier) * SizeConfig.heightMultiplier,
         ),
         Divider(
           thickness: 1,
         ),
         SizedBox(
-          height: 24.h,
+          height:
+              (24 / SizeConfig.heightMultiplier) * SizeConfig.heightMultiplier,
         ),
         (!isEmOrCord)
             ? FutureBuilder<List<CardNews>>(
@@ -118,11 +131,12 @@ class HeaderScreen extends StatelessWidget {
                 builder: (context, snapshot) => (snapshot.hasData)
                     ? CarouselSlider(
                         options: CarouselOptions(
-                          height: 188.h,
+                          height: (188 / SizeConfig.heightMultiplier) *
+                              SizeConfig.heightMultiplier,
                           // aspectRatio: 16 / 2,
                           enableInfiniteScroll: false,
                           enlargeCenterPage: false,
-                          viewportFraction: 0.85,
+                          viewportFraction: 0.9,
                         ),
                         items: snapshot.data.map((e) {
                           return Builder(
@@ -133,7 +147,10 @@ class HeaderScreen extends StatelessWidget {
                                     arguments: [e.content]),
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
-                                  margin: EdgeInsets.only(right: 16.w),
+                                  margin: EdgeInsets.only(
+                                    right: (16 / SizeConfig.widthMultiplier) *
+                                        SizeConfig.widthMultiplier,
+                                  ),
                                   child: CachedNetworkImage(
                                     imageUrl: '${ServerApp.url}${e.url}',
                                   ),
@@ -145,7 +162,8 @@ class HeaderScreen extends StatelessWidget {
                       )
                     : CarouselSlider(
                         options: CarouselOptions(
-                          height: 188.h,
+                          height: (188 / SizeConfig.heightMultiplier) *
+                              SizeConfig.heightMultiplier,
                           enableInfiniteScroll: false,
                           enlargeCenterPage: false,
                           viewportFraction: 0.9,
@@ -166,7 +184,11 @@ class HeaderScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(10)),
                                   width: MediaQuery.of(context).size.width,
                                   height: 188.h,
-                                  margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                  margin: EdgeInsets.symmetric(
+                                    horizontal:
+                                        (5 / SizeConfig.widthMultiplier) *
+                                            SizeConfig.widthMultiplier,
+                                  ),
                                 ),
                               );
                             },

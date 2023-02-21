@@ -7,7 +7,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 import 'package:lottie/lottie.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -90,8 +89,6 @@ class _SplashViewState extends State<SplashView> {
     }
 
     String idUser = await UserSecureStorage.getIdUser();
-    final logger = Logger();
-    logger.e(idUser);
 
     if (idUser != null) {
       String url =
@@ -103,16 +100,12 @@ class _SplashViewState extends State<SplashView> {
         "device_identifier": identifier
       };
 
-      logger.w(data);
       var response = await http.post(Uri.parse(url), body: jsonEncode(data));
 
       if (response.statusCode >= 200 && response.statusCode <= 399) {
         var message = jsonDecode(response.body);
 
-        final logger = Logger();
-        logger.d(message);
         if (message == 'FAILL') {
-          logger.e(message);
           return 'FAILL';
         } else {
           return 'OKE';
@@ -125,26 +118,19 @@ class _SplashViewState extends State<SplashView> {
 
   Future<void> checkConnectivity() async {
     try {
-      final logger = Logger();
       var checkConnection = await InternetAddress.lookup('${ServerApp.ip}');
-      logger.i(checkConnection);
 
       if (checkConnection.isNotEmpty &&
           checkConnection[0].rawAddress.isNotEmpty) {
         var connection = await (Connectivity().checkConnectivity());
-        final logger = Logger();
-
-        logger.d(connection);
 
         if (connection == ConnectivityResult.none) {
           await _loginController.noConnection();
         } else {
-          String status = await UserSecureStorage.getStatus();
           String message = await checkLoginActive();
-          final logger = Logger();
+
           if (message.isCaseInsensitiveContainsAny('OKE') ||
               message.isCaseInsensitiveContainsAny('RELOG')) {
-            logger.e(status);
             _loginController.connect();
             await checkOtpWhenExit();
             await _loginController.checkLogin();
@@ -176,8 +162,6 @@ class _SplashViewState extends State<SplashView> {
         _loginController.email = email.obs;
         _loginController.noIpl = noIpl.obs;
         _loginController.noTelp = noTelp.obs;
-        final logger = Logger();
-        logger.e(_loginController.email.value);
       }
     } else {
       // _loginController.resetOtpWhenExit();
@@ -200,10 +184,7 @@ class _SplashViewState extends State<SplashView> {
       var response = await http.post(Uri.parse(url), body: jsonEncode(data));
       if (response.statusCode >= 200 && response.statusCode <= 399) {
         var message = jsonDecode(response.body);
-        final logger = Logger();
-        logger.e(idUser);
         if (message.toString() != 'E001' && message.toString() != 'E002') {
-          logger.i(message[0]['warga']);
           if (message[0]['warga'] == '1') {
             _accessController.accessAsCitizen();
           }
@@ -238,8 +219,6 @@ class _SplashViewState extends State<SplashView> {
           if (message[0]['danru'] == '1') {
             _accessController.accessAsKepalaContractor();
           }
-
-          logger.i(_accessController.statistikPeduliLindungi.value);
         } else {
           //error
         }

@@ -11,6 +11,8 @@ import 'package:aplikasi_rw/modules/payment_ipl/screens/history/payment_ipl_hist
 import 'package:aplikasi_rw/modules/report_screen/screens/report_screen_2.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/sub_menu_report.dart';
 import 'package:aplikasi_rw/modules/social_media/screens/social_media_screen.dart';
+import 'package:aplikasi_rw/modules/theme/sizer.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -84,20 +86,15 @@ class _MyWidgetState extends State<CitizenScreen> {
                 children: [
                   AutoSizeText(
                     'BGM RW 05',
-                    style: TextStyle(
-                      fontSize: 19.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xff2094F3),
-                    ),
+                    style: Theme.of(context).textTheme.headline3,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(
-                    width: 20.w,
+                    width: Sizer.width20,
                   ),
                   Image(
-                    width: 34.w,
-                    height: 40.h,
+                    width: Sizer.width34,
                     image: image,
                     fit: BoxFit.cover,
                     repeat: ImageRepeat.noRepeat,
@@ -106,12 +103,12 @@ class _MyWidgetState extends State<CitizenScreen> {
               ),
               actions: [
                 Padding(
-                  padding: EdgeInsets.only(right: 25.w),
+                  padding: EdgeInsets.only(right: Sizer.gapHorizontal25),
                   child: Obx(
                     () => InkWell(
                       splashColor: Colors.white,
                       borderRadius: BorderRadius.circular(200),
-                      radius: 15.h,
+                      radius: 15,
                       onTap: () {
                         Get.to(
                           () => NotificationScreen(),
@@ -123,8 +120,10 @@ class _MyWidgetState extends State<CitizenScreen> {
                         padding: EdgeInsets.all(3),
                         badgeContent: Text(
                           '${controller.count.value}',
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 11.sp),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: (11 / SizeConfig.textMultiplier) *
+                                  SizeConfig.textMultiplier),
                         ),
                         position: BadgePosition.topEnd(top: 0, end: -10),
                         child: SvgPicture.asset(
@@ -151,34 +150,43 @@ class _MyWidgetState extends State<CitizenScreen> {
                       isEmOrCord: false,
                     )
                   : SizedBox(
-                      height: 32.h,
+                      height: (32 / SizeConfig.heightMultiplier) *
+                          SizeConfig.heightMultiplier,
                     ),
               (Platform.isIOS)
                   ? Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.symmetric(horizontal: 16.h),
+                          margin: EdgeInsets.symmetric(
+                              horizontal: (16 / SizeConfig.heightMultiplier) *
+                                  SizeConfig.heightMultiplier),
                           child: Row(
                             children: [
                               SizedBox(
-                                height: 48.h,
-                                width: 48.w,
+                                height: (48 / SizeConfig.heightMultiplier) *
+                                    SizeConfig.heightMultiplier,
+                                width: (48 / SizeConfig.widthMultiplier) *
+                                    SizeConfig.widthMultiplier,
                                 child: CircleAvatar(
                                     backgroundImage: CachedNetworkImageProvider(
                                         '${ServerApp.url}${userLoginController.urlProfile.value}')),
                               ),
                               SizedBox(
-                                width: 14.w,
+                                width: (14 / SizeConfig.widthMultiplier) *
+                                    SizeConfig.widthMultiplier,
                               ),
                               SizedBox(
-                                width: 257.w,
+                                width: (257 / SizeConfig.widthMultiplier) *
+                                    SizeConfig.widthMultiplier,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     AutoSizeText(
                                       '${userLoginController.name.value}',
                                       style: TextStyle(
-                                        fontSize: 16.sp,
+                                        fontSize:
+                                            (16 / SizeConfig.textMultiplier) *
+                                                SizeConfig.textMultiplier,
                                         fontWeight: FontWeight.w500,
                                       ),
                                       maxLines: 2,
@@ -187,7 +195,9 @@ class _MyWidgetState extends State<CitizenScreen> {
                                     AutoSizeText(
                                       'Akasia golf',
                                       style: TextStyle(
-                                        fontSize: 14.sp,
+                                        fontSize:
+                                            (14 / SizeConfig.textMultiplier) *
+                                                SizeConfig.textMultiplier,
                                         fontWeight: FontWeight.w500,
                                         color: Color(0xff616161),
                                       ),
@@ -201,13 +211,15 @@ class _MyWidgetState extends State<CitizenScreen> {
                           ),
                         ),
                         SizedBox(
-                          height: 24.h,
+                          height: (24 / SizeConfig.heightMultiplier) *
+                              SizeConfig.heightMultiplier,
                         ),
                         Divider(
                           thickness: 1,
                         ),
                         SizedBox(
-                          height: 24.h,
+                          height: (24 / SizeConfig.heightMultiplier) *
+                              SizeConfig.heightMultiplier,
                         ),
                         FutureBuilder<List<CardNews>>(
                           future: NewsServices.getNews(),
@@ -284,13 +296,15 @@ class _MyWidgetState extends State<CitizenScreen> {
                     )
                   : SizedBox(),
               SizedBox(
-                height: 24.h,
+                height: (24 / SizeConfig.heightMultiplier) *
+                    SizeConfig.heightMultiplier,
               ),
               Divider(
                 thickness: 1,
               ),
               SizedBox(
-                height: 24.h,
+                height: (24 / SizeConfig.heightMultiplier) *
+                    SizeConfig.heightMultiplier,
               ),
               Obx(
                 () => Container(
@@ -298,7 +312,8 @@ class _MyWidgetState extends State<CitizenScreen> {
                     children: [
                       Wrap(
                         alignment: WrapAlignment.start,
-                        runSpacing: 16.h,
+                        runSpacing: (16 / SizeConfig.heightMultiplier) *
+                            SizeConfig.heightMultiplier,
                         children: [
                           (accesController.statusPeduliLingkungan.value)
                               ? Menu(
@@ -317,7 +332,8 @@ class _MyWidgetState extends State<CitizenScreen> {
                                       'Fitur ini hanya bisa diakses oleh warga'),
                                 ),
                           SizedBox(
-                            width: 14.w,
+                            width: (14 / SizeConfig.widthMultiplier) *
+                                SizeConfig.widthMultiplier,
                           ),
                           (accesController.statusPeduliLingkungan.value)
                               ? Menu(
@@ -335,7 +351,8 @@ class _MyWidgetState extends State<CitizenScreen> {
                                       'Fitur ini hanya bisa diakses oleh warga'),
                                 ),
                           SizedBox(
-                            width: 14.w,
+                            width: (14 / SizeConfig.widthMultiplier) *
+                                SizeConfig.widthMultiplier,
                           ),
                           (accesController.statusIpl.value)
                               ? Menu(
@@ -353,7 +370,8 @@ class _MyWidgetState extends State<CitizenScreen> {
                                       'Fitur ini hanya bisa diakses oleh warga'),
                                 ),
                           SizedBox(
-                            width: 14.w,
+                            width: (14 / SizeConfig.widthMultiplier) *
+                                SizeConfig.widthMultiplier,
                           ),
                           (accesController.informasiWarga.value)
                               ? Menu(
@@ -386,7 +404,8 @@ class _MyWidgetState extends State<CitizenScreen> {
                                       'Fitur ini hanya bisa diakses oleh warga'),
                                 ),
                           SizedBox(
-                            width: 14.w,
+                            width: (14 / SizeConfig.widthMultiplier) *
+                                SizeConfig.widthMultiplier,
                           ),
                           (accesController.sosialMedia.value)
                               ? Menu(
@@ -403,47 +422,13 @@ class _MyWidgetState extends State<CitizenScreen> {
                                 ),
                         ],
                       ),
-
-                      // Row(
-                      //   children: [
-                      //     (accesController.informasiUmum.value)
-                      //         ? Menu(
-                      //             icon:
-                      //                 'assets/img/citizen_menu/informasi-umum.jpg',
-                      //             text: 'Informasi Umum',
-                      //             onTap: () {},
-                      //           )
-                      //         : Menu(
-                      //             icon:
-                      //                 'assets/img/citizen_menu/informasi-umum.jpg',
-                      //             text: 'Informasi Umum',
-                      //             onTap: () => EasyLoading.showInfo(
-                      //                 'Fitur ini hanya bisa diakses oleh warga'),
-                      //           ),
-                      //     SizedBox(
-                      //       width: 14.w,
-                      //     ),
-                      //     (accesController.sosialMedia.value)
-                      //         ? Menu(
-                      //             icon: 'assets/img/citizen_menu/media.jpg',
-                      //             text: 'Sosial Media',
-                      //             onTap: () => Get.to(() => SocialMedia(),
-                      //                 transition: Transition.rightToLeft),
-                      //           )
-                      //         : Menu(
-                      //             icon: 'assets/img/citizen_menu/media.jpg',
-                      //             text: 'Sosial Media',
-                      //             onTap: () => EasyLoading.showInfo(
-                      //                 'Fitur ini hanya bisa diakses oleh warga'),
-                      //           ),
-                      //   ],
-                      // ),
                     ],
                   ),
                 ),
               ),
               SizedBox(
-                height: 70.h,
+                height: (70 / SizeConfig.heightMultiplier) *
+                    SizeConfig.heightMultiplier,
               )
             ],
           ),

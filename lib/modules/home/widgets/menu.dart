@@ -1,3 +1,4 @@
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,16 +12,17 @@ class Menu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(360, 800));
     return GestureDetector(
       onTap: onTap,
-      child: SizedBox(
-        width: 70.w,
+      child: Container(
+        width: (75 / SizeConfig.widthMultiplier) * SizeConfig.widthMultiplier,
         child: Column(
           children: [
             Container(
-              width: 70.w,
-              height: 62.h,
+              width: (70 / SizeConfig.widthMultiplier) *
+                  SizeConfig.widthMultiplier,
+              height: (62 / SizeConfig.heightMultiplier) *
+                  SizeConfig.heightMultiplier,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(icon),
@@ -28,13 +30,15 @@ class Menu extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 8.h,
+              height: (8 / SizeConfig.heightMultiplier) *
+                  SizeConfig.heightMultiplier,
             ),
             AutoSizeText(
               text,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 12.sp,
+                fontSize: (12 / SizeConfig.textMultiplier) *
+                    SizeConfig.textMultiplier,
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
