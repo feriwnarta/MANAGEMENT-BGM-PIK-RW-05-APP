@@ -61,18 +61,13 @@ class _AppBarCitizenState extends State<AppBarCitizen> {
         children: [
           AutoSizeText(
             'BGM RW 05',
-            style: TextStyle(
-              fontSize: (19 / Sizer.designText) * SizeConfig.textMultiplier,
-              fontWeight: FontWeight.w500,
-              color: Color(0xff2094F3),
-            ),
+            style: Theme.of(context).textTheme.headline3,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          Spacer(flex: 1),
+          Spacer(flex: 2),
           Image(
-            width:
-                (34 / SizeConfig.widthMultiplier) * SizeConfig.widthMultiplier,
+            width: (34 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
             image: image,
             fit: BoxFit.cover,
             repeat: ImageRepeat.noRepeat,
@@ -82,8 +77,7 @@ class _AppBarCitizenState extends State<AppBarCitizen> {
             () => InkWell(
               splashColor: Colors.white,
               borderRadius: BorderRadius.circular(200),
-              radius: (15 / SizeConfig.heightMultiplier) *
-                  SizeConfig.heightMultiplier,
+              radius: (15 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
               onTap: () {
                 Get.to(
                   () => NotificationScreen(),
@@ -97,7 +91,7 @@ class _AppBarCitizenState extends State<AppBarCitizen> {
                   '${controller.count.value}',
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: (11 / SizeConfig.textMultiplier) *
+                      fontSize: (11 / Sizer.slicingHeight) *
                           SizeConfig.textMultiplier),
                 ),
                 position: BadgePosition.topEnd(top: -10, end: -10),

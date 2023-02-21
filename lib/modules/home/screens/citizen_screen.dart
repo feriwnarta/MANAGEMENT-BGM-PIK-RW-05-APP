@@ -91,10 +91,14 @@ class _MyWidgetState extends State<CitizenScreen> {
                     overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(
-                    width: Sizer.width20,
+                    width:
+                        (38 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
                   ),
                   Image(
-                    width: Sizer.width34,
+                    width:
+                        (34 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
+                    height: (40 / Sizer.slicingHeight) *
+                        SizeConfig.heightMultiplier,
                     image: image,
                     fit: BoxFit.cover,
                     repeat: ImageRepeat.noRepeat,
@@ -103,12 +107,15 @@ class _MyWidgetState extends State<CitizenScreen> {
               ),
               actions: [
                 Padding(
-                  padding: EdgeInsets.only(right: Sizer.gapHorizontal25),
+                  padding: EdgeInsets.only(
+                      right: (25 / Sizer.slicingWidth) *
+                          SizeConfig.widthMultiplier),
                   child: Obx(
                     () => InkWell(
                       splashColor: Colors.white,
                       borderRadius: BorderRadius.circular(200),
-                      radius: 15,
+                      radius: (15 / SizeConfig.heightMultiplier) *
+                          SizeConfig.heightMultiplier,
                       onTap: () {
                         Get.to(
                           () => NotificationScreen(),
@@ -150,7 +157,7 @@ class _MyWidgetState extends State<CitizenScreen> {
                       isEmOrCord: false,
                     )
                   : SizedBox(
-                      height: (32 / SizeConfig.heightMultiplier) *
+                      height: (32 / Sizer.slicingHeight) *
                           SizeConfig.heightMultiplier,
                     ),
               (Platform.isIOS)
@@ -296,24 +303,30 @@ class _MyWidgetState extends State<CitizenScreen> {
                     )
                   : SizedBox(),
               SizedBox(
-                height: (24 / SizeConfig.heightMultiplier) *
-                    SizeConfig.heightMultiplier,
+                height:
+                    (24 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
               ),
               Divider(
                 thickness: 1,
               ),
               SizedBox(
-                height: (24 / SizeConfig.heightMultiplier) *
-                    SizeConfig.heightMultiplier,
+                height:
+                    (24 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
               ),
               Obx(
                 () => Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal:
+                        (16 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
+                  ),
                   child: Column(
                     children: [
                       Wrap(
                         alignment: WrapAlignment.start,
-                        runSpacing: (16 / SizeConfig.heightMultiplier) *
+                        runSpacing: (16 / Sizer.slicingHeight) *
                             SizeConfig.heightMultiplier,
+                        spacing: (16 / Sizer.slicingWidth) *
+                            SizeConfig.widthMultiplier,
                         children: [
                           (accesController.statusPeduliLingkungan.value)
                               ? Menu(
@@ -331,10 +344,6 @@ class _MyWidgetState extends State<CitizenScreen> {
                                   onTap: () => EasyLoading.showInfo(
                                       'Fitur ini hanya bisa diakses oleh warga'),
                                 ),
-                          SizedBox(
-                            width: (14 / SizeConfig.widthMultiplier) *
-                                SizeConfig.widthMultiplier,
-                          ),
                           (accesController.statusPeduliLingkungan.value)
                               ? Menu(
                                   icon:
@@ -350,10 +359,6 @@ class _MyWidgetState extends State<CitizenScreen> {
                                   onTap: () => EasyLoading.showInfo(
                                       'Fitur ini hanya bisa diakses oleh warga'),
                                 ),
-                          SizedBox(
-                            width: (14 / SizeConfig.widthMultiplier) *
-                                SizeConfig.widthMultiplier,
-                          ),
                           (accesController.statusIpl.value)
                               ? Menu(
                                   icon: 'assets/img/citizen_menu/ipl.jpg',
@@ -369,10 +374,6 @@ class _MyWidgetState extends State<CitizenScreen> {
                                   onTap: () => EasyLoading.showInfo(
                                       'Fitur ini hanya bisa diakses oleh warga'),
                                 ),
-                          SizedBox(
-                            width: (14 / SizeConfig.widthMultiplier) *
-                                SizeConfig.widthMultiplier,
-                          ),
                           (accesController.informasiWarga.value)
                               ? Menu(
                                   icon:
@@ -403,10 +404,6 @@ class _MyWidgetState extends State<CitizenScreen> {
                                   onTap: () => EasyLoading.showInfo(
                                       'Fitur ini hanya bisa diakses oleh warga'),
                                 ),
-                          SizedBox(
-                            width: (14 / SizeConfig.widthMultiplier) *
-                                SizeConfig.widthMultiplier,
-                          ),
                           (accesController.sosialMedia.value)
                               ? Menu(
                                   icon: 'assets/img/citizen_menu/media.jpg',
@@ -427,8 +424,8 @@ class _MyWidgetState extends State<CitizenScreen> {
                 ),
               ),
               SizedBox(
-                height: (70 / SizeConfig.heightMultiplier) *
-                    SizeConfig.heightMultiplier,
+                height:
+                    (70 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
               )
             ],
           ),

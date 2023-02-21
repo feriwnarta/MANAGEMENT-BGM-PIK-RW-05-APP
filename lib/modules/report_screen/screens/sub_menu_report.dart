@@ -8,7 +8,6 @@ import 'package:aplikasi_rw/utils/screen_size.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -33,19 +32,9 @@ class SubMenuReport extends StatelessWidget {
             (typeStatusPeduliLingkungan.isCaseInsensitiveContainsAny('warga'))
                 ? Text(
                     'Warga Peduli Lingkungan',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: (16 / SizeConfig.textMultiplier) *
-                          SizeConfig.textMultiplier,
-                    ),
                   )
                 : Text(
                     'Status Peduli Lingkungan',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: (16 / SizeConfig.textMultiplier) *
-                          SizeConfig.textMultiplier,
-                    ),
                   ),
         iconTheme: IconThemeData(color: Colors.white),
       ),
@@ -93,10 +82,17 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
       children: [
         (widget.typeStatusPeduliLingkungan
                 .isCaseInsensitiveContainsAny('warga'))
-            ? SizedBox()
+            ? SizedBox(
+                height:
+                    (32 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
+              )
             : Container(
-                margin:
-                    EdgeInsets.symmetric(horizontal: 16.w).copyWith(top: 16.h),
+                margin: EdgeInsets.symmetric(
+                        horizontal: (16 / Sizer.slicingWidth) *
+                            SizeConfig.widthMultiplier)
+                    .copyWith(
+                        top: (16 / Sizer.slicingHeight) *
+                            SizeConfig.heightMultiplier),
                 child: AutoSizeText(
                   'Laporan masuk dan belum mendapat penanganan segera terima dan lakukan penanganan.',
                   style: Theme.of(context)
@@ -108,9 +104,6 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-        SizedBox(
-          height: Sizer.gapVertical32,
-        ),
         Obx(
           () => GestureDetector(
             onTap: () {
@@ -118,10 +111,14 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
               typeStatus.value = 'peduli lingkungan umum';
             },
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: Sizer.gapHorizontal16),
+              margin: EdgeInsets.symmetric(
+                  horizontal:
+                      (16 / Sizer.slicingWidth) * SizeConfig.widthMultiplier),
               padding: EdgeInsets.symmetric(
-                  horizontal: Sizer.gapHorizontal6,
-                  vertical: Sizer.gapVertical12),
+                  horizontal:
+                      (16 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
+                  vertical:
+                      (12 / Sizer.slicingHeight) * SizeConfig.heightMultiplier),
               decoration: (isActive.value)
                   ? BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
@@ -132,9 +129,9 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
               child: Row(
                 children: [
                   Container(
-                    width: (70 / SizeConfig.widthMultiplier) *
-                        SizeConfig.widthMultiplier,
-                    height: (72 / SizeConfig.heightMultiplier) *
+                    width:
+                        (70 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
+                    height: (72 / Sizer.slicingHeight) *
                         SizeConfig.heightMultiplier,
                     decoration: BoxDecoration(
                       image: DecorationImage(
@@ -143,8 +140,8 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                     ),
                   ),
                   SizedBox(
-                    width: (16 / SizeConfig.widthMultiplier) *
-                        SizeConfig.widthMultiplier,
+                    width:
+                        (16 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
                   ),
                   Expanded(
                     child: Column(
@@ -157,7 +154,7 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                           overflow: TextOverflow.ellipsis,
                         ),
                         SizedBox(
-                          height: (4 / SizeConfig.heightMultiplier) *
+                          height: (4 / Sizer.slicingHeight) *
                               SizeConfig.heightMultiplier,
                         ),
                         AutoSizeText(
@@ -175,8 +172,7 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
           ),
         ),
         SizedBox(
-          height:
-              (16 / SizeConfig.heightMultiplier) * SizeConfig.heightMultiplier,
+          height: (16 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
         ),
         Obx(
           () => GestureDetector(
@@ -185,23 +181,28 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
               typeStatus.value = 'peduli lingkungan pribadi';
             },
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: Sizer.gapHorizontal16),
+              margin: EdgeInsets.symmetric(
+                  horizontal:
+                      (16 / Sizer.slicingWidth) * SizeConfig.widthMultiplier),
               padding: EdgeInsets.symmetric(
-                  horizontal: Sizer.gapHorizontal16,
-                  vertical: Sizer.gapVertical12),
+                  horizontal:
+                      (16 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
+                  vertical:
+                      (12 / Sizer.slicingHeight) * SizeConfig.heightMultiplier),
               decoration: (!isActive.value)
                   ? BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
                       border: Border.all(
                         color: Color(0xff2094F3),
-                      ))
+                      ),
+                    )
                   : BoxDecoration(),
               child: Row(
                 children: [
                   Container(
-                    width: (70 / SizeConfig.widthMultiplier) *
-                        SizeConfig.widthMultiplier,
-                    height: (72 / SizeConfig.heightMultiplier) *
+                    width:
+                        (70 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
+                    height: (72 / Sizer.slicingHeight) *
                         SizeConfig.heightMultiplier,
                     decoration: BoxDecoration(
                       image: DecorationImage(
@@ -210,8 +211,8 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                     ),
                   ),
                   SizedBox(
-                    width: (16.w / SizeConfig.widthMultiplier) *
-                        SizeConfig.widthMultiplier,
+                    width:
+                        (16 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
                   ),
                   Expanded(
                     child: Column(
@@ -224,7 +225,7 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                           overflow: TextOverflow.ellipsis,
                         ),
                         SizedBox(
-                          height: (4 / SizeConfig.heightMultiplier) *
+                          height: (4 / Sizer.slicingHeight) *
                               SizeConfig.heightMultiplier,
                         ),
                         AutoSizeText(
@@ -244,16 +245,15 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
         (widget.typeStatusPeduliLingkungan
                 .isCaseInsensitiveContainsAny('warga'))
             ? SizedBox(
-                height: (200 / SizeConfig.heightMultiplier) *
-                    SizeConfig.heightMultiplier,
+                height:
+                    (360 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
               )
             : SizedBox(
                 height: (248 / SizeConfig.heightMultiplier) *
                     SizeConfig.heightMultiplier,
               ),
         SizedBox(
-          width:
-              (328 / SizeConfig.widthMultiplier) * SizeConfig.widthMultiplier,
+          width: (328 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(

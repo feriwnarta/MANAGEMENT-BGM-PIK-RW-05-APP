@@ -2,6 +2,7 @@ import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/home/services/news_service.dart';
 import 'package:aplikasi_rw/modules/home/widgets/app_bar_citizen.dart';
 import 'package:aplikasi_rw/modules/informasi_warga/screens/read_informasi_screen.dart';
+import 'package:aplikasi_rw/modules/theme/sizer.dart';
 import 'package:aplikasi_rw/utils/screen_size.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:aplikasi_rw/utils/view_image.dart';
@@ -30,17 +31,16 @@ class HeaderScreen extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 1.9 * SizeConfig.heightMultiplier,
+          height: (16 * Sizer.slicingHeight) / SizeConfig.heightMultiplier,
         ),
         AppBarCitizen(),
         SizedBox(
-          height:
-              (32 / SizeConfig.heightMultiplier) * SizeConfig.heightMultiplier,
+          height: (32 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
         ),
         Container(
           margin: EdgeInsets.symmetric(
-              horizontal: (16 / SizeConfig.widthMultiplier) *
-                  SizeConfig.widthMultiplier),
+              horizontal:
+                  (16 / Sizer.slicingWidth) * SizeConfig.widthMultiplier),
           child: Row(
             children: [
               GestureDetector(
@@ -54,10 +54,9 @@ class HeaderScreen extends StatelessWidget {
                   );
                 },
                 child: SizedBox(
-                  height: (48 / SizeConfig.heightMultiplier) *
-                      SizeConfig.heightMultiplier,
-                  width: (48 / SizeConfig.widthMultiplier) *
-                      SizeConfig.widthMultiplier,
+                  height:
+                      (48 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
+                  width: (48 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
                   child: CircleAvatar(
                     backgroundImage: CachedNetworkImageProvider(
                         '${ServerApp.url}${userLoginController.urlProfile.value}'),
@@ -65,19 +64,17 @@ class HeaderScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: (14 / SizeConfig.widthMultiplier) *
-                    SizeConfig.widthMultiplier,
+                width: (14 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
               ),
               SizedBox(
-                width: (257 / SizeConfig.widthMultiplier) *
-                    SizeConfig.widthMultiplier,
+                width: (257 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     AutoSizeText(
                       '${userLoginController.name.value}',
                       style: TextStyle(
-                        fontSize: (16 / SizeConfig.textMultiplier) *
+                        fontSize: (16 / Sizer.slicingText) *
                             SizeConfig.textMultiplier,
                         fontWeight: FontWeight.w500,
                       ),
@@ -89,7 +86,7 @@ class HeaderScreen extends StatelessWidget {
                         ? AutoSizeText(
                             '${userLoginController.cluster.value} ${userLoginController.houseNumber.value}',
                             style: TextStyle(
-                              fontSize: (14 / SizeConfig.textMultiplier) *
+                              fontSize: (14 / Sizer.slicingText) *
                                   SizeConfig.textMultiplier,
                               fontWeight: FontWeight.w500,
                               color: Color(0xff616161),
@@ -100,7 +97,7 @@ class HeaderScreen extends StatelessWidget {
                         : AutoSizeText(
                             '${userLoginController.status.value}',
                             style: TextStyle(
-                              fontSize: (14 / SizeConfig.textMultiplier) *
+                              fontSize: (14 / Sizer.slicingText) *
                                   SizeConfig.textMultiplier,
                               fontWeight: FontWeight.w500,
                               color: Color(0xff616161),
@@ -115,15 +112,13 @@ class HeaderScreen extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height:
-              (24 / SizeConfig.heightMultiplier) * SizeConfig.heightMultiplier,
+          height: (24 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
         ),
         Divider(
           thickness: 1,
         ),
         SizedBox(
-          height:
-              (24 / SizeConfig.heightMultiplier) * SizeConfig.heightMultiplier,
+          height: (24 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
         ),
         (!isEmOrCord)
             ? FutureBuilder<List<CardNews>>(
@@ -131,12 +126,12 @@ class HeaderScreen extends StatelessWidget {
                 builder: (context, snapshot) => (snapshot.hasData)
                     ? CarouselSlider(
                         options: CarouselOptions(
-                          height: (188 / SizeConfig.heightMultiplier) *
+                          height: (188 / Sizer.slicingHeight) *
                               SizeConfig.heightMultiplier,
                           // aspectRatio: 16 / 2,
                           enableInfiniteScroll: false,
                           enlargeCenterPage: false,
-                          viewportFraction: 0.9,
+                          viewportFraction: 0.8,
                         ),
                         items: snapshot.data.map((e) {
                           return Builder(
@@ -148,7 +143,7 @@ class HeaderScreen extends StatelessWidget {
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
                                   margin: EdgeInsets.only(
-                                    right: (16 / SizeConfig.widthMultiplier) *
+                                    right: (16 / Sizer.slicingWidth) *
                                         SizeConfig.widthMultiplier,
                                   ),
                                   child: CachedNetworkImage(
@@ -162,7 +157,7 @@ class HeaderScreen extends StatelessWidget {
                       )
                     : CarouselSlider(
                         options: CarouselOptions(
-                          height: (188 / SizeConfig.heightMultiplier) *
+                          height: (188 / Sizer.slicingHeight) *
                               SizeConfig.heightMultiplier,
                           enableInfiniteScroll: false,
                           enlargeCenterPage: false,
@@ -183,11 +178,11 @@ class HeaderScreen extends StatelessWidget {
                                       color: Colors.grey,
                                       borderRadius: BorderRadius.circular(10)),
                                   width: MediaQuery.of(context).size.width,
-                                  height: 188.h,
+                                  height: (188 / Sizer.slicingHeight) *
+                                      SizeConfig.heightMultiplier,
                                   margin: EdgeInsets.symmetric(
-                                    horizontal:
-                                        (5 / SizeConfig.widthMultiplier) *
-                                            SizeConfig.widthMultiplier,
+                                    horizontal: (5 / Sizer.slicingWidth) *
+                                        SizeConfig.widthMultiplier,
                                   ),
                                 ),
                               );
