@@ -64,7 +64,7 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
             appBar: AppBar(
               title: Text(
                 'Pilih lokasi kejadian',
-                style: TextStyle(fontSize: 19.sp, color: Colors.white),
+                style: Theme.of(context).appBarTheme.titleTextStyle,
               ),
             ),
             body: (snapshot.hasData)

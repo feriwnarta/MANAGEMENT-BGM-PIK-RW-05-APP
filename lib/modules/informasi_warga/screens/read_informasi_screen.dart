@@ -1,3 +1,4 @@
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -17,13 +18,13 @@ class ReadInformation extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Informasi Warga'),
-        titleTextStyle: TextStyle(fontSize: 19.sp),
-        systemOverlayStyle: SystemUiOverlayStyle.light,
+        titleTextStyle: Theme.of(context).appBarTheme.titleTextStyle,
+        systemOverlayStyle: Theme.of(context).appBarTheme.systemOverlayStyle,
       ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsets.symmetric(horizontal: SizeConfig.width(16)),
             child: Column(
               children: [
                 Html(

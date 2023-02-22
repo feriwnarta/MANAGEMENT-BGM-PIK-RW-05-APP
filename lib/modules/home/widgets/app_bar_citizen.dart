@@ -68,7 +68,7 @@ class _AppBarCitizenState extends State<AppBarCitizen> {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          Spacer(flex: 2),
+          Spacer(flex: 1),
           Image(
             width: (34 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
             image: image,

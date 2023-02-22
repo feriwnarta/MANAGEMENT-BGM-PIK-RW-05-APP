@@ -5,6 +5,7 @@ import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/social_media/controllers/social_media_controllers.dart';
 import 'package:aplikasi_rw/modules/social_media/screens/list-image.dart';
 import 'package:aplikasi_rw/services/status_user_services.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:aplikasi_rw/utils/view_image_file.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -39,13 +40,12 @@ class _CreateStatusState extends State<CreateStatus> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            margin: EdgeInsets.only(top: 18.h),
+            margin: EdgeInsets.only(top: SizeConfig.height(18)),
             child: Column(
               children: [
                 Container(
-                  width: 328.w,
-                  margin: EdgeInsets.symmetric(horizontal: 16.w)
-                      .copyWith(top: 16.h),
+                  margin: EdgeInsets.symmetric(horizontal: SizeConfig.width(16))
+                      .copyWith(top: SizeConfig.height(16)),
                   child: Stack(
                     children: [
                       Column(
@@ -62,11 +62,13 @@ class _CreateStatusState extends State<CreateStatus> {
                                 child: Text(
                                   'Batal',
                                   style: TextStyle(
-                                      fontSize: 14.sp, color: Colors.black),
+                                      fontSize: SizeConfig.text(14),
+                                      color: Colors.black),
                                 ),
                               ),
                               SizedBox(
-                                width: 70.w,
+                                width: SizeConfig.width(70),
+                                height: SizeConfig.height(24),
                                 child: ElevatedButton(
                                   onPressed: () async {
                                     EasyLoading.show(status: 'mengirim');
@@ -111,7 +113,7 @@ class _CreateStatusState extends State<CreateStatus> {
                                   child: Text(
                                     'Posting',
                                     style: TextStyle(
-                                      fontSize: 10.sp,
+                                      fontSize: SizeConfig.text(10),
                                     ),
                                   ),
                                 ),
@@ -119,25 +121,25 @@ class _CreateStatusState extends State<CreateStatus> {
                             ],
                           ),
                           SizedBox(
-                            height: 24.h,
+                            height: SizeConfig.height(24),
                           ),
                           Row(
                             children: [
                               SizedBox(
-                                height: 24.h,
-                                width: 24.w,
+                                height: SizeConfig.height(24),
+                                width: SizeConfig.width(24),
                                 child: CircleAvatar(
                                     backgroundImage: CachedNetworkImageProvider(
                                         '${ServerApp.url}${userLoginController.urlProfile.value}')),
                               ),
                               SizedBox(
-                                width: 4.w,
+                                width: SizeConfig.width(4),
                               ),
-                              SizedBox(
-                                width: 297.w,
-                                child: AutoSizeText(
+                              Expanded(
+                                child: Text(
                                   '${userLoginController.name.value} post',
-                                  style: TextStyle(fontSize: 12.sp),
+                                  style:
+                                      TextStyle(fontSize: SizeConfig.text(12)),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -145,7 +147,7 @@ class _CreateStatusState extends State<CreateStatus> {
                             ],
                           ),
                           SizedBox(
-                            height: 8.h,
+                            height: SizeConfig.height(8),
                           ),
                           TextField(
                             maxLines: 15,
@@ -153,17 +155,19 @@ class _CreateStatusState extends State<CreateStatus> {
                             autofocus: true,
                             controller: socialMediaControllers.controller,
                             decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Tulis sebuah postingan',
-                                hintStyle: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: Color(0xff9E9E9E),
-                                ),
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 28.w)),
+                              border: InputBorder.none,
+                              hintText: 'Tulis sebuah postingan',
+                              hintStyle: TextStyle(
+                                fontSize: SizeConfig.text(14),
+                                color: Color(0xff9E9E9E),
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: SizeConfig.width(28),
+                              ),
+                            ),
                           ),
                           SizedBox(
-                            height: 4.h,
+                            height: SizeConfig.height(4),
                           ),
                           Obx(
                             () => (socialMediaControllers.imagePath.isNotEmpty)
@@ -177,7 +181,7 @@ class _CreateStatusState extends State<CreateStatus> {
                                       aspectRatio: 16 / 9,
                                       child: Container(
                                           margin: EdgeInsets.symmetric(
-                                              horizontal: 28.w),
+                                              horizontal: SizeConfig.width(28)),
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(6),
@@ -198,13 +202,13 @@ class _CreateStatusState extends State<CreateStatus> {
                                 : SizedBox(),
                           ),
                           SizedBox(
-                            height: 4.h,
+                            height: SizeConfig.height(4),
                           ),
                           Obx(
                             () => (socialMediaControllers.location.isNotEmpty)
                                 ? Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 28.w),
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: SizeConfig.width(28)),
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -214,10 +218,10 @@ class _CreateStatusState extends State<CreateStatus> {
                                           color: Colors.blue,
                                         ),
                                         SizedBox(
-                                          width: 4.w,
+                                          width: SizeConfig.width(4),
                                         ),
                                         SizedBox(
-                                          width: 255.w,
+                                          width: SizeConfig.width(255),
                                           child: AutoSizeText(
                                             '${socialMediaControllers.location.value}',
                                             maxLines: 4,
@@ -234,7 +238,7 @@ class _CreateStatusState extends State<CreateStatus> {
                         ],
                       ),
                       Container(
-                        height: 64.h,
+                        height: SizeConfig.height(64),
                         margin: EdgeInsets.only(
                             top: MediaQuery.of(context).size.height * 0.7 -
                                 MediaQuery.of(context).viewInsets.bottom * 0.5),

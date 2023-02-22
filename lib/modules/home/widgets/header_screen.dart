@@ -31,10 +31,6 @@ class HeaderScreen extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: (16 * Sizer.slicingHeight) / SizeConfig.heightMultiplier,
-        ),
-        AppBarCitizen(),
-        SizedBox(
           height: (32 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
         ),
         Container(

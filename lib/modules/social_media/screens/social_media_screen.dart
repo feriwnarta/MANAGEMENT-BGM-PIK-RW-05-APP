@@ -1,4 +1,5 @@
 import 'package:aplikasi_rw/controller/status_user_controller.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:aplikasi_rw/utils/view_image.dart';
 import 'package:aplikasi_rw/modules/social_media/screens/create_status.dart';
 import 'package:aplikasi_rw/services/like_status_services.dart';
@@ -59,13 +60,13 @@ class _SocialMediaState extends State<SocialMedia> {
             Text(
               'Sosial Media',
               style: TextStyle(
-                fontSize: 19.sp,
+                fontSize: SizeConfig.text(19),
               ),
             ),
             Text(
               'Unggahan warga BGM PIK RW 05',
               style: TextStyle(
-                fontSize: 10.sp,
+                fontSize: SizeConfig.text(10),
               ),
             )
           ],
@@ -122,18 +123,19 @@ class _SocialMediaState extends State<SocialMedia> {
                           child: Text(
                             'Tidak ada status',
                             style: TextStyle(
-                              fontSize: 12.sp,
+                              fontSize: SizeConfig.text(12),
                             ),
                           ),
                         ),
                       );
                     } else if (controller.listStatus.length > index) {
                       return Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
+                        margin: EdgeInsets.symmetric(
+                            vertical: SizeConfig.height(12)),
                         child: Center(
                           child: SizedBox(
-                            width: 30,
-                            height: 30,
+                            width: SizeConfig.width(30),
+                            height: SizeConfig.height(30),
                             child: CircularProgressIndicator(),
                           ),
                         ),
@@ -142,11 +144,12 @@ class _SocialMediaState extends State<SocialMedia> {
                       return SizedBox();
                     } else {
                       return Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
+                        margin: EdgeInsets.symmetric(
+                            vertical: SizeConfig.height(10)),
                         child: Center(
                           child: SizedBox(
-                            width: 30,
-                            height: 30,
+                            width: SizeConfig.width(30),
+                            height: SizeConfig.height(30),
                             child: CircularProgressIndicator(),
                           ),
                         ),
@@ -157,17 +160,25 @@ class _SocialMediaState extends State<SocialMedia> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            builder: (context) {
-              return CreateStatus();
-            },
-          );
-        },
-        child: SvgPicture.asset('assets/img/image-svg/pencil.svg'),
+      floatingActionButton: SizedBox(
+        width: SizeConfig.width(40),
+        height: SizeConfig.height(40),
+        child: FloatingActionButton(
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              builder: (context) {
+                return CreateStatus();
+              },
+            );
+          },
+          child: SvgPicture.asset(
+            'assets/img/image-svg/pencil.svg',
+            width: SizeConfig.width(20),
+            height: SizeConfig.height(20),
+          ),
+        ),
       ),
     );
   }

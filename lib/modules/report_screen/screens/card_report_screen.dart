@@ -1,4 +1,5 @@
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:aplikasi_rw/modules/theme/sizer.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 // import 'package:sizer/sizer.dart';
@@ -59,27 +60,31 @@ class CardReportScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(360, 800));
     precacheImage(image, context);
-    return Center(
-      child: Container(
-        // padding: EdgeInsets.only(bottom: 10),
-        // height: 86.h,
-        margin: EdgeInsets.only(bottom: 20.h),
-        width: 328.w,
-        child: GestureDetector(
-          child: Card(
-            elevation: 5,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    return Container(
+      margin: EdgeInsets.only(
+        left: SizeConfig.width(16),
+        right: SizeConfig.width(32),
+        bottom: SizeConfig.height(20),
+      ),
+      child: GestureDetector(
+        child: Card(
+          margin: EdgeInsets.all(0),
+          elevation: 5,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: Container(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 8.h,
+                  height:
+                      (8 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
                 ),
                 Row(
                   children: [
                     SizedBox(
-                      width: 8.w,
+                      width:
+                          (8 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
                     ),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(4),
@@ -88,20 +93,25 @@ class CardReportScreen extends StatelessWidget {
                             Object exception, StackTrace stackTrace) {
                           print('Error Handler');
                           return Container(
-                            width: 70.w,
-                            height: 70.h,
+                            width: (70 / Sizer.slicingWidth) *
+                                SizeConfig.widthMultiplier,
+                            height: (70 / Sizer.slicingHeight) *
+                                SizeConfig.heightMultiplier,
                             child: Icon(Icons.error),
                           );
                         },
                         placeholder: image,
                         image: CachedNetworkImageProvider(urlImageReport),
                         fit: BoxFit.cover,
-                        width: 70.w,
-                        height: 70.h,
+                        width: (70 / Sizer.slicingWidth) *
+                            SizeConfig.widthMultiplier,
+                        height: (70 / Sizer.slicingHeight) *
+                            SizeConfig.heightMultiplier,
                       ),
                     ),
                     SizedBox(
-                      width: 16.w,
+                      width: (16 / Sizer.slicingWidth) *
+                          SizeConfig.widthMultiplier,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,15 +121,22 @@ class CardReportScreen extends StatelessWidget {
                             Text(
                               noTicket,
                               style: TextStyle(
-                                  fontSize: 10.sp, color: Color(0xff2094F3)),
+                                  fontSize: (10 / Sizer.slicingText) *
+                                      SizeConfig.textMultiplier,
+                                  color: Color(0xff2094F3),
+                                  overflow: TextOverflow.clip),
                             ),
                             SizedBox(
-                              width: 76.w,
+                              width: (76 / Sizer.slicingWidth) *
+                                  SizeConfig.widthMultiplier,
                             ),
                             Container(
-                              width: 78.w,
+                              width: (78 / Sizer.slicingWidth) *
+                                  SizeConfig.widthMultiplier,
                               padding: EdgeInsets.symmetric(
-                                  vertical: 2.h, horizontal: 8.w),
+                                vertical: (2 / Sizer.slicingHeight) *
+                                    SizeConfig.heightMultiplier,
+                              ),
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 border: Border.all(
@@ -129,9 +146,11 @@ class CardReportScreen extends StatelessWidget {
                                           ? Color(0xffEECEB0)
                                           : (status == 'Selesai')
                                               ? Color(0xffB8DBCA)
-                                              : Color(
-                                                  0xffFF6A6A,
-                                                ),
+                                              : (status == 'Diterima')
+                                                  ? Color(0xffB1C5F6)
+                                                  : Color(
+                                                      0xffFF6A6A,
+                                                    ),
                                 ),
                                 borderRadius: BorderRadius.circular(6),
                                 color: (status == 'Menunggu')
@@ -140,45 +159,60 @@ class CardReportScreen extends StatelessWidget {
                                         ? Color(0xffEECEB0).withOpacity(0.5)
                                         : (status == 'Selesai')
                                             ? Color(0xffB8DBCA).withOpacity(0.5)
-                                            : Color(0xffFFC9C9)
-                                                .withOpacity(0.5),
+                                            : (status == 'Diterima')
+                                                ? Color(0xffF0F3FF)
+                                                : Color(0xffFFC9C9)
+                                                    .withOpacity(0.5),
                               ),
-                              child: AutoSizeText(
+                              child: Text(
                                 status,
                                 style: TextStyle(
-                                  fontSize: 12.sp,
+                                  fontSize: (12 / Sizer.slicingText) *
+                                      SizeConfig.textMultiplier,
                                   color: (status == 'Eskalasi tingkat 1' ||
                                           status == 'Eskalasi tingkat 2' ||
                                           status == 'Eskalasi tingkat 3')
                                       ? Color(0xffF32020)
-                                      : Colors.black,
+                                      : (status == 'Menunggu')
+                                          ? Color(0xffCB3A31)
+                                          : (status == 'Diproses')
+                                              ? Color(0xff734011)
+                                              : (status == 'Selesai')
+                                                  ? Color(0xff20573D)
+                                                  : (status == 'Diterima')
+                                                      ? Color(0xff4C4DDC)
+                                                      : Colors.black,
                                 ),
                                 overflow: TextOverflow.ellipsis,
-                                minFontSize: 11,
                                 maxLines: 1,
                               ),
                             ),
                           ],
                         ),
                         SizedBox(
-                          width: 125.w,
-                          height: 42.h,
-                          child: AutoSizeText(
+                          width: (125 / Sizer.slicingWidth) *
+                              SizeConfig.widthMultiplier,
+                          height: (42 / Sizer.slicingHeight) *
+                              SizeConfig.heightMultiplier,
+                          child: Text(
                             (description.isEmpty)
                                 ? 'Laporan tentang : ' + category
                                 : description,
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontSize: 12.sp),
-                            minFontSize: 12,
+                            style: TextStyle(
+                                fontSize: (12 / Sizer.slicingText) *
+                                    SizeConfig.textMultiplier),
                           ),
                         ),
                         SizedBox(
-                          width: 125.w,
+                          width: (125 / Sizer.slicingWidth) *
+                              SizeConfig.widthMultiplier,
                           child: Text(
                             time,
                             style: TextStyle(
-                              fontSize: 10.sp,
+                              fontSize: (10 / Sizer.slicingText) *
+                                  SizeConfig.textMultiplier,
                               color: Color(0xff9E9E9E),
                             ),
                             maxLines: 1,
@@ -190,40 +224,41 @@ class CardReportScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 8.h,
+                  height:
+                      (8 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
                 )
               ],
             ),
           ),
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CardLaporanView(
-                    noTicket: noTicket,
-                    additionalInformation: additionalInformation,
-                    description: description,
-                    urlImage: urlImageReport,
-                    status: status,
-                    time: time,
-                    category: category,
-                    categoryIcon: categoryIcon,
-                    latitude: latitude,
-                    longitude: longitude,
-                    idReport: idReport,
-                    idUser: idUser,
-                    dataKlasifikasi: dataKlasifikasi,
-                    photoComplete1: photoComplete1,
-                    photoComplete2: photoComplete2,
-                    photoProcess1: photoProcess1,
-                    photoProcess2: photoProcess2,
-                    statusWorking: statusWorking,
-                    star: star,
-                    comment: comment,
-                  ),
-                ));
-          },
         ),
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CardLaporanView(
+                  noTicket: noTicket,
+                  additionalInformation: additionalInformation,
+                  description: description,
+                  urlImage: urlImageReport,
+                  status: status,
+                  time: time,
+                  category: category,
+                  categoryIcon: categoryIcon,
+                  latitude: latitude,
+                  longitude: longitude,
+                  idReport: idReport,
+                  idUser: idUser,
+                  dataKlasifikasi: dataKlasifikasi,
+                  photoComplete1: photoComplete1,
+                  photoComplete2: photoComplete2,
+                  photoProcess1: photoProcess1,
+                  photoProcess2: photoProcess2,
+                  statusWorking: statusWorking,
+                  star: star,
+                  comment: comment,
+                ),
+              ));
+        },
       ),
     );
   }

@@ -347,77 +347,82 @@ class _MainAppState extends State<MainApp> {
         canDismissDialog: true,
         debugLogging: true,
       ),
-      child: Scaffold(
-        key: scaffoldKey,
-        // membuat sidebar dan drawer
-        // endDrawer: drawerSideBar(),
-        body: Obx(
-          () => IndexedStack(children: screens, index: indexScreen.index.value),
-        ),
+      child: SafeArea(
+        top: false,
+        bottom: true,
+        child: Scaffold(
+          key: scaffoldKey,
+          // membuat sidebar dan drawer
+          // endDrawer: drawerSideBar(),
+          body: Obx(
+            () =>
+                IndexedStack(children: screens, index: indexScreen.index.value),
+          ),
 
-        bottomNavigationBar: Obx(
-          () => Container(
-            height: (56 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
-            child: BottomNavigationBar(
-              backgroundColor: Theme.of(context).primaryColor,
-              type: BottomNavigationBarType.fixed,
-              showSelectedLabels: true,
-              showUnselectedLabels: true,
-              selectedItemColor: Colors.white,
-              unselectedItemColor: Colors.white,
-              selectedLabelStyle: TextStyle(
-                  fontSize:
-                      (12 / Sizer.slicingText) * SizeConfig.textMultiplier),
-              unselectedLabelStyle: TextStyle(
-                  fontSize:
-                      (12 / Sizer.slicingText) * SizeConfig.textMultiplier),
-              currentIndex: indexScreen.index.value,
-              onTap: (index) {
-                indexScreen.index.value = index;
-                if (indexScreen.index.value == 1) {
-                  reportController.refresReport();
-                  reportController.update();
-                }
-              },
-              items: [
-                BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                      'assets/img/image-svg/home-deactive.svg',
+          bottomNavigationBar: Obx(
+            () => Container(
+              height: (56 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
+              child: BottomNavigationBar(
+                backgroundColor: Theme.of(context).primaryColor,
+                type: BottomNavigationBarType.fixed,
+                showSelectedLabels: true,
+                showUnselectedLabels: true,
+                selectedItemColor: Colors.white,
+                unselectedItemColor: Colors.white,
+                selectedLabelStyle: TextStyle(
+                    fontSize:
+                        (12 / Sizer.slicingText) * SizeConfig.textMultiplier),
+                unselectedLabelStyle: TextStyle(
+                    fontSize:
+                        (12 / Sizer.slicingText) * SizeConfig.textMultiplier),
+                currentIndex: indexScreen.index.value,
+                onTap: (index) {
+                  indexScreen.index.value = index;
+                  if (indexScreen.index.value == 1) {
+                    reportController.refresReport();
+                    reportController.update();
+                  }
+                },
+                items: [
+                  BottomNavigationBarItem(
+                    icon: SvgPicture.asset(
+                        'assets/img/image-svg/home-deactive.svg',
+                        height: (24 / Sizer.slicingImage) *
+                            SizeConfig.imageSizeMultiplier),
+                    activeIcon: SvgPicture.asset(
+                      'assets/img/image-svg/home-active.svg',
+                      color: Colors.white,
                       height: (24 / Sizer.slicingImage) *
-                          SizeConfig.imageSizeMultiplier),
-                  activeIcon: SvgPicture.asset(
-                    'assets/img/image-svg/home-active.svg',
-                    color: Colors.white,
-                    height: (24 / Sizer.slicingImage) *
-                        SizeConfig.imageSizeMultiplier,
+                          SizeConfig.imageSizeMultiplier,
+                    ),
+                    label: 'Beranda',
                   ),
-                  label: 'Beranda',
-                ),
-                BottomNavigationBarItem(
-                    icon: SvgPicture.asset(
-                        'assets/img/image-svg/user-deactive.svg',
-                        color: Colors.white,
-                        height: (24 / Sizer.slicingImage) *
-                            SizeConfig.imageSizeMultiplier),
-                    activeIcon: SvgPicture.asset(
-                        'assets/img/image-svg/user-active.svg',
-                        color: Colors.white,
-                        height: (24 / Sizer.slicingImage) *
-                            SizeConfig.imageSizeMultiplier),
-                    label: 'Profil'),
-                BottomNavigationBarItem(
-                    icon: SvgPicture.asset(
-                        'assets/img/image-svg/setting-deactive.svg',
-                        color: Colors.white,
-                        height: (24 / Sizer.slicingImage) *
-                            SizeConfig.imageSizeMultiplier),
-                    activeIcon: SvgPicture.asset(
-                        'assets/img/image-svg/setting-active.svg',
-                        color: Colors.white,
-                        height: (24 / Sizer.slicingImage) *
-                            SizeConfig.imageSizeMultiplier),
-                    label: 'Pengaturan'),
-              ],
+                  BottomNavigationBarItem(
+                      icon: SvgPicture.asset(
+                          'assets/img/image-svg/user-deactive.svg',
+                          color: Colors.white,
+                          height: (24 / Sizer.slicingImage) *
+                              SizeConfig.imageSizeMultiplier),
+                      activeIcon: SvgPicture.asset(
+                          'assets/img/image-svg/user-active.svg',
+                          color: Colors.white,
+                          height: (24 / Sizer.slicingImage) *
+                              SizeConfig.imageSizeMultiplier),
+                      label: 'Profil'),
+                  BottomNavigationBarItem(
+                      icon: SvgPicture.asset(
+                          'assets/img/image-svg/setting-deactive.svg',
+                          color: Colors.white,
+                          height: (24 / Sizer.slicingImage) *
+                              SizeConfig.imageSizeMultiplier),
+                      activeIcon: SvgPicture.asset(
+                          'assets/img/image-svg/setting-active.svg',
+                          color: Colors.white,
+                          height: (24 / Sizer.slicingImage) *
+                              SizeConfig.imageSizeMultiplier),
+                      label: 'Pengaturan'),
+                ],
+              ),
             ),
           ),
         ),

@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:aplikasi_rw/modules/theme/sizer.dart';
 import 'package:aplikasi_rw/services/report_services.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -78,7 +80,7 @@ class _ReportScreen2State extends State<ReportScreen2> {
           title: Text(
             'Status Peduli Lingkungan',
           ),
-          titleTextStyle: TextStyle(fontSize: 19.sp),
+          titleTextStyle: Theme.of(context).appBarTheme.titleTextStyle,
           systemOverlayStyle: SystemUiOverlayStyle.light),
       body: RefreshIndicator(
         onRefresh: () async => loadReport(),
@@ -87,19 +89,26 @@ class _ReportScreen2State extends State<ReportScreen2> {
             controller: controller,
             child: Stack(children: [
               Container(
-                width: 328.w,
+                width: SizeConfig.width(328),
+                height:
+                    (36 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
                 margin: EdgeInsets.symmetric(
-                  horizontal: 16.w,
-                ).copyWith(top: 16.h),
+                  horizontal: SizeConfig.width(16),
+                ).copyWith(
+                    top: (16 / Sizer.slicingHeight) *
+                        SizeConfig.heightMultiplier),
                 child: Card(
+                  margin: EdgeInsets.all(0),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                   elevation: 2,
                   child: TextField(
                     decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 8.h, horizontal: 12.w),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: (12 / Sizer.slicingWidth) *
+                            SizeConfig.heightMultiplier,
+                      ),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(6),
                           borderSide: BorderSide.none),
@@ -107,12 +116,18 @@ class _ReportScreen2State extends State<ReportScreen2> {
                           borderRadius: BorderRadius.circular(6),
                           borderSide: BorderSide.none),
                       hintText: 'Nomor Laporan',
-                      hintStyle: TextStyle(fontSize: 14.sp),
+                      hintStyle: TextStyle(
+                          fontSize: (14 / Sizer.slicingText) *
+                              SizeConfig.textMultiplier),
                       suffixIcon: Icon(
                         Icons.search,
+                        size: (16 / Sizer.slicingImage) *
+                            SizeConfig.imageSizeMultiplier,
                       ),
                     ),
-                    style: TextStyle(fontSize: 14.sp),
+                    style: TextStyle(
+                        fontSize: (14 / Sizer.slicingText) *
+                            SizeConfig.textMultiplier),
                     onChanged: (value) async {
                       if (value.isNotEmpty) {
                         reportController.listReport =
@@ -136,7 +151,8 @@ class _ReportScreen2State extends State<ReportScreen2> {
               Column(
                 children: [
                   SizedBox(
-                    height: 84.h,
+                    height: (68 / Sizer.slicingHeight) *
+                        SizeConfig.heightMultiplier,
                   ),
                   Obx(
                     () => (reportController.isLoading.value)
@@ -158,15 +174,15 @@ class _ReportScreen2State extends State<ReportScreen2> {
                                 ? Center(
                                     child: Text(
                                       'Tidak ada laporan',
-                                      style: TextStyle(fontSize: 12.sp),
+                                      style: TextStyle(
+                                          fontSize: (12 / Sizer.slicingText) *
+                                              SizeConfig.textMultiplier),
                                     ),
                                   )
                                 : (index < reportController.listReport.length)
                                     ? (reportController.listReport[index].idUser ==
                                             loginController.idUser.value)
                                         ? Slidable(
-                                            // actionPane:
-                                            //     SlidableDrawerActionPane(),
                                             enabled: true,
                                             endActionPane: ActionPane(
                                               motion: ScrollMotion(),
@@ -220,7 +236,6 @@ class _ReportScreen2State extends State<ReportScreen2> {
                                                 )
                                               ],
                                             ),
-
                                             child: CardReportScreen(
                                                 urlImageReport: reportController
                                                     .listReport[index]
@@ -305,8 +320,12 @@ class _ReportScreen2State extends State<ReportScreen2> {
                                             statusWorking: reportController
                                                 .listReport[index]
                                                 .statusWorking,
-                                            photoComplete1: reportController.listReport[index].photoComplete1,
-                                            photoComplete2: reportController.listReport[index].photoComplete2,
+                                            photoComplete1: reportController
+                                                .listReport[index]
+                                                .photoComplete1,
+                                            photoComplete2: reportController
+                                                .listReport[index]
+                                                .photoComplete2,
                                             photoProcess1: reportController.listReport[index].photoProcess1,
                                             photoProcess2: reportController.listReport[index].photoProcess2,
                                             star: reportController.listReport[index].star,
@@ -320,8 +339,12 @@ class _ReportScreen2State extends State<ReportScreen2> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Container(
-                                                width: 30,
-                                                height: 30,
+                                                width: (30 /
+                                                        Sizer.slicingWidth) *
+                                                    SizeConfig.widthMultiplier,
+                                                height: (30 /
+                                                        Sizer.slicingHeight) *
+                                                    SizeConfig.heightMultiplier,
                                                 child:
                                                     CircularProgressIndicator(),
                                               ),
@@ -352,13 +375,15 @@ class ShimmerReport extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      margin: EdgeInsets.symmetric(
+          horizontal: (16 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
+          vertical: (16 / Sizer.slicingHeight) * SizeConfig.heightMultiplier),
       child: Row(
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 2.0.h),
+              SizedBox(height: SizeConfig.height(2)),
               Shimmer.fromColors(
                   baseColor: Colors.grey[300],
                   highlightColor: Colors.grey[200],
@@ -366,20 +391,20 @@ class ShimmerReport extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: Colors.grey,
                         borderRadius: BorderRadius.circular(10)),
-                    width: 70.w,
-                    height: 70.h,
+                    width: SizeConfig.width(70),
+                    height: SizeConfig.width(70),
                     // margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
                   )),
             ],
           ),
           // shimmer title
           SizedBox(
-            width: 16.w,
+            width: SizeConfig.width(16),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 1.0.h),
+              SizedBox(height: SizeConfig.height(1)),
               Row(
                 children: [
                   Shimmer.fromColors(
@@ -389,11 +414,11 @@ class ShimmerReport extends StatelessWidget {
                         decoration: BoxDecoration(
                             color: Colors.grey,
                             borderRadius: BorderRadius.circular(10)),
-                        width: 100.w,
-                        height: 12.h,
+                        width: SizeConfig.width(100),
+                        height: SizeConfig.height(12),
                       )),
                   SizedBox(
-                    width: 34.w,
+                    width: SizeConfig.width(34),
                   ),
                   Shimmer.fromColors(
                       baseColor: Colors.grey[300],
@@ -402,13 +427,13 @@ class ShimmerReport extends StatelessWidget {
                         decoration: BoxDecoration(
                             color: Colors.grey,
                             borderRadius: BorderRadius.circular(10)),
-                        width: 78.w,
-                        height: 12.h,
+                        width: SizeConfig.width(78),
+                        height: SizeConfig.height(12),
                       )),
                 ],
               ),
               SizedBox(
-                height: 4.h,
+                height: SizeConfig.height(4),
               ),
               Shimmer.fromColors(
                   baseColor: Colors.grey[300],
@@ -417,11 +442,11 @@ class ShimmerReport extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: Colors.grey,
                         borderRadius: BorderRadius.circular(10)),
-                    width: 150.w,
-                    height: 12.h,
+                    width: SizeConfig.width(150),
+                    height: SizeConfig.height(12),
                   )),
               SizedBox(
-                height: 4.h,
+                height: SizeConfig.height(4),
               ),
               Shimmer.fromColors(
                   baseColor: Colors.grey[300],
@@ -430,8 +455,8 @@ class ShimmerReport extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: Colors.grey,
                         borderRadius: BorderRadius.circular(10)),
-                    width: 75.w,
-                    height: 12.h,
+                    width: SizeConfig.width(75),
+                    height: SizeConfig.height(12),
                   )),
             ],
           )

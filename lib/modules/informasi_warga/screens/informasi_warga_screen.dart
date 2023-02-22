@@ -1,5 +1,6 @@
 import 'package:aplikasi_rw/modules/home/services/news_service.dart';
 import 'package:aplikasi_rw/modules/informasi_warga/screens/read_informasi_screen.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,8 +19,8 @@ class InformasiWargaScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Informasi Warga'),
-        titleTextStyle: TextStyle(fontSize: 19.sp),
-        systemOverlayStyle: SystemUiOverlayStyle.light,
+        titleTextStyle: Theme.of(context).appBarTheme.titleTextStyle,
+        systemOverlayStyle: Theme.of(context).appBarTheme.systemOverlayStyle,
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -43,12 +44,12 @@ class InformasiWargaScreen extends StatelessWidget {
                               ),
                               child: Container(
                                 margin: EdgeInsets.symmetric(
-                                  horizontal: 16.w,
-                                ).copyWith(top: 16.h),
+                                  horizontal: SizeConfig.width(16),
+                                ).copyWith(top: SizeConfig.height(16)),
                                 child: Column(
                                   children: [
                                     Container(
-                                      height: 188.h,
+                                      height: SizeConfig.image(188),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                       ),
@@ -60,7 +61,7 @@ class InformasiWargaScreen extends StatelessWidget {
                                       ),
                                     ),
                                     SizedBox(
-                                      height: 8.h,
+                                      height: SizeConfig.height(8),
                                     ),
                                     Divider(
                                       thickness: 1,
@@ -72,7 +73,7 @@ class InformasiWargaScreen extends StatelessWidget {
                           })
                       : CircularProgressIndicator.adaptive()),
               Container(
-                height: 20.h,
+                height: SizeConfig.height(20),
               )
             ],
           ),

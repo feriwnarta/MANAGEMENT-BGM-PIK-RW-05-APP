@@ -7,10 +7,12 @@ import 'package:aplikasi_rw/model/category_model.dart';
 import 'package:aplikasi_rw/modules/report_screen/controllers/write_page_controller.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/new_google_maps_screen.dart';
 import 'package:aplikasi_rw/modules/report_screen/widgets/camera_complaint.dart';
+import 'package:aplikasi_rw/modules/theme/sizer.dart';
 import 'package:aplikasi_rw/services/category_services.dart';
 import 'package:aplikasi_rw/services/klasifikasi_category_services.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:aplikasi_rw/utils/screen_size.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart' as sidio;
@@ -173,21 +175,26 @@ class _StepperRwState extends State<StepperRw> {
                   children: [
                     Container(
                       margin: EdgeInsets.symmetric(
-                          horizontal: 16.w, vertical: 16.h),
+                          horizontal: (16 / Sizer.slicingWidth) *
+                              SizeConfig.widthMultiplier,
+                          vertical: (16 / Sizer.slicingHeight) *
+                              SizeConfig.heightMultiplier),
                       child: Row(
                         children: [
                           SvgPicture.asset(
                               'assets/img/image-svg/information-circle.svg'),
                           SizedBox(
-                            width: 8.w,
+                            width: (8 / Sizer.slicingWidth) *
+                                SizeConfig.widthMultiplier,
                           ),
                           Row(
                             children: [
                               Text(
                                 'Laporan ini bersifat ',
                                 style: TextStyle(
-                                  color: Color(0xffC2C2C2),
-                                ),
+                                    color: Color(0xffC2C2C2),
+                                    fontSize: (16 / Sizer.slicingText) *
+                                        SizeConfig.textMultiplier),
                               ),
                               Text('${controllerWrite.type.value}')
                             ],
@@ -197,24 +204,21 @@ class _StepperRwState extends State<StepperRw> {
                     ),
                     Divider(thickness: 2),
                     Container(
-                      height: 436.h,
-                      margin: EdgeInsets.symmetric(horizontal: 16.w),
+                      height: (436 / Sizer.slicingHeight) *
+                          SizeConfig.heightMultiplier,
+                      margin: EdgeInsets.symmetric(
+                        horizontal: (16 / Sizer.slicingWidth) *
+                            SizeConfig.widthMultiplier,
+                      ),
                       child: SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // SizedBox(height: 16.h),
-                            // Text(
-                            //   '${controllerWrite.controllerTitleReport.text}',
-                            //   style: TextStyle(
-                            //     fontSize: 19.sp,
-                            //   ),
-                            //   overflow: TextOverflow.ellipsis,
-                            // ),
-                            // SizedBox(height: 16.h),
                             Container(
-                              width: 70.w,
-                              height: 70.h,
+                              width: (70 / Sizer.slicingWidth) *
+                                  SizeConfig.widthMultiplier,
+                              height: (70 / Sizer.slicingHeight) *
+                                  SizeConfig.heightMultiplier,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(4),
                               ),
@@ -224,55 +228,71 @@ class _StepperRwState extends State<StepperRw> {
                                       image: FileImage(File(
                                           stepperController.imagePath.value))),
                             ),
-                            SizedBox(height: 16.h),
+                            SizedBox(
+                              height: (16 / Sizer.slicingHeight) *
+                                  SizeConfig.heightMultiplier,
+                            ),
                             Container(
                               // margin: EdgeInsets.symmetric(horizontal: 16.w),
-                              width: 328.w,
+                              width: (328 / Sizer.slicingWidth) *
+                                  SizeConfig.widthMultiplier,
                               child: Row(
                                 children: [
                                   SvgPicture.asset(
                                     'assets/img/image-svg/location-2.svg',
                                     color: Color(0xffC2C2C2),
                                   ),
-                                  SizedBox(width: 4.w),
+                                  SizedBox(
+                                      width: (4 / Sizer.slicingWidth) *
+                                          SizeConfig.widthMultiplier),
                                   Expanded(
                                     child: Text(
                                       '${selectLoc.value}',
                                       style: TextStyle(
-                                        color: Color(0xff9E9E9E),
-                                      ),
+                                          color: Color(0xff9E9E9E),
+                                          fontSize: (12 / Sizer.slicingText) *
+                                              SizeConfig.textMultiplier),
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                            SizedBox(height: 16.w),
+                            SizedBox(
+                                height: (16 / Sizer.slicingHeight) *
+                                    SizeConfig.heightMultiplier),
                             Text(
                               '${nameCategory.value}',
                               style: TextStyle(
-                                fontSize: 16.sp,
+                                fontSize: (16 / Sizer.slicingText) *
+                                    SizeConfig.textMultiplier,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            SizedBox(height: 12.h),
+                            SizedBox(
+                                height: (12 / Sizer.slicingHeight) *
+                                    SizeConfig.heightMultiplier),
                             Row(
                               children: [
                                 Text('Keluhan',
                                     style: TextStyle(
-                                        fontSize: 14.sp,
+                                        fontSize: (14 / Sizer.slicingText) *
+                                            SizeConfig.textMultiplier,
                                         color: Color(0xff616161))),
                                 SizedBox(width: 200.w),
                                 Text(
                                   'Date',
                                   style: TextStyle(
                                     color: Color(0xff616161),
-                                    fontSize: 14.sp,
+                                    fontSize: (14 / Sizer.slicingText) *
+                                        SizeConfig.textMultiplier,
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 12.h),
+                            SizedBox(
+                                height: (12 / Sizer.slicingHeight) *
+                                    SizeConfig.heightMultiplier),
                             Obx(
                               () => (stepperController.index.value == 3)
                                   ? ListView.builder(
@@ -286,41 +306,72 @@ class _StepperRwState extends State<StepperRw> {
                                           children: [
                                             Icon(
                                               Icons.circle,
-                                              size: 6,
+                                              size: (6 / Sizer.slicingImage) *
+                                                  SizeConfig
+                                                      .imageSizeMultiplier,
                                               color: Colors.grey,
                                             ),
-                                            SizedBox(width: 5.w),
+                                            SizedBox(
+                                                width: (5 /
+                                                        Sizer.slicingWidth) *
+                                                    SizeConfig.widthMultiplier),
                                             SizedBox(
                                               child: Text(
                                                 '${selectedIndex[index]}',
                                                 style: TextStyle(
                                                   color: Color(0xff9E9E9E),
-                                                  fontSize: 14.sp,
+                                                  fontSize: (14 /
+                                                          Sizer.slicingText) *
+                                                      SizeConfig.textMultiplier,
                                                 ),
                                                 overflow: TextOverflow.ellipsis,
                                               ),
-                                              width: 140.w,
+                                              width: (140 /
+                                                      Sizer.slicingWidth) *
+                                                  SizeConfig.widthMultiplier,
                                             ),
                                             (index == 0)
                                                 ? Row(
                                                     children: [
                                                       Row(
                                                         children: [
-                                                          SizedBox(width: 16.w),
+                                                          SizedBox(
+                                                              width: (16 /
+                                                                      Sizer
+                                                                          .slicingWidth) *
+                                                                  SizeConfig
+                                                                      .widthMultiplier),
                                                           Icon(
                                                             Icons.circle,
-                                                            size: 6,
+                                                            size: (6 /
+                                                                    Sizer
+                                                                        .slicingImage) *
+                                                                SizeConfig
+                                                                    .imageSizeMultiplier,
                                                             color: Colors.grey,
                                                           ),
-                                                          SizedBox(width: 5.w),
                                                           SizedBox(
-                                                            width: 150.w,
+                                                              width: (5 /
+                                                                      Sizer
+                                                                          .slicingWidth) *
+                                                                  SizeConfig
+                                                                      .widthMultiplier),
+                                                          SizedBox(
+                                                            width: (150 /
+                                                                    Sizer
+                                                                        .slicingWidth) *
+                                                                SizeConfig
+                                                                    .widthMultiplier,
                                                             child: Text(
                                                               '${selectDate.value}',
                                                               style: TextStyle(
                                                                 color: Color(
                                                                     0xff9E9E9E),
-                                                                fontSize: 14.sp,
+                                                                fontSize: (14 /
+                                                                        Sizer
+                                                                            .slicingText) *
+                                                                    SizeConfig
+                                                                        .textMultiplier,
                                                               ),
                                                               overflow:
                                                                   TextOverflow
@@ -339,15 +390,19 @@ class _StepperRwState extends State<StepperRw> {
                                   : SizedBox(),
                             ),
                             SizedBox(
-                              height: 16.h,
+                              height: (16 / Sizer.slicingHeight) *
+                                  SizeConfig.heightMultiplier,
                             ),
                             Text(
                               'Catatan',
                               style: TextStyle(
-                                fontSize: 14.sp,
+                                fontSize: (14 / Sizer.slicingText) *
+                                    SizeConfig.textMultiplier,
                               ),
                             ),
-                            SizedBox(height: 4.h),
+                            SizedBox(
+                                height: (4 / Sizer.slicingHeight) *
+                                    SizeConfig.heightMultiplier),
                             TextField(
                               enabled: false,
                               decoration: InputDecoration(
@@ -357,8 +412,10 @@ class _StepperRwState extends State<StepperRw> {
                                   ),
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
-                                  vertical: 55.h,
-                                  horizontal: 5.w,
+                                  vertical: (55 / Sizer.slicingHeight) *
+                                      SizeConfig.heightMultiplier,
+                                  horizontal: (5 / Sizer.slicingWidth) *
+                                      SizeConfig.widthMultiplier,
                                 ),
                                 hintMaxLines: 5,
                                 hintText: controllerWrite
@@ -369,9 +426,12 @@ class _StepperRwState extends State<StepperRw> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20.h),
                     SizedBox(
-                      width: 328.w,
+                        height: (20 / Sizer.slicingHeight) *
+                            SizeConfig.heightMultiplier),
+                    SizedBox(
+                      width: (328 / Sizer.slicingWidth) *
+                          SizeConfig.widthMultiplier,
                       child: TextButton(
                         style: TextButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -469,7 +529,8 @@ class _StepperRwState extends State<StepperRw> {
                           'Kirim Laporan',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 16.sp,
+                            fontSize: (16 / Sizer.slicingText) *
+                                SizeConfig.textMultiplier,
                           ),
                         ),
                       ),
@@ -501,26 +562,30 @@ class _StepperRwState extends State<StepperRw> {
                       children: [
                         Container(
                           margin: EdgeInsets.symmetric(
-                            horizontal: 16.w,
-                            vertical: 16.h,
+                            horizontal: (16 / Sizer.slicingWidth) *
+                                SizeConfig.widthMultiplier,
                           ),
-                          height: 400.h,
+                          height: (404 / Sizer.slicingHeight) *
+                              SizeConfig.heightMultiplier,
                           child: SingleChildScrollView(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 16.w),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: (16 / Sizer.slicingWidth) *
+                                          SizeConfig.widthMultiplier,
+                                      vertical: (16 / Sizer.slicingHeight) *
+                                          SizeConfig.heightMultiplier),
                                   child: Text(
                                     '${nameCategory.value}',
                                     style: TextStyle(
-                                      fontSize: 19.sp,
+                                      fontSize: (19 / Sizer.slicingText) *
+                                          SizeConfig.textMultiplier,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 16.h),
                                 ...snapshot.data.map<Widget>(
                                   (data) => ExpansionTile(
                                     title: Row(
@@ -529,14 +594,19 @@ class _StepperRwState extends State<StepperRw> {
                                       children: [
                                         Icon(
                                           Icons.circle,
-                                          size: 8,
+                                          size: (8 / Sizer.slicingImage) *
+                                              SizeConfig.imageSizeMultiplier,
                                         ),
-                                        SizedBox(width: 5.w),
+                                        SizedBox(
+                                            width: (5 / Sizer.slicingWidth) *
+                                                SizeConfig.widthMultiplier),
                                         Expanded(
                                           child: Text(
                                             '${data.name}',
                                             style: TextStyle(
-                                              fontSize: 16.sp,
+                                              fontSize:
+                                                  (16 / Sizer.slicingText) *
+                                                      SizeConfig.textMultiplier,
                                               fontWeight: FontWeight.w500,
                                               color: Color(0xff616161),
                                             ),
@@ -547,7 +617,8 @@ class _StepperRwState extends State<StepperRw> {
                                     children: [
                                       CheckboxGroup(
                                         labelStyle: TextStyle(
-                                          fontSize: 14.sp,
+                                          fontSize: (14 / Sizer.slicingText) *
+                                              SizeConfig.textMultiplier,
                                           color: Color(0xff757575),
                                         ),
                                         checked: selectedIndex,
@@ -577,8 +648,14 @@ class _StepperRwState extends State<StepperRw> {
                           ),
                         ),
                         SizedBox(
-                          width: 328.w,
-                          height: 40.h,
+                          height: (120 / Sizer.slicingHeight) *
+                              SizeConfig.heightMultiplier,
+                        ),
+                        SizedBox(
+                          width: (328 / Sizer.slicingWidth) *
+                              SizeConfig.widthMultiplier,
+                          height: (40 / Sizer.slicingHeight) *
+                              SizeConfig.heightMultiplier,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
@@ -601,7 +678,8 @@ class _StepperRwState extends State<StepperRw> {
                               'Selanjutnya',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 16.sp,
+                                fontSize: (16 / Sizer.slicingText) *
+                                    SizeConfig.textMultiplier,
                               ),
                             ),
                           ),
@@ -630,7 +708,12 @@ class _StepperRwState extends State<StepperRw> {
                                     Center(child: CircularProgressIndicator()));
                           case ConnectionState.done:
                             return Container(
-                              margin: EdgeInsets.all(16.w / 16.h),
+                              margin: EdgeInsets.symmetric(
+                                vertical: (16 / Sizer.slicingHeight) *
+                                    SizeConfig.heightMultiplier,
+                                horizontal: (16 / Sizer.slicingWidth) *
+                                    SizeConfig.widthMultiplier,
+                              ),
                               child: gridViewCategory(snapshot.data),
                             );
                           default:
@@ -649,21 +732,21 @@ class _StepperRwState extends State<StepperRw> {
     );
   }
 
-  Padding gridViewCategory(List<CategoryModel> category) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
+  Widget gridViewCategory(List<CategoryModel> category) {
+    return Flexible(
       child: GridView.count(
+        shrinkWrap: true,
         crossAxisCount: 3,
-        childAspectRatio: MediaQuery.of(context).size.width /
-            (MediaQuery.of(context).size.height / 1.4),
         children: category
             .map<Widget>(
               (e) => GestureDetector(
                 child: Column(
                   children: [
                     SizedBox(
-                      width: 96.w,
-                      height: 96.h,
+                      width: (96 / Sizer.slicingWidth) *
+                          SizeConfig.widthMultiplier,
+                      height: (96 / Sizer.slicingHeight) *
+                          SizeConfig.heightMultiplier,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: CachedNetworkImage(
@@ -671,11 +754,12 @@ class _StepperRwState extends State<StepperRw> {
                         ),
                       ),
                     ),
-                    AutoSizeText(
+                    Text(
                       '${e.category}',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 10.sp,
+                        fontSize: (10 / Sizer.slicingText) *
+                            SizeConfig.textMultiplier,
                         fontWeight: FontWeight.w500,
                       ),
                       overflow: TextOverflow.ellipsis,
@@ -705,10 +789,12 @@ class _StepperRwState extends State<StepperRw> {
     return Column(
       children: [
         Container(
-          width: 328.w,
-          margin: EdgeInsets.symmetric(vertical: 16.h),
+          width: (328 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
+          margin: EdgeInsets.symmetric(
+              vertical:
+                  (16 / Sizer.slicingHeight) * SizeConfig.heightMultiplier),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               headerSteper(
                   stepIcon: 'assets/img/image-svg/kategori-icon.svg',
@@ -720,6 +806,11 @@ class _StepperRwState extends State<StepperRw> {
                       ? Colors.blue
                       : Colors.blue,
                   colorChevron: (stepperController.index.value == 0)
+                      ? Colors.grey
+                      : Colors.blue),
+              SizedBox(width: 8.w),
+              SvgPicture.asset('assets/img/image-svg/chevron-icon.svg',
+                  color: (stepperController.index.value == 0)
                       ? Colors.grey
                       : Colors.blue),
               SizedBox(width: 8.w),
@@ -736,6 +827,11 @@ class _StepperRwState extends State<StepperRw> {
                       ? Colors.blue
                       : Colors.grey),
               SizedBox(width: 8.w),
+              SvgPicture.asset('assets/img/image-svg/chevron-icon.svg',
+                  color: stepperController.index.value > 1
+                      ? Colors.blue
+                      : Colors.grey),
+              SizedBox(width: 8.w),
               headerSteper(
                   stepIcon: 'assets/img/image-svg/tulis-icon.svg',
                   text: 'Tulis',
@@ -746,6 +842,11 @@ class _StepperRwState extends State<StepperRw> {
                       ? Colors.blue
                       : Color(0xffC2C2C2),
                   colorChevron: stepperController.index.value == 3
+                      ? Colors.blue
+                      : Colors.grey),
+              SizedBox(width: 8.w),
+              SvgPicture.asset('assets/img/image-svg/chevron-icon.svg',
+                  color: stepperController.index.value == 3
                       ? Colors.blue
                       : Colors.grey),
               SizedBox(width: 8.w),
@@ -777,17 +878,20 @@ class _StepperRwState extends State<StepperRw> {
       child: Column(
         children: [
           Container(
-            height: 510.h,
+            height: (510 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 18.w),
+                    margin: EdgeInsets.symmetric(
+                        horizontal: (18 / Sizer.slicingWidth) *
+                            SizeConfig.widthMultiplier),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          height: 147.h,
+                          height: (147 / Sizer.slicingHeight) *
+                              SizeConfig.heightMultiplier,
                           child: TextFormField(
                             controller: controllerWrite.controllerContentReport,
                             maxLines: 7,
@@ -802,28 +906,39 @@ class _StepperRwState extends State<StepperRw> {
                               ),
                               hintText: 'Catatan',
                               hintStyle: TextStyle(
-                                  color: Colors.grey, fontSize: 14.sp),
+                                  color: Colors.grey,
+                                  fontSize: (14 / Sizer.slicingText) *
+                                      SizeConfig.textMultiplier),
                             ),
                           ),
                         ),
-                        SizedBox(height: 8.h),
+                        SizedBox(
+                            height: (8 / Sizer.slicingHeight) *
+                                SizeConfig.heightMultiplier),
                         Row(
                           children: [
                             SvgPicture.asset(
-                                'assets/img/image-svg/mark-question.svg'),
-                            SizedBox(width: 4.w),
+                              'assets/img/image-svg/mark-question.svg',
+                            ),
+                            SizedBox(
+                                width: (4 / Sizer.slicingWidth) *
+                                    SizeConfig.widthMultiplier),
                             Text(
                               'Perhatikan cara penyampaian laporan yang baik\ndan benar',
                               style: TextStyle(
                                 color: Colors.grey,
-                                fontSize: 12.sp,
+                                fontSize: (12 / Sizer.slicingText) *
+                                    SizeConfig.textMultiplier,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 24.h),
                         SizedBox(
-                          height: 30.h,
+                            height: (24 / Sizer.slicingHeight) *
+                                SizeConfig.heightMultiplier),
+                        SizedBox(
+                          height: (30 / Sizer.slicingHeight) *
+                              SizeConfig.heightMultiplier,
                           width: double.infinity,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(6),
@@ -834,6 +949,10 @@ class _StepperRwState extends State<StepperRw> {
                                   children: [
                                     SvgPicture.asset(
                                       'assets/img/image-svg/tanggal-kejadian.svg',
+                                      width: (20 / Sizer.slicingWidth) *
+                                          SizeConfig.widthMultiplier,
+                                      height: (20 / Sizer.slicingHeight) *
+                                          SizeConfig.heightMultiplier,
                                     ),
                                     SizedBox(width: 8.w),
                                     Obx(
@@ -842,7 +961,8 @@ class _StepperRwState extends State<StepperRw> {
                                             ? 'Tanggal kejadian'
                                             : selectDate.value,
                                         style: TextStyle(
-                                          fontSize: 14.sp,
+                                          fontSize: (14 / Sizer.slicingText) *
+                                              SizeConfig.textMultiplier,
                                           color: Colors.black,
                                         ),
                                       ),
@@ -894,9 +1014,12 @@ class _StepperRwState extends State<StepperRw> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 24.h),
                         SizedBox(
-                          height: 40.h,
+                            height: (24 / Sizer.slicingHeight) *
+                                SizeConfig.heightMultiplier),
+                        SizedBox(
+                          height: (40 / Sizer.slicingHeight) *
+                              SizeConfig.heightMultiplier,
                           width: double.infinity,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(6),
@@ -907,6 +1030,10 @@ class _StepperRwState extends State<StepperRw> {
                                   children: [
                                     SvgPicture.asset(
                                       'assets/img/image-svg/location-marker-complaint.svg',
+                                      width: (20 / Sizer.slicingWidth) *
+                                          SizeConfig.widthMultiplier,
+                                      height: (20 / Sizer.slicingHeight) *
+                                          SizeConfig.heightMultiplier,
                                     ),
                                     SizedBox(width: 8.w),
                                     Expanded(
@@ -915,7 +1042,8 @@ class _StepperRwState extends State<StepperRw> {
                                             ? 'Pilih lokasi kejadian'
                                             : selectLoc.value,
                                         style: TextStyle(
-                                          fontSize: 14.sp,
+                                          fontSize: (14 / Sizer.slicingText) *
+                                              SizeConfig.textMultiplier,
                                           color:
                                               (whenLocationEmpty.value.isEmpty)
                                                   ? Colors.black
@@ -957,27 +1085,34 @@ class _StepperRwState extends State<StepperRw> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 46.h),
+                  SizedBox(
+                      height: (46 / Sizer.slicingHeight) *
+                          SizeConfig.heightMultiplier),
                   Obx(
                     () => Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(6),
                           color: Color(0xff9E9E9E)),
-                      width: 288.w,
-                      height: 36.h,
+                      width: (288 / Sizer.slicingWidth) *
+                          SizeConfig.widthMultiplier,
+                      height: (36 / Sizer.slicingHeight) *
+                          SizeConfig.heightMultiplier,
                       child: Center(
                         child: Text(
                           (_radio.value == RadioComplaint.Anonim
                               ? 'Nama anda bersifat rahasia'
                               : 'Nama dan laporan anda bersifat rahasia'),
                           style: TextStyle(
-                              fontSize: 14.sp, color: Color(0xffE0E0E0)),
+                              fontSize: (14 / Sizer.slicingText) *
+                                  SizeConfig.textMultiplier,
+                              color: Color(0xffE0E0E0)),
                         ),
                       ),
                     ),
                   ),
                   SizedBox(
-                    height: 24.h,
+                    height: (12 / Sizer.slicingHeight) *
+                        SizeConfig.heightMultiplier,
                   ),
                   Divider(
                     color: Color(0xffE0E0E0),
@@ -989,12 +1124,15 @@ class _StepperRwState extends State<StepperRw> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                            width: 170.w,
+                            width: (170 / Sizer.slicingWidth) *
+                                SizeConfig.widthMultiplier,
                             child: RadioListTile<RadioComplaint>(
                               dense: true,
                               title: Text(
                                 'Anonim',
-                                style: TextStyle(fontSize: 14.sp),
+                                style: TextStyle(
+                                    fontSize: (14 / Sizer.slicingText) *
+                                        SizeConfig.textMultiplier),
                               ),
                               groupValue: _radio.value,
                               value: RadioComplaint.Anonim,
@@ -1013,11 +1151,14 @@ class _StepperRwState extends State<StepperRw> {
                             color: Color(0xffE0E0E0),
                           ),
                           SizedBox(
-                            width: 170.w,
+                            width: (170 / Sizer.slicingWidth) *
+                                SizeConfig.widthMultiplier,
                             child: RadioListTile<RadioComplaint>(
                               title: Text(
                                 'Rahasia',
-                                style: TextStyle(fontSize: 14.sp),
+                                style: TextStyle(
+                                    fontSize: (14 / Sizer.slicingText) *
+                                        SizeConfig.textMultiplier),
                               ),
                               groupValue: _radio.value,
                               value: RadioComplaint.Rahasia,
@@ -1042,17 +1183,8 @@ class _StepperRwState extends State<StepperRw> {
             ),
           ),
           Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-            // IconButton(
-            //   splashRadius: 20,
-            //   icon:
-            //       SvgPicture.asset('assets/img/image-svg/camera-complaint.svg'),
-            //   onPressed: () async {
-            //     FocusScope.of(context).unfocus();
-            //     await getImage(ImageSource.camera);
-            //   },
-            // ),
             SizedBox(
-              width: 300.w,
+              width: (328 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
               child: TextButton(
                 style: TextButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -1106,7 +1238,8 @@ class _StepperRwState extends State<StepperRw> {
                   'Lanjutkan',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 14.sp,
+                    fontSize:
+                        (14 / Sizer.slicingText) * SizeConfig.textMultiplier,
                   ),
                 ),
               ),
@@ -1131,20 +1264,15 @@ class _StepperRwState extends State<StepperRw> {
           stepIcon,
           color: colorIcon,
         ),
-        SizedBox(width: 4.w),
-        AutoSizeText(
+        SizedBox(width: (4 / Sizer.slicingWidth) * SizeConfig.widthMultiplier),
+        Text(
           text,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(fontSize: 12.sp, color: colorText),
+          style: TextStyle(
+              fontSize: (16 / Sizer.slicingText) * SizeConfig.textMultiplier,
+              color: colorText),
         ),
-        SizedBox(width: 15.w),
-        (status == 'last')
-            ? SizedBox()
-            : SvgPicture.asset(
-                'assets/img/image-svg/chevron-icon.svg',
-                color: colorChevron,
-              ),
       ],
     );
   }

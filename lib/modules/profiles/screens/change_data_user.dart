@@ -3,6 +3,7 @@ import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/authentication/validate/validate_email_and_password.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
@@ -64,7 +65,6 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Pengaturan profil'),
-          systemOverlayStyle: SystemUiOverlayStyle.light,
         ),
         body: FutureBuilder<UserChangeModel>(
           future: UserChangeServices.getDataUser('${loginController.idUser}'),
@@ -72,15 +72,15 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
               ? Column(
                   children: [
                     SizedBox(
-                      height: 15.h,
+                      height: SizeConfig.height(15),
                     ),
                     Center(
                       child: GestureDetector(
                         child: Column(
                           children: [
                             Container(
-                              height: 64.h,
-                              width: 64.w,
+                              height: SizeConfig.image(64),
+                              width: SizeConfig.image(64),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
@@ -104,9 +104,12 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                               },
                               icon: Icon(
                                 FontAwesomeIcons.pen,
-                                size: 12.h,
+                                size: SizeConfig.height(14),
                               ),
-                              label: Text('Ubah Foto'),
+                              label: Text(
+                                'Ubah Foto',
+                                style: TextStyle(fontSize: SizeConfig.text(14)),
+                              ),
                             )
                           ],
                         ),
@@ -116,30 +119,33 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                       ),
                     ),
                     SizedBox(
-                      height: 28.h,
+                      height: SizeConfig.height(28),
                     ),
                     ListTile(
-                      leading: Icon(Icons.person, size: 20.h),
+                      leading: Icon(Icons.person, size: SizeConfig.height(20)),
                       title: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 1.0.h),
+                          SizedBox(height: SizeConfig.height(1)),
                           Text(
                             'Username',
-                            style:
-                                TextStyle(color: Colors.grey, fontSize: 11.sp),
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: SizeConfig.text(12)),
                           ),
-                          SizedBox(height: 1.0.h),
+                          SizedBox(height: SizeConfig.height(1)),
                           Text(
                             '${snapshot.data.fullName}',
-                            style: TextStyle(fontSize: 12.sp),
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: SizeConfig.text(12)),
                           ),
-                          SizedBox(height: 1.0.h),
+                          SizedBox(height: SizeConfig.height(1)),
                         ],
                       ),
                       trailing: Icon(
                         FontAwesomeIcons.pen,
-                        size: 10.h,
+                        size: SizeConfig.height(10),
                       ),
                       onTap: () => showModalBottomSheet(
                           shape: RoundedRectangleBorder(
@@ -186,27 +192,30 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                     (snapshot.data.numberHouse == null)
                         ? SizedBox()
                         : ListTile(
-                            leading: Icon(Icons.home, size: 20.h),
+                            leading:
+                                Icon(Icons.home, size: SizeConfig.height(20)),
                             title: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(height: 1.0.h),
+                                SizedBox(height: SizeConfig.height(1)),
                                 Text(
                                   'Nomor Rumah',
                                   style: TextStyle(
-                                      color: Colors.grey, fontSize: 11.sp),
+                                      color: Colors.grey,
+                                      fontSize: SizeConfig.text(12)),
                                 ),
-                                SizedBox(height: 1.0.h),
+                                SizedBox(height: SizeConfig.height(1)),
                                 Text(
                                   '${snapshot.data.numberHouse}',
-                                  style: TextStyle(fontSize: 12.sp),
+                                  style:
+                                      TextStyle(fontSize: SizeConfig.text(12)),
                                 ),
-                                SizedBox(height: 1.0.h),
+                                SizedBox(height: SizeConfig.height(1)),
                               ],
                             ),
                             trailing: Icon(
                               FontAwesomeIcons.pen,
-                              size: 10.h,
+                              size: SizeConfig.height(10),
                             ),
                             onTap: () => showModalBottomSheet(
                                 shape: RoundedRectangleBorder(
@@ -220,33 +229,40 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                                     'number_house')),
                           ),
                     SizedBox(
-                      height: 1.0.h,
+                      height: SizeConfig.height(1),
                     ),
                     ListTile(
                       leading: Icon(
                         Icons.email,
-                        size: 20.h,
+                        size: SizeConfig.height(20),
                       ),
                       title: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 1.0.h),
+                          SizedBox(
+                            height: SizeConfig.height(1),
+                          ),
                           Text(
                             'Email',
-                            style:
-                                TextStyle(color: Colors.grey, fontSize: 11.sp),
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: SizeConfig.text(12)),
                           ),
-                          SizedBox(height: 1.0.h),
+                          SizedBox(
+                            height: SizeConfig.height(1),
+                          ),
                           Text(
                             '${snapshot.data.email}',
-                            style: TextStyle(fontSize: 12.sp),
+                            style: TextStyle(fontSize: SizeConfig.text(12)),
                           ),
-                          SizedBox(height: 1.0.h),
+                          SizedBox(
+                            height: SizeConfig.height(1),
+                          ),
                         ],
                       ),
                       trailing: Icon(
                         FontAwesomeIcons.pen,
-                        size: 10.h,
+                        size: SizeConfig.height(10),
                       ),
                       onTap: () => showModalBottomSheet(
                           shape: RoundedRectangleBorder(
@@ -258,35 +274,41 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                               context, 'masukan email', 'email')),
                     ),
                     SizedBox(
-                      height: 1.0.h,
+                      height: SizeConfig.height(1),
                     ),
                     ListTile(
                       leading: Icon(
                         Icons.phone_android,
-                        size: 20.h,
+                        size: SizeConfig.height(20),
                       ),
                       title: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 1.0.h),
+                          SizedBox(
+                            height: SizeConfig.height(1),
+                          ),
                           Text(
                             'Nomor telpon',
                             style: TextStyle(
                               color: Colors.grey,
-                              fontSize: 11.sp,
+                              fontSize: SizeConfig.text(12),
                             ),
                           ),
-                          SizedBox(height: 1.0.h),
+                          SizedBox(
+                            height: SizeConfig.height(1),
+                          ),
                           Text(
                             '${snapshot.data.noPhone}',
-                            style: TextStyle(fontSize: 12.sp),
+                            style: TextStyle(fontSize: SizeConfig.text(12)),
                           ),
-                          SizedBox(height: 1.0.h),
+                          SizedBox(
+                            height: SizeConfig.height(1),
+                          ),
                         ],
                       ),
                       trailing: Icon(
                         FontAwesomeIcons.pen,
-                        size: 10.h,
+                        size: SizeConfig.height(10),
                       ),
                       onTap: () => showModalBottomSheet(
                           shape: RoundedRectangleBorder(
@@ -298,7 +320,7 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                               context, 'masukan nomor telepon', 'phone')),
                     ),
                     SizedBox(
-                      height: 1.0.h,
+                      height: SizeConfig.height(1),
                     ),
                   ],
                 )
@@ -319,7 +341,7 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           SizedBox(
-            height: 1.0.h,
+            height: SizeConfig.height(1),
           ),
           Padding(
             padding: EdgeInsets.only(
@@ -448,7 +470,7 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
               ],
             ),
           ),
-          SizedBox(height: 1.0.h),
+          SizedBox(height: SizeConfig.height(1)),
         ],
       ),
     );

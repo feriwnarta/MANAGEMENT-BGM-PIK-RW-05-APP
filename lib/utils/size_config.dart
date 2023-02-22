@@ -15,6 +15,27 @@ class SizeConfig {
   static bool isPortrait = true;
   static bool isMobilePortrait = false;
 
+  static double slicingHeight = 8.12;
+  static double slicingWidth = 3.75;
+  static double slicingImage = 3.75;
+  static double slicingText = 8.12;
+
+  static double width(double val) {
+    return (val / slicingWidth) * widthMultiplier;
+  }
+
+  static double height(double val) {
+    return (val / slicingHeight) * heightMultiplier;
+  }
+
+  static double text(double val) {
+    return (val / slicingText) * textMultiplier;
+  }
+
+  static double image(double val) {
+    return (val / slicingImage) * imageSizeMultiplier;
+  }
+
   final logger = Logger();
 
   void init(BoxConstraints constraints, Orientation orientation) {

@@ -2,6 +2,7 @@ import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/authentication/controllers/access_controller.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/change_data_user.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/statistik_peduli_screens.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -26,66 +27,69 @@ class UserProfileScreen extends StatelessWidget {
     precacheImage(image, context);
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leadingWidth: SizeConfig.width(100),
+        leading: Row(
+          children: [
+            SizedBox(
+              width: SizeConfig.width(16),
+            ),
+            Text(
+              'Profil',
+              style: TextStyle(
+                fontSize: SizeConfig.text(19),
+                color: Color(0xff2094F3),
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+          ],
+        ),
+        centerTitle: true,
+        title: Image(
+          width: SizeConfig.width(34),
+          height: SizeConfig.height(40),
+          image: image,
+          fit: BoxFit.cover,
+          repeat: ImageRepeat.noRepeat,
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
             child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 16.w),
+          margin: EdgeInsets.symmetric(horizontal: SizeConfig.width(16)),
           child: Obx(
             () => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 16.h,
-                ),
-                Row(
-                  children: [
-                    AutoSizeText(
-                      'Profil',
-                      style: TextStyle(
-                        fontSize: 19.sp,
-                        color: Color(0xff2094F3),
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                    SizedBox(
-                      width: 99.w,
-                    ),
-                    Image(
-                      width: 34.w,
-                      height: 40.h,
-                      image: image,
-                      fit: BoxFit.cover,
-                      repeat: ImageRepeat.noRepeat,
-                    ),
-                  ],
+                  height: SizeConfig.height(32),
                 ),
                 SizedBox(
-                  height: 32.h,
-                ),
-                SizedBox(
-                  width: 328.w,
+                  width: SizeConfig.width(328),
                   child: Row(
                     children: [
                       SizedBox(
-                        height: 64.h,
-                        width: 64.w,
+                        height: SizeConfig.height(64),
+                        width: SizeConfig.width(64),
                         child: CircleAvatar(
                             backgroundImage: CachedNetworkImageProvider(
                                 '${ServerApp.url}${userLoginController.urlProfile.value}')),
                       ),
                       SizedBox(
-                        width: 22.w,
+                        width: SizeConfig.width(22),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                            width: 241.w,
-                            child: AutoSizeText(
+                            width: SizeConfig.width(241),
+                            child: Text(
                               '${userLoginController.name.value}',
                               style: TextStyle(
-                                fontSize: 19.sp,
+                                fontSize: SizeConfig.text(19),
                                 fontWeight: FontWeight.w500,
                               ),
                               maxLines: 2,
@@ -93,17 +97,17 @@ class UserProfileScreen extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            height: 4.h,
+                            height: SizeConfig.height(4),
                           ),
                           (userLoginController.cluster.value.isNotEmpty &&
                                   userLoginController
                                       .houseNumber.value.isNotEmpty)
                               ? SizedBox(
-                                  width: 241.w,
-                                  child: AutoSizeText(
+                                  width: SizeConfig.width(241),
+                                  child: Text(
                                     '${userLoginController.cluster.value} No ${userLoginController.houseNumber.value}',
                                     style: TextStyle(
-                                      fontSize: 10.sp,
+                                      fontSize: SizeConfig.text(10),
                                       color: Color(0xff404040),
                                     ),
                                     maxLines: 1,
@@ -112,14 +116,14 @@ class UserProfileScreen extends StatelessWidget {
                                 )
                               : SizedBox(),
                           SizedBox(
-                            height: 4.h,
+                            height: SizeConfig.height(4),
                           ),
                           SizedBox(
-                            width: 241.w,
-                            child: AutoSizeText(
+                            width: SizeConfig.width(241),
+                            child: Text(
                               '${userLoginController.email.value}',
                               style: TextStyle(
-                                fontSize: 10.sp,
+                                fontSize: SizeConfig.text(10),
                                 color: Color(0xff404040),
                               ),
                               maxLines: 1,
@@ -127,54 +131,57 @@ class UserProfileScreen extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            height: 4.h,
+                            height: SizeConfig.height(4),
                           ),
                           SizedBox(
-                            width: 241.w,
-                            child: AutoSizeText(
+                            width: SizeConfig.width(241),
+                            child: Text(
                               '${userLoginController.noTelp.value}',
                               style: TextStyle(
-                                fontSize: 10.sp,
+                                fontSize: SizeConfig.text(10),
                                 color: Color(0xff404040),
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
+                          SizedBox(
+                            height: SizeConfig.height(4),
+                          ),
                           Container(
-                            height: 28.h,
+                            height: SizeConfig.height(28),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(100),
                               color: Color(0xffFDF4E4),
                             ),
                             padding: EdgeInsets.symmetric(
-                              horizontal: 4.w,
-                              vertical: 8.h,
+                              horizontal: SizeConfig.width(4),
+                              vertical: SizeConfig.height(8),
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Image(
-                                  height: 20.h,
-                                  width: 20.w,
+                                  height: SizeConfig.height(20),
+                                  width: SizeConfig.width(20),
                                   fit: BoxFit.cover,
                                   image: AssetImage('assets/img/isuser.png'),
                                 ),
                                 (userLoginController.status.value
                                         .isCaseInsensitiveContainsAny('WARGA'))
-                                    ? AutoSizeText(
+                                    ? Text(
                                         'Warga ${userLoginController.rw.value}',
                                         style: TextStyle(
-                                          fontSize: 10.sp,
+                                          fontSize: SizeConfig.text(10),
                                           color: Color(0xff404040),
                                         ),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                       )
-                                    : AutoSizeText(
+                                    : Text(
                                         '${userLoginController.status.value}',
                                         style: TextStyle(
-                                          fontSize: 10.sp,
+                                          fontSize: SizeConfig.text(10),
                                           color: Color(0xff404040),
                                         ),
                                         maxLines: 1,
@@ -189,31 +196,33 @@ class UserProfileScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 40.h,
+                  height: SizeConfig.height(40),
                 ),
-                AutoSizeText(
+                Text(
                   'Akun',
-                  style:
-                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                      fontSize: SizeConfig.text(16),
+                      fontWeight: FontWeight.w500),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(
-                  height: 16.h,
+                  height: SizeConfig.height(16),
                 ),
                 (accessController.statistikPeduliLindungi.value)
                     ? Column(
                         children: [
                           ListTile(
+                            contentPadding: EdgeInsets.zero,
                             leading: SvgPicture.asset(
                               'assets/img/image-svg/statistik_peduli_lingkungan.svg',
                             ),
                             dense: true,
                             minLeadingWidth: 4.w,
-                            title: AutoSizeText(
+                            title: Text(
                               'Statistik peduli lingkungan',
                               style: TextStyle(
-                                fontSize: 12.sp,
+                                fontSize: SizeConfig.text(12),
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -223,7 +232,7 @@ class UserProfileScreen extends StatelessWidget {
                                 transition: Transition.rightToLeft),
                           ),
                           SizedBox(
-                            height: 8.h,
+                            height: SizeConfig.height(8),
                           ),
                           Divider(
                             thickness: 2,
@@ -232,15 +241,16 @@ class UserProfileScreen extends StatelessWidget {
                       )
                     : SizedBox(),
                 ListTile(
+                  contentPadding: EdgeInsets.zero,
                   leading: SvgPicture.asset(
                     'assets/img/image-svg/pengaturan-profil.svg',
                   ),
                   dense: true,
-                  minLeadingWidth: 4.w,
-                  title: AutoSizeText(
+                  minLeadingWidth: SizeConfig.width(4),
+                  title: Text(
                     'Pengaturan profil',
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: SizeConfig.text(12),
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -250,10 +260,10 @@ class UserProfileScreen extends StatelessWidget {
                       transition: Transition.rightToLeft),
                 ),
                 SizedBox(
-                  height: 208.h,
+                  height: SizeConfig.height(178),
                 ),
                 SizedBox(
-                  width: 328.w,
+                  width: SizeConfig.width(328),
                   child: OutlinedButton(
                       onPressed: () async {
                         await UserSecureStorage.deleteIdUser();
@@ -273,7 +283,7 @@ class UserProfileScreen extends StatelessWidget {
                       child: Text(
                         'Keluar',
                         style: TextStyle(
-                          fontSize: 16.sp,
+                          fontSize: SizeConfig.text(16),
                           color: Color(0xffED1C24),
                         ),
                       )),

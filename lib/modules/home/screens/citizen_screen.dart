@@ -75,86 +75,75 @@ class _MyWidgetState extends State<CitizenScreen> {
             MediaQuery.of(context).size.height));
 
     return Scaffold(
-      appBar: (Platform.isIOS)
-          ? AppBar(
-              elevation: 0,
-              backgroundColor: Colors.white,
-              iconTheme: IconThemeData(
-                color: Color(0xff2094F3),
-              ),
-              titleSpacing: 10,
-              title: Row(
-                children: [
-                  AutoSizeText(
-                    'BGM RW 05',
-                    style: TextStyle(
-                      fontSize:
-                          (19 / Sizer.slicingText) * SizeConfig.textMultiplier,
-                      color: Colors.blue,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Spacer(
-                    flex: 1,
-                  ),
-                  Image(
-                    width:
-                        (34 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
-                    height: (40 / Sizer.slicingHeight) *
-                        SizeConfig.heightMultiplier,
-                    image: image,
-                    fit: BoxFit.cover,
-                    repeat: ImageRepeat.noRepeat,
-                  ),
-                  Spacer(
-                    flex: 2,
-                  ),
-                ],
-              ),
-              actions: [
-                Padding(
-                  padding: EdgeInsets.only(
-                      right: (25 / Sizer.slicingWidth) *
-                          SizeConfig.widthMultiplier),
-                  child: Obx(
-                    () => InkWell(
-                      splashColor: Colors.white,
-                      borderRadius: BorderRadius.circular(200),
-                      radius: (15 / SizeConfig.heightMultiplier) *
-                          SizeConfig.heightMultiplier,
-                      onTap: () {
-                        Get.to(
-                          () => NotificationScreen(),
-                          transition: Transition.rightToLeft,
-                        );
-                      },
-                      child: Badge(
-                        badgeColor: Colors.red,
-                        padding: EdgeInsets.all(3),
-                        badgeContent: Text(
-                          '${controller.count.value}',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: (11 / SizeConfig.textMultiplier) *
-                                  SizeConfig.textMultiplier),
-                        ),
-                        position: BadgePosition.topEnd(top: 8, end: -8),
-                        child: SvgPicture.asset(
-                          'assets/img/image-svg/bell.svg',
-                          color: Color(0xff404040),
-                        ),
-                        animationType: BadgeAnimationType.fade,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            )
-          : PreferredSize(
-              child: Container(),
-              preferredSize: Size.fromHeight(0),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Color(0xff2094F3),
+        ),
+        leadingWidth: SizeConfig.width(200),
+        leading: Row(
+          children: [
+            SizedBox(
+              width: SizeConfig.width(16),
             ),
+            Text(
+              'BGM RW 05',
+              style: TextStyle(
+                fontSize: (19 / Sizer.slicingText) * SizeConfig.textMultiplier,
+                color: Colors.blue,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+        title: Image(
+          width: (34 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
+          height: (40 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
+          image: image,
+          fit: BoxFit.cover,
+          repeat: ImageRepeat.noRepeat,
+        ),
+        centerTitle: true,
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(
+                right: (25 / Sizer.slicingWidth) * SizeConfig.widthMultiplier),
+            child: Obx(
+              () => InkWell(
+                splashColor: Colors.white,
+                borderRadius: BorderRadius.circular(200),
+                radius: (15 / SizeConfig.heightMultiplier) *
+                    SizeConfig.heightMultiplier,
+                onTap: () {
+                  Get.to(
+                    () => NotificationScreen(),
+                    transition: Transition.rightToLeft,
+                  );
+                },
+                child: Badge(
+                  badgeColor: Colors.red,
+                  padding: EdgeInsets.all(3),
+                  badgeContent: Text(
+                    '${controller.count.value}',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: (11 / SizeConfig.textMultiplier) *
+                            SizeConfig.textMultiplier),
+                  ),
+                  position: BadgePosition.topEnd(top: 8, end: -8),
+                  child: SvgPicture.asset(
+                    'assets/img/image-svg/bell.svg',
+                    color: Color(0xff404040),
+                  ),
+                  animationType: BadgeAnimationType.fade,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -179,10 +168,8 @@ class _MyWidgetState extends State<CitizenScreen> {
                           child: Row(
                             children: [
                               SizedBox(
-                                height: (48 / Sizer.slicingHeight) *
-                                    SizeConfig.heightMultiplier,
-                                width: (48 / Sizer.slicingWidth) *
-                                    SizeConfig.widthMultiplier,
+                                height: SizeConfig.image(48),
+                                width: SizeConfig.image(48),
                                 child: CircleAvatar(
                                     backgroundImage: CachedNetworkImageProvider(
                                         '${ServerApp.url}${userLoginController.urlProfile.value}')),
@@ -258,12 +245,11 @@ class _MyWidgetState extends State<CitizenScreen> {
                             builder: (context, snapshot) => (snapshot.hasData)
                                 ? CarouselSlider(
                                     options: CarouselOptions(
-                                      height: (188 / Sizer.slicingHeight) *
-                                          SizeConfig.heightMultiplier,
+                                      height: SizeConfig.height(188),
                                       // aspectRatio: 16 / 2,
                                       enableInfiniteScroll: false,
                                       enlargeCenterPage: false,
-                                      viewportFraction: 0.80,
+                                      viewportFraction: 0.8,
                                     ),
                                     items: snapshot.data.map((e) {
                                       return Builder(

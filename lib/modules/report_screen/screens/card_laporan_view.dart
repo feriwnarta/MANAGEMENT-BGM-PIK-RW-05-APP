@@ -4,6 +4,7 @@ import 'package:aplikasi_rw/controller/report_user_controller.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/history_report_services.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -109,10 +110,11 @@ class _CardLaporanViewState extends State<CardLaporanView> {
           children: [
             Text(
               'Ayo, nilai hasil kerjanya',
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: SizeConfig.text(16), fontWeight: FontWeight.bold),
             ),
             SizedBox(
-              height: 10.h,
+              height: SizeConfig.height(10),
             ),
             RatingBar.builder(
               initialRating: 0,
@@ -120,7 +122,8 @@ class _CardLaporanViewState extends State<CardLaporanView> {
               direction: Axis.horizontal,
               allowHalfRating: true,
               itemCount: 5,
-              itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+              itemPadding:
+                  EdgeInsets.symmetric(horizontal: SizeConfig.width(4)),
               itemBuilder: (context, _) => Icon(
                 Icons.star,
                 color: Colors.amber,
@@ -129,24 +132,25 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                 this.rating.value = rating;
               },
             ),
-            SizedBox(height: 10.h),
+            SizedBox(height: SizeConfig.height(10)),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5.w),
+              padding: EdgeInsets.symmetric(horizontal: SizeConfig.width(5)),
               child: TextField(
                 controller: controllerComment.value,
                 maxLines: 3,
                 decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 50.h, horizontal: 10.w),
+                    contentPadding: EdgeInsets.symmetric(
+                        vertical: SizeConfig.height(50),
+                        horizontal: SizeConfig.width(10)),
                     border: OutlineInputBorder(),
                     isDense: true,
                     hintText: 'Komentar Anda',
-                    hintStyle: TextStyle(fontSize: 12.sp)),
+                    hintStyle: TextStyle(fontSize: SizeConfig.text(12))),
               ),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: SizeConfig.height(5)),
             Padding(
-              padding: EdgeInsets.only(right: 5.w),
+              padding: EdgeInsets.only(right: SizeConfig.width(5)),
               child: Align(
                 alignment: Alignment.centerRight,
                 child: ElevatedButton(
@@ -244,7 +248,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
     return Scaffold(
         backgroundColor: Colors.grey[100],
         appBar: AppBar(
-          systemOverlayStyle: SystemUiOverlayStyle.light,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
           title: Text(''),
           elevation: 0,
           backgroundColor: Colors.white,
@@ -261,7 +265,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                     // image
                     GestureDetector(
                         child: SizedBox(
-                          height: 300.h,
+                          height: SizeConfig.height(300),
                           width: double.infinity,
                           child: Image(
                             fit: BoxFit.cover,
@@ -275,43 +279,46 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                                 builder: (context) =>
                                     ViewImage(urlImage: widget.urlImage)))),
                     SizedBox(
-                      height: 20.h,
+                      height: SizeConfig.height(20),
                     ),
                     Container(
-                        margin: EdgeInsets.only(left: 15.w),
+                        margin: EdgeInsets.only(left: SizeConfig.width(15)),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Deskripsi',
                               style: TextStyle(
-                                  fontSize: 14.sp, fontFamily: 'poppins'),
+                                  fontSize: SizeConfig.text(14),
+                                  fontFamily: 'poppins'),
                             ),
                             SizedBox(
-                              height: 1.h,
+                              height: SizeConfig.height(1),
                             ),
                             Text(
                               widget.description,
                               style: TextStyle(
-                                  fontSize: 12.sp, fontFamily: 'Montserrat'),
+                                  fontSize: SizeConfig.text(12),
+                                  fontFamily: 'Montserrat'),
                             ),
                           ],
                         )),
                     SizedBox(
-                      height: 10.h,
+                      height: SizeConfig.height(10),
                     ),
                     Container(
                         width: double.infinity,
-                        margin: EdgeInsets.only(left: 15.w),
+                        margin: EdgeInsets.only(left: SizeConfig.width(15)),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Masalah',
                               style: TextStyle(
-                                  fontSize: 14.sp, fontFamily: 'poppins'),
+                                  fontSize: SizeConfig.text(14),
+                                  fontFamily: 'poppins'),
                             ),
-                            SizedBox(height: 1.0.h),
+                            SizedBox(height: SizeConfig.height(1)),
                             ListView.builder(
                               itemCount: widget.dataKlasifikasi.length,
                               physics: ScrollPhysics(),
@@ -323,40 +330,42 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                                       Icon(
                                         FontAwesomeIcons.circleExclamation,
                                         color: Colors.blue,
-                                        size: 15.h,
+                                        size: SizeConfig.image(15),
                                       ),
                                       SizedBox(
-                                        width: 10.w,
+                                        width: SizeConfig.width(10),
                                       ),
                                       Text(
                                         '${widget.dataKlasifikasi[index]}',
                                         style: TextStyle(
-                                            fontSize: 12.sp,
+                                            fontSize: SizeConfig.text(12),
                                             fontFamily: 'Montserrat'),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 15.h)
+                                  SizedBox(
+                                    height: SizeConfig.height(15),
+                                  )
                                 ],
                               ),
                             ),
                           ],
                         )),
                     SizedBox(
-                      height: 10.h,
+                      height: SizeConfig.height(10),
                     ),
                   ],
                 ),
               ),
 
               SizedBox(
-                height: 15.h,
+                height: SizeConfig.height(15),
               ),
 
               // detail laporan
               buildContainerDetailLaporan(),
               SizedBox(
-                height: 15.h,
+                height: SizeConfig.height(15),
               ),
 
               Container(
@@ -365,14 +374,17 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(left: 15.w, top: 15.h),
+                      padding: EdgeInsets.only(
+                          left: SizeConfig.width(15),
+                          top: SizeConfig.width(15)),
                       child: Text(
                         'Lokasi',
-                        style:
-                            TextStyle(fontSize: 14.0.sp, fontFamily: 'poppins'),
+                        style: TextStyle(
+                            fontSize: SizeConfig.text(14),
+                            fontFamily: 'poppins'),
                       ),
                     ),
-                    SizedBox(height: 15.h),
+                    SizedBox(height: SizeConfig.height(15)),
                     GoogleMapViewReport(
                         latitude: widget.latitude, longitude: widget.longitude),
                     // SizedBox(height: 15.h),
@@ -383,7 +395,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
               buildContainerHistoryReport(),
 
               SizedBox(
-                height: 2.0.h,
+                height: SizeConfig.height(2),
               ),
 
               Visibility(
@@ -393,8 +405,8 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                     : false,
                 child: Container(
                   padding: EdgeInsets.symmetric(
-                    vertical: 16.h,
-                    horizontal: 16.w,
+                    vertical: SizeConfig.height(16),
+                    horizontal: SizeConfig.width(16),
                   ),
                   width: double.infinity,
                   color: Colors.white,
@@ -402,14 +414,15 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(left: 15.w),
+                        padding: EdgeInsets.only(left: SizeConfig.width(16)),
                         child: Text(
                           'Laporan proses kerja',
                           style: TextStyle(
-                              fontSize: 12.0.sp, fontFamily: 'poppins'),
+                              fontSize: SizeConfig.text(12),
+                              fontFamily: 'poppins'),
                         ),
                       ),
-                      SizedBox(height: 10.h),
+                      SizedBox(height: SizeConfig.height(10)),
                       Container(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -426,8 +439,8 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                                           );
                                         },
                                         child: CachedNetworkImage(
-                                          height: 156.h,
-                                          width: 156.w,
+                                          height: SizeConfig.height(156),
+                                          width: SizeConfig.width(156),
                                           fit: BoxFit.cover,
                                           imageUrl:
                                               '${ServerApp.url}${widget.photoProcess1}',
@@ -482,25 +495,27 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                     ? true
                     : false,
                 child: Container(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
+                  padding: EdgeInsets.symmetric(
+                      vertical: SizeConfig.height(16),
+                      horizontal: SizeConfig.width(16)),
                   width: double.infinity,
                   color: Colors.white,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        height: 2.0.h,
+                        height: SizeConfig.height(2),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 15.w),
+                        padding: EdgeInsets.only(left: SizeConfig.width(15)),
                         child: Text(
                           'Laporan selesai kerja',
                           style: TextStyle(
-                              fontSize: 12.0.sp, fontFamily: 'poppins'),
+                              fontSize: SizeConfig.text(12),
+                              fontFamily: 'poppins'),
                         ),
                       ),
-                      SizedBox(height: 10.h),
+                      SizedBox(height: SizeConfig.height(10)),
                       Container(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -518,8 +533,8 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                                           );
                                         },
                                         child: CachedNetworkImage(
-                                          height: 156.h,
-                                          width: 156.w,
+                                          height: SizeConfig.height(156),
+                                          width: SizeConfig.width(156),
                                           fit: BoxFit.cover,
                                           imageUrl:
                                               '${ServerApp.url}${widget.photoComplete1}',
@@ -531,7 +546,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                                     : Spacer()
                                 : Spacer(),
                             SizedBox(
-                              width: 15.w,
+                              width: SizeConfig.width(15),
                             ),
                             (widget.photoComplete2 != null)
                                 ? (widget.photoComplete2.isNotEmpty)
@@ -546,8 +561,8 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                                           );
                                         },
                                         child: CachedNetworkImage(
-                                          height: 156.h,
-                                          width: 156.w,
+                                          height: SizeConfig.height(156),
+                                          width: SizeConfig.width(156),
                                           fit: BoxFit.cover,
                                           imageUrl:
                                               '${ServerApp.url}${widget.photoComplete2}',
@@ -567,7 +582,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
               ),
 
               SizedBox(
-                height: 15.h,
+                height: SizeConfig.height(15),
               ),
 
               Container(
@@ -575,24 +590,25 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 10.h),
+                    SizedBox(height: SizeConfig.height(10)),
                     Row(
                       children: [
-                        SizedBox(width: 15.w),
+                        SizedBox(width: SizeConfig.width(15)),
                         Text(
                           'Penilaian',
                           style: TextStyle(
-                              fontSize: 14.0.sp, fontFamily: 'poppins'),
+                              fontSize: SizeConfig.text(14),
+                              fontFamily: 'poppins'),
                         ),
                       ],
                     ),
                     SizedBox(
-                      height: 10.h,
+                      height: SizeConfig.height(10),
                     ),
                     Obx(
                       () => Row(
                         children: [
-                          SizedBox(width: 15.w),
+                          SizedBox(width: SizeConfig.width(15)),
                           RatingBarIndicator(
                             rating: (rating.value != 0)
                                 ? rating.value
@@ -602,27 +618,28 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                               color: Colors.amber,
                             ),
                             itemCount: 5,
-                            itemSize: 35.0,
+                            itemSize: SizeConfig.image(30),
                             direction: Axis.horizontal,
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(height: 10.h),
+                    SizedBox(height: SizeConfig.height(10)),
                     Container(
-                      margin: EdgeInsets.only(left: 15.w),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
+                      margin: EdgeInsets.only(left: SizeConfig.width(15)),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: SizeConfig.width(5),
+                          vertical: SizeConfig.height(5)),
                       decoration: BoxDecoration(
                           color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(10)),
-                      width: 200.w,
+                      width: SizeConfig.width(200),
                       child: (controllerComment.value.text.isNotEmpty)
                           ? Text(
                               controllerComment.value.text.isEmpty
                                   ? 'Tanpa keterangan'
                                   : controllerComment.value.text,
-                              style: TextStyle(fontSize: 12.0.sp),
+                              style: TextStyle(fontSize: SizeConfig.text(12)),
                             )
                           : Text(
                               (widget.comment.isEmpty)
@@ -630,10 +647,10 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                                       ? 'Belum ada penilaian'
                                       : 'Tanpa keterangan'
                                   : '${widget.comment}',
-                              style: TextStyle(fontSize: 12.0.sp),
+                              style: TextStyle(fontSize: SizeConfig.text(12)),
                             ),
                     ),
-                    SizedBox(height: 10.h),
+                    SizedBox(height: SizeConfig.height(10)),
                   ],
                 ),
               )
@@ -662,14 +679,16 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                         title: Text(
                           'Status Laporan',
                           style: TextStyle(
-                              fontSize: 14.0.sp, fontFamily: 'poppins'),
+                              fontSize: SizeConfig.text(14),
+                              fontFamily: 'poppins'),
                         ),
                         subtitle: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
                               padding: EdgeInsets.symmetric(
-                                  vertical: 2.h, horizontal: 8.w),
+                                  vertical: SizeConfig.height(2),
+                                  horizontal: SizeConfig.width(8)),
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 border: Border.all(
@@ -696,7 +715,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                               child: Text(
                                 widget.status,
                                 style: TextStyle(
-                                  fontSize: 12.sp,
+                                  fontSize: SizeConfig.text(12),
                                   color:
                                       (widget.status == 'Eskalasi tingkat 1' ||
                                               widget.status ==
@@ -709,7 +728,7 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                               ),
                             ),
                             SizedBox(
-                              width: 10.w,
+                              width: SizeConfig.width(10),
                             ),
                           ],
                         ),
@@ -723,21 +742,25 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                                       physics: NeverScrollableScrollPhysics(),
                                       itemBuilder: (context, index) =>
                                           Container(
-                                        margin: EdgeInsets.only(left: 15.w),
+                                        margin: EdgeInsets.only(
+                                            left: SizeConfig.width(15)),
                                         height: 100.0.h,
                                         child: TimelineTile(
                                           endChild: Container(
-                                            margin: EdgeInsets.only(top: 20.h),
+                                            margin: EdgeInsets.only(
+                                                top: SizeConfig.height(20)),
                                             child: ListTile(
                                               title: Text(
                                                 '${snapshot.data[index].statusProcess}',
                                                 style: TextStyle(
-                                                    fontSize: 12.0.sp),
+                                                    fontSize:
+                                                        SizeConfig.text(12)),
                                               ),
                                               subtitle: Text(
                                                 '${snapshot.data[index].time}',
                                                 style: TextStyle(
-                                                    fontSize: 11.0.sp),
+                                                    fontSize:
+                                                        SizeConfig.text(11)),
                                               ),
                                             ),
                                           ),
@@ -750,23 +773,31 @@ class _CardLaporanViewState extends State<CardLaporanView> {
                                               thickness: 1),
                                           indicatorStyle: IndicatorStyle(
                                             color: Colors.green,
-                                            width: 19,
+                                            width: SizeConfig.width(19),
                                           ),
                                         ),
                                       ),
                                     )
-                                  : Center(child: Text('history kosong'))
+                                  : Center(
+                                      child: Text(
+                                      'history kosong',
+                                      style: TextStyle(
+                                          fontSize: SizeConfig.text(15)),
+                                    ))
                               : Container(),
-                          SizedBox(height: 5.0.h)
+                          SizedBox(height: SizeConfig.height(10))
                         ],
                       )
                     : Container(
                         margin: EdgeInsets.only(
-                            left: 13.w, top: 10.h, bottom: 10.h),
+                            left: SizeConfig.width(13),
+                            top: SizeConfig.height(10),
+                            bottom: SizeConfig.width(10)),
                         child: Text(
                           'No History Report',
                           style: TextStyle(
-                              fontSize: 13.sp, fontWeight: FontWeight.bold),
+                              fontSize: SizeConfig.text(13),
+                              fontWeight: FontWeight.bold),
                         ),
                       )
                 : Container()),
@@ -785,61 +816,70 @@ class _CardLaporanViewState extends State<CardLaporanView> {
           initiallyExpanded: true,
           title: Text(
             'Detail Masalah',
-            style: TextStyle(fontSize: 14.0.sp, fontFamily: 'poppins'),
+            style:
+                TextStyle(fontSize: SizeConfig.text(14), fontFamily: 'poppins'),
           ),
           children: [
             Padding(
-              padding: EdgeInsets.only(left: 15.w),
+              padding: EdgeInsets.only(left: SizeConfig.width(15)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Nomor Laporan',
-                    style: TextStyle(fontSize: 12.sp),
+                    style: TextStyle(fontSize: SizeConfig.text(12)),
                   ),
                   SizedBox(
-                    height: 5.h,
+                    height: SizeConfig.height(5),
                   ),
                   Text(widget.noTicket,
                       style: TextStyle(
-                          fontSize: 12.0.sp,
+                          fontSize: SizeConfig.text(12),
                           fontFamily: 'Montserrat',
                           color: Colors.indigo)),
                   SizedBox(
                     height: 10.h,
                   ),
-                  Text('Waktu Masuk', style: TextStyle(fontSize: 12.0.sp)),
+                  Text(
+                    'Waktu Masuk',
+                    style: TextStyle(
+                      fontSize: SizeConfig.text(12),
+                    ),
+                  ),
                   SizedBox(
-                    height: 5.h,
+                    height: SizeConfig.height(5),
                   ),
                   Text(
                     widget.time,
-                    style:
-                        TextStyle(fontSize: 12.0.sp, fontFamily: 'Montserrat'),
+                    style: TextStyle(
+                        fontSize: SizeConfig.text(12),
+                        fontFamily: 'Montserrat'),
                   ),
                   SizedBox(
                     height: 10.h,
                   ),
-                  Text('Kategori', style: TextStyle(fontSize: 12.0.sp)),
+                  Text('Kategori',
+                      style: TextStyle(fontSize: SizeConfig.text(12))),
                   SizedBox(
-                    height: 5.h,
+                    height: SizeConfig.height(5),
                   ),
                   Row(
                     children: [
                       Image.network(
                         '${ServerApp.url}icon/${widget.categoryIcon}',
-                        height: 20.h,
+                        height: SizeConfig.image(20),
                       ),
                       SizedBox(
-                        width: 10.0.w,
+                        width: SizeConfig.width(10),
                       ),
                       Text(widget.category,
                           style: TextStyle(
-                              fontSize: 12.0.sp, fontFamily: 'Montserrat')),
+                              fontSize: SizeConfig.text(12),
+                              fontFamily: 'Montserrat')),
                     ],
                   ),
                   SizedBox(
-                    height: 15.0.h,
+                    height: SizeConfig.height(15),
                   ),
                 ],
               ),
@@ -877,9 +917,11 @@ class _GoogleMapViewReportState extends State<GoogleMapViewReport> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300.h,
+      height: SizeConfig.height(300),
       child: GoogleMap(
         liteModeEnabled: (Platform.isAndroid) ? true : false,
+        compassEnabled: false,
+        myLocationButtonEnabled: false,
         initialCameraPosition: CameraPosition(
             bearing: 192.8334901395799,
             target: LatLng(
