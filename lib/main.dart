@@ -14,6 +14,7 @@ import 'package:aplikasi_rw/modules/manager_contractor/screens/home_folder_manag
 import 'package:aplikasi_rw/modules/profiles/screens/UserProfileScreens.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/profile_settings_screen.dart';
 import 'package:aplikasi_rw/modules/theme/app_theme.dart';
+import 'package:aplikasi_rw/modules/theme/sizer.dart';
 import 'package:aplikasi_rw/routes/app_pages.dart';
 import 'package:aplikasi_rw/routes/app_routes.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/change_data_user.dart';
@@ -140,7 +141,7 @@ void main() async {
 
   // runApp(MyApp());
   runApp(DevicePreview(
-    enabled: true,
+    enabled: false,
     builder: (ctx) => MyApp(),
   ));
   configLoading();
@@ -217,8 +218,6 @@ class _MyApp extends State<MyApp> {
               debugShowCheckedModeBanner: false,
               initialRoute: AppPage.INITIAL_ROUTE,
               getPages: AppPage.pages,
-              // home: CreateAccount(),
-
               theme: AppTheme.lightTheme,
               builder: (context, child) {
                 // do your initialization here
@@ -358,19 +357,20 @@ class _MainAppState extends State<MainApp> {
 
         bottomNavigationBar: Obx(
           () => Container(
-            // decoration: BoxDecoration(
-            //   boxShadow: [
-            //     BoxShadow(color: Colors.grey, blurRadius: 5),
-            //   ],
-            // ),
+            height: (56 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
             child: BottomNavigationBar(
-              backgroundColor: Color(0xff2094F3),
+              backgroundColor: Theme.of(context).primaryColor,
               type: BottomNavigationBarType.fixed,
-              iconSize: 12.sp,
               showSelectedLabels: true,
               showUnselectedLabels: true,
               selectedItemColor: Colors.white,
               unselectedItemColor: Colors.white,
+              selectedLabelStyle: TextStyle(
+                  fontSize:
+                      (12 / Sizer.slicingText) * SizeConfig.textMultiplier),
+              unselectedLabelStyle: TextStyle(
+                  fontSize:
+                      (12 / Sizer.slicingText) * SizeConfig.textMultiplier),
               currentIndex: indexScreen.index.value,
               onTap: (index) {
                 indexScreen.index.value = index;
@@ -382,33 +382,40 @@ class _MainAppState extends State<MainApp> {
               items: [
                 BottomNavigationBarItem(
                   icon: SvgPicture.asset(
-                    'assets/img/image-svg/home-deactive.svg',
-                  ),
+                      'assets/img/image-svg/home-deactive.svg',
+                      height: (24 / Sizer.slicingImage) *
+                          SizeConfig.imageSizeMultiplier),
                   activeIcon: SvgPicture.asset(
                     'assets/img/image-svg/home-active.svg',
                     color: Colors.white,
+                    height: (24 / Sizer.slicingImage) *
+                        SizeConfig.imageSizeMultiplier,
                   ),
                   label: 'Beranda',
                 ),
                 BottomNavigationBarItem(
                     icon: SvgPicture.asset(
-                      'assets/img/image-svg/user-deactive.svg',
-                      color: Colors.white,
-                    ),
+                        'assets/img/image-svg/user-deactive.svg',
+                        color: Colors.white,
+                        height: (24 / Sizer.slicingImage) *
+                            SizeConfig.imageSizeMultiplier),
                     activeIcon: SvgPicture.asset(
-                      'assets/img/image-svg/user-active.svg',
-                      color: Colors.white,
-                    ),
+                        'assets/img/image-svg/user-active.svg',
+                        color: Colors.white,
+                        height: (24 / Sizer.slicingImage) *
+                            SizeConfig.imageSizeMultiplier),
                     label: 'Profil'),
                 BottomNavigationBarItem(
                     icon: SvgPicture.asset(
-                      'assets/img/image-svg/setting-deactive.svg',
-                      color: Colors.white,
-                    ),
+                        'assets/img/image-svg/setting-deactive.svg',
+                        color: Colors.white,
+                        height: (24 / Sizer.slicingImage) *
+                            SizeConfig.imageSizeMultiplier),
                     activeIcon: SvgPicture.asset(
-                      'assets/img/image-svg/setting-active.svg',
-                      color: Colors.white,
-                    ),
+                        'assets/img/image-svg/setting-active.svg',
+                        color: Colors.white,
+                        height: (24 / Sizer.slicingImage) *
+                            SizeConfig.imageSizeMultiplier),
                     label: 'Pengaturan'),
               ],
             ),

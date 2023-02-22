@@ -1,9 +1,10 @@
 import 'package:aplikasi_rw/utils/size_config.dart';
 
 class Sizer {
-  static double slicingHeight = 8.96;
-  static double slicingWidth = 4.14;
-  static double slicingText = 8.96;
+  static double slicingHeight = 8.12;
+  static double slicingWidth = 3.75;
+  static double slicingImage = 3.75;
+  static double slicingText = 8.12;
 
   static double gapHorizontal16 =
       (16 / slicingWidth) * SizeConfig.widthMultiplier;

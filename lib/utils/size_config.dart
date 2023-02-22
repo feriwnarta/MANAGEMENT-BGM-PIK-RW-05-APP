@@ -41,7 +41,7 @@ class SizeConfig {
     widthMultiplier = _blockWidth;
 
     logger.i(
-      'width = $widthMultiplier \nheight = $heightMultiplier \ntext = $textMultiplier',
+      'width = $widthMultiplier \nheight = $heightMultiplier \ntext = $textMultiplier \nimage = $imageSizeMultiplier',
     );
   }
 }

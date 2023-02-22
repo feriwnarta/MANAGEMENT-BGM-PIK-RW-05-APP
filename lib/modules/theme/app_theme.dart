@@ -1,3 +1,4 @@
+import 'package:aplikasi_rw/modules/theme/sizer.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +11,9 @@ class AppTheme {
     appBarTheme: AppBarTheme(
       systemOverlayStyle: SystemUiOverlayStyle.light,
       backgroundColor: Color(0xff2196F3),
+      titleTextStyle: TextStyle(
+          fontSize: (19 / Sizer.slicingText) * SizeConfig.textMultiplier,
+          color: Colors.white),
     ),
     primaryColor: primary,
     fontFamily: 'Inter',
@@ -30,64 +34,64 @@ class AppTheme {
 
   static TextStyle headline1Light = TextStyle(
     fontFamily: 'Inter',
-    fontSize: 3.34 * SizeConfig.textMultiplier,
+    fontSize: (30 / Sizer.slicingText) * SizeConfig.textMultiplier,
     fontWeight: FontWeight.w500,
   );
 
   static TextStyle headline2Light = TextStyle(
     fontFamily: 'Inter',
-    fontSize: 2.56 * SizeConfig.textMultiplier,
+    fontSize: (23 / Sizer.slicingText) * SizeConfig.textMultiplier,
     fontWeight: FontWeight.w400,
   );
 
   static TextStyle headline3Light = TextStyle(
     fontFamily: 'Inter',
-    fontSize: 2.12 * SizeConfig.textMultiplier,
+    fontSize: (30 / Sizer.slicingText) * SizeConfig.textMultiplier,
     fontWeight: FontWeight.w400,
     color: primary,
   );
 
   static TextStyle subtitle1Light = TextStyle(
     fontFamily: 'Inter',
-    fontSize: 1.78 * SizeConfig.textMultiplier,
+    fontSize: (16 / Sizer.slicingText) * SizeConfig.textMultiplier,
     fontWeight: FontWeight.w400,
   );
 
   static TextStyle subtitle2Light = TextStyle(
     fontFamily: 'Inter',
-    fontSize: 1.56 * SizeConfig.textMultiplier,
+    fontSize: (14 / Sizer.slicingText) * SizeConfig.textMultiplier,
     fontWeight: FontWeight.w400,
   );
 
   static TextStyle body1Light = TextStyle(
     fontFamily: 'Inter',
-    fontSize: 1.78 * SizeConfig.textMultiplier,
+    fontSize: (16 / Sizer.slicingText) * SizeConfig.textMultiplier,
     fontWeight: FontWeight.w400,
   );
 
   static TextStyle body2Light = TextStyle(
     fontFamily: 'Inter',
-    fontSize: 1.56 * SizeConfig.textMultiplier,
+    fontSize: (14 / Sizer.slicingText) * SizeConfig.textMultiplier,
     fontWeight: FontWeight.w400,
   );
 
   static TextStyle buttonLight = TextStyle(
     fontFamily: 'Inter',
-    fontSize: 1.56 * SizeConfig.textMultiplier,
+    fontSize: (14 / Sizer.slicingText) * SizeConfig.textMultiplier,
     fontWeight: FontWeight.w500,
     color: neutral100,
   );
 
   static TextStyle captionLight = TextStyle(
     fontFamily: 'Inter',
-    fontSize: 1.33 * SizeConfig.textMultiplier,
+    fontSize: (12 / Sizer.slicingText) * SizeConfig.textMultiplier,
     fontWeight: FontWeight.w400,
     color: neutral80,
   );
 
   static TextStyle overlineLight = TextStyle(
     fontFamily: 'Inter',
-    fontSize: 1.11 * SizeConfig.textMultiplier,
+    fontSize: (10 / Sizer.slicingText) * SizeConfig.textMultiplier,
     fontWeight: FontWeight.w400,
     decoration: TextDecoration.underline,
   );

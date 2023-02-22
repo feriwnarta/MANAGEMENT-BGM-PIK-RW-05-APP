@@ -61,7 +61,10 @@ class _AppBarCitizenState extends State<AppBarCitizen> {
         children: [
           AutoSizeText(
             'BGM RW 05',
-            style: Theme.of(context).textTheme.headline3,
+            style: TextStyle(
+              fontSize: (19 / Sizer.slicingText) * SizeConfig.textMultiplier,
+              color: Colors.blue,
+            ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),

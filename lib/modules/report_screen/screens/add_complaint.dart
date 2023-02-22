@@ -67,13 +67,10 @@ class _AddComplaintState extends State<AddComplaint> {
     ScreenSize.designSize(context);
     return Scaffold(
         appBar: AppBar(
-          systemOverlayStyle:
-              SystemUiOverlayStyle(statusBarBrightness: Brightness.light),
+          systemOverlayStyle: Theme.of(context).appBarTheme.systemOverlayStyle,
           title: Text(
             'Buat Laporan',
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-            ),
+            style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
         ),
         body: StepperRw(duration: duration));

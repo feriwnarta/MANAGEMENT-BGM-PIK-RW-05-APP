@@ -37,6 +37,7 @@ class SubMenuReport extends StatelessWidget {
                     'Status Peduli Lingkungan',
                   ),
         iconTheme: IconThemeData(color: Colors.white),
+        titleTextStyle: Theme.of(context).appBarTheme.titleTextStyle,
       ),
       body: SingleChildScrollView(
         child: MenuPeduliLingkungan(
@@ -116,15 +117,17 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                       (16 / Sizer.slicingWidth) * SizeConfig.widthMultiplier),
               padding: EdgeInsets.symmetric(
                   horizontal:
-                      (16 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
+                      (6 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
                   vertical:
                       (12 / Sizer.slicingHeight) * SizeConfig.heightMultiplier),
+              height: (96 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
               decoration: (isActive.value)
                   ? BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
                       border: Border.all(
                         color: Color(0xff2094F3),
-                      ))
+                      ),
+                    )
                   : BoxDecoration(),
               child: Row(
                 children: [
@@ -147,7 +150,7 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        AutoSizeText(
+                        Text(
                           'Peduli Lingkungan Umum',
                           style: Theme.of(context).textTheme.button,
                           maxLines: 1,
@@ -157,8 +160,8 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                           height: (4 / Sizer.slicingHeight) *
                               SizeConfig.heightMultiplier,
                         ),
-                        AutoSizeText(
-                          'Kepedulian lingkungan yang di tujukan untuk area lingkungan umum yang ada di Bukit Golf Mediterania RW 05.',
+                        Text(
+                          'Kepedulian lingkungan yang di tujukan untuk area lingkungan pribadi warga Bukit Golf Mediterania RW 05.',
                           style: Theme.of(context).textTheme.caption,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
@@ -186,9 +189,10 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                       (16 / Sizer.slicingWidth) * SizeConfig.widthMultiplier),
               padding: EdgeInsets.symmetric(
                   horizontal:
-                      (16 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
+                      (6 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
                   vertical:
                       (12 / Sizer.slicingHeight) * SizeConfig.heightMultiplier),
+              height: (96 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
               decoration: (!isActive.value)
                   ? BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
@@ -218,7 +222,7 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        AutoSizeText(
+                        Text(
                           'Peduli Lingkungan Pribadi',
                           style: Theme.of(context).textTheme.button,
                           maxLines: 1,
@@ -228,12 +232,12 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                           height: (4 / Sizer.slicingHeight) *
                               SizeConfig.heightMultiplier,
                         ),
-                        AutoSizeText(
-                          'Kepedulian lingkungan yang di tujukan untuk area lingkungan pribadi warga Bukit Golf Mediterania RW 05. ',
+                        Text(
+                          'Kepedulian lingkungan yang di tujukan untuk area lingkungan pribadi warga Bukit Golf Mediterania RW 05.',
                           style: Theme.of(context).textTheme.caption,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
-                        ),
+                        )
                       ],
                     ),
                   )
@@ -330,7 +334,10 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
             },
             child: Text(
               'Selanjutnya',
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                fontSize: (16 / Sizer.slicingText) * SizeConfig.textMultiplier,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         )

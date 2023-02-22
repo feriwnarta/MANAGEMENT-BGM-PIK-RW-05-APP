@@ -1,6 +1,5 @@
 import 'package:aplikasi_rw/modules/theme/sizer.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class Menu extends StatelessWidget {
@@ -19,8 +18,8 @@ class Menu extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              width: (70 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
-              height: (62 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
+              width: (70 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
+              height: (72 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(icon),
@@ -30,7 +29,7 @@ class Menu extends StatelessWidget {
             SizedBox(
               height: (8 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
             ),
-            AutoSizeText(
+            Text(
               text,
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -38,7 +37,6 @@ class Menu extends StatelessWidget {
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              minFontSize: 10,
             ),
           ],
         ),

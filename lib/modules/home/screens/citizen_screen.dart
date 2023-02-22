@@ -19,6 +19,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_html/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -86,13 +87,16 @@ class _MyWidgetState extends State<CitizenScreen> {
                 children: [
                   AutoSizeText(
                     'BGM RW 05',
-                    style: Theme.of(context).textTheme.headline3,
+                    style: TextStyle(
+                      fontSize:
+                          (19 / Sizer.slicingText) * SizeConfig.textMultiplier,
+                      color: Colors.blue,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(
-                    width:
-                        (38 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
+                  Spacer(
+                    flex: 1,
                   ),
                   Image(
                     width:
@@ -102,6 +106,9 @@ class _MyWidgetState extends State<CitizenScreen> {
                     image: image,
                     fit: BoxFit.cover,
                     repeat: ImageRepeat.noRepeat,
+                  ),
+                  Spacer(
+                    flex: 2,
                   ),
                 ],
               ),
@@ -132,7 +139,7 @@ class _MyWidgetState extends State<CitizenScreen> {
                               fontSize: (11 / SizeConfig.textMultiplier) *
                                   SizeConfig.textMultiplier),
                         ),
-                        position: BadgePosition.topEnd(top: 0, end: -10),
+                        position: BadgePosition.topEnd(top: 8, end: -8),
                         child: SvgPicture.asset(
                           'assets/img/image-svg/bell.svg',
                           color: Color(0xff404040),
@@ -164,53 +171,70 @@ class _MyWidgetState extends State<CitizenScreen> {
                   ? Column(
                       children: [
                         Container(
+                          height: (48 / Sizer.slicingHeight) *
+                              SizeConfig.heightMultiplier,
                           margin: EdgeInsets.symmetric(
-                              horizontal: (16 / SizeConfig.heightMultiplier) *
-                                  SizeConfig.heightMultiplier),
+                              horizontal: (16 / Sizer.slicingWidth) *
+                                  SizeConfig.widthMultiplier),
                           child: Row(
                             children: [
                               SizedBox(
-                                height: (48 / SizeConfig.heightMultiplier) *
+                                height: (48 / Sizer.slicingHeight) *
                                     SizeConfig.heightMultiplier,
-                                width: (48 / SizeConfig.widthMultiplier) *
+                                width: (48 / Sizer.slicingWidth) *
                                     SizeConfig.widthMultiplier,
                                 child: CircleAvatar(
                                     backgroundImage: CachedNetworkImageProvider(
                                         '${ServerApp.url}${userLoginController.urlProfile.value}')),
                               ),
                               SizedBox(
-                                width: (14 / SizeConfig.widthMultiplier) *
+                                width: (14 / Sizer.slicingWidth) *
                                     SizeConfig.widthMultiplier,
                               ),
                               SizedBox(
-                                width: (257 / SizeConfig.widthMultiplier) *
+                                width: (257 / Sizer.slicingWidth) *
                                     SizeConfig.widthMultiplier,
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    AutoSizeText(
+                                    Text(
                                       '${userLoginController.name.value}',
                                       style: TextStyle(
-                                        fontSize:
-                                            (16 / SizeConfig.textMultiplier) *
-                                                SizeConfig.textMultiplier,
+                                        fontSize: (16 / Sizer.slicingText) *
+                                            SizeConfig.textMultiplier,
                                         fontWeight: FontWeight.w500,
                                       ),
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                    AutoSizeText(
-                                      'Akasia golf',
-                                      style: TextStyle(
-                                        fontSize:
-                                            (14 / SizeConfig.textMultiplier) *
-                                                SizeConfig.textMultiplier,
-                                        fontWeight: FontWeight.w500,
-                                        color: Color(0xff616161),
-                                      ),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    )
+                                    (userLoginController.status.value
+                                            .isCaseInsensitiveContainsAny(
+                                                'WARGA'))
+                                        ? Text(
+                                            '${userLoginController.cluster.value} ${userLoginController.houseNumber.value}',
+                                            style: TextStyle(
+                                              fontSize:
+                                                  (14 / Sizer.slicingText) *
+                                                      SizeConfig.textMultiplier,
+                                              fontWeight: FontWeight.w500,
+                                              color: Color(0xff616161),
+                                            ),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          )
+                                        : Text(
+                                            '${userLoginController.status.value}',
+                                            style: TextStyle(
+                                              fontSize:
+                                                  (14 / Sizer.slicingText) *
+                                                      SizeConfig.textMultiplier,
+                                              fontWeight: FontWeight.w500,
+                                              color: Color(0xff616161),
+                                            ),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          )
                                   ],
                                 ),
                               ),
@@ -218,86 +242,96 @@ class _MyWidgetState extends State<CitizenScreen> {
                           ),
                         ),
                         SizedBox(
-                          height: (24 / SizeConfig.heightMultiplier) *
+                          height: (24 / Sizer.slicingHeight) *
                               SizeConfig.heightMultiplier,
                         ),
                         Divider(
                           thickness: 1,
                         ),
                         SizedBox(
-                          height: (24 / SizeConfig.heightMultiplier) *
+                          height: (24 / Sizer.slicingHeight) *
                               SizeConfig.heightMultiplier,
                         ),
-                        FutureBuilder<List<CardNews>>(
-                          future: NewsServices.getNews(),
-                          builder: (context, snapshot) => (snapshot.hasData)
-                              ? CarouselSlider(
-                                  options: CarouselOptions(
-                                    height: 188.h,
-                                    // aspectRatio: 16 / 2,
-                                    enableInfiniteScroll: false,
-                                    enlargeCenterPage: false,
-                                    viewportFraction: 0.85,
-                                  ),
-                                  items: snapshot.data.map((e) {
-                                    return Builder(
-                                      builder: (BuildContext context) {
-                                        return GestureDetector(
-                                          onTap: () => Get.to(
-                                              () => ReadInformation(),
-                                              transition:
-                                                  Transition.rightToLeft,
-                                              arguments: [e.content]),
-                                          child: Container(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            margin:
-                                                EdgeInsets.only(right: 16.w),
-                                            child: CachedNetworkImage(
-                                              imageUrl:
-                                                  '${ServerApp.url}${e.url}',
+                        SizedBox(
+                          child: FutureBuilder<List<CardNews>>(
+                            future: NewsServices.getNews(),
+                            builder: (context, snapshot) => (snapshot.hasData)
+                                ? CarouselSlider(
+                                    options: CarouselOptions(
+                                      height: (188 / Sizer.slicingHeight) *
+                                          SizeConfig.heightMultiplier,
+                                      // aspectRatio: 16 / 2,
+                                      enableInfiniteScroll: false,
+                                      enlargeCenterPage: false,
+                                      viewportFraction: 0.80,
+                                    ),
+                                    items: snapshot.data.map((e) {
+                                      return Builder(
+                                        builder: (BuildContext context) {
+                                          return GestureDetector(
+                                            onTap: () => Get.to(
+                                                () => ReadInformation(),
+                                                transition:
+                                                    Transition.rightToLeft,
+                                                arguments: [e.content]),
+                                            child: Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              margin: EdgeInsets.only(
+                                                right: (16 /
+                                                        Sizer.slicingWidth) *
+                                                    SizeConfig.widthMultiplier,
+                                              ),
+                                              child: CachedNetworkImage(
+                                                imageUrl:
+                                                    '${ServerApp.url}${e.url}',
+                                              ),
                                             ),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  }).toList(),
-                                )
-                              : CarouselSlider(
-                                  options: CarouselOptions(
-                                    height: 188.h,
-                                    enableInfiniteScroll: false,
-                                    enlargeCenterPage: false,
-                                    viewportFraction: 0.9,
+                                          );
+                                        },
+                                      );
+                                    }).toList(),
+                                  )
+                                : CarouselSlider(
+                                    options: CarouselOptions(
+                                      height: (188 / Sizer.slicingHeight) *
+                                          SizeConfig.heightMultiplier,
+                                      enableInfiniteScroll: false,
+                                      enlargeCenterPage: false,
+                                      viewportFraction: 0.8,
+                                    ),
+                                    items: [
+                                      1,
+                                      2,
+                                      3,
+                                    ].map((i) {
+                                      return Builder(
+                                        builder: (BuildContext context) {
+                                          return Shimmer.fromColors(
+                                            baseColor: Colors.grey[300],
+                                            highlightColor: Colors.grey[200],
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.grey,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: (188 /
+                                                      Sizer.slicingHeight) *
+                                                  SizeConfig.heightMultiplier,
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 5.0),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    }).toList(),
                                   ),
-                                  items: [
-                                    1,
-                                    2,
-                                    3,
-                                  ].map((i) {
-                                    return Builder(
-                                      builder: (BuildContext context) {
-                                        return Shimmer.fromColors(
-                                          baseColor: Colors.grey[300],
-                                          highlightColor: Colors.grey[200],
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                color: Colors.grey,
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            height: 188.h,
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 5.0),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  }).toList(),
-                                ),
+                          ),
                         ),
                       ],
                     )
@@ -314,113 +348,107 @@ class _MyWidgetState extends State<CitizenScreen> {
                     (24 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
               ),
               Obx(
-                () => Container(
-                  margin: EdgeInsets.symmetric(
-                    horizontal:
-                        (16 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
-                  ),
-                  child: Column(
-                    children: [
-                      Wrap(
-                        alignment: WrapAlignment.start,
-                        runSpacing: (16 / Sizer.slicingHeight) *
-                            SizeConfig.heightMultiplier,
-                        spacing: (16 / Sizer.slicingWidth) *
-                            SizeConfig.widthMultiplier,
-                        children: [
-                          (accesController.statusPeduliLingkungan.value)
-                              ? Menu(
-                                  icon: 'assets/img/citizen_menu/ipl.jpg',
-                                  text: 'Peduli lingkungan',
-                                  onTap: () => Get.to(
-                                      () => SubMenuReport(
-                                            typeStatusPeduliLingkungan: 'warga',
-                                          ),
-                                      transition: Transition.rightToLeft),
-                                )
-                              : Menu(
-                                  icon: 'assets/img/citizen_menu/ipl.jpg',
-                                  text: 'Peduli lingkungan',
-                                  onTap: () => EasyLoading.showInfo(
-                                      'Fitur ini hanya bisa diakses oleh warga'),
+                () => Column(
+                  children: [
+                    Wrap(
+                      alignment: WrapAlignment.start,
+                      runSpacing: (16 / Sizer.slicingHeight) *
+                          SizeConfig.heightMultiplier,
+                      spacing: (13 / Sizer.slicingWidth) *
+                          SizeConfig.widthMultiplier,
+                      children: [
+                        (accesController.statusPeduliLingkungan.value)
+                            ? Menu(
+                                icon: 'assets/img/citizen_menu/ipl.jpg',
+                                text: 'Peduli lingkungan',
+                                onTap: () => Get.to(
+                                    () => SubMenuReport(
+                                          typeStatusPeduliLingkungan: 'warga',
+                                        ),
+                                    transition: Transition.rightToLeft),
+                              )
+                            : Menu(
+                                icon: 'assets/img/citizen_menu/ipl.jpg',
+                                text: 'Peduli lingkungan',
+                                onTap: () => EasyLoading.showInfo(
+                                    'Fitur ini hanya bisa diakses oleh warga'),
+                              ),
+                        (accesController.statusPeduliLingkungan.value)
+                            ? Menu(
+                                icon:
+                                    'assets/img/citizen_menu/status-peduli-lingkungan.jpg',
+                                text: 'Status peduli lingkungan',
+                                onTap: () => Get.to(() => ReportScreen2(),
+                                    transition: Transition.rightToLeft),
+                              )
+                            : Menu(
+                                icon:
+                                    'assets/img/citizen_menu/status-peduli-lingkungan.jpg',
+                                text: 'Status peduli lingkungan',
+                                onTap: () => EasyLoading.showInfo(
+                                    'Fitur ini hanya bisa diakses oleh warga'),
+                              ),
+                        (accesController.statusIpl.value)
+                            ? Menu(
+                                icon: 'assets/img/citizen_menu/ipl.jpg',
+                                text: 'Status IPL\n',
+                                onTap: () => Get.to(
+                                  () => PaymentIplHistory(),
+                                  transition: Transition.rightToLeft,
                                 ),
-                          (accesController.statusPeduliLingkungan.value)
-                              ? Menu(
-                                  icon:
-                                      'assets/img/citizen_menu/status-peduli-lingkungan.jpg',
-                                  text: 'Status peduli lingkungan',
-                                  onTap: () => Get.to(() => ReportScreen2(),
-                                      transition: Transition.rightToLeft),
-                                )
-                              : Menu(
-                                  icon:
-                                      'assets/img/citizen_menu/status-peduli-lingkungan.jpg',
-                                  text: 'Status peduli lingkungan',
-                                  onTap: () => EasyLoading.showInfo(
-                                      'Fitur ini hanya bisa diakses oleh warga'),
+                              )
+                            : Menu(
+                                icon: 'assets/img/citizen_menu/ipl.jpg',
+                                text: 'Status IPL\n',
+                                onTap: () => EasyLoading.showInfo(
+                                    'Fitur ini hanya bisa diakses oleh warga'),
+                              ),
+                        (accesController.informasiWarga.value)
+                            ? Menu(
+                                icon:
+                                    'assets/img/citizen_menu/informasi-warga.jpg',
+                                text: 'Informasi Warga',
+                                onTap: () => Get.to(
+                                  () => InformasiWargaScreen(),
+                                  transition: Transition.rightToLeft,
                                 ),
-                          (accesController.statusIpl.value)
-                              ? Menu(
-                                  icon: 'assets/img/citizen_menu/ipl.jpg',
-                                  text: 'Status IPL\n',
-                                  onTap: () => Get.to(
-                                    () => PaymentIplHistory(),
-                                    transition: Transition.rightToLeft,
-                                  ),
-                                )
-                              : Menu(
-                                  icon: 'assets/img/citizen_menu/ipl.jpg',
-                                  text: 'Status IPL\n',
-                                  onTap: () => EasyLoading.showInfo(
-                                      'Fitur ini hanya bisa diakses oleh warga'),
-                                ),
-                          (accesController.informasiWarga.value)
-                              ? Menu(
-                                  icon:
-                                      'assets/img/citizen_menu/informasi-warga.jpg',
-                                  text: 'Informasi Warga',
-                                  onTap: () => Get.to(
-                                    () => InformasiWargaScreen(),
-                                    transition: Transition.rightToLeft,
-                                  ),
-                                )
-                              : Menu(
-                                  icon:
-                                      'assets/img/citizen_menu/informasi-warga.jpg',
-                                  text: 'Informasi Warga',
-                                  onTap: () => EasyLoading.showInfo(
-                                      'Fitur ini hanya bisa diakses oleh warga')),
-                          (accesController.informasiUmum.value)
-                              ? Menu(
-                                  icon:
-                                      'assets/img/citizen_menu/informasi-umum.jpg',
-                                  text: 'Informasi Umum',
-                                  onTap: () {},
-                                )
-                              : Menu(
-                                  icon:
-                                      'assets/img/citizen_menu/informasi-umum.jpg',
-                                  text: 'Informasi Umum',
-                                  onTap: () => EasyLoading.showInfo(
-                                      'Fitur ini hanya bisa diakses oleh warga'),
-                                ),
-                          (accesController.sosialMedia.value)
-                              ? Menu(
-                                  icon: 'assets/img/citizen_menu/media.jpg',
-                                  text: 'Sosial Media',
-                                  onTap: () => Get.to(() => SocialMedia(),
-                                      transition: Transition.rightToLeft),
-                                )
-                              : Menu(
-                                  icon: 'assets/img/citizen_menu/media.jpg',
-                                  text: 'Sosial Media',
-                                  onTap: () => EasyLoading.showInfo(
-                                      'Fitur ini hanya bisa diakses oleh warga'),
-                                ),
-                        ],
-                      ),
-                    ],
-                  ),
+                              )
+                            : Menu(
+                                icon:
+                                    'assets/img/citizen_menu/informasi-warga.jpg',
+                                text: 'Informasi Warga',
+                                onTap: () => EasyLoading.showInfo(
+                                    'Fitur ini hanya bisa diakses oleh warga')),
+                        (accesController.informasiUmum.value)
+                            ? Menu(
+                                icon:
+                                    'assets/img/citizen_menu/informasi-umum.jpg',
+                                text: 'Informasi Umum',
+                                onTap: () {},
+                              )
+                            : Menu(
+                                icon:
+                                    'assets/img/citizen_menu/informasi-umum.jpg',
+                                text: 'Informasi Umum',
+                                onTap: () => EasyLoading.showInfo(
+                                    'Fitur ini hanya bisa diakses oleh warga'),
+                              ),
+                        (accesController.sosialMedia.value)
+                            ? Menu(
+                                icon: 'assets/img/citizen_menu/media.jpg',
+                                text: 'Sosial Media',
+                                onTap: () => Get.to(() => SocialMedia(),
+                                    transition: Transition.rightToLeft),
+                              )
+                            : Menu(
+                                icon: 'assets/img/citizen_menu/media.jpg',
+                                text: 'Sosial Media',
+                                onTap: () => EasyLoading.showInfo(
+                                    'Fitur ini hanya bisa diakses oleh warga'),
+                              ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
               SizedBox(
