@@ -1,6 +1,5 @@
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -27,47 +26,44 @@ class _AboutAppsState extends State<AboutApps> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Tentang Aplikasi BGM PIK'),
-        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 16.w),
+          margin: EdgeInsets.symmetric(horizontal: SizeConfig.width(16)),
           child: Center(
             child: Column(
               children: [
                 SizedBox(
-                  height: 40.h,
+                  height: SizeConfig.height(40),
                 ),
                 Image(
-                  width: 54.w,
-                  height: 64.h,
+                  width: SizeConfig.width(54),
+                  height: SizeConfig.height(64),
                   fit: BoxFit.cover,
                   image: image,
                 ),
                 SizedBox(
-                  height: 16.h,
+                  height: SizeConfig.height(16),
                 ),
                 FutureBuilder<PackageInfo>(
                   future: PackageInfo.fromPlatform(),
                   builder: (context, snapshot) => (snapshot.hasData)
-                      ? AutoSizeText(
+                      ? Text(
                           'Versi ${snapshot.data.version}',
                           maxLines: 2,
-                          style: TextStyle(fontSize: 16.sp),
-                          minFontSize: 10,
+                          style: TextStyle(fontSize: SizeConfig.text(16)),
                           overflow: TextOverflow.ellipsis,
                         )
                       : CircularProgressIndicator.adaptive(),
                 ),
                 SizedBox(
-                  height: 28.h,
+                  height: SizeConfig.height(28),
                 ),
-                AutoSizeText(
+                Text(
                   'BGM PIK merupakan Platform Aplikasi yang menyediakan layanan dan informasi, baik yang disediakan oleh Pengelola komplek perumahan Bukit Golf Mediterania Pantai Indah Kapuk maupun oleh warga.',
                   maxLines: 10,
-                  minFontSize: 10,
                   style: TextStyle(
-                    fontSize: 14.sp,
+                    fontSize: SizeConfig.text(14),
                     color: Color(0xff404040),
                   ),
                   textAlign: TextAlign.center,

@@ -89,19 +89,16 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
               )
             : Container(
                 margin: EdgeInsets.symmetric(
-                        horizontal: (16 / Sizer.slicingWidth) *
-                            SizeConfig.widthMultiplier)
-                    .copyWith(
-                        top: (16 / Sizer.slicingHeight) *
-                            SizeConfig.heightMultiplier),
-                child: AutoSizeText(
+                  horizontal: SizeConfig.width(16),
+                  vertical: SizeConfig.height(16),
+                ),
+                child: Text(
                   'Laporan masuk dan belum mendapat penanganan segera terima dan lakukan penanganan.',
                   style: Theme.of(context)
                       .textTheme
                       .bodyText1
                       .copyWith(color: Color(0xff616161)),
                   maxLines: 5,
-                  minFontSize: 10,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -249,12 +246,10 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
         (widget.typeStatusPeduliLingkungan
                 .isCaseInsensitiveContainsAny('warga'))
             ? SizedBox(
-                height:
-                    (360 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
+                height: SizeConfig.height(360),
               )
             : SizedBox(
-                height: (248 / SizeConfig.heightMultiplier) *
-                    SizeConfig.heightMultiplier,
+                height: SizeConfig.height(248),
               ),
         SizedBox(
           width: (328 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,

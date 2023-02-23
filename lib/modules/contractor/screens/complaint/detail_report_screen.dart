@@ -1,10 +1,9 @@
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/contractor/screens/complaint/process_report.dart';
 import 'package:aplikasi_rw/modules/contractor/services/contractor_proses_complain_services.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -53,37 +52,48 @@ class DetailReportScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle.light,
         title: Text(
           'Detail Laporan',
-          style: TextStyle(fontSize: 19.sp, fontWeight: FontWeight.w500),
         ),
       ),
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.only(left: 16.w, right: 25.w),
+          margin: EdgeInsets.only(
+            left: SizeConfig.width(16),
+            right: SizeConfig.width(25),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                margin: EdgeInsets.fromLTRB(0, 24.h, 0, 0),
-                width: 319.w,
+                margin: EdgeInsets.fromLTRB(
+                  0,
+                  SizeConfig.height(24),
+                  0,
+                  0,
+                ),
+                width: SizeConfig.width(319),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SvgPicture.asset(
                       'assets/img/image-svg/location-marker.svg',
                       color: Colors.black,
+                      width: SizeConfig.width(16),
+                      height: SizeConfig.height(16),
                     ),
-                    SizedBox(width: 8.w),
+                    SizedBox(
+                      width: SizeConfig.width(8),
+                    ),
                     Expanded(
-                      child: AutoSizeText(
+                      child: Text(
                         location,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 5,
-                        minFontSize: 13,
                         style: TextStyle(
-                            fontSize: 14.sp, fontWeight: FontWeight.w400),
+                          fontSize: SizeConfig.text(14),
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     )
                   ],
@@ -100,14 +110,17 @@ class DetailReportScreen extends StatelessWidget {
                           child: Row(
                             children: [
                               SvgPicture.asset(
-                                  'assets/img/image-svg/Icon-warning.svg'),
-                              SizedBox(width: 8.w),
+                                'assets/img/image-svg/Icon-warning.svg',
+                                width: SizeConfig.width(16),
+                                height: SizeConfig.height(16),
+                              ),
+                              SizedBox(width: SizeConfig.width(8)),
                               Expanded(
-                                child: AutoSizeText(
+                                child: Text(
                                   '${explodeTitle()[index]}',
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                    fontSize: 14.sp,
+                                    fontSize: SizeConfig.text(14),
                                   ),
                                   maxLines: 2,
                                 ),
@@ -119,21 +132,31 @@ class DetailReportScreen extends StatelessWidget {
                     : Row(
                         children: [
                           SvgPicture.asset(
-                              'assets/img/image-svg/Icon-warning.svg'),
-                          SizedBox(width: 8.w),
-                          Expanded(child: Text(title))
+                            'assets/img/image-svg/Icon-warning.svg',
+                            width: SizeConfig.width(16),
+                            height: SizeConfig.height(16),
+                          ),
+                          SizedBox(width: SizeConfig.width(8)),
+                          Expanded(
+                            child: Text(
+                              title,
+                              style: TextStyle(
+                                fontSize: SizeConfig.text(14),
+                              ),
+                            ),
+                          )
                         ],
                       ),
               ),
-              SizedBox(height: 32.h),
+              SizedBox(height: SizeConfig.height(32)),
               GestureDetector(
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => ViewImage(
                           urlImage: url,
                         ))),
                 child: SizedBox(
-                  height: 188.w,
-                  width: 319.w,
+                  height: SizeConfig.height(188),
+                  width: SizeConfig.width(399),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(4),
                     child: CachedNetworkImage(
@@ -143,40 +166,48 @@ class DetailReportScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 8.h),
+              SizedBox(
+                height: SizeConfig.height(8),
+              ),
               GestureDetector(
                 onTap: () =>
                     navigateTo(double.parse(latitude), double.parse(longitude)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    SvgPicture.asset('assets/img/image-svg/Icon-map.svg'),
-                    SizedBox(width: 4.w),
+                    SvgPicture.asset(
+                      'assets/img/image-svg/Icon-map.svg',
+                      width: SizeConfig.width(16),
+                      height: SizeConfig.height(16),
+                    ),
+                    SizedBox(width: SizeConfig.width(4)),
                     Text(
                       'Lihat peta lokasi',
-                      style:
-                          TextStyle(color: Color(0xff2094F3), fontSize: 10.sp),
+                      style: TextStyle(
+                        color: Color(0xff2094F3),
+                        fontSize: SizeConfig.text(10),
+                      ),
                     )
                   ],
                 ),
               ),
-              SizedBox(height: 16.h),
+              SizedBox(height: SizeConfig.height(16)),
               SizedBox(
-                width: 319.w,
+                width: SizeConfig.width(319),
                 child: Text(
                   description,
                   style: TextStyle(
                     color: Color(0xff757575),
-                    fontSize: 12.sp,
+                    fontSize: SizeConfig.text(12),
                   ),
                 ),
               ),
-              SizedBox(height: 122.h),
+              SizedBox(height: SizeConfig.height(122)),
               Visibility(
                 visible: isContractor,
                 child: SizedBox(
-                  width: 328.w,
-                  height: 40.h,
+                  width: SizeConfig.width(328),
+                  height: SizeConfig.height(40),
                   child: TextButton(
                     onPressed: () async {
                       EasyLoading.show(status: 'loading');
@@ -212,7 +243,8 @@ class DetailReportScreen extends StatelessWidget {
                     },
                     child: Text(
                       'Terima Laporan',
-                      style: TextStyle(fontSize: 16.sp, color: Colors.white),
+                      style: TextStyle(
+                          fontSize: SizeConfig.height(16), color: Colors.white),
                     ),
                     style: TextButton.styleFrom(
                       backgroundColor: Color(0xff2094F3),

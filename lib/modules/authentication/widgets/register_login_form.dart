@@ -1,6 +1,7 @@
 import 'package:aplikasi_rw/controller/register_controller.dart';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/authentication/controllers/auth_controller.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -104,21 +105,21 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
-          height: 32.h,
+          height: SizeConfig.height(32),
         ),
         Image(
           image: image,
-          width: 80.w,
-          height: 94.h,
+          width: SizeConfig.width(80),
+          height: SizeConfig.width(94),
         ),
         SizedBox(
-          height: 32.h,
+          height: SizeConfig.height(32),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              height: 40.h,
+              height: SizeConfig.height(40),
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey[400]),
                   borderRadius: BorderRadius.circular(20)),
@@ -131,8 +132,9 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                           borderRadius: BorderRadius.circular(20)),
                       backgroundColor:
                           (isLogin) ? Colors.lightBlue[400] : Colors.white,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 6.h, horizontal: 16.w),
+                      padding: EdgeInsets.symmetric(
+                          vertical: SizeConfig.height(6),
+                          horizontal: SizeConfig.width(16)),
                     ),
                     onPressed: () {
                       setState(() {
@@ -144,7 +146,7 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                       style: TextStyle(
                           color:
                               (isLogin) ? Colors.white : Colors.lightBlue[400],
-                          fontSize: 14.sp),
+                          fontSize: SizeConfig.text(14)),
                     ),
                   ),
                   TextButton(
@@ -153,8 +155,9 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                           borderRadius: BorderRadius.circular(20)),
                       backgroundColor:
                           (!isLogin) ? Colors.lightBlue[400] : Colors.white,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 6.h, horizontal: 16.w),
+                      padding: EdgeInsets.symmetric(
+                          vertical: SizeConfig.height(6),
+                          horizontal: SizeConfig.width(16)),
                     ),
                     onPressed: () {
                       // Navigator.of(context)
@@ -170,7 +173,7 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                             color: (isLogin)
                                 ? Colors.lightBlue[400]
                                 : Colors.white,
-                            fontSize: 14.sp)),
+                            fontSize: SizeConfig.text(14))),
                   )
                 ],
               ),
@@ -178,11 +181,9 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
           ],
         ),
         // (formLoginOrRegister)
-        SizedBox(height: 48.h),
+        SizedBox(height: SizeConfig.height(48)),
         (isLogin) ? buildFormLogin() : buildFormRegister(),
-        SizedBox(
-          height: 2.h,
-        )
+        SizedBox(height: SizeConfig.height(2))
       ],
     );
   }
@@ -195,7 +196,7 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              padding: EdgeInsets.symmetric(horizontal: SizeConfig.width(16)),
               child: TextFormField(
                 controller: authController.controllerUsername,
                 keyboardType: TextInputType.emailAddress,
@@ -203,9 +204,13 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                   errorText: !registerController.iplOrEmailValid.value
                       ? null
                       : 'Nomor email / ipl anda salah',
-                  icon: SvgPicture.asset('assets/img/image-svg/user-login.svg'),
+                  icon: SvgPicture.asset(
+                    'assets/img/image-svg/user-login.svg',
+                    height: SizeConfig.image(20),
+                    width: SizeConfig.image(20),
+                  ),
                   hintText: 'Masukan email / nomor IPL',
-                  hintStyle: TextStyle(fontSize: 14.sp),
+                  hintStyle: TextStyle(fontSize: SizeConfig.text(14)),
                   border: UnderlineInputBorder(),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
@@ -217,11 +222,15 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                       ? (registerController.iplOrEmailSucces.value)
                           ? SvgPicture.asset(
                               'assets/img/image-svg/success.svg',
+                              height: SizeConfig.height(20),
+                              width: SizeConfig.width(20),
                             )
                           : null
                       : GestureDetector(
                           child: SvgPicture.asset(
                             'assets/img/image-svg/close.svg',
+                            height: SizeConfig.height(20),
+                            width: SizeConfig.width(20),
                           ),
                           onTap: () {
                             authController.controllerUsername.text = '';
@@ -230,8 +239,10 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                             setState(() {});
                           },
                         ),
-                  suffixIconConstraints:
-                      BoxConstraints(minHeight: 5.h, minWidth: 5.w),
+                  suffixIconConstraints: BoxConstraints(
+                    minHeight: SizeConfig.height(5),
+                    minWidth: SizeConfig.width(5),
+                  ),
                 ),
                 validator: (value) {
                   if (value != null && value.length >= 5) {
@@ -257,9 +268,9 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                 },
               ),
             ),
-            SizedBox(height: 32.h),
+            SizedBox(height: SizeConfig.height(32)),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              padding: EdgeInsets.symmetric(horizontal: SizeConfig.width(16)),
               child: Column(
                 children: [
                   Obx(
@@ -268,24 +279,33 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                       obscureText: isObscure,
                       controller: authController.controllerPassword,
                       decoration: InputDecoration(
-                          icon:
-                              SvgPicture.asset('assets/img/image-svg/key.svg'),
+                          icon: SvgPicture.asset(
+                            'assets/img/image-svg/key.svg',
+                            height: SizeConfig.height(20),
+                            width: SizeConfig.width(20),
+                          ),
                           suffixIcon: IconButton(
+                            splashRadius: 10,
+                            padding: EdgeInsets.zero,
                             icon: Icon((isObscure)
                                 ? Icons.visibility_off_outlined
                                 : Icons.visibility),
+                            iconSize: SizeConfig.image(20),
                             onPressed: () {
                               setState(() {
                                 isObscure = !isObscure;
                               });
                             },
                           ),
+                          suffixIconConstraints: BoxConstraints.tightFor(
+                            width: SizeConfig.width(24),
+                          ),
                           errorText:
                               (loginController.passwordWrong.value == 'true')
                                   ? 'Kata sandi anda salah !'
                                   : null,
                           hintText: 'Masukan kata sandi',
-                          hintStyle: TextStyle(fontSize: 14.sp),
+                          hintStyle: TextStyle(fontSize: SizeConfig.text(14)),
                           border: UnderlineInputBorder()),
                       validator: (value) {
                         if (value.isEmpty) {
@@ -296,13 +316,13 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                       },
                     ),
                   ),
-                  SizedBox(height: 8.h),
+                  SizedBox(height: SizeConfig.height(8)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextButton(
                         child: Text('Lupa kata sandi ?',
-                            style: TextStyle(fontSize: 14.sp)),
+                            style: TextStyle(fontSize: SizeConfig.text(14))),
                         onPressed: () {
                           registerController.toResetPassword.value = true;
                           registerController.email.value =
@@ -317,14 +337,17 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                 ],
               ),
             ),
-            SizedBox(height: 32.h),
+            SizedBox(height: SizeConfig.height(32)),
             SizedBox(
-              height: 40.h,
-              width: 293.w,
+              height: SizeConfig.height(40),
+              width: SizeConfig.width(293),
               child: TextButton(
                 child: Text(
                   'Masuk',
-                  style: TextStyle(color: Colors.white, fontSize: 11.0.sp),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: SizeConfig.text(16),
+                  ),
                 ),
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.lightBlue[400],
@@ -342,7 +365,7 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
               ),
             ),
             SizedBox(
-              height: 66.h,
+              height: SizeConfig.height(66),
             ),
           ],
         ),
@@ -357,14 +380,18 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: SizeConfig.width(16)),
             child: TextFormField(
               controller: controllerIpl,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
-                  icon: SvgPicture.asset('assets/img/image-svg/user-login.svg'),
+                  icon: SvgPicture.asset(
+                    'assets/img/image-svg/user-login.svg',
+                    height: SizeConfig.width(20),
+                    width: SizeConfig.height(20),
+                  ),
                   hintText: 'Masukan nomor IPL',
-                  hintStyle: TextStyle(fontSize: 14.sp),
+                  hintStyle: TextStyle(fontSize: SizeConfig.text(14)),
                   border: UnderlineInputBorder()),
               validator: (value) {
                 if (value.isEmpty) {
@@ -375,18 +402,22 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
               },
             ),
           ),
-          SizedBox(height: 32.h),
+          SizedBox(height: SizeConfig.height(32)),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: SizeConfig.width(16)),
             child: Column(
               children: [
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   controller: authController.controllerEmail,
                   decoration: InputDecoration(
-                      icon: SvgPicture.asset('assets/img/image-svg/email.svg'),
+                      icon: SvgPicture.asset(
+                        'assets/img/image-svg/email.svg',
+                        width: SizeConfig.width(20),
+                        height: SizeConfig.height(20),
+                      ),
                       hintText: 'Masukan Email',
-                      hintStyle: TextStyle(fontSize: 14.sp),
+                      hintStyle: TextStyle(fontSize: SizeConfig.text(14)),
                       border: UnderlineInputBorder()),
                   validator: (value) {
                     if (value.isEmpty) {
@@ -399,9 +430,9 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
               ],
             ),
           ),
-          SizedBox(height: 32.h),
+          SizedBox(height: SizeConfig.height(32)),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: SizeConfig.width(16)),
             child: Column(
               children: [
                 TextFormField(
@@ -409,9 +440,12 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                   controller: authController.controllerNoTelp,
                   decoration: InputDecoration(
                       icon: SvgPicture.asset(
-                          'assets/img/image-svg/handphone.svg'),
+                        'assets/img/image-svg/handphone.svg',
+                        width: SizeConfig.width(20),
+                        height: SizeConfig.height(20),
+                      ),
                       hintText: 'Masukan nomor telpon',
-                      hintStyle: TextStyle(fontSize: 14.sp),
+                      hintStyle: TextStyle(fontSize: SizeConfig.text(14)),
                       border: UnderlineInputBorder()),
                   validator: (value) {
                     print('${ValidationForm.isValidPhone(value)}');
@@ -429,14 +463,15 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
               ],
             ),
           ),
-          SizedBox(height: 42.h),
+          SizedBox(height: SizeConfig.height(42)),
           SizedBox(
-            width: 293.w,
-            height: 40.h,
+            width: SizeConfig.width(293),
+            height: SizeConfig.height(40),
             child: TextButton(
               child: Text(
                 'Daftar',
-                style: TextStyle(color: Colors.white, fontSize: 11.0.sp),
+                style: TextStyle(
+                    color: Colors.white, fontSize: SizeConfig.text(11)),
               ),
               style: TextButton.styleFrom(
                 backgroundColor: Colors.lightBlue[400],
@@ -461,7 +496,7 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
               },
             ),
           ),
-          SizedBox(height: 40.h)
+          SizedBox(height: SizeConfig.height(40))
         ],
       ),
     );

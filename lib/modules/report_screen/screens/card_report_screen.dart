@@ -61,11 +61,6 @@ class CardReportScreen extends StatelessWidget {
     ScreenUtil.init(context, designSize: const Size(360, 800));
     precacheImage(image, context);
     return Container(
-      margin: EdgeInsets.only(
-        left: SizeConfig.width(16),
-        right: SizeConfig.width(32),
-        bottom: SizeConfig.height(20),
-      ),
       child: GestureDetector(
         child: Card(
           margin: EdgeInsets.all(0),
@@ -73,19 +68,15 @@ class CardReportScreen extends StatelessWidget {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: SizeConfig.width(8),
+              vertical: SizeConfig.height(8),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height:
-                      (8 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
-                ),
                 Row(
                   children: [
-                    SizedBox(
-                      width:
-                          (8 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
-                    ),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(4),
                       child: FadeInImage(
@@ -113,120 +104,117 @@ class CardReportScreen extends StatelessWidget {
                       width: (16 / Sizer.slicingWidth) *
                           SizeConfig.widthMultiplier,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              noTicket,
-                              style: TextStyle(
-                                  fontSize: (10 / Sizer.slicingText) *
-                                      SizeConfig.textMultiplier,
-                                  color: Color(0xff2094F3),
-                                  overflow: TextOverflow.clip),
-                            ),
-                            SizedBox(
-                              width: (76 / Sizer.slicingWidth) *
-                                  SizeConfig.widthMultiplier,
-                            ),
-                            Container(
-                              width: (78 / Sizer.slicingWidth) *
-                                  SizeConfig.widthMultiplier,
-                              padding: EdgeInsets.symmetric(
-                                vertical: (2 / Sizer.slicingHeight) *
-                                    SizeConfig.heightMultiplier,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text(
+                                noTicket,
+                                style: TextStyle(
+                                    fontSize: (10 / Sizer.slicingText) *
+                                        SizeConfig.textMultiplier,
+                                    color: Color(0xff2094F3),
+                                    overflow: TextOverflow.clip),
                               ),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                border: Border.all(
+                              Container(
+                                width: (78 / Sizer.slicingWidth) *
+                                    SizeConfig.widthMultiplier,
+                                padding: EdgeInsets.symmetric(
+                                  vertical: (2 / Sizer.slicingHeight) *
+                                      SizeConfig.heightMultiplier,
+                                ),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: (status == 'Menunggu')
+                                        ? Color(0xffEEB4B0)
+                                        : (status == 'Diproses')
+                                            ? Color(0xffEECEB0)
+                                            : (status == 'Selesai')
+                                                ? Color(0xffB8DBCA)
+                                                : (status == 'Diterima')
+                                                    ? Color(0xffB1C5F6)
+                                                    : Color(
+                                                        0xffFF6A6A,
+                                                      ),
+                                  ),
+                                  borderRadius: BorderRadius.circular(6),
                                   color: (status == 'Menunggu')
-                                      ? Color(0xffEEB4B0)
+                                      ? Color(0xffEEB4B0).withOpacity(0.5)
                                       : (status == 'Diproses')
-                                          ? Color(0xffEECEB0)
+                                          ? Color(0xffEECEB0).withOpacity(0.5)
                                           : (status == 'Selesai')
                                               ? Color(0xffB8DBCA)
+                                                  .withOpacity(0.5)
                                               : (status == 'Diterima')
-                                                  ? Color(0xffB1C5F6)
-                                                  : Color(
-                                                      0xffFF6A6A,
-                                                    ),
+                                                  ? Color(0xffF0F3FF)
+                                                  : Color(0xffFFC9C9)
+                                                      .withOpacity(0.5),
                                 ),
-                                borderRadius: BorderRadius.circular(6),
-                                color: (status == 'Menunggu')
-                                    ? Color(0xffEEB4B0).withOpacity(0.5)
-                                    : (status == 'Diproses')
-                                        ? Color(0xffEECEB0).withOpacity(0.5)
-                                        : (status == 'Selesai')
-                                            ? Color(0xffB8DBCA).withOpacity(0.5)
-                                            : (status == 'Diterima')
-                                                ? Color(0xffF0F3FF)
-                                                : Color(0xffFFC9C9)
-                                                    .withOpacity(0.5),
+                                child: Text(
+                                  status,
+                                  style: TextStyle(
+                                    fontSize: (12 / Sizer.slicingText) *
+                                        SizeConfig.textMultiplier,
+                                    color: (status == 'Eskalasi tingkat 1' ||
+                                            status == 'Eskalasi tingkat 2' ||
+                                            status == 'Eskalasi tingkat 3')
+                                        ? Color(0xffF32020)
+                                        : (status == 'Menunggu')
+                                            ? Color(0xffCB3A31)
+                                            : (status == 'Diproses')
+                                                ? Color(0xff734011)
+                                                : (status == 'Selesai')
+                                                    ? Color(0xff20573D)
+                                                    : (status == 'Diterima')
+                                                        ? Color(0xff4C4DDC)
+                                                        : Colors.black,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
                               ),
-                              child: Text(
-                                status,
-                                style: TextStyle(
+                            ],
+                          ),
+                          SizedBox(
+                            width: (125 / Sizer.slicingWidth) *
+                                SizeConfig.widthMultiplier,
+                            height: (42 / Sizer.slicingHeight) *
+                                SizeConfig.heightMultiplier,
+                            child: Text(
+                              (description.isEmpty)
+                                  ? 'Laporan tentang : ' + category
+                                  : description,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
                                   fontSize: (12 / Sizer.slicingText) *
-                                      SizeConfig.textMultiplier,
-                                  color: (status == 'Eskalasi tingkat 1' ||
-                                          status == 'Eskalasi tingkat 2' ||
-                                          status == 'Eskalasi tingkat 3')
-                                      ? Color(0xffF32020)
-                                      : (status == 'Menunggu')
-                                          ? Color(0xffCB3A31)
-                                          : (status == 'Diproses')
-                                              ? Color(0xff734011)
-                                              : (status == 'Selesai')
-                                                  ? Color(0xff20573D)
-                                                  : (status == 'Diterima')
-                                                      ? Color(0xff4C4DDC)
-                                                      : Colors.black,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
+                                      SizeConfig.textMultiplier),
+                            ),
+                          ),
+                          SizedBox(
+                            width: (125 / Sizer.slicingWidth) *
+                                SizeConfig.widthMultiplier,
+                            child: Text(
+                              time,
+                              style: TextStyle(
+                                fontSize: (10 / Sizer.slicingText) *
+                                    SizeConfig.textMultiplier,
+                                color: Color(0xff9E9E9E),
                               ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          ],
-                        ),
-                        SizedBox(
-                          width: (125 / Sizer.slicingWidth) *
-                              SizeConfig.widthMultiplier,
-                          height: (42 / Sizer.slicingHeight) *
-                              SizeConfig.heightMultiplier,
-                          child: Text(
-                            (description.isEmpty)
-                                ? 'Laporan tentang : ' + category
-                                : description,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontSize: (12 / Sizer.slicingText) *
-                                    SizeConfig.textMultiplier),
-                          ),
-                        ),
-                        SizedBox(
-                          width: (125 / Sizer.slicingWidth) *
-                              SizeConfig.widthMultiplier,
-                          child: Text(
-                            time,
-                            style: TextStyle(
-                              fontSize: (10 / Sizer.slicingText) *
-                                  SizeConfig.textMultiplier,
-                              color: Color(0xff9E9E9E),
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
-                SizedBox(
-                  height:
-                      (8 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
-                )
               ],
             ),
           ),

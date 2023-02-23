@@ -1,6 +1,5 @@
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/home/services/news_service.dart';
-import 'package:aplikasi_rw/modules/home/widgets/app_bar_citizen.dart';
 import 'package:aplikasi_rw/modules/informasi_warga/screens/read_informasi_screen.dart';
 import 'package:aplikasi_rw/modules/theme/sizer.dart';
 import 'package:aplikasi_rw/utils/screen_size.dart';
@@ -10,7 +9,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../server-app.dart';
 import '../models/card_news.dart';

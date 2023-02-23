@@ -4,6 +4,7 @@ import 'package:aplikasi_rw/modules/authentication/validate/validate_email_and_p
 import 'package:aplikasi_rw/modules/estate_manager/controllers/estate_manager_controller.dart';
 import 'package:aplikasi_rw/modules/estate_manager/data/position_employee.dart';
 import 'package:aplikasi_rw/modules/estate_manager/services/create_account_services.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -52,7 +53,6 @@ class _CreateAccountEmployeeState extends State<CreateAccountEmployee> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Tambah Akun'),
-        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       body: FutureBuilder<List<PositionEmployee>>(
           future: CreateAccountServices.getPosition(type: widget.division),
@@ -61,24 +61,25 @@ class _CreateAccountEmployeeState extends State<CreateAccountEmployee> {
                 ? SingleChildScrollView(
                     child: Container(
                       margin: EdgeInsets.symmetric(
-                          horizontal: 16.w, vertical: 16.h),
+                        horizontal: SizeConfig.width(16),
+                        vertical: SizeConfig.height(16),
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Column(
                             children: [
-                              AutoSizeText(
+                              Text(
                                 widget.title,
                                 style: TextStyle(
-                                  fontSize: 16.sp,
+                                  fontSize: SizeConfig.text(16),
                                   color: Color(0xff616161),
                                 ),
                                 maxLines: 3,
-                                minFontSize: 15,
                                 overflow: TextOverflow.ellipsis,
                               ),
                               SizedBox(
-                                height: 34.h,
+                                height: SizeConfig.height(34),
                               ),
                               Center(
                                 child: CircleAvatar(
@@ -87,46 +88,51 @@ class _CreateAccountEmployeeState extends State<CreateAccountEmployee> {
                                       : FileImage(
                                           File(pathAvatar.value),
                                         ),
-                                  radius: 124.h / 2,
+                                  radius: SizeConfig.height(124) / 2,
                                 ),
                               ),
                               SizedBox(
-                                height: 24.h,
+                                height: SizeConfig.height(24),
                               ),
-                              OutlinedButton(
-                                onPressed: () {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    builder: (context) => bottomImagePicker(),
-                                  );
-                                },
-                                child: Text(
-                                  'Pilih gambar',
-                                  style: TextStyle(
-                                      fontSize: 16.sp,
-                                      color: Color(0xff9E9E9E)),
+                              SizedBox(
+                                width: SizeConfig.width(140),
+                                height: SizeConfig.height(40),
+                                child: OutlinedButton(
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) => bottomImagePicker(),
+                                    );
+                                  },
+                                  child: Text(
+                                    'Pilih gambar',
+                                    style: TextStyle(
+                                        fontSize: SizeConfig.text(16),
+                                        color: Color(0xff9E9E9E)),
+                                  ),
                                 ),
                               ),
                               SizedBox(
-                                height: 32.h,
+                                height: SizeConfig.height(32),
                               ),
                               SizedBox(
-                                width: 216.w,
+                                width: SizeConfig.width(216),
+                                height: SizeConfig.height(52),
                                 child: Column(children: [
                                   Text(
                                     'Ukuran gambar : maks. 1MB',
                                     style: TextStyle(
-                                      fontSize: 16.sp,
+                                      fontSize: SizeConfig.text(16),
                                       color: Color(0xff9E9E9E),
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 4.h,
+                                    height: SizeConfig.height(4),
                                   ),
                                   Text(
                                     'Format gambar : .JPG, .PNG',
                                     style: TextStyle(
-                                      fontSize: 16.sp,
+                                      fontSize: SizeConfig.text(16),
                                       color: Color(0xff9E9E9E),
                                     ),
                                   )
@@ -135,14 +141,14 @@ class _CreateAccountEmployeeState extends State<CreateAccountEmployee> {
                             ],
                           ),
                           SizedBox(
-                            height: 24.h,
+                            height: SizeConfig.height(24),
                           ),
                           Text(
                             'Username',
-                            style: TextStyle(fontSize: 14.sp),
+                            style: TextStyle(fontSize: SizeConfig.text(14)),
                           ),
                           SizedBox(
-                            height: 4.h,
+                            height: SizeConfig.height(4),
                           ),
                           Form(
                             key: _formKeyUsername,
@@ -158,11 +164,12 @@ class _CreateAccountEmployeeState extends State<CreateAccountEmployee> {
                               },
                               onChanged: (value) =>
                                   _formKeyUsername.currentState.validate(),
-                              style: TextStyle(fontSize: 14.sp),
+                              style: TextStyle(fontSize: SizeConfig.text(14)),
                               decoration: InputDecoration(
                                 isDense: true,
                                 contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 12.w, vertical: 6.h),
+                                    horizontal: SizeConfig.width(12),
+                                    vertical: SizeConfig.height(6)),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                     color: Color(0xffC2C2C2),
@@ -173,11 +180,11 @@ class _CreateAccountEmployeeState extends State<CreateAccountEmployee> {
                             ),
                           ),
                           SizedBox(
-                            height: 16.h,
+                            height: SizeConfig.height(16),
                           ),
                           Text(
                             'Nama',
-                            style: TextStyle(fontSize: 14.sp),
+                            style: TextStyle(fontSize: SizeConfig.text(14)),
                           ),
                           Form(
                             key: _formKeyNama,
@@ -193,12 +200,12 @@ class _CreateAccountEmployeeState extends State<CreateAccountEmployee> {
                               },
                               onChanged: (value) =>
                                   _formKeyNama.currentState.validate(),
-                              style: TextStyle(fontSize: 14.sp),
+                              style: TextStyle(fontSize: SizeConfig.text(14)),
                               decoration: InputDecoration(
                                 isDense: true,
                                 contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 12.w,
-                                  vertical: 6.h,
+                                  horizontal: SizeConfig.width(12),
+                                  vertical: SizeConfig.height(6),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -210,14 +217,14 @@ class _CreateAccountEmployeeState extends State<CreateAccountEmployee> {
                             ),
                           ),
                           SizedBox(
-                            height: 16.h,
+                            height: SizeConfig.height(16),
                           ),
                           Text(
                             'Email',
-                            style: TextStyle(fontSize: 14.sp),
+                            style: TextStyle(fontSize: SizeConfig.text(14)),
                           ),
                           SizedBox(
-                            height: 4.h,
+                            height: SizeConfig.height(4),
                           ),
                           Form(
                             key: _formKeyEmail,
@@ -227,7 +234,9 @@ class _CreateAccountEmployeeState extends State<CreateAccountEmployee> {
                               decoration: InputDecoration(
                                 isDense: true,
                                 contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 12.w, vertical: 6.h),
+                                  horizontal: SizeConfig.width(12),
+                                  vertical: SizeConfig.height(6),
+                                ),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                     color: Color(0xffC2C2C2),
@@ -247,14 +256,14 @@ class _CreateAccountEmployeeState extends State<CreateAccountEmployee> {
                             ),
                           ),
                           SizedBox(
-                            height: 16.h,
+                            height: SizeConfig.height(16),
                           ),
                           Text(
                             'Nomor Telpon',
-                            style: TextStyle(fontSize: 14.sp),
+                            style: TextStyle(fontSize: SizeConfig.text(14)),
                           ),
                           SizedBox(
-                            height: 4.h,
+                            height: SizeConfig.height(4),
                           ),
                           Form(
                             key: _formKeyNoTelp,
@@ -278,7 +287,9 @@ class _CreateAccountEmployeeState extends State<CreateAccountEmployee> {
                               decoration: InputDecoration(
                                 isDense: true,
                                 contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 12.w, vertical: 6.h),
+                                  horizontal: SizeConfig.width(12),
+                                  vertical: SizeConfig.height(6),
+                                ),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                     color: Color(0xffC2C2C2),
@@ -289,14 +300,14 @@ class _CreateAccountEmployeeState extends State<CreateAccountEmployee> {
                             ),
                           ),
                           SizedBox(
-                            height: 16.h,
+                            height: SizeConfig.height(16),
                           ),
                           Text(
                             'Bagian',
-                            style: TextStyle(fontSize: 14.sp),
+                            style: TextStyle(fontSize: SizeConfig.text(14)),
                           ),
                           SizedBox(
-                            height: 4.h,
+                            height: SizeConfig.height(4),
                           ),
                           DropdownButtonFormField<String>(
                             items: snapshot.data
@@ -307,7 +318,7 @@ class _CreateAccountEmployeeState extends State<CreateAccountEmployee> {
                                     child: Text(
                                       e.position,
                                       style: TextStyle(
-                                          fontSize: 14.sp,
+                                          fontSize: SizeConfig.text(14),
                                           color: Color(0xff757575)),
                                     ),
                                   ),
@@ -319,11 +330,14 @@ class _CreateAccountEmployeeState extends State<CreateAccountEmployee> {
                             },
                             hint: Text('${snapshot.data[0].position}',
                                 style: TextStyle(
-                                    fontSize: 14.sp, color: Color(0xff757575))),
+                                    fontSize: SizeConfig.text(14),
+                                    color: Color(0xff757575))),
                             decoration: InputDecoration(
                               isDense: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 12.w, vertical: 6.h),
+                              isCollapsed: true,
+                              contentPadding: EdgeInsets.only(
+                                left: SizeConfig.width(12),
+                              ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0xffC2C2C2),
@@ -337,14 +351,14 @@ class _CreateAccountEmployeeState extends State<CreateAccountEmployee> {
                             ),
                           ),
                           SizedBox(
-                            height: 16.h,
+                            height: SizeConfig.height(16),
                           ),
                           Text(
                             'Password',
-                            style: TextStyle(fontSize: 14.sp),
+                            style: TextStyle(fontSize: SizeConfig.text(14)),
                           ),
                           SizedBox(
-                            height: 4.h,
+                            height: SizeConfig.height(4),
                           ),
                           Form(
                             key: _formKeyPassword,
@@ -365,7 +379,9 @@ class _CreateAccountEmployeeState extends State<CreateAccountEmployee> {
                               decoration: InputDecoration(
                                 isDense: true,
                                 contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 12.w, vertical: 6.h),
+                                  horizontal: SizeConfig.width(12),
+                                  vertical: SizeConfig.height(6),
+                                ),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                     color: Color(0xffC2C2C2),
@@ -376,10 +392,11 @@ class _CreateAccountEmployeeState extends State<CreateAccountEmployee> {
                             ),
                           ),
                           SizedBox(
-                            height: 24.h,
+                            height: SizeConfig.height(16),
                           ),
                           SizedBox(
                             width: double.infinity,
+                            height: SizeConfig.height(40),
                             child: ElevatedButton(
                               onPressed: () async {
                                 if (_formKeyUsername.currentState.validate() &&
@@ -445,7 +462,7 @@ class _CreateAccountEmployeeState extends State<CreateAccountEmployee> {
                               child: Text(
                                 'Simpan',
                                 style: TextStyle(
-                                    fontSize: 16.sp,
+                                    fontSize: SizeConfig.text(16),
                                     fontWeight: FontWeight.w500),
                               ),
                             ),

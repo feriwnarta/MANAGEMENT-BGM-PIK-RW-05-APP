@@ -264,6 +264,7 @@ class UserProfileScreen extends StatelessWidget {
                 ),
                 SizedBox(
                   width: SizeConfig.width(328),
+                  height: SizeConfig.height(40),
                   child: OutlinedButton(
                       onPressed: () async {
                         await UserSecureStorage.deleteIdUser();

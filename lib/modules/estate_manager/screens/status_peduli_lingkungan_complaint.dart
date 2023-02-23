@@ -6,6 +6,7 @@ import 'package:aplikasi_rw/modules/contractor/screens/complaint/finish_report_s
 import 'package:aplikasi_rw/modules/contractor/widgets/detail_report_finished.dart';
 import 'package:aplikasi_rw/modules/estate_manager/services/status_peduli_lingkungan_services.dart';
 import 'package:aplikasi_rw/server-app.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:aplikasi_rw/utils/view_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -85,13 +86,12 @@ class _ListStatusPeduliLingkunganState
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(360, 800));
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Status Peduli Lingkungan'),
-          systemOverlayStyle: SystemUiOverlayStyle.light,
-        ),
-        body: SingleChildScrollView(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Status Peduli Lingkungan'),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
           controller: scrollController,
           child: FutureBuilder<List<RadioStatusPeduli>>(
               future: future,
@@ -99,27 +99,26 @@ class _ListStatusPeduliLingkunganState
                 if (snapshot.hasData) {
                   return Container(
                     margin: EdgeInsets.symmetric(
-                      horizontal: 16.w,
+                      horizontal: SizeConfig.width(16),
                     ),
                     child: Column(
                       children: [
                         SizedBox(
-                          height: 16.h,
+                          height: SizeConfig.height(16),
                         ),
-                        AutoSizeText(
+                        Text(
                           'Laporan masuk dan belum mendapat penanganan segera hubungi koordinator yang terkait.',
                           style: TextStyle(
-                            fontSize: 16.sp,
+                            fontSize: SizeConfig.text(16),
                           ),
                           maxLines: 5,
-                          minFontSize: 10,
                           overflow: TextOverflow.ellipsis,
                         ),
                         SizedBox(
-                          height: 20.h,
+                          height: SizeConfig.height(20),
                         ),
                         SizedBox(
-                          height: 35.h,
+                          height: SizeConfig.height(35),
                           child: ListView.builder(
                             itemCount: snapshot.data.length,
                             addAutomaticKeepAlives: true,
@@ -127,43 +126,48 @@ class _ListStatusPeduliLingkunganState
                             itemBuilder: (context, index) => Row(
                               children: [
                                 Obx(
-                                  () => Radio<String>(
-                                    value: snapshot.data[index].value,
-                                    groupValue: groupSelected.value.groupValue,
-                                    materialTapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    onChanged: (value) async {
-                                      groupSelected.value =
-                                          RadioStatusPeduli(groupValue: value);
-                                      await controllerEm.changeDataRequest(
-                                          status:
-                                              groupSelected.value.groupValue);
-                                    },
-                                    visualDensity: const VisualDensity(
-                                      horizontal: VisualDensity.minimumDensity,
-                                      vertical: VisualDensity.minimumDensity,
+                                  () => Transform.scale(
+                                    scale: 0.8,
+                                    child: Radio<String>(
+                                      value: snapshot.data[index].value,
+                                      groupValue:
+                                          groupSelected.value.groupValue,
+                                      materialTapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
+                                      onChanged: (value) async {
+                                        groupSelected.value = RadioStatusPeduli(
+                                            groupValue: value);
+                                        await controllerEm.changeDataRequest(
+                                            status:
+                                                groupSelected.value.groupValue);
+                                      },
+                                      visualDensity: const VisualDensity(
+                                        horizontal:
+                                            VisualDensity.minimumDensity,
+                                        vertical: VisualDensity.minimumDensity,
+                                      ),
                                     ),
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 8.w,
+                                  width: SizeConfig.width(8),
                                 ),
-                                AutoSizeText(
+                                Text(
                                   '${snapshot.data[index].title}',
-                                  style: TextStyle(fontSize: 14.sp),
+                                  style:
+                                      TextStyle(fontSize: SizeConfig.text(14)),
                                   maxLines: 2,
-                                  minFontSize: 11,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 SizedBox(
-                                  width: 16.w,
+                                  width: SizeConfig.width(16),
                                 ),
                               ],
                             ),
                           ),
                         ),
                         SizedBox(
-                          height: 20.h,
+                          height: SizeConfig.height(20),
                         ),
                         Obx(
                           () => (controllerEm.isLoading.value)
@@ -323,7 +327,10 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
         }
       },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+        padding: EdgeInsets.symmetric(
+          horizontal: SizeConfig.width(16),
+          vertical: SizeConfig.height(16),
+        ),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8),
@@ -343,20 +350,23 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: 148.w,
-                  child: AutoSizeText(
+                  width: SizeConfig.width(148),
+                  child: Text(
                     title,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 5,
                     style: TextStyle(
-                      fontSize: 19.sp,
+                      fontSize: SizeConfig.text(19),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
                 Container(
-                  width: 103.w,
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                  width: SizeConfig.width(103),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.width(8),
+                    vertical: SizeConfig.height(2),
+                  ),
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: (status.isCaseInsensitiveContainsAny('Menunggu'))
@@ -388,13 +398,12 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Center(
-                    child: AutoSizeText(
+                    child: Text(
                       status,
                       overflow: TextOverflow.ellipsis,
-                      minFontSize: 10,
                       maxLines: 1,
                       style: TextStyle(
-                        fontSize: 12.sp,
+                        fontSize: SizeConfig.text(12),
                         fontWeight: FontWeight.w500,
                         color: (status.isCaseInsensitiveContainsAny('Menunggu'))
                             ? Color(
@@ -418,13 +427,13 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 16.h,
+              height: SizeConfig.height(16),
             ),
             Divider(
               thickness: 1,
             ),
             SizedBox(
-              height: 16.h,
+              height: SizeConfig.height(16),
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -434,8 +443,8 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
                     () => ViewImage(urlImage: '${ServerApp.url}/$image'),
                   ),
                   child: Container(
-                    width: 70.w,
-                    height: 70.h,
+                    width: SizeConfig.width(70),
+                    height: SizeConfig.height(70),
                     child: CachedNetworkImage(
                       imageUrl: '${ServerApp.url}/$image',
                       fit: BoxFit.cover,
@@ -449,7 +458,7 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 16.w,
+                  width: SizeConfig.width(16),
                 ),
                 Expanded(
                   child: Column(
@@ -462,23 +471,22 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
                           SvgPicture.asset(
                               'assets/img/estate_manager_menu/location-marker-em.svg'),
                           SizedBox(
-                            width: 8.w,
+                            width: SizeConfig.width(8),
                           ),
                           Expanded(
-                            child: AutoSizeText(
+                            child: Text(
                               address,
                               maxLines: 5,
                               style: TextStyle(
-                                fontSize: 14.sp,
+                                fontSize: SizeConfig.text(14),
                               ),
-                              minFontSize: 10,
                               overflow: TextOverflow.ellipsis,
                             ),
                           )
                         ],
                       ),
                       SizedBox(
-                        height: 8.h,
+                        height: SizeConfig.height(8),
                       ),
                       Material(
                         child: InkWell(
@@ -492,13 +500,15 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
                             children: [
                               SvgPicture.asset(
                                 'assets/img/image-svg/Icon-map.svg',
+                                width: SizeConfig.width(16),
+                                height: SizeConfig.height(16),
                               ),
-                              SizedBox(width: 4.w),
-                              AutoSizeText(
+                              SizedBox(width: SizeConfig.width(8)),
+                              Text(
                                 'Lihat peta lokasi',
                                 maxLines: 1,
                                 style: TextStyle(
-                                  fontSize: 10.sp,
+                                  fontSize: SizeConfig.text(10),
                                   color: Color(0xff2094F3),
                                 ),
                               )
@@ -512,20 +522,20 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 8.h,
+              height: SizeConfig.height(8),
             ),
-            AutoSizeText.rich(
+            Text.rich(
               TextSpan(
                 text: 'Waktu laporan : ',
                 style: TextStyle(
-                  fontSize: 10.sp,
+                  fontSize: SizeConfig.text(10),
                   fontWeight: FontWeight.w400,
                 ),
                 children: [
                   TextSpan(
                     text: waktu,
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: SizeConfig.text(12),
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -533,76 +543,90 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 16.h,
+              height: SizeConfig.height(16),
             ),
-            ElevatedButton(
-              onPressed: () {
-                Get.defaultDialog(
-                  title: 'Pilih cordinator',
-                  radius: 5,
-                  titleStyle: TextStyle(
-                    fontSize: 14.sp,
-                  ),
-                  content: Container(
-                    height: 200.h,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: cordinatorPhone
-                            .map<Widget>(
-                              (item) => ListTile(
-                                title: RichText(
-                                  text: TextSpan(
-                                    text: '${item['no_telp']}',
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: Colors.black,
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text: '\t (${item['name']})',
-                                        style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+            SizedBox(
+              width: SizeConfig.width(177),
+              height: SizeConfig.height(32),
+              child: ElevatedButton(
+                onPressed: () {
+                  Get.defaultDialog(
+                    title: 'Pilih cordinator',
+                    radius: 5,
+                    titleStyle: TextStyle(
+                      fontSize: SizeConfig.text(14),
+                    ),
+                    content: Container(
+                      height: SizeConfig.height(200),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: cordinatorPhone
+                              .map<Widget>(
+                                (item) => ListTile(
+                                  title: RichText(
+                                    text: TextSpan(
+                                      text: '${item['no_telp']}',
+                                      style: TextStyle(
+                                        fontSize: SizeConfig.text(12),
+                                        color: Colors.black,
                                       ),
-                                    ],
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                ),
-                                trailing: Icon(
-                                  Icons.phone,
-                                  size: 20,
-                                ),
-                                onTap: () {
-                                  launchUrl(
-                                    Uri(
-                                      scheme: 'tel',
-                                      path: '${item['no_telp']}',
+                                      children: [
+                                        TextSpan(
+                                          text: '\t (${item['name']})',
+                                          style: TextStyle(
+                                            fontSize: SizeConfig.text(12),
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  );
-                                },
-                              ),
-                            )
-                            .toList(),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                  trailing: Icon(
+                                    Icons.phone,
+                                    size: SizeConfig.height(20),
+                                  ),
+                                  onTap: () {
+                                    launchUrl(
+                                      Uri(
+                                        scheme: 'tel',
+                                        path: '${item['no_telp']}',
+                                      ),
+                                    );
+                                  },
+                                ),
+                              )
+                              .toList(),
+                        ),
                       ),
                     ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
                   ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
                 ),
-              ),
-              child: Text(
-                'Hubungi Kordinator',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                ),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Icon(
+                    Icons.phone,
+                    size: SizeConfig.height(16),
+                  ),
+                  SizedBox(
+                    width: SizeConfig.width(4),
+                  ),
+                  Text(
+                    'Hubungi Kordinator',
+                    style: TextStyle(
+                      fontSize: SizeConfig.text(14),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ]),
               ),
             ),
           ],

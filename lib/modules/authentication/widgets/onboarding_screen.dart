@@ -1,4 +1,5 @@
 import 'package:aplikasi_rw/routes/app_routes.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -22,11 +23,43 @@ class OnboardingScreen extends StatelessWidget {
             children: [
               Onboarding1(
                 controller: _controller,
+                image: 'assets/img/image-svg/rafiki.svg',
+                title: 'Berbagi Informasi Apapun',
+                subtitle:
+                    'Berbagi informasi melalui unggahan foto,\nvideo dan dapat meninggalkan komentar \nsatu sama lain.',
+                onPressed: () {
+                  _controller.nextPage(
+                    duration: Duration(milliseconds: 500),
+                    curve: Curves.easeIn,
+                  );
+                },
+                buttonText: 'Selanjutnya',
               ),
-              Onboarding2(
+              Onboarding1(
                 controller: _controller,
+                image: 'assets/img/image-svg/onboard2.svg',
+                title: 'Menjaga Lingkungan',
+                subtitle:
+                    'Laporkan masalah yang ada di sekitar\nlingkungan perumahan, baik di tempat\n umum maupun pribadi.',
+                onPressed: () {
+                  _controller.nextPage(
+                    duration: Duration(milliseconds: 500),
+                    curve: Curves.easeIn,
+                  );
+                },
+                buttonText: 'Selanjutnya',
               ),
-              Onboarding3()
+              Onboarding1(
+                controller: _controller,
+                image: 'assets/img/image-svg/onboard3.svg',
+                title: 'Laporkan dan tetap produktif',
+                subtitle:
+                    'Laporkan keluhan dan lacak di layar ponsel sementara anda bersantai atau melakukan produktivitas lainnya.',
+                onPressed: () {
+                  Get.offNamed(RouteName.auth);
+                },
+                buttonText: 'Masuk',
+              ),
             ],
           ),
           // dot
@@ -36,8 +69,8 @@ class OnboardingScreen extends StatelessWidget {
               count: 3,
               controller: _controller,
               effect: SlideEffect(
-                dotHeight: 12.h,
-                dotWidth: 10.w,
+                dotHeight: SizeConfig.height(12),
+                dotWidth: SizeConfig.width(10),
                 activeDotColor: Color(0xff2094F3),
                 dotColor: Color(0xffE0E0E0),
               ),
@@ -50,9 +83,20 @@ class OnboardingScreen extends StatelessWidget {
 }
 
 class Onboarding1 extends StatelessWidget {
-  const Onboarding1({Key key, this.controller}) : super(key: key);
+  const Onboarding1(
+      {Key key,
+      this.controller,
+      this.image,
+      this.title,
+      this.subtitle,
+      this.buttonText,
+      this.onPressed})
+      : super(key: key);
 
   final PageController controller;
+
+  final String image, title, subtitle, buttonText;
+  final Function onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -62,15 +106,15 @@ class Onboarding1 extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SizedBox(height: 80.h),
+          SizedBox(height: SizeConfig.height(80)),
           SvgPicture.asset(
-            'assets/img/image-svg/rafiki.svg',
-            height: 233.h,
-            width: 316.w,
+            image,
+            height: SizeConfig.height(233),
+            width: SizeConfig.width(316),
           ),
-          SizedBox(height: 103.h),
+          SizedBox(height: SizeConfig.height(103)),
           Container(
-            height: 336.h,
+            height: SizeConfig.height(336),
             width: double.infinity,
             decoration: BoxDecoration(
                 color: Colors.white,
@@ -81,31 +125,33 @@ class Onboarding1 extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(
-                  height: 40.h,
+                  height: SizeConfig.height(40),
                 ),
                 Text(
-                  'Berbagi Informasi Apapun',
+                  title,
                   style: TextStyle(
-                    fontSize: 19.sp,
+                    fontSize: SizeConfig.text(19),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 SizedBox(
-                  height: 16.h,
+                  height: SizeConfig.height(16),
                 ),
                 SizedBox(
-                  width: 320.w,
-                  height: 72.h,
+                  width: SizeConfig.width(320),
+                  height: SizeConfig.height(72),
                   child: Text(
-                    'Berbagi informasi melalui unggahan foto,\nvideo dan dapat meninggalkan komentar \nsatu sama lain.',
-                    style: TextStyle(fontSize: 16.sp, color: Color(0xff616161)),
+                    subtitle,
+                    style: TextStyle(
+                        fontSize: SizeConfig.text(16),
+                        color: Color(0xff616161)),
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(height: 32.h),
+                SizedBox(height: SizeConfig.height(32)),
                 SizedBox(
-                  width: 156.w,
-                  height: 40.h,
+                  width: SizeConfig.width(156),
+                  height: SizeConfig.height(40),
                   child: TextButton(
                     style: TextButton.styleFrom(
                       // minWidth: 156.w,
@@ -115,15 +161,11 @@ class Onboarding1 extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50)),
                     ),
-                    onPressed: () {
-                      controller.nextPage(
-                        duration: Duration(milliseconds: 500),
-                        curve: Curves.easeIn,
-                      );
-                    },
+                    onPressed: onPressed,
                     child: Text(
-                      'Selanjutnya',
-                      style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                      buttonText,
+                      style: TextStyle(
+                          color: Colors.white, fontSize: SizeConfig.text(16)),
                     ),
                   ),
                 )
@@ -135,267 +177,3 @@ class Onboarding1 extends StatelessWidget {
     );
   }
 }
-
-class Onboarding2 extends StatelessWidget {
-  const Onboarding2({Key key, this.controller}) : super(key: key);
-
-  final PageController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(360, 800));
-    return Container(
-      color: Color(0xffF2F9FF),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SizedBox(height: 80.h),
-          SvgPicture.asset(
-            'assets/img/image-svg/onboard2.svg',
-            height: 233.h,
-            width: 316.w,
-          ),
-          SizedBox(height: 103.h),
-          Container(
-            height: 336.h,
-            width: double.infinity,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40),
-                  topRight: Radius.circular(40),
-                )),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 40.h,
-                ),
-                Text(
-                  'Menjaga Lingkungan',
-                  style: TextStyle(
-                    fontSize: 19.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(
-                  height: 16.h,
-                ),
-                SizedBox(
-                  width: 320.w,
-                  height: 72.h,
-                  child: Text(
-                    'Laporkan masalah yang ada di sekitar\nlingkungan perumahan, baik di tempat\n umum maupun pribadi.',
-                    style: TextStyle(fontSize: 16.sp, color: Color(0xff616161)),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                SizedBox(height: 32.h),
-                SizedBox(
-                  width: 156.w,
-                  height: 40.h,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50)),
-                      backgroundColor: Color(0xff2094F3),
-                    ),
-                    onPressed: () {
-                      controller.nextPage(
-                        duration: Duration(milliseconds: 500),
-                        curve: Curves.easeIn,
-                      );
-                    },
-                    child: Text(
-                      'Selanjutnya',
-                      style: TextStyle(color: Colors.white, fontSize: 16.sp),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class Onboarding3 extends StatelessWidget {
-  const Onboarding3({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(360, 800));
-    return Container(
-      color: Color(0xffF2F9FF),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SizedBox(height: 80.h),
-          SvgPicture.asset(
-            'assets/img/image-svg/onboard3.svg',
-            height: 233.h,
-            width: 316.w,
-          ),
-          SizedBox(height: 103.h),
-          Container(
-            height: 336.h,
-            width: double.infinity,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40),
-                  topRight: Radius.circular(40),
-                )),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 40.h,
-                ),
-                Text(
-                  'Laporkan dan tetap produktif',
-                  style: TextStyle(
-                    fontSize: 19.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(
-                  height: 16.h,
-                ),
-                SizedBox(
-                  width: 320.w,
-                  height: 72.h,
-                  child: Text(
-                    'Laporkan keluhan dan lacak di layar\n ponsel sementara anda bersantai atau\n melakukan produktivitas lainnya.',
-                    style: TextStyle(fontSize: 16.sp, color: Color(0xff616161)),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                SizedBox(height: 32.h),
-                SizedBox(
-                  width: 156.w,
-                  height: 40.h,
-                  child: TextButton(
-                    // minWidth: 156.w,
-                    // height: 40.h,
-                    onPressed: () {
-                      Get.offNamed(RouteName.auth);
-                    },
-                    style: TextButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50)),
-                      backgroundColor: Color(0xff2094F3),
-                    ),
-                    child: Text(
-                      'Masuk',
-                      style: TextStyle(color: Colors.white, fontSize: 16.sp),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-//ignore: must_be_immutable
-// class OnboardingScreen extends StatelessWidget {
-//   double mediaSizeHeight, mediaSizeWidth;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     mediaSizeHeight =
-//         MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
-//     mediaSizeWidth = MediaQuery.of(context).size.width;
-
-//     return IntroductionScreen(
-//       pages: [
-//         PageViewModel(
-//             title: '',
-//             body: '',
-//             image: LottieBuilder.asset('assets/animation/onboard1.json'),
-//             footer: Container(
-//               color: Colors.white,
-//               height: 900,
-//             ),
-//             decoration: buildPageDecoration(
-//                 pageColor: Colors.blue[100].withOpacity(0.5))),
-//         PageViewModel(
-//             title: 'report it and we will deal with it immediately',
-//             body:
-//                 'report directly through the application, and we will handle it immediately',
-//             image: LottieBuilder.asset('assets/animation/onboard2.json'),
-//             // image:
-//             //     Image(image: AssetImage('assets/img/image-onboarding/bg2.png')),
-//             decoration: buildPageDecoration(
-//                 pageColor: Colors.green[100].withOpacity(0.5))),
-//         PageViewModel(
-//             title: 'payment process via app',
-//             body: 'Pay every bill easily by uploading screenshot proof',
-//             // image:Image(image: AssetImage('assets/img/image-onboarding/bg3.png')),
-//             image: LottieBuilder.asset('assets/animation/onboard3.json'),
-//             footer: FlatButton(
-//               textColor: Colors.white,
-//               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 35),
-//               child: Text(
-//                 'Login',
-//               ),
-//               color: Colors.blue,
-//               shape: RoundedRectangleBorder(
-//                   borderRadius: BorderRadius.circular(20)),
-//               onPressed: () {
-//                 Navigator.of(context).pushReplacement(MaterialPageRoute(
-//                     builder: (context) => LoginScreen(
-//                           controllerIpl: TextEditingController(),
-//                         )));
-//               },
-//             ),
-//             decoration: buildPageDecoration(
-//                 pageColor: Colors.yellow[100].withOpacity(0.5))),
-//       ],
-//       done: Text(
-//         'Login',
-//         style: TextStyle(fontFamily: 'poppins', fontSize: 16),
-//       ),
-//       onDone: () {
-//         Navigator.of(context).pushReplacement(
-//             MaterialPageRoute(builder: (context) => LoginScreen()));
-//       },
-//       // showSkipButton: true,
-//       // skip: Text(
-//       //   'SKIP',
-//       //   style: TextStyle(fontFamily: 'poppins', fontSize: 16),
-//       // ),
-//       // next: Icon(
-//       //   Icons.arrow_forward,
-//       //   size: 25,
-//       // ),
-//       // dotsDecorator: buildDotsDecorator(),
-//     );
-//   }
-
-//   DotsDecorator buildDotsDecorator() {
-//     return DotsDecorator(
-//         color: Colors.lightBlue,
-//         activeColor: Colors.blue,
-//         size: Size.square(10),
-//         activeSize: Size(mediaSizeWidth * 0.08, 12),
-//         activeShape:
-//             RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)));
-//   }
-
-//   PageDecoration buildPageDecoration({Color pageColor}) {
-//     return PageDecoration(
-//         titleTextStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-//         imagePadding: EdgeInsets.only(top: 90),
-//         contentPadding: EdgeInsets.all(20),
-//         pageColor: pageColor ?? Colors.white,
-//         bodyTextStyle: TextStyle(
-//           fontSize: 21,
-//           fontWeight: FontWeight.bold,
-//         ));
-//   }
-// }

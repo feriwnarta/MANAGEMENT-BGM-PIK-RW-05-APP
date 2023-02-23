@@ -1,3 +1,4 @@
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -20,34 +21,34 @@ class MethodVerification extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox(
-          height: 32.h,
+          height: SizeConfig.height(32),
         ),
         Image(
           image: image,
-          width: 80.w,
-          height: 94.h,
+          width: SizeConfig.width(80),
+          height: SizeConfig.height(94),
         ),
         SizedBox(
-          height: 36.h,
+          height: SizeConfig.height(36),
         ),
         Text('Pilih Metode Verifikasi',
             style: TextStyle(
-              fontSize: 18.sp,
+              fontSize: SizeConfig.text(18),
               fontWeight: FontWeight.w700,
             )),
-        SizedBox(height: 8.h),
+        SizedBox(height: SizeConfig.height(8)),
         SizedBox(
-          width: 236.w,
+          width: SizeConfig.width(236),
           child: Text(
             'Pilih salah satu metode dibawah ini untuk mendapatkan kode verifikasi',
             style: TextStyle(
-              fontSize: 12.sp,
+              fontSize: SizeConfig.text(12),
               color: Color(0xff9E9E9E),
             ),
             textAlign: TextAlign.center,
           ),
         ),
-        SizedBox(height: 24.h),
+        SizedBox(height: SizeConfig.height(24)),
         cardMethodVerification(
             subtitle: noTelp,
             icon: 'assets/img/image-svg/sms.svg',
@@ -55,7 +56,7 @@ class MethodVerification extends StatelessWidget {
             methodChose: 'SMS',
             email: email,
             noTelp: noTelp),
-        SizedBox(height: 8.h),
+        SizedBox(height: SizeConfig.height(8)),
         cardMethodVerification(
             subtitle: noTelp,
             icon: 'assets/img/image-svg/whatsapp-verif.svg',
@@ -63,15 +64,15 @@ class MethodVerification extends StatelessWidget {
             methodChose: 'WHATSAPP',
             email: email,
             noTelp: noTelp),
-        SizedBox(height: 8.h),
+        SizedBox(height: SizeConfig.height(8)),
         cardMethodVerification(
             subtitle: email,
-            icon: 'assets/img/image-svg/email-verif.svg',
+            icon: 'assets/img/image-svg/mail.svg',
             title: 'Email ke',
             methodChose: 'EMAIL',
             email: email,
             noTelp: noTelp),
-        SizedBox(height: 106.h)
+        SizedBox(height: SizeConfig.height(106)),
       ],
     );
   }

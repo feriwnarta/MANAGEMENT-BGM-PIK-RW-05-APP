@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controller/user_login_controller.dart';
 import '../services/contractor/contractor_report_services.dart';
-import 'package:logger/logger.dart';
 
 class ReportCordinatorFinish extends GetxController {
   List<CordinatorReportModel> listReport = <CordinatorReportModel>[].obs;

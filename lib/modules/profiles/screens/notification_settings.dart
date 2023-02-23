@@ -1,7 +1,9 @@
 import 'package:aplikasi_rw/modules/profiles/services/notification_services.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/state_manager.dart';
 
@@ -24,7 +26,6 @@ class NotificationSettings extends StatelessWidget {
           title: Text(
             'Notifikasi',
           ),
-          systemOverlayStyle: SystemUiOverlayStyle.light,
         ),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -34,153 +35,175 @@ class NotificationSettings extends StatelessWidget {
                 if (snapshot.hasData) {
                   initSwitch(data: snapshot.data);
                   return Container(
-                    margin: EdgeInsets.symmetric(horizontal: 16.w),
+                    margin:
+                        EdgeInsets.symmetric(horizontal: SizeConfig.width(16)),
                     child: Obx(
                       () => Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                            height: 16.h,
+                            height: SizeConfig.height(16),
                           ),
-                          AutoSizeText(
+                          Text(
                             'Peduli Lingkungan',
                             style: TextStyle(
-                                fontSize: 16.sp, fontWeight: FontWeight.w500),
+                                fontSize: SizeConfig.text(16),
+                                fontWeight: FontWeight.w500),
                             maxLines: 1,
-                            minFontSize: 12,
                             overflow: TextOverflow.ellipsis,
                           ),
                           SizedBox(
-                            height: 16.h,
+                            height: SizeConfig.height(16),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              AutoSizeText(
+                              Text(
                                 'Laporan diterima',
-                                style: TextStyle(fontSize: 12.sp),
+                                style: TextStyle(fontSize: SizeConfig.text(12)),
                                 maxLines: 1,
-                                minFontSize: 10,
-                                stepGranularity: 10,
                               ),
-                              Switch(
-                                value: laporanDiterima.value,
-                                onChanged: (value) async {
-                                  String response = await updateNotif(
-                                      status: 'laporan_diterima', value: value);
-                                  print(response);
+                              SizedBox(
+                                width: SizeConfig.width(28),
+                                height: SizeConfig.height(16),
+                                child: Switch(
+                                  value: laporanDiterima.value,
+                                  onChanged: (value) async {
+                                    String response = await updateNotif(
+                                        status: 'laporan_diterima',
+                                        value: value);
+                                    print(response);
 
-                                  laporanDiterima.value = value;
-                                },
-                                activeColor: Colors.blue,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              AutoSizeText(
-                                'Laporan dikerjakan',
-                                style: TextStyle(fontSize: 12.sp),
-                                maxLines: 1,
-                                minFontSize: 10,
-                                stepGranularity: 10,
-                              ),
-                              Switch(
-                                value: laporanDikerjakan.value,
-                                onChanged: (value) async {
-                                  await updateNotif(
-                                      status: 'laporan_dikerjakan',
-                                      value: value);
-
-                                  laporanDikerjakan.value = value;
-                                },
-                                activeColor: Colors.blue,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              AutoSizeText(
-                                'Laporan selesai',
-                                style: TextStyle(
-                                  fontSize: 12.sp,
+                                    laporanDiterima.value = value;
+                                  },
+                                  activeColor: Colors.blue,
                                 ),
-                                maxLines: 1,
-                                minFontSize: 10,
-                                stepGranularity: 10,
-                              ),
-                              Switch(
-                                value: laporanSelesai.value,
-                                onChanged: (value) async {
-                                  await updateNotif(
-                                      status: 'laporan_selesai', value: value);
-                                  laporanSelesai.value = value;
-                                },
-                                activeColor: Colors.blue,
                               ),
                             ],
                           ),
                           SizedBox(
-                            height: 16.h,
+                            height: SizeConfig.height(16),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Laporan dikerjakan',
+                                style: TextStyle(fontSize: SizeConfig.text(12)),
+                                maxLines: 1,
+                              ),
+                              SizedBox(
+                                width: SizeConfig.width(28),
+                                height: SizeConfig.height(16),
+                                child: Switch(
+                                  value: laporanDikerjakan.value,
+                                  onChanged: (value) async {
+                                    await updateNotif(
+                                        status: 'laporan_dikerjakan',
+                                        value: value);
+
+                                    laporanDikerjakan.value = value;
+                                  },
+                                  activeColor: Colors.blue,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: SizeConfig.height(16),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Laporan selesai',
+                                style: TextStyle(
+                                  fontSize: SizeConfig.text(12),
+                                ),
+                                maxLines: 1,
+                              ),
+                              SizedBox(
+                                width: SizeConfig.width(28),
+                                height: SizeConfig.height(16),
+                                child: Switch(
+                                  value: laporanSelesai.value,
+                                  onChanged: (value) async {
+                                    await updateNotif(
+                                        status: 'laporan_selesai',
+                                        value: value);
+                                    laporanSelesai.value = value;
+                                  },
+                                  activeColor: Colors.blue,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: SizeConfig.height(16),
                           ),
                           Divider(
                             thickness: 1,
                           ),
                           SizedBox(
-                            height: 16.h,
+                            height: SizeConfig.height(16),
                           ),
-                          AutoSizeText(
+                          Text(
                             'Suka dan komentar di postingan',
                             style: TextStyle(
-                                fontSize: 16.sp, fontWeight: FontWeight.w500),
+                                fontSize: SizeConfig.text(16),
+                                fontWeight: FontWeight.w500),
                             maxLines: 1,
-                            minFontSize: 12,
                             overflow: TextOverflow.ellipsis,
                           ),
                           SizedBox(
-                            height: 16.h,
+                            height: SizeConfig.height(16),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              AutoSizeText(
+                              Text(
                                 'Komentar',
-                                style: TextStyle(fontSize: 12.sp),
+                                style: TextStyle(fontSize: SizeConfig.text(12)),
                                 maxLines: 1,
-                                minFontSize: 10,
-                                stepGranularity: 10,
                               ),
-                              Switch(
-                                value: komentar.value,
-                                onChanged: (value) async {
-                                  await updateNotif(
-                                      status: 'komentar', value: value);
-                                  komentar.value = value;
-                                },
-                                activeColor: Colors.blue,
+                              SizedBox(
+                                width: SizeConfig.width(28),
+                                height: SizeConfig.height(16),
+                                child: Switch(
+                                  value: komentar.value,
+                                  onChanged: (value) async {
+                                    await updateNotif(
+                                        status: 'komentar', value: value);
+                                    komentar.value = value;
+                                  },
+                                  activeColor: Colors.blue,
+                                ),
                               ),
                             ],
                           ),
+                          SizedBox(
+                            height: SizeConfig.height(16),
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              AutoSizeText(
+                              Text(
                                 'Suka',
-                                style: TextStyle(fontSize: 12.sp),
+                                style: TextStyle(fontSize: SizeConfig.text(12)),
                                 maxLines: 1,
-                                minFontSize: 10,
-                                stepGranularity: 10,
                               ),
-                              Switch(
-                                value: suka.value,
-                                onChanged: (value) async {
-                                  await updateNotif(
-                                      status: 'like_status', value: value);
-                                  suka.value = value;
-                                },
-                                activeColor: Colors.blue,
+                              SizedBox(
+                                width: SizeConfig.width(24),
+                                height: SizeConfig.height(24),
+                                child: Switch(
+                                  value: suka.value,
+                                  onChanged: (value) async {
+                                    await updateNotif(
+                                        status: 'like_status', value: value);
+                                    suka.value = value;
+                                  },
+                                  activeColor: Colors.blue,
+                                ),
                               ),
                             ],
                           ),

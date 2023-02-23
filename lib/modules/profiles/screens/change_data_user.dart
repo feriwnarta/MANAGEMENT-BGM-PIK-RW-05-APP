@@ -137,7 +137,7 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                           Text(
                             '${snapshot.data.fullName}',
                             style: TextStyle(
-                                color: Colors.grey,
+                                color: Colors.black,
                                 fontSize: SizeConfig.text(12)),
                           ),
                           SizedBox(height: SizeConfig.height(1)),
@@ -156,39 +156,6 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                           builder: (context) => buildPaddingChangeData(
                               context, 'masukan username', 'username')),
                     ),
-                    // ListTile(
-                    //   leading: SvgPicture.asset(
-                    //       'assets/img/image-svg/cluster.svg'),
-                    //   title: Column(
-                    //     crossAxisAlignment: CrossAxisAlignment.start,
-                    //     children: [
-                    //       SizedBox(height: 1.0.h),
-                    //       Text(
-                    //         'Nama Cluster',
-                    //         style: TextStyle(
-                    //             color: Colors.grey, fontSize: 11.sp),
-                    //       ),
-                    //       SizedBox(height: 1.0.h),
-                    //       Text(
-                    //         '${snapshot.data.cluster}',
-                    //         style: TextStyle(fontSize: 12.sp),
-                    //       ),
-                    //       SizedBox(height: 1.0.h),
-                    //     ],
-                    //   ),
-                    //   trailing: Icon(
-                    //     FontAwesomeIcons.pen,
-                    //     size: 10.h,
-                    //   ),
-                    //   onTap: () => showModalBottomSheet(
-                    //       shape: RoundedRectangleBorder(
-                    //           borderRadius: BorderRadius.vertical(
-                    //               top: Radius.circular(15.0))),
-                    //       context: context,
-                    //       isScrollControlled: true,
-                    //       builder: (context) => buildPaddingChangeData(
-                    //           context, 'masukan username', 'username')),
-                    // ),
                     (snapshot.data.numberHouse == null)
                         ? SizedBox()
                         : ListTile(

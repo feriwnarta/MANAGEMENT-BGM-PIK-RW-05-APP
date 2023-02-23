@@ -1,3 +1,4 @@
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,32 +23,35 @@ class _CardPieChartState extends State<CardPieChart> {
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(360, 800));
     return SizedBox(
-      width: 328.w,
+      width: SizeConfig.width(328),
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4),
         ),
         elevation: 5,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 11.w),
+          padding: EdgeInsets.symmetric(horizontal: SizeConfig.width(11)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 20.h,
+                height: SizeConfig.height(20),
               ),
               Text(
                 '${widget.title}',
-                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                  fontSize: SizeConfig.text(16),
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               SizedBox(
-                height: 20.h,
+                height: SizeConfig.height(20),
               ),
               Row(
                 children: [
                   Container(
-                    width: 120.w,
-                    height: 120.h,
+                    width: SizeConfig.width(120),
+                    height: SizeConfig.height(120),
                     alignment: Alignment.center,
                     child:
                         SfCircularChart(margin: EdgeInsets.zero, annotations: [
@@ -55,7 +59,7 @@ class _CardPieChartState extends State<CardPieChart> {
                         widget: Text(
                           '${widget.total}',
                           style: TextStyle(
-                            fontSize: 10.sp,
+                            fontSize: SizeConfig.text(10),
                           ),
                         ),
                       )
@@ -105,7 +109,7 @@ class _CardPieChartState extends State<CardPieChart> {
                     ]),
                   ),
                   SizedBox(
-                    width: 24.w,
+                    width: SizeConfig.width(24),
                   ),
                   Expanded(
                     child: Column(
@@ -120,16 +124,15 @@ class _CardPieChartState extends State<CardPieChart> {
                                       color: Color(int.parse('${e['color']}')),
                                     ),
                                     SizedBox(
-                                      width: 8.w,
+                                      width: SizeConfig.width(8),
                                     ),
                                     Expanded(
-                                      child: AutoSizeText(
+                                      child: Text(
                                         '${e['total']} ${e['unit']}',
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
-                                        presetFontSizes: [14, 14, 14, 14, 14],
                                         style: TextStyle(
-                                          fontSize: 14.sp,
+                                          fontSize: SizeConfig.text(14),
                                           fontWeight: FontWeight.w500,
                                           color: Color(0xff757575),
                                         ),
@@ -138,7 +141,7 @@ class _CardPieChartState extends State<CardPieChart> {
                                   ],
                                 ),
                                 SizedBox(
-                                  height: 4.h,
+                                  height: SizeConfig.height(4),
                                 ),
                               ],
                             ),
@@ -149,7 +152,7 @@ class _CardPieChartState extends State<CardPieChart> {
                 ],
               ),
               SizedBox(
-                height: 20.h,
+                height: SizeConfig.height(20),
               ),
             ],
           ),

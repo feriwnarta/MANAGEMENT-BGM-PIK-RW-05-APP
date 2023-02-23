@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:aplikasi_rw/modules/contractor/controller/contractor_controller.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -60,17 +61,19 @@ class _CardReportFinish extends State<CardReportFinish>
     return Scaffold(
       appBar: AppBar(
         title: Text('Laporan Diproses'),
-        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+          padding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.width(16),
+            vertical: SizeConfig.height(16),
+          ),
           child: Column(
             children: [
-              AutoSizeText(
+              Text(
                 'Jumlah laporan yang masuk dan sedang diproses oleh kontraktor lapangan.',
                 style: TextStyle(
-                  fontSize: 16.sp,
+                  fontSize: SizeConfig.text(16),
                   color: Color(0xff616161),
                 ),
               ),

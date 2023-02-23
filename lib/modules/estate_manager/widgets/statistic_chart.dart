@@ -2,6 +2,7 @@ import 'package:aplikasi_rw/modules/estate_manager/models/LineChartModel.dart';
 import 'package:aplikasi_rw/modules/estate_manager/services/chart_pie_services.dart';
 import 'package:aplikasi_rw/modules/estate_manager/widgets/card_line_chart.dart';
 import 'package:aplikasi_rw/modules/estate_manager/widgets/card_pie_chart.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -33,15 +34,17 @@ class _CardLineState extends State<CardLine> {
   RxList<bool> _selectedFruits = <bool>[false, false, false, true].obs;
   // var styleGue = TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500);
   RxList<Widget> fruits = <Widget>[
-    Text('12 bulan',
-        style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500)),
-    Text('30 hari',
-        style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500)),
-    Text('7 hari',
-        style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500)),
+    Text(
+      '12 bulan',
+    ),
+    Text(
+      '30 hari',
+    ),
+    Text(
+      '7 hari',
+    ),
     Text(
       '24 jam',
-      style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
     )
   ].obs;
 
@@ -66,12 +69,15 @@ class _CardLineState extends State<CardLine> {
       children: [
         groupedButton(),
         SizedBox(
-          height: 16.h,
+          height: SizeConfig.height(16),
         ),
         button(),
+        SizedBox(
+          height: SizeConfig.height(16),
+        ),
         buttonSearch(),
         SizedBox(
-          height: 16.h,
+          height: SizeConfig.height(16),
         ),
         FutureBuilder<List<LineChartModel>>(
           future: future,
@@ -82,8 +88,10 @@ class _CardLineState extends State<CardLine> {
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: snapshot.data.length,
                       itemBuilder: (context, index) => Container(
-                        width: 328.w,
-                        margin: EdgeInsets.only(bottom: 24.h),
+                        width: SizeConfig.width(328),
+                        margin: EdgeInsets.only(
+                          bottom: SizeConfig.height(34),
+                        ),
                         child: CardLineChart(
                           index: index,
                           snapshot: snapshot,
@@ -94,8 +102,8 @@ class _CardLineState extends State<CardLine> {
                     )
                   : Center(
                       child: SizedBox(
-                        width: 30.w,
-                        height: 30.h,
+                        width: SizeConfig.width(30),
+                        height: SizeConfig.height(30),
                         child: CircularProgressIndicator(),
                       ),
                     ),
@@ -117,111 +125,23 @@ class _CardLineState extends State<CardLine> {
                   : SizedBox(),
         ),
         SizedBox(
-          height: 66.h,
+          height: SizeConfig.height(66),
         ),
-        // Card(
-        //   elevation: 5,
-        //   child: Container(
-        //     margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
-        //     child: Column(
-        //       crossAxisAlignment: CrossAxisAlignment.end,
-        //       children: [
-        //         AutoSizeText(
-        //           'Jumlah Tenaga Pekerja tiap Divisi / Hari',
-        //           style: TextStyle(
-        //             fontSize: 16.sp,
-        //             fontWeight: FontWeight.w500,
-        //           ),
-        //           overflow: TextOverflow.ellipsis,
-        //           maxLines: 2,
-        //           minFontSize: 10,
-        //         ),
-        //         SizedBox(
-        //           height: 16.h,
-        //         ),
-        // Container(
-        //   padding: EdgeInsets.symmetric(
-        //     // horizontal: 16.w,
-        //     vertical: 6.h,
-        //   ).copyWith(left: 23.w),
-        //   decoration: BoxDecoration(
-        //     color: Colors.white,
-        //     boxShadow: [
-        //       BoxShadow(
-        //         color: Colors.grey.withOpacity(0.5), //shadow color
-        //         spreadRadius: 0.5, // spread radius
-        //         blurRadius: 2, // shadow blur radius
-        //         offset:
-        //             const Offset(0, 0), // changes position of shadow
-        //       ),
-        //     ],
-        //   ),
-        //   child: DropdownButton<String>(
-        //     underline: SizedBox(),
-        //     isDense: true,
-        //     elevation: 0,
-        //     isExpanded: true,
-        //     alignment: Alignment.centerLeft,
-        //     borderRadius: BorderRadius.circular(4),
-        //     items: [
-        //       DropdownMenuItem<String>(
-        //         value: '1',
-        //         child: AutoSizeText(
-        //           'Perawatan taman',
-        //           overflow: TextOverflow.ellipsis,
-        //           style: TextStyle(
-        //             fontSize: 14.sp,
-        //           ),
-        //           maxLines: 2,
-        //           minFontSize: 13,
-        //         ),
-        //       )
-        //     ],
-        //     hint: AutoSizeText(
-        //       'Perawatan taman',
-        //       maxLines: 2,
-        //       overflow: TextOverflow.ellipsis,
-        //       minFontSize: 11,
-        //       style: TextStyle(
-        //         fontSize: 14.sp,
-        //         fontWeight: FontWeight.w500,
-        //       ),
-        //     ),
-        //     onChanged: (value) {},
-        //   ),
-        // ),
-        // SizedBox(
-        //   height: 24.h,
-        // ),
-        // SfCartesianChart(
-        //   primaryXAxis: CategoryAxis(),
-        //   series: <CartesianSeries>[
-        //     ColumnSeries<ChartDataSelection, String>(
-        //       dataSource: [
-        //         ChartDataSelection(label: 'Landscape', point: 10),
-        //         ChartDataSelection(label: 'Em', point: 5),
-        //         ChartDataSelection(label: 'Mekanikel', point: 2),
-        //       ],
-        //       xValueMapper: (ChartDataSelection data, _) => data.label,
-        //       yValueMapper: (ChartDataSelection data, _) => data.point,
-        //       // selectionBehavior: _selectionBehavior,
-        //     )
-        //   ],
-        // ),
-        // ],
-        // ),
-        // ),
-        // )
       ],
     );
   }
 
   SizedBox buttonSearch() {
     return SizedBox(
-      width: 248.w,
+      width: SizeConfig.width(248),
+      height: SizeConfig.height(40),
       child: OutlinedButton.icon(
           onPressed: () {},
-          icon: SvgPicture.asset('assets/img/image-svg/search-em.svg'),
+          icon: SvgPicture.asset(
+            'assets/img/image-svg/search-em.svg',
+            height: SizeConfig.height(20),
+            width: SizeConfig.width(20),
+          ),
           style: OutlinedButton.styleFrom(
               alignment: Alignment.centerLeft,
               foregroundColor: Colors.grey,
@@ -230,7 +150,7 @@ class _CardLineState extends State<CardLine> {
               )),
           label: Text(
             'Search',
-            style: TextStyle(fontSize: 14.sp),
+            style: TextStyle(fontSize: SizeConfig.text(14)),
           )),
     );
   }
@@ -255,11 +175,14 @@ class _CardLineState extends State<CardLine> {
         borderRadius: const BorderRadius.all(Radius.circular(8)),
         selectedBorderColor: Colors.blue[700],
         selectedColor: Colors.white,
+        textStyle: TextStyle(
+          fontSize: SizeConfig.text(14),
+        ),
         fillColor: Colors.blue[200],
         color: Colors.grey,
-        constraints: const BoxConstraints(
-          minHeight: 40.0,
-          minWidth: 80.0,
+        constraints: BoxConstraints(
+          minHeight: SizeConfig.height(40),
+          minWidth: SizeConfig.width(81),
         ),
         isSelected: _selectedFruits.value,
         children: fruits,
@@ -273,13 +196,13 @@ class _CardLineState extends State<CardLine> {
         children: [
           buttonSelectDate(),
           SizedBox(
-            width: 12.w,
+            width: SizeConfig.width(12),
           ),
           // buttonFiter(),
         ],
       ),
       SizedBox(
-        height: 16.h,
+        height: SizeConfig.height(16),
       ),
     ]);
   }
@@ -304,7 +227,8 @@ class _CardLineState extends State<CardLine> {
 
   SizedBox buttonSelectDate() {
     return SizedBox(
-      width: 142.w,
+      width: SizeConfig.width(142),
+      height: SizeConfig.height(40),
       child: OutlinedButton.icon(
           onPressed: () async {
             var datePicker = await showDatePicker(
@@ -329,15 +253,20 @@ class _CardLineState extends State<CardLine> {
               logger.i(rangeDate.value);
             }
           },
-          icon: SvgPicture.asset('assets/img/image-svg/pilih-tanggal.svg'),
+          icon: SvgPicture.asset(
+            'assets/img/image-svg/pilih-tanggal.svg',
+            width: SizeConfig.width(20),
+            height: SizeConfig.height(20),
+          ),
           style: OutlinedButton.styleFrom(
               foregroundColor: Colors.grey,
+              padding: EdgeInsets.zero,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               )),
           label: Text(
             'Pilih tanggal',
-            style: TextStyle(fontSize: 14.sp),
+            style: TextStyle(fontSize: SizeConfig.text(14)),
           )),
     );
   }

@@ -16,6 +16,7 @@ import 'package:aplikasi_rw/routes/app_routes.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/send_otp_services.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:async/async.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -174,15 +175,15 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   SizedBox(
-                                    height: 32.h,
+                                    height: SizeConfig.height(32),
                                   ),
                                   Image(
                                     image: AssetImage('assets/img/logo_rw.png'),
-                                    width: 80.w,
-                                    height: 94.h,
+                                    width: SizeConfig.width(80),
+                                    height: SizeConfig.height(94),
                                   ),
                                   SizedBox(
-                                    height: 36.h,
+                                    height: SizeConfig.height(36),
                                   ),
                                   Form(
                                     // key: _formKeyLogin,
@@ -191,18 +192,18 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
                                         SizedBox(
-                                          width: 280.w,
+                                          width: SizeConfig.width(280),
                                           child: Text(
                                             '* Enter your IPL number or email, the system will automatically detect it',
                                             style: TextStyle(
-                                                fontSize: 11.sp,
+                                                fontSize: SizeConfig.text(11),
                                                 color: Colors.grey),
                                           ),
                                         ),
-                                        SizedBox(height: 5.h),
+                                        SizedBox(height: SizeConfig.height(5)),
                                         Padding(
                                           padding: EdgeInsets.symmetric(
-                                              horizontal: 16.w),
+                                              horizontal: SizeConfig.width(16)),
                                           child: TextFormField(
                                             controller: authController
                                                 .controllerUsername,
@@ -214,11 +215,17 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                                                   ? null
                                                   : 'Your email/ipl number is incorrect',
                                               icon: SvgPicture.asset(
-                                                  'assets/img/image-svg/user-login.svg'),
+                                                'assets/img/image-svg/user-login.svg',
+                                                width: SizeConfig.width(20),
+                                                height: SizeConfig.height(
+                                                  20,
+                                                ),
+                                              ),
                                               hintText:
                                                   'Enter your email / IPL number',
-                                              hintStyle:
-                                                  TextStyle(fontSize: 14.sp),
+                                              hintStyle: TextStyle(
+                                                  fontSize:
+                                                      SizeConfig.text(14)),
                                               border: UnderlineInputBorder(),
                                               enabledBorder:
                                                   UnderlineInputBorder(
@@ -236,15 +243,29 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                                                           .value)
                                                       ? SvgPicture.asset(
                                                           'assets/img/image-svg/success.svg',
+                                                          width:
+                                                              SizeConfig.width(
+                                                                  20),
+                                                          height:
+                                                              SizeConfig.height(
+                                                            20,
+                                                          ),
                                                         )
                                                       : null
                                                   : SvgPicture.asset(
                                                       'assets/img/image-svg/close.svg',
+                                                      width:
+                                                          SizeConfig.width(20),
+                                                      height: SizeConfig.height(
+                                                        20,
+                                                      ),
                                                     ),
                                               suffixIconConstraints:
                                                   BoxConstraints(
-                                                      minHeight: 5.h,
-                                                      minWidth: 5.w),
+                                                      minHeight:
+                                                          SizeConfig.height(5),
+                                                      minWidth:
+                                                          SizeConfig.width(5)),
                                             ),
                                             onChanged: (value) async {
                                               cancelableOperation =
@@ -286,9 +307,9 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                                             },
                                           ),
                                         ),
-                                        SizedBox(height: 32.h),
+                                        SizedBox(height: SizeConfig.height(32)),
                                         SizedBox(
-                                          height: 66.h,
+                                          height: SizeConfig.height(66),
                                         ),
                                       ],
                                     ),
@@ -332,21 +353,22 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
   Column createPasswordSucces() {
     return Column(
       children: [
-        SizedBox(height: 56.h),
+        SizedBox(height: SizeConfig.height(56)),
         SvgPicture.asset('assets/img/image-svg/otp-succes.svg'),
         SizedBox(
-          height: 16.h,
+          height: SizeConfig.height(16),
         ),
         SizedBox(
-          width: 190.w,
+          width: SizeConfig.width(190),
           child: Text('Sandi berhasil dibuat',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700)),
+              style: TextStyle(
+                  fontSize: SizeConfig.text(18), fontWeight: FontWeight.w700)),
         ),
-        SizedBox(height: 176.h),
+        SizedBox(height: SizeConfig.height(176)),
         SizedBox(
-          height: 40.h,
-          width: 293.w,
+          height: SizeConfig.height(40),
+          width: SizeConfig.width(293),
           child: TextButton(
             // shape: RoundedRectangleBorder(
             //     borderRadius: BorderRadius.circular(20)),
@@ -371,10 +393,11 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                   (route) => false);
             },
             child: Text('Masuk Sekarang',
-                style: TextStyle(color: Colors.white, fontSize: 14.sp)),
+                style: TextStyle(
+                    color: Colors.white, fontSize: SizeConfig.text(14))),
           ),
         ),
-        SizedBox(height: 72.h)
+        SizedBox(height: SizeConfig.height(72))
       ],
     );
   }
@@ -382,42 +405,51 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
   Column createPassword() {
     return Column(
       children: [
-        SizedBox(height: 56.h),
+        SizedBox(height: SizeConfig.height(56)),
         SvgPicture.asset('assets/img/image-svg/otp-key.svg'),
-        SizedBox(height: 16.h),
+        SizedBox(height: SizeConfig.height(16)),
         Text(
           'Buat Kata Sandi',
-          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
+          style: TextStyle(
+              fontSize: SizeConfig.text(18), fontWeight: FontWeight.w700),
         ),
-        SizedBox(height: 8),
+        SizedBox(height: SizeConfig.height(8)),
         Text(
           'kata sandi yang kuat akan menghindari pencurian akun',
-          style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+          style: TextStyle(fontSize: SizeConfig.text(12), color: Colors.grey),
         ),
-        SizedBox(height: 32.h),
+        SizedBox(height: SizeConfig.height(32)),
         Form(
           key: _formKeyCreatePassword,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsets.symmetric(horizontal: SizeConfig.width(16)),
             child: TextFormField(
               keyboardType: TextInputType.visiblePassword,
               controller: authController.passwordController,
               obscureText: _isObscure2,
               decoration: InputDecoration(
-                  icon: SvgPicture.asset('assets/img/image-svg/key.svg'),
+                  icon: SvgPicture.asset(
+                    'assets/img/image-svg/key.svg',
+                    height: SizeConfig.height(20),
+                    width: SizeConfig.width(20),
+                  ),
                   suffixIcon: IconButton(
                     icon: Icon((_isObscure2)
                         ? Icons.visibility_off_outlined
                         : Icons.visibility),
+                    iconSize: SizeConfig.image(20),
                     onPressed: () {
                       setState(() {
                         _isObscure2 = !_isObscure2;
                       });
                     },
                   ),
+                  suffixIconConstraints: BoxConstraints.tightFor(
+                    width: SizeConfig.width(24),
+                  ),
                   errorMaxLines: 2,
                   hintText: 'Masukan kata sandi',
-                  hintStyle: TextStyle(fontSize: 14.sp),
+                  hintStyle: TextStyle(fontSize: SizeConfig.text(14)),
                   border: UnderlineInputBorder()),
               validator: (value) {
                 if (value.length < 8) {
@@ -434,33 +466,37 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
           ),
         ),
         SizedBox(
-          height: 14.h,
+          height: SizeConfig.height(14),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          padding: EdgeInsets.symmetric(horizontal: SizeConfig.width(16)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Kata sandi Anda harus :',
-                style: TextStyle(color: Colors.grey, fontSize: 10.sp),
+                style: TextStyle(
+                    color: Colors.grey, fontSize: SizeConfig.text(10)),
               ),
               Text(
                 '* panjangnya 8 hingga 72 karakter',
-                style: TextStyle(color: Colors.grey, fontSize: 10.sp),
+                style: TextStyle(
+                    color: Colors.grey, fontSize: SizeConfig.text(10)),
               ),
               Text(
                 '* tidak mengandung email nama Anda',
-                style: TextStyle(color: Colors.grey, fontSize: 10.sp),
+                style: TextStyle(
+                    color: Colors.grey, fontSize: SizeConfig.text(10)),
               ),
               Text(
                 '* tidak umum digunakan dan mudah ditebak',
-                style: TextStyle(color: Colors.grey, fontSize: 10.sp),
+                style: TextStyle(
+                    color: Colors.grey, fontSize: SizeConfig.text(10)),
               ),
-              SizedBox(height: 32.h),
+              SizedBox(height: SizeConfig.height(32)),
               SizedBox(
-                height: 40.h,
-                width: 293.w,
+                height: SizeConfig.height(40),
+                width: SizeConfig.width(293),
                 child: TextButton(
                   style: TextButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -475,11 +511,12 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                     }
                   },
                   child: Text('Buat Kata Sandi',
-                      style: TextStyle(color: Colors.white, fontSize: 14.sp)),
+                      style: TextStyle(
+                          color: Colors.white, fontSize: SizeConfig.text(14))),
                 ),
               ),
               SizedBox(
-                height: 72.h,
+                height: SizeConfig.height(72),
               )
             ],
           ),
@@ -890,31 +927,35 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
         }
       },
       child: SizedBox(
-        width: 294.w,
+        width: SizeConfig.width(294),
         child: Card(
           elevation: 2,
           child: Container(
             margin: EdgeInsets.symmetric(
-              vertical: 12.h,
-              horizontal: 12.w,
+              vertical: SizeConfig.height(12),
+              horizontal: SizeConfig.width(12),
             ),
             child: Row(
               children: [
-                SvgPicture.asset('$icon'),
+                SvgPicture.asset(
+                  '$icon',
+                  height: SizeConfig.height(20),
+                  width: SizeConfig.width(20),
+                ),
                 SizedBox(
-                  width: 11.w,
+                  width: SizeConfig.width(11),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       '$title',
-                      style: TextStyle(fontSize: 12.sp),
+                      style: TextStyle(fontSize: SizeConfig.text(12)),
                     ),
                     Text(
                       '$subtitle',
                       style: TextStyle(
-                        fontSize: 10.sp,
+                        fontSize: SizeConfig.text(10),
                         color: Colors.grey,
                       ),
                     ),
@@ -1028,7 +1069,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
               idUser = message['id_user'];
               status = message['status'];
 
-              logger.w(status);
+              logger.w(idUser);
               // Navigator.of(context).pop();
               loginController.loginCitizen();
               // Get.offAll(SplashView());

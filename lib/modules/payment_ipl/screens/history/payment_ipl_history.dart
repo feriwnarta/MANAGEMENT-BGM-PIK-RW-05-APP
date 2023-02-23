@@ -1,4 +1,5 @@
 import 'package:aplikasi_rw/model/payment_ipl_history_model.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,7 +29,6 @@ class _PaymentIplHistoryState extends State<PaymentIplHistory> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Riwayat Pembayaran IPL'),
-        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       body: RefreshIndicator(
         onRefresh: () async =>
@@ -41,7 +41,7 @@ class _PaymentIplHistoryState extends State<PaymentIplHistory> {
                       ? Center(
                           child: Text(
                             'Fitur ini hanya dimiliki oleh warga',
-                            style: TextStyle(fontSize: 12.sp),
+                            style: TextStyle(fontSize: SizeConfig.text(12)),
                           ),
                         )
                       : ListView.builder(
@@ -83,15 +83,14 @@ class CardHistoryPaymentIpl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(360, 800));
     return Column(
       children: [
         SizedBox(
-          height: 20.h,
+          height: SizeConfig.height(20),
         ),
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 16.w),
-          height: 92.h,
+          margin: EdgeInsets.symmetric(horizontal: SizeConfig.width(16)),
+          height: SizeConfig.height(92),
           child: Card(
             elevation: 5,
             shape:
@@ -101,50 +100,51 @@ class CardHistoryPaymentIpl extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  height: 8.h,
+                  height: SizeConfig.height(8),
                 ),
                 Row(
                   children: [
                     SizedBox(
-                      width: 8.w,
+                      width: SizeConfig.width(8),
                     ),
                     Text(
                       noIpl,
                       style: TextStyle(
-                        fontSize: 16.sp,
+                        fontSize: SizeConfig.text(16),
                         color: Color(0xff2094F3),
                       ),
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: 8.h,
+                  height: SizeConfig.height(8),
                 ),
                 Container(
                   color: Color(0xffE0E0E0),
                   child: Column(children: [
                     SizedBox(
-                      height: 8.h,
+                      height: SizeConfig.height(8),
                     ),
                     Row(
                       children: [
                         SizedBox(
-                          width: 8.w,
+                          width: SizeConfig.width(8),
                         ),
                         SizedBox(
-                          width: 82.w,
+                          width: SizeConfig.width(82),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 'Jumlah tagihan',
                                 style: TextStyle(
-                                    fontSize: 10.sp, color: Color(0xff757575)),
+                                    fontSize: SizeConfig.text(10),
+                                    color: Color(0xff757575)),
                               ),
                               Text(
                                 jumlahTagihan,
                                 style: TextStyle(
-                                  fontSize: 12.sp,
+                                  fontSize: SizeConfig.text(12),
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
@@ -152,45 +152,45 @@ class CardHistoryPaymentIpl extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          width: 16.5.w,
+                          width: SizeConfig.width(16.5),
                         ),
                         SizedBox(
-                          width: 102.w,
+                          width: SizeConfig.width(102),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 'Bulan tagihan',
                                 style: TextStyle(
-                                    fontSize: 10.sp, color: Color(0xff757575)),
+                                    fontSize: SizeConfig.text(10),
+                                    color: Color(0xff757575)),
                               ),
                               Text(
                                 (bulanTagihan == null) ? '-' : bulanTagihan,
                                 style: TextStyle(
-                                  fontSize: 12.sp,
+                                  fontSize: SizeConfig.text(12),
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
                             ],
                           ),
                         ),
+                        SizedBox(width: SizeConfig.width(16.5)),
                         SizedBox(
-                          width: 16.5.w,
-                        ),
-                        SizedBox(
-                          width: 95.w,
+                          width: SizeConfig.width(95),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 'Status pembayaran',
                                 style: TextStyle(
-                                    fontSize: 10.sp, color: Color(0xff757575)),
+                                    fontSize: SizeConfig.text(10),
+                                    color: Color(0xff757575)),
                               ),
                               Text(
                                 statusPembayaran,
                                 style: TextStyle(
-                                  fontSize: 12.sp,
+                                  fontSize: SizeConfig.text(12),
                                   color: (statusPembayaran == 'paid')
                                       ? Color(0xff3BDE38)
                                       : Colors.red,
@@ -203,7 +203,7 @@ class CardHistoryPaymentIpl extends StatelessWidget {
                       ],
                     ),
                     SizedBox(
-                      height: 8.h,
+                      height: SizeConfig.height(8),
                     )
                   ]),
                 ),

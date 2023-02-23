@@ -1,6 +1,5 @@
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widgets/statistic_chart.dart';
 
@@ -21,7 +20,6 @@ class _DashboardEmState extends State<DashboardEm> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Dashboard'),
-        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -29,13 +27,13 @@ class _DashboardEmState extends State<DashboardEm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                padding: EdgeInsets.symmetric(horizontal: SizeConfig.width(16)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     title(),
                     SizedBox(
-                      height: 20.h,
+                      height: SizeConfig.height(20),
                     ),
                     CardLine(),
                   ],
@@ -112,12 +110,12 @@ class _DashboardEmState extends State<DashboardEm> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: 16.h,
+          height: SizeConfig.height(16),
         ),
-        AutoSizeText(
+        Text(
           'Lacak, kelola, dan perkirakan pegawai dan laporan yang ada.',
           style: TextStyle(
-            fontSize: 16.sp,
+            fontSize: SizeConfig.text(16),
             color: Color(0xff9E9E9E),
           ),
           overflow: TextOverflow.ellipsis,

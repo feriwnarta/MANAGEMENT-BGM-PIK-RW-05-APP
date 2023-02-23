@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:aplikasi_rw/controller/register_controller.dart';
 import 'package:aplikasi_rw/controller/resend_otp_countdown_controller.dart';
 import 'package:aplikasi_rw/modules/authentication/controllers/auth_controller.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -80,28 +81,30 @@ class _OtpState extends State<Otp> {
     return Column(
       children: [
         SizedBox(
-          height: 56.h,
+          height: SizeConfig.height(56),
         ),
         SvgPicture.asset('assets/img/image-svg/otp.svg'),
         SizedBox(
-          height: 16.h,
+          height: SizeConfig.height(16),
         ),
         Column(
           children: [
             Text(
               'OTP Verifikasi',
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
+              style: TextStyle(
+                  fontSize: SizeConfig.text(18), fontWeight: FontWeight.w700),
             ),
             SizedBox(
-              height: 8.h,
+              height: SizeConfig.height(8),
             ),
             SizedBox(
-              width: 300.w,
+              width: SizeConfig.width(300),
               child: RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
                   text: 'Masukan OTP yang dikirim ke ',
-                  style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                  style: TextStyle(
+                      fontSize: SizeConfig.text(12), color: Colors.grey),
                   children: <TextSpan>[
                     TextSpan(
                         text: (controller.methodVerifChose.value == 'EMAIL')
@@ -110,7 +113,7 @@ class _OtpState extends State<Otp> {
                                 ? 'SMS $noTelp'
                                 : 'WhatsApp $noTelp',
                         style: TextStyle(
-                            fontSize: 12.sp,
+                            fontSize: SizeConfig.text(12),
                             fontWeight: FontWeight.w700,
                             color: Colors.black)),
                   ],
@@ -119,28 +122,31 @@ class _OtpState extends State<Otp> {
             )
           ],
         ),
-        SizedBox(height: 18.h),
+        SizedBox(height: SizeConfig.height(18)),
         Obx(() {
           if (controller.isEmpty.value) {
             return Text(
               'OTP yang kamu masukan kosong',
-              style: TextStyle(fontSize: 11.sp, color: Colors.red),
+              style:
+                  TextStyle(fontSize: SizeConfig.text(11), color: Colors.red),
             );
           } else if (controller.isWrong.value) {
             return Text(
               'OTP yang kamu masukan salah. silahkan coba lagi.',
-              style: TextStyle(fontSize: 11.sp, color: Colors.red),
+              style:
+                  TextStyle(fontSize: SizeConfig.text(11), color: Colors.red),
             );
           } else {
             return Text(
               'OTP yang kamu masukan salah. silahkan coba lagi.',
-              style: TextStyle(fontSize: 11.sp, color: Colors.white),
+              style:
+                  TextStyle(fontSize: SizeConfig.text(11), color: Colors.white),
             );
           }
         }),
-        SizedBox(height: 16.h),
+        SizedBox(height: SizeConfig.text(16)),
         SizedBox(
-          width: 237.w,
+          width: SizeConfig.width(237),
           child: PinCodeTextField(
             appContext: context,
             length: 6,
@@ -149,10 +155,11 @@ class _OtpState extends State<Otp> {
             keyboardType: TextInputType.number,
             pinTheme: PinTheme(
               shape: PinCodeFieldShape.underline,
-              fieldHeight: 38.h,
-              fieldWidth: 19.w,
+              fieldHeight: SizeConfig.height(38),
+              fieldWidth: SizeConfig.width(19),
               inactiveColor: Color(0xff9E9E9E),
             ),
+            textStyle: TextStyle(fontSize: SizeConfig.text(30)),
             errorAnimationController: errorController,
             // animationDuration: Duration(milliseconds: 300),
             backgroundColor: Colors.white,
@@ -170,13 +177,14 @@ class _OtpState extends State<Otp> {
             },
           ),
         ),
-        SizedBox(height: 44.h),
+        SizedBox(height: SizeConfig.height(44)),
         Obx(
           () => (countDownController.count.value != 0)
               ? RichText(
                   text: TextSpan(
                     text: 'Tidak menerima OTP ? ',
-                    style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                    style: TextStyle(
+                        fontSize: SizeConfig.text(12), color: Colors.grey),
                     children: [
                       TextSpan(
                         text:
@@ -190,51 +198,65 @@ class _OtpState extends State<Otp> {
               : RichText(
                   text: TextSpan(
                     text: 'Tidak menerima OTP ',
-                    style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                    style: TextStyle(
+                        fontSize: SizeConfig.text(12), color: Colors.grey),
                     children: [
                       TextSpan(
-                          text: ' Kirim ulang OTP',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700, color: Colors.blue),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () async {
-                              countDownController.reset();
+                        text: ' Kirim ulang OTP',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, color: Colors.blue),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () async {
+                            countDownController.reset();
 
-                              final logger = Logger();
-                              logger.d('clicked resend otp');
+                            final logger = Logger();
+                            logger.d('clicked resend otp');
 
-                              await resendOtp(
-                                  noIpl: controllerIpl.text,
-                                  status: controller.methodVerifChose.value);
+                            await resendOtp(
+                                noIpl: controllerIpl.text,
+                                status: controller.methodVerifChose.value);
 
-                              countDownController.countDown(
-                                  iplOrEmail: (controllerIpl.text.isEmpty)
-                                      ? authController.controllerUsername.text
-                                      : controllerIpl.text);
+                            countDownController.countDown(
+                                iplOrEmail: (controllerIpl.text.isEmpty)
+                                    ? authController.controllerUsername.text
+                                    : controllerIpl.text);
 
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: (controller
-                                                  .methodVerifChose.value ==
-                                              'EMAIL')
-                                          ? Text(
-                                              'Kirim ulang OTP baru ke $email')
-                                          : (controller
-                                                      .methodVerifChose.value ==
-                                                  'WHATSAPP')
-                                              ? Text(
-                                                  'Kirim ulang OTP baru ke $noTelp')
-                                              : Text(
-                                                  'Kirim ulang OTP baru ke $noTelp')));
-                            }),
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: (controller.methodVerifChose.value ==
+                                        'EMAIL')
+                                    ? Text(
+                                        'Kirim ulang OTP baru ke $email',
+                                        style: TextStyle(
+                                          fontSize: SizeConfig.text(12),
+                                        ),
+                                      )
+                                    : (controller.methodVerifChose.value ==
+                                            'WHATSAPP')
+                                        ? Text(
+                                            'Kirim ulang OTP baru ke $noTelp',
+                                            style: TextStyle(
+                                              fontSize: SizeConfig.text(12),
+                                            ),
+                                          )
+                                        : Text(
+                                            'Kirim ulang OTP baru ke $noTelp',
+                                            style: TextStyle(
+                                              fontSize: SizeConfig.text(12),
+                                            ),
+                                          ),
+                              ),
+                            );
+                          },
+                      ),
                     ],
                   ),
                 ),
         ),
-        SizedBox(height: 32.h),
+        SizedBox(height: SizeConfig.height(32)),
         SizedBox(
-          height: 40.h,
-          width: 293.w,
+          height: SizeConfig.height(40),
+          width: SizeConfig.width(293),
           child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
@@ -257,16 +279,17 @@ class _OtpState extends State<Otp> {
               }
             },
             child: Text('Verifikasi dan Proses',
-                style: TextStyle(color: Colors.white, fontSize: 14.sp)),
+                style: TextStyle(
+                    color: Colors.white, fontSize: SizeConfig.text(14))),
           ),
         ),
-        SizedBox(height: 16.h),
+        SizedBox(height: SizeConfig.height(16)),
         Obx(() => (countDownController.count.value == 0)
             ? TextButton(
                 child: Text('Pilih cara lain untuk mengirim OTP ?',
                     style: TextStyle(
                       color: Color(0xff2094F3),
-                      fontSize: 12.sp,
+                      fontSize: SizeConfig.text(12),
                     )),
                 onPressed: (countDownController.count.value == 0)
                     ? () {
@@ -283,7 +306,7 @@ class _OtpState extends State<Otp> {
                     : null,
               )
             : SizedBox()),
-        SizedBox(height: 41.h)
+        SizedBox(height: SizeConfig.height(41))
       ],
     );
   }

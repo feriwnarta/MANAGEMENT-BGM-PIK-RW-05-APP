@@ -68,7 +68,6 @@ class StatusPeduliEmServices {
     try {
       var response = await dio.post(url, data: jsonEncode(data));
 
-      final logger = Logger();
       // logger.e(response.data);
 
       List<StatusPeduliEmModel> model;
@@ -83,7 +82,6 @@ class StatusPeduliEmServices {
           if (cordinator != null) {
             listCordinator =
                 cordinator.map<Map<String, dynamic>>((e) => e).toList();
-            logger.e(listCordinator);
           } else {
             listCordinator = [];
           }

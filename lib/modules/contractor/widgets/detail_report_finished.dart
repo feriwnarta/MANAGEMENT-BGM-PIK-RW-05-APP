@@ -1,12 +1,12 @@
+import 'dart:developer';
+
 import 'package:aplikasi_rw/modules/contractor/data/detail_laporan_selesai_model.dart';
 import 'package:aplikasi_rw/modules/contractor/services/detail_laporan_selesai_service.dart';
 import 'package:aplikasi_rw/server-app.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:aplikasi_rw/utils/view_image.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -28,7 +28,6 @@ class _DetailLaporanSelesaiState extends State<DetailLaporanSelesai> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Detail laporan selesai'),
-        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       body: FutureBuilder<DetailLaporanSelesaiModel>(
         future:
@@ -36,35 +35,35 @@ class _DetailLaporanSelesaiState extends State<DetailLaporanSelesai> {
         builder: (context, snapshot) => (snapshot.hasData)
             ? SingleChildScrollView(
                 child: Container(
-                  margin:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                  margin: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.width(16),
+                    vertical: SizeConfig.height(16),
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      AutoSizeText(
+                      Text(
                         'Laporan telah selesai dikerjakan oleh kontraktor lapangan.',
                         style: TextStyle(
-                          fontSize: 16.sp,
+                          fontSize: SizeConfig.text(16),
                           color: Color(0xff616161),
                         ),
                         maxLines: 3,
-                        minFontSize: 15,
                         overflow: TextOverflow.clip,
                       ),
                       SizedBox(
-                        height: 32.h,
+                        height: SizeConfig.height(32),
                       ),
-                      AutoSizeText(
+                      Text(
                         'Foto laporan diproses',
                         style: TextStyle(
-                          fontSize: 14.sp,
+                          fontSize: SizeConfig.text(14),
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        minFontSize: 13,
                       ),
                       SizedBox(
-                        height: 16.h,
+                        height: SizeConfig.height(16),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -85,8 +84,8 @@ class _DetailLaporanSelesaiState extends State<DetailLaporanSelesai> {
                               child: CachedNetworkImage(
                                 imageUrl:
                                     '${ServerApp.url}${snapshot.data.imageProcess1}',
-                                width: 156.w,
-                                height: 156.h,
+                                width: SizeConfig.width(156),
+                                height: SizeConfig.height(156),
                                 imageBuilder: (context, imageProvider) =>
                                     Container(
                                   decoration: BoxDecoration(
@@ -120,8 +119,8 @@ class _DetailLaporanSelesaiState extends State<DetailLaporanSelesai> {
                               child: CachedNetworkImage(
                                 imageUrl:
                                     '${ServerApp.url}${snapshot.data.imageProcess2}',
-                                width: 156.w,
-                                height: 156.h,
+                                width: SizeConfig.width(156),
+                                height: SizeConfig.height(156),
                                 imageBuilder: (context, imageProvider) =>
                                     Container(
                                   decoration: BoxDecoration(
@@ -142,19 +141,18 @@ class _DetailLaporanSelesaiState extends State<DetailLaporanSelesai> {
                         ],
                       ),
                       SizedBox(
-                        height: 36.h,
+                        height: SizeConfig.height(36),
                       ),
-                      AutoSizeText(
+                      Text(
                         'Foto laporan selesai',
                         style: TextStyle(
-                          fontSize: 14.sp,
+                          fontSize: SizeConfig.text(14),
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        minFontSize: 13,
                       ),
                       SizedBox(
-                        height: 16.h,
+                        height: SizeConfig.height(16),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -175,8 +173,8 @@ class _DetailLaporanSelesaiState extends State<DetailLaporanSelesai> {
                               child: CachedNetworkImage(
                                 imageUrl:
                                     '${ServerApp.url}${snapshot.data.imageComplete1}',
-                                width: 156.w,
-                                height: 156.h,
+                                width: SizeConfig.width(156),
+                                height: SizeConfig.height(156),
                                 imageBuilder: (context, imageProvider) =>
                                     Container(
                                   decoration: BoxDecoration(
@@ -210,8 +208,8 @@ class _DetailLaporanSelesaiState extends State<DetailLaporanSelesai> {
                               child: CachedNetworkImage(
                                 imageUrl:
                                     '${ServerApp.url}${snapshot.data.imageComplete2}',
-                                width: 156.w,
-                                height: 156.h,
+                                width: SizeConfig.width(156),
+                                height: SizeConfig.height(156),
                                 imageBuilder: (context, imageProvider) =>
                                     Container(
                                   decoration: BoxDecoration(
@@ -232,140 +230,132 @@ class _DetailLaporanSelesaiState extends State<DetailLaporanSelesai> {
                         ],
                       ),
                       SizedBox(
-                        height: 32.h,
+                        height: SizeConfig.height(32),
                       ),
-                      ExpansionTile(
-                        tilePadding: EdgeInsets.zero,
-                        childrenPadding: EdgeInsets.zero,
-                        title: Row(
-                          children: [
-                            SizedBox(
-                              width: 16.w,
-                              height: 16.h,
-                              child: Image(
-                                fit: BoxFit.cover,
-                                image: AssetImage('assets/img/clock.jpg'),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 8.w,
-                            ),
-                            Expanded(
-                              child: AutoSizeText.rich(
-                                TextSpan(
-                                  text: 'Selesai dalam ',
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: '${snapshot.data.duration}',
-                                      style: TextStyle(
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  ],
+                      ListTileTheme(
+                        dense: true,
+                        child: ExpansionTile(
+                          tilePadding: EdgeInsets.zero,
+                          childrenPadding: EdgeInsets.all(0)
+                              .copyWith(bottom: SizeConfig.height(20)),
+                          title: Row(
+                            children: [
+                              SizedBox(
+                                width: SizeConfig.width(16),
+                                height: SizeConfig.height(16),
+                                child: Image(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage('assets/img/clock.jpg'),
                                 ),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                minFontSize: 15,
                               ),
-                            )
+                              SizedBox(
+                                width: SizeConfig.width(8),
+                              ),
+                              Expanded(
+                                child: Text.rich(
+                                  TextSpan(
+                                    text: 'Selesai dalam ',
+                                    style: TextStyle(
+                                      fontSize: SizeConfig.text(14),
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: '${snapshot.data.duration}',
+                                        style: TextStyle(
+                                          fontSize: SizeConfig.text(14),
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              )
+                            ],
+                          ),
+                          children: [
+                            Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: SizeConfig.width(40)),
+                              padding: EdgeInsets.zero,
+                              child: Column(
+                                children: snapshot.data.processReport
+                                    .map<Widget>(
+                                      (e) => TimelineTile(
+                                        axis: TimelineAxis.vertical,
+                                        isLast: (e['index'] == 'last')
+                                            ? true
+                                            : false,
+                                        alignment: TimelineAlign.start,
+                                        isFirst: (e['index'] == 'first')
+                                            ? true
+                                            : false,
+                                        endChild: Container(
+                                          child: ListTile(
+                                            title: Text(
+                                              '${e['title']}',
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      SizeConfig.text(12)),
+                                            ),
+                                            subtitle: Text(
+                                              '${e['subtitle']}',
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      SizeConfig.text(11)),
+                                            ),
+                                          ),
+                                        ),
+                                        beforeLineStyle: LineStyle(
+                                          color: Color(0xffC2C2C2),
+                                          thickness: 1,
+                                        ),
+                                        afterLineStyle: LineStyle(
+                                          color: Color(0xffC2C2C2),
+                                          thickness: 1,
+                                        ),
+                                        indicatorStyle: IndicatorStyle(
+                                          width: SizeConfig.width(12),
+                                          color: Color(
+                                            0xff404040,
+                                          ),
+                                          iconStyle: IconStyle(
+                                            iconData: Icons.check,
+                                            color: Colors.white,
+                                            fontSize: SizeConfig.text(12),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ),
                           ],
                         ),
-                        children: [
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 40.w),
-                            child: Column(
-                              children: [
-                                TimelineTile(
-                                  endChild: Container(
-                                    child: ListTile(
-                                      title: Text(
-                                        'Laporan selesai',
-                                        style: TextStyle(fontSize: 12.0.sp),
-                                      ),
-                                      subtitle: Text(
-                                        'Laporan selesai',
-                                        style: TextStyle(fontSize: 11.0.sp),
-                                      ),
-                                    ),
-                                  ),
-                                  isFirst: true,
-                                  beforeLineStyle: LineStyle(
-                                    color: Color(0xffC2C2C2),
-                                    thickness: 1,
-                                  ),
-                                  afterLineStyle: LineStyle(
-                                    color: Color(0xffC2C2C2),
-                                    thickness: 1,
-                                  ),
-                                  indicatorStyle: IndicatorStyle(
-                                    width: 12.w,
-                                    color: Color(
-                                      0xff404040,
-                                    ),
-                                    iconStyle: IconStyle(
-                                      iconData: Icons.check,
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ),
-                                TimelineTile(
-                                  endChild: Container(
-                                    margin: EdgeInsets.only(top: 20.h),
-                                    child: ListTile(
-                                      title: Text(
-                                        '1',
-                                        style: TextStyle(fontSize: 12.0.sp),
-                                      ),
-                                      subtitle: Text(
-                                        '1',
-                                        style: TextStyle(fontSize: 11.0.sp),
-                                      ),
-                                    ),
-                                  ),
-                                  beforeLineStyle: LineStyle(
-                                    color: Color(0xffC2C2C2),
-                                    thickness: 1,
-                                  ),
-                                  afterLineStyle: LineStyle(
-                                    color: Color(0xffC2C2C2),
-                                    thickness: 1,
-                                  ),
-                                  indicatorStyle: IndicatorStyle(
-                                      color: Color(0xffC2C2C2), width: 12.w),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
                       ),
                       Row(
                         children: [
                           Image(
-                            width: 16.w,
-                            height: 16.h,
+                            width: SizeConfig.width(16),
+                            height: SizeConfig.height(16),
                             image: AssetImage(
                               'assets/img/star.jpg',
                             ),
                             fit: BoxFit.cover,
                           ),
                           SizedBox(
-                            width: 8.w,
+                            width: SizeConfig.width(8),
                           ),
                           Expanded(
-                            child: AutoSizeText(
+                            child: Text(
                               '${snapshot.data.star} Bintang',
                               style: TextStyle(
-                                fontSize: 14.sp,
+                                fontSize: SizeConfig.text(14),
                                 color: Color(0xff404040),
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.clip,
-                              minFontSize: 13,
                             ),
                           )
                         ],
@@ -373,25 +363,27 @@ class _DetailLaporanSelesaiState extends State<DetailLaporanSelesai> {
                       Column(
                         children: snapshot.data.complaint
                             .map<Widget>((e) => Padding(
-                                  padding: EdgeInsets.only(top: 24.h),
+                                  padding: EdgeInsets.only(
+                                      top: SizeConfig.height(24)),
                                   child: Row(
                                     children: [
                                       SvgPicture.asset(
                                         'assets/img/image-svg/shield-exclamation.svg',
+                                        width: SizeConfig.width(16),
+                                        height: SizeConfig.height(16),
                                       ),
                                       SizedBox(
-                                        width: 8.w,
+                                        width: SizeConfig.width(8),
                                       ),
                                       Expanded(
-                                        child: AutoSizeText(
+                                        child: Text(
                                           '$e',
                                           style: TextStyle(
-                                            fontSize: 14.sp,
+                                            fontSize: SizeConfig.text(14),
                                             color: Color(0xff404040),
                                           ),
                                           maxLines: 1,
                                           overflow: TextOverflow.clip,
-                                          minFontSize: 13,
                                         ),
                                       )
                                     ],
@@ -400,29 +392,28 @@ class _DetailLaporanSelesaiState extends State<DetailLaporanSelesai> {
                             .toList(),
                       ),
                       SizedBox(
-                        height: 24.h,
+                        height: SizeConfig.height(24),
                       ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SvgPicture.asset(
                             'assets/img/image-svg/location-marker-complaint.svg',
-                            height: 16.h,
-                            width: 16.w,
+                            height: SizeConfig.height(16),
+                            width: SizeConfig.width(16),
                           ),
                           SizedBox(
-                            width: 8.w,
+                            width: SizeConfig.width(8),
                           ),
                           Expanded(
-                            child: AutoSizeText(
-                              'Jalan Marina Indah Raya No.1 ​Pantai Indah Kapuk, RT.7/RW.2, Kamal Muara, Kec. Penjaringan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14470',
+                            child: Text(
+                              snapshot.data.location,
                               style: TextStyle(
-                                fontSize: 14.sp,
+                                fontSize: SizeConfig.text(14),
                                 color: Color(0xff404040),
                               ),
                               maxLines: 7,
                               overflow: TextOverflow.clip,
-                              minFontSize: 13,
                             ),
                           )
                         ],

@@ -4,6 +4,7 @@ import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class GetDataUserServices {
   static Future<UserModel> getDataUser(String idUser) async {

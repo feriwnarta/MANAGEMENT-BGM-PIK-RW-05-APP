@@ -1,4 +1,5 @@
 import 'package:aplikasi_rw/modules/estate_manager/services/chart_line_services.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,37 +48,36 @@ class _CardLineChartState extends State<CardLineChart> {
       elevation: 5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8.w),
+        padding: EdgeInsets.symmetric(horizontal: SizeConfig.width(8)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              height: 16.h,
+              height: SizeConfig.height(16),
             ),
-            AutoSizeText(
+            Text(
               'Penilaian ${snapshot.data[index].title}',
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
-              minFontSize: 10,
-              style: TextStyle(fontSize: 10.sp, color: Color(0xff757575)),
+              style: TextStyle(
+                  fontSize: SizeConfig.text(10), color: Color(0xff757575)),
             ),
             SizedBox(
-              height: 24.h,
+              height: SizeConfig.height(24),
               width: double.infinity,
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
                   hint: SizedBox(
-                    width: 280.w,
-                    child: AutoSizeText(
+                    width: SizeConfig.width(280),
+                    child: Text(
                       (!isUpdate)
                           ? '${snapshot.data[index].dropdown[0]['name_category']}'
                           : dataUpdate['name_category'],
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 16.sp,
+                        fontSize: SizeConfig.text(16),
                       ),
                       maxLines: 1,
-                      minFontSize: 10,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -85,7 +85,7 @@ class _CardLineChartState extends State<CardLineChart> {
                   underline: null,
                   style: TextStyle(
                       color: Colors.black,
-                      fontSize: 16.sp,
+                      fontSize: SizeConfig.text(16),
                       fontWeight: FontWeight.w500),
                   // Down Arrow Icon
                   icon: const Icon(Icons.keyboard_arrow_down),
@@ -94,14 +94,13 @@ class _CardLineChartState extends State<CardLineChart> {
                     return DropdownMenuItem<String>(
                         value: '${e['id_category']}',
                         child: SizedBox(
-                          width: 270.w,
-                          child: AutoSizeText(
+                          width: SizeConfig.width(270),
+                          child: Text(
                             '${e['name_category']}',
                             style: TextStyle(
-                              fontSize: 14.sp,
+                              fontSize: SizeConfig.text(14),
                             ),
                             maxLines: 1,
-                            minFontSize: 10,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ));
@@ -129,7 +128,7 @@ class _CardLineChartState extends State<CardLineChart> {
               ),
             ),
             SizedBox(
-              height: 16.h,
+              height: SizeConfig.height(16),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -138,44 +137,49 @@ class _CardLineChartState extends State<CardLineChart> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      width: 100.w,
-                      height: 49.h,
-                      child: AutoSizeText(
+                      width: SizeConfig.width(100),
+                      height: SizeConfig.height(49),
+                      child: Text(
                         (!isUpdate)
                             ? '${snapshot.data[index].persentaseSekarang[0]}'
                             : dataUpdate['persentase_sekarang'],
                         style: TextStyle(
-                          fontSize: 28.sp,
+                          fontSize: SizeConfig.text(28),
                           fontWeight: FontWeight.w500,
                         ),
                         maxLines: 2,
-                        minFontSize: 10,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     SizedBox(
-                      height: 19.h,
+                      height: SizeConfig.height(19),
                     ),
                     (!isUpdate)
                         ? SizedBox(
-                            width: 200.w,
+                            width: SizeConfig.width(200),
                             // height: 20.h,
                             child: (snapshot.data[index].pic[0] != null)
-                                ? AutoSizeText(
+                                ? Text(
                                     '${snapshot.data[index].pic[0].join(', ')}',
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
+                                    style: TextStyle(
+                                      fontSize: SizeConfig.text(14),
+                                    ),
                                   )
                                 : Text('-'),
                           )
                         : SizedBox(
-                            width: 100.w,
+                            width: SizeConfig.width(100),
                             // height: 20.h,
                             child: (dataUpdate['pic'] != null)
-                                ? AutoSizeText(
+                                ? Text(
                                     '${dataUpdate['pic'].join(', ')}',
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
+                                    style: TextStyle(
+                                      fontSize: SizeConfig.text(14),
+                                    ),
                                   )
                                 : Text('-'),
                           ),
@@ -186,7 +190,7 @@ class _CardLineChartState extends State<CardLineChart> {
                   children: [
                     (isUpdate)
                         ? SizedBox(
-                            width: 96.w,
+                            width: SizeConfig.width(96),
                             child: SfSparkAreaChart(
                               data: (dataUpdate['data_chart'] != null)
                                   ? dataUpdate['data_chart']
@@ -204,7 +208,7 @@ class _CardLineChartState extends State<CardLineChart> {
                             ),
                           )
                         : SizedBox(
-                            width: 96.w,
+                            width: SizeConfig.width(96),
                             child: SfSparkAreaChart(
                               data: (snapshot.data[index].dataChart[0].length !=
                                       0)
@@ -224,12 +228,12 @@ class _CardLineChartState extends State<CardLineChart> {
                             ),
                           ),
                     SizedBox(
-                      height: 15.h,
+                      height: SizeConfig.height(15),
                     ),
                     (!isUpdate)
                         ? SizedBox(
-                            height: 20.h,
-                            width: 60.w,
+                            height: SizeConfig.height(20),
+                            width: SizeConfig.width(60),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -238,13 +242,20 @@ class _CardLineChartState extends State<CardLineChart> {
                                             '100 %')
                                     ? Spacer()
                                     : SvgPicture.asset(
-                                        'assets/img/image-svg/low.svg'),
-                                Text('${snapshot.data[index].persentase[0]}')
+                                        'assets/img/image-svg/low.svg',
+                                        width: SizeConfig.width(20),
+                                        height: SizeConfig.height(20),
+                                      ),
+                                Text(
+                                  '${snapshot.data[index].persentase[0]}',
+                                  style:
+                                      TextStyle(fontSize: SizeConfig.text(14)),
+                                )
                               ],
                             ))
                         : SizedBox(
-                            height: 20.h,
-                            width: 60.w,
+                            height: SizeConfig.height(20),
+                            width: SizeConfig.width(60),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -252,12 +263,19 @@ class _CardLineChartState extends State<CardLineChart> {
                                         dataUpdate['persentase'] == '100 %')
                                     ? Spacer()
                                     : SvgPicture.asset(
-                                        'assets/img/image-svg/low.svg'),
-                                Text(dataUpdate['persentase'])
+                                        'assets/img/image-svg/low.svg',
+                                        width: SizeConfig.width(20),
+                                        height: SizeConfig.height(20),
+                                      ),
+                                Text(
+                                  dataUpdate['persentase'],
+                                  style:
+                                      TextStyle(fontSize: SizeConfig.text(14)),
+                                )
                               ],
                             )),
                     SizedBox(
-                      height: 16.h,
+                      height: SizeConfig.height(16),
                     ),
                   ],
                 ),
