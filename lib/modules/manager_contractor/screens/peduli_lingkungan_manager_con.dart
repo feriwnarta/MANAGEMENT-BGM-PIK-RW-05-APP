@@ -1,6 +1,7 @@
 import 'package:aplikasi_rw/modules/manager_contractor/screens/laporan_masuk_manager_con.dart';
 import 'package:aplikasi_rw/modules/manager_contractor/screens/laporan_proses_manager_con.dart';
 import 'package:aplikasi_rw/modules/manager_contractor/screens/laporan_selesai_manager_contractor.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,27 +42,26 @@ class _MyWidgetState extends State<PeduliLingkunganManagerCon> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Peduli Lingkungan Umum'),
-        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.symmetric(
-            horizontal: 16.w,
-            vertical: 16.h,
+            horizontal: SizeConfig.width(16),
+            vertical: SizeConfig.height(16),
           ),
           child: Column(
             children: [
-              AutoSizeText(
+              Text(
                 'Kepedulian lingkungan yang di tujukan untuk area lingkungan umum yang ada di Bukit Golf Mediterania RW 05.',
                 style: TextStyle(
-                  fontSize: 16.sp,
+                  fontSize: SizeConfig.text(16),
                   color: Color(0xff616161),
                 ),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 5,
               ),
               SizedBox(
-                height: 32.h,
+                height: SizeConfig.height(32),
               ),
               Row(
                 children: [
@@ -76,21 +76,21 @@ class _MyWidgetState extends State<PeduliLingkunganManagerCon> {
                     },
                     highlightColor: Colors.grey.withOpacity(0.1),
                     child: SizedBox(
-                      width: 70.w,
+                      width: SizeConfig.width(70),
                       child: Column(
                         children: [
                           Image(
-                            height: 72.h,
+                            height: SizeConfig.height(72),
                             image: imageLaporanMasuk,
                             fit: BoxFit.cover,
                           ),
                           SizedBox(
-                            height: 8.h,
+                            height: SizeConfig.height(8),
                           ),
-                          AutoSizeText(
+                          Text(
                             'Laporan Masuk',
                             style: TextStyle(
-                              fontSize: 12.sp,
+                              fontSize: SizeConfig.text(12),
                             ),
                             textAlign: TextAlign.center,
                           )
@@ -99,7 +99,7 @@ class _MyWidgetState extends State<PeduliLingkunganManagerCon> {
                     ),
                   ),
                   SizedBox(
-                    width: 16.w,
+                    width: SizeConfig.width(16),
                   ),
                   InkWell(
                     onTap: () {
@@ -109,21 +109,21 @@ class _MyWidgetState extends State<PeduliLingkunganManagerCon> {
                       );
                     },
                     child: SizedBox(
-                      width: 70.w,
+                      width: SizeConfig.width(70),
                       child: Column(
                         children: [
                           Image(
-                            height: 72.h,
+                            height: SizeConfig.height(72),
                             image: imageLaporanDiproses,
                             fit: BoxFit.cover,
                           ),
                           SizedBox(
-                            height: 8.h,
+                            height: SizeConfig.height(8),
                           ),
-                          AutoSizeText(
+                          Text(
                             'Laporan Diproses',
                             style: TextStyle(
-                              fontSize: 12.sp,
+                              fontSize: SizeConfig.text(12),
                             ),
                             textAlign: TextAlign.center,
                           )
@@ -132,7 +132,7 @@ class _MyWidgetState extends State<PeduliLingkunganManagerCon> {
                     ),
                   ),
                   SizedBox(
-                    width: 16.w,
+                    width: SizeConfig.width(16),
                   ),
                   InkWell(
                     onTap: () {
@@ -142,21 +142,21 @@ class _MyWidgetState extends State<PeduliLingkunganManagerCon> {
                       );
                     },
                     child: SizedBox(
-                      width: 70.w,
+                      width: SizeConfig.width(70),
                       child: Column(
                         children: [
                           Image(
-                            height: 72.h,
+                            height: SizeConfig.height(72),
                             image: imageLaporanSelesai,
                             fit: BoxFit.cover,
                           ),
                           SizedBox(
-                            height: 8.h,
+                            height: SizeConfig.height(8),
                           ),
-                          AutoSizeText(
+                          Text(
                             'Laporan Selesai',
                             style: TextStyle(
-                              fontSize: 12.sp,
+                              fontSize: SizeConfig.text(12),
                             ),
                             textAlign: TextAlign.center,
                           )

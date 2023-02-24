@@ -1,12 +1,9 @@
 import 'package:aplikasi_rw/modules/profiles/services/change_password_services.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:get/state_manager.dart';
 import 'package:logger/logger.dart';
 
@@ -64,47 +61,44 @@ class SecurityScreen extends StatelessWidget {
                       children: [
                         Form(
                           key: _formKey2,
-                          child: SizedBox(
-                            height: SizeConfig.height(24),
-                            child: TextFormField(
-                              controller: controllerCurrentPassword,
-                              obscureText: isObsecureNow.value,
-                              onChanged: (value) {
-                                _formKey2.currentState.validate();
-                              },
-                              decoration: InputDecoration(
-                                suffixIcon: IconButton(
-                                  padding: EdgeInsets.zero,
-                                  iconSize: SizeConfig.image(20),
-                                  icon: (isObsecureNow.value)
-                                      ? Icon(
-                                          Icons.visibility_off_outlined,
-                                        )
-                                      : Icon(
-                                          Icons.visibility,
-                                        ),
-                                  onPressed: () {
-                                    isObsecureNow.value = !isObsecureNow.value;
-                                  },
-                                ),
-                                icon: SvgPicture.asset(
-                                  'assets/img/image-svg/key.svg',
-                                  height: SizeConfig.height(20),
-                                ),
-                                hintText: 'Kata sandi sekarang',
-                                hintStyle:
-                                    TextStyle(fontSize: SizeConfig.text(14)),
+                          child: TextFormField(
+                            controller: controllerCurrentPassword,
+                            obscureText: isObsecureNow.value,
+                            onChanged: (value) {
+                              _formKey2.currentState.validate();
+                            },
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                padding: EdgeInsets.zero,
+                                iconSize: SizeConfig.image(20),
+                                icon: (isObsecureNow.value)
+                                    ? Icon(
+                                        Icons.visibility_off_outlined,
+                                      )
+                                    : Icon(
+                                        Icons.visibility,
+                                      ),
+                                onPressed: () {
+                                  isObsecureNow.value = !isObsecureNow.value;
+                                },
                               ),
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'kata sandi tidak boleh kosong';
-                                } else if (value.length < 8) {
-                                  return 'kata sandi harus 8 karakter hingga 72 karakter';
-                                } else {
-                                  return null;
-                                }
-                              },
+                              icon: SvgPicture.asset(
+                                'assets/img/image-svg/key.svg',
+                                height: SizeConfig.height(20),
+                              ),
+                              hintText: 'Kata sandi sekarang',
+                              hintStyle:
+                                  TextStyle(fontSize: SizeConfig.text(14)),
                             ),
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'kata sandi tidak boleh kosong';
+                              } else if (value.length < 8) {
+                                return 'kata sandi harus 8 karakter hingga 72 karakter';
+                              } else {
+                                return null;
+                              }
+                            },
                           ),
                         ),
                         SizedBox(
@@ -112,47 +106,44 @@ class SecurityScreen extends StatelessWidget {
                         ),
                         Form(
                           key: _formKey3,
-                          child: SizedBox(
-                            height: SizeConfig.height(24),
-                            child: TextFormField(
-                              controller: controllerNewPassword,
-                              obscureText: isObsecureNew.value,
-                              onChanged: (value) {
-                                _formKey3.currentState.validate();
-                              },
-                              decoration: InputDecoration(
-                                suffixIcon: IconButton(
-                                  iconSize: SizeConfig.image(20),
-                                  padding: EdgeInsets.zero,
-                                  icon: (isObsecureNew.value)
-                                      ? Icon(
-                                          Icons.visibility_off_outlined,
-                                        )
-                                      : Icon(
-                                          Icons.visibility,
-                                        ),
-                                  onPressed: () {
-                                    isObsecureNew.value = !isObsecureNew.value;
-                                  },
-                                ),
-                                icon: SvgPicture.asset(
-                                  'assets/img/image-svg/key.svg',
-                                  height: SizeConfig.height(20),
-                                ),
-                                hintText: 'Kata sandi baru',
-                                hintStyle:
-                                    TextStyle(fontSize: SizeConfig.text(14)),
+                          child: TextFormField(
+                            controller: controllerNewPassword,
+                            obscureText: isObsecureNew.value,
+                            onChanged: (value) {
+                              _formKey3.currentState.validate();
+                            },
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                iconSize: SizeConfig.image(20),
+                                padding: EdgeInsets.zero,
+                                icon: (isObsecureNew.value)
+                                    ? Icon(
+                                        Icons.visibility_off_outlined,
+                                      )
+                                    : Icon(
+                                        Icons.visibility,
+                                      ),
+                                onPressed: () {
+                                  isObsecureNew.value = !isObsecureNew.value;
+                                },
                               ),
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'kata sandi tidak boleh kosong';
-                                } else if (value.length < 8) {
-                                  return 'kata sandi harus 8 karakter hingga 72 karakter';
-                                } else {
-                                  return null;
-                                }
-                              },
+                              icon: SvgPicture.asset(
+                                'assets/img/image-svg/key.svg',
+                                height: SizeConfig.height(20),
+                              ),
+                              hintText: 'Kata sandi baru',
+                              hintStyle:
+                                  TextStyle(fontSize: SizeConfig.text(14)),
                             ),
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'kata sandi tidak boleh kosong';
+                              } else if (value.length < 8) {
+                                return 'kata sandi harus 8 karakter hingga 72 karakter';
+                              } else {
+                                return null;
+                              }
+                            },
                           ),
                         ),
                         SizedBox(
@@ -160,51 +151,45 @@ class SecurityScreen extends StatelessWidget {
                         ),
                         Form(
                           key: _formKey4,
-                          child: SizedBox(
-                            height: SizeConfig.height(24),
-                            child: TextFormField(
-                              controller: controllerReNewPassword,
-                              obscureText: isObsecureReNew.value,
-                              onChanged: (value) {
-                                _formKey4.currentState.validate();
-                              },
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'kata sandi tidak boleh kosong';
-                                } else if (value !=
-                                    controllerNewPassword.text) {
-                                  return 'kata sandi tidak cocok';
-                                } else {
-                                  return null;
-                                }
-                              },
-                              decoration: InputDecoration(
-                                isDense: true,
-                                isCollapsed: true,
-                                suffixIcon: IconButton(
-                                  padding: EdgeInsets.zero,
-                                  splashRadius: 10,
-                                  iconSize: SizeConfig.image(20),
-                                  icon: (isObsecureReNew.value)
-                                      ? Icon(
-                                          Icons.visibility_off_outlined,
-                                        )
-                                      : Icon(
-                                          Icons.visibility,
-                                        ),
-                                  onPressed: () {
-                                    isObsecureReNew.value =
-                                        !isObsecureReNew.value;
-                                  },
-                                ),
-                                icon: SvgPicture.asset(
-                                  'assets/img/image-svg/key.svg',
-                                  height: SizeConfig.height(20),
-                                ),
-                                hintText: 'Ulangi kata sandi baru',
-                                hintStyle:
-                                    TextStyle(fontSize: SizeConfig.text(14)),
+                          child: TextFormField(
+                            controller: controllerReNewPassword,
+                            obscureText: isObsecureReNew.value,
+                            onChanged: (value) {
+                              _formKey4.currentState.validate();
+                            },
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'kata sandi tidak boleh kosong';
+                              } else if (value != controllerNewPassword.text) {
+                                return 'kata sandi tidak cocok';
+                              } else {
+                                return null;
+                              }
+                            },
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                padding: EdgeInsets.zero,
+                                splashRadius: 10,
+                                iconSize: SizeConfig.image(20),
+                                icon: (isObsecureReNew.value)
+                                    ? Icon(
+                                        Icons.visibility_off_outlined,
+                                      )
+                                    : Icon(
+                                        Icons.visibility,
+                                      ),
+                                onPressed: () {
+                                  isObsecureReNew.value =
+                                      !isObsecureReNew.value;
+                                },
                               ),
+                              icon: SvgPicture.asset(
+                                'assets/img/image-svg/key.svg',
+                                height: SizeConfig.height(20),
+                              ),
+                              hintText: 'Ulangi kata sandi baru',
+                              hintStyle:
+                                  TextStyle(fontSize: SizeConfig.text(14)),
                             ),
                           ),
                         )
@@ -213,7 +198,7 @@ class SecurityScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: SizeConfig.height(318),
+                  height: SizeConfig.height(218),
                 ),
                 SizedBox(
                   width: SizeConfig.width(328),

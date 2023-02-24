@@ -1,4 +1,5 @@
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -40,39 +41,38 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
         title: Text(
           'Dashboard',
         ),
-        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.symmetric(
-            horizontal: 16.w,
-            vertical: 20.h,
+            horizontal: SizeConfig.width(16),
+            vertical: SizeConfig.height(20),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AutoSizeText(
+              Text(
                 loginController.name.value,
                 style: TextStyle(
-                  fontSize: 19.sp,
+                  fontSize: SizeConfig.text(19),
                   fontWeight: FontWeight.w500,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
               SizedBox(
-                height: 4.h,
+                height: SizeConfig.height(4),
               ),
-              AutoSizeText(
+              Text(
                 'Sudahkah cek laporan hari ini ?',
                 style: TextStyle(
-                  fontSize: 14.sp,
+                  fontSize: SizeConfig.text(14),
                   fontWeight: FontWeight.w400,
                   color: Color(0xff616161),
                 ),
               ),
               SizedBox(
-                height: 32.h,
+                height: SizeConfig.height(32),
               ),
               FutureBuilder<List<Map<String, dynamic>>>(
                 future: future,
@@ -84,8 +84,8 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                           )
                     : Shimmer.fromColors(
                         child: Container(
-                          height: 173.h,
-                          width: 328.w,
+                          height: SizeConfig.height(173),
+                          width: SizeConfig.width(328),
                           decoration: BoxDecoration(
                               color: Colors.grey,
                               borderRadius: BorderRadius.circular(8)),
@@ -100,8 +100,8 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                     ? pieChart(snapshot)
                     : Shimmer.fromColors(
                         child: Container(
-                          height: 173.h,
-                          width: 328.w,
+                          height: SizeConfig.height(173),
+                          width: SizeConfig.width(328),
                           margin: EdgeInsets.only(top: 5),
                           decoration: BoxDecoration(
                               color: Colors.grey,
@@ -111,27 +111,6 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                         highlightColor: Colors.grey[200],
                       ),
               ),
-              // FutureBuilder(
-              //   future: TotalManPowerServices.getManPower(),
-              //   // future: widget.futureBarChart,
-              //   builder: (context, snapshot) =>
-              //       (snapshot.connectionState == ConnectionState.done)
-              //           ? (snapshot.data != null)
-              //               ? barChart(snapshot)
-              //               : SizedBox()
-              //           : Shimmer.fromColors(
-              //               child: Container(
-              //                 height: 349.h,
-              //                 width: 328.w,
-              //                 margin: EdgeInsets.only(top: 5),
-              //                 decoration: BoxDecoration(
-              //                     color: Colors.grey,
-              //                     borderRadius: BorderRadius.circular(8)),
-              //               ),
-              //               baseColor: Colors.grey[300],
-              //               highlightColor: Colors.grey[200],
-              //             ),
-              // ),
             ],
           ),
         ),
@@ -145,22 +124,22 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
         shadowColor: Colors.grey,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 8.w),
+          margin: EdgeInsets.symmetric(horizontal: SizeConfig.width(8)),
           child: Column(
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 16.h),
-                  AutoSizeText(
+                  SizedBox(height: SizeConfig.height(16)),
+                  Text(
                     '${snapshot[0]['title']}',
                     style: TextStyle(
-                      fontSize: 10.sp,
+                      fontSize: SizeConfig.text(10),
                       color: Color(0xff757575),
                     ),
                   ),
                   SizedBox(
-                    height: 8.h,
+                    height: SizeConfig.height(8),
                   ),
                   Row(
                     children: [
@@ -173,7 +152,7 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                             underline: null,
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 16.sp,
+                                fontSize: SizeConfig.text(16),
                                 fontWeight: FontWeight.w500),
                             // Down Arrow Icon
                             icon: const Icon(Icons.keyboard_arrow_down),
@@ -201,30 +180,29 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                     ],
                   ),
                   SizedBox(
-                    height: 16.h,
+                    height: SizeConfig.height(16),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        width: 156.w,
+                        width: SizeConfig.width(156),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            AutoSizeText(
+                            Text(
                               '${snapshot[0]['persentase']} %',
                               style: TextStyle(
-                                fontSize: 33.sp,
+                                fontSize: SizeConfig.text(33),
                                 fontWeight: FontWeight.w500,
                               ),
-                              minFontSize: 13,
                               maxLines: 2,
                             ),
-                            SizedBox(height: 19.h),
-                            AutoSizeText(
+                            SizedBox(height: SizeConfig.height(19)),
+                            Text(
                               '${snapshot[0]['pic']}',
                               style: TextStyle(
-                                fontSize: 14.sp,
+                                fontSize: SizeConfig.text(14),
                               ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
@@ -237,7 +215,7 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           SizedBox(
-                            width: 96.w,
+                            width: SizeConfig.width(96),
                             child: SfSparkAreaChart(
                               data: snapshot[0]['chart'].cast<num>(),
                               color: Colors.red.withOpacity(0.05),
@@ -247,7 +225,7 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                             ),
                           ),
                           SizedBox(
-                            height: 10.h,
+                            height: SizeConfig.height(10),
                           ),
                           (snapshot[0]['persentase_indicator'] == 0)
                               ? SizedBox()
@@ -263,12 +241,12 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                                             'assets/img/image-svg/trending-down.svg',
                                           ),
                                     SizedBox(
-                                      width: 5.w,
+                                      width: SizeConfig.width(5),
                                     ),
-                                    AutoSizeText(
+                                    Text(
                                       '${snapshot[0]['persentase_indicator']}%',
                                       style: TextStyle(
-                                        fontSize: 14.sp,
+                                        fontSize: SizeConfig.text(14),
                                         fontWeight: FontWeight.w500,
                                         color: Colors.red,
                                       ),
@@ -276,14 +254,14 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                                   ],
                                 ),
                           SizedBox(
-                            height: 24.h,
+                            height: SizeConfig.height(24),
                           ),
                         ],
                       )
                     ],
                   ),
                   SizedBox(
-                    height: 8.h,
+                    height: SizeConfig.height(8),
                   ),
                 ],
               ),
@@ -298,22 +276,23 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
         shadowColor: Colors.grey,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 22.w),
+          margin: EdgeInsets.symmetric(horizontal: SizeConfig.width(22)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20.h),
+              SizedBox(height: SizeConfig.height(20)),
               Text(
                 '${snapshot.data['unit']}',
-                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                    fontSize: SizeConfig.text(16), fontWeight: FontWeight.w500),
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: SizeConfig.height(20)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                      width: 120.w,
-                      height: 120.h,
+                      width: SizeConfig.width(120),
+                      height: SizeConfig.height(120),
                       child: SfCircularChart(annotations: [
                         CircularChartAnnotation(
                           widget: Text('${snapshot.data['total_laporan']}'),
@@ -358,7 +337,7 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                             })
                       ])),
                   SizedBox(
-                    width: 24.w,
+                    width: SizeConfig.width(24),
                   ),
                   Expanded(
                     child: Column(
@@ -369,14 +348,14 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                             DotIcon(
                               color: Colors.blue,
                             ),
-                            SizedBox(width: 8.w),
+                            SizedBox(width: SizeConfig.width(8)),
                             Expanded(
-                              child: AutoSizeText(
+                              child: Text(
                                 '${snapshot.data['total_laporan']} Laporan ',
                                 overflow: TextOverflow.clip,
                                 maxLines: 1,
                                 style: TextStyle(
-                                    fontSize: 12.sp,
+                                    fontSize: SizeConfig.text(12),
                                     color: Colors.grey,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -388,14 +367,14 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                             DotIcon(
                               color: Color(0xffF32020),
                             ),
-                            SizedBox(width: 8.w),
+                            SizedBox(width: SizeConfig.width(8)),
                             Expanded(
-                              child: AutoSizeText(
+                              child: Text(
                                 '${snapshot.data['laporan_belum_dikerjakan']} Belum Dikerjakan',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                    fontSize: 12.sp,
+                                    fontSize: SizeConfig.text(12),
                                     color: Colors.grey,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -407,13 +386,13 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                             DotIcon(
                               color: Color(0xffF3A520),
                             ),
-                            SizedBox(width: 8.w),
+                            SizedBox(width: SizeConfig.width(8)),
                             Expanded(
-                              child: AutoSizeText(
+                              child: Text(
                                 '${snapshot.data['laporan_sedang_dikerjakan']} Sedang dikerjakan',
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                    fontSize: 12.sp,
+                                    fontSize: SizeConfig.text(12),
                                     color: Colors.grey,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -425,13 +404,13 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                             DotIcon(
                               color: Color(0xff20F348),
                             ),
-                            SizedBox(width: 8.w),
+                            SizedBox(width: SizeConfig.width(8)),
                             Expanded(
-                              child: AutoSizeText(
+                              child: Text(
                                 '${snapshot.data['laporan_selesai']} Selesai',
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                    fontSize: 12.sp,
+                                    fontSize: SizeConfig.text(12),
                                     color: Colors.grey,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -443,7 +422,7 @@ class _DashboardCordinatorState extends State<DashboardCordinator> {
                   ),
                 ],
               ),
-              SizedBox(height: 20.h)
+              SizedBox(height: SizeConfig.height(20))
             ],
           ),
         ));

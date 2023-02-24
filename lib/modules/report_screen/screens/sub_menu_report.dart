@@ -117,7 +117,6 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                       (6 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
                   vertical:
                       (12 / Sizer.slicingHeight) * SizeConfig.heightMultiplier),
-              height: (96 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
               decoration: (isActive.value)
                   ? BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
@@ -189,7 +188,6 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                       (6 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
                   vertical:
                       (12 / Sizer.slicingHeight) * SizeConfig.heightMultiplier),
-              height: (96 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
               decoration: (!isActive.value)
                   ? BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
@@ -253,6 +251,7 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
               ),
         SizedBox(
           width: (328 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
+          height: SizeConfig.height(40),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(

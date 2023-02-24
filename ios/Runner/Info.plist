@@ -37,6 +37,8 @@
 	<string>Aplikasi membutuhkan ijin lokasi untuk mengambil lokasi laporan</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Aplikasi membutuhkan ijin galeri untuk menambahkan gambar</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Aplikasi membutuhkan ijin mikrofon</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

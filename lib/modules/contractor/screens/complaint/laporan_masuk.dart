@@ -4,6 +4,7 @@ import 'package:aplikasi_rw/modules/contractor/screens/complaint/finish_report_s
 import 'package:aplikasi_rw/modules/contractor/screens/complaint/process_report.dart';
 import 'package:aplikasi_rw/modules/contractor/widgets/card_worker.dart';
 import 'package:aplikasi_rw/modules/contractor/widgets/detail_report_finished.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -88,17 +89,20 @@ class _CardReportState extends State<CardReport>
               );
             } else {
               return Container(
-                margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                margin: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.width(16),
+                  vertical: SizeConfig.height(16),
+                ),
                 child: Column(
                   children: [
-                    AutoSizeText(
+                    Text(
                       'Jumlah laporan yang masuk di lingkungan RW 05.',
-                      style: TextStyle(fontSize: 16.sp),
+                      style: TextStyle(fontSize: SizeConfig.text(16)),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(
-                      height: 16.h,
+                      height: SizeConfig.height(16),
                     ),
                     ListView.builder(
                         shrinkWrap: true,
@@ -113,12 +117,19 @@ class _CardReportState extends State<CardReport>
                                 0)
                             ? Center(
                                 child: Padding(
-                                padding: EdgeInsets.only(top: 20.h),
-                                child: Text('Tidak ada laporan yang masuk'),
+                                padding:
+                                    EdgeInsets.only(top: SizeConfig.height(20)),
+                                child: Text(
+                                  'Tidak ada laporan yang masuk',
+                                  style: TextStyle(
+                                    fontSize: SizeConfig.text(16),
+                                  ),
+                                ),
                               ))
                             : (index < controller.listReport.length)
                                 ? Padding(
-                                    padding: EdgeInsets.only(bottom: 16.h),
+                                    padding: EdgeInsets.only(
+                                        bottom: SizeConfig.height(16)),
                                     child: CardListReport(
                                       description: controller
                                           .listReport[index].description,
@@ -144,8 +155,8 @@ class _CardReportState extends State<CardReport>
                                     ? SizedBox()
                                     : Center(
                                         child: SizedBox(
-                                          height: 30.h,
-                                          width: 30.h,
+                                          height: SizeConfig.height(30),
+                                          width: SizeConfig.width(30),
                                           child: CircularProgressIndicator(
                                             strokeWidth: 1.5,
                                           ),

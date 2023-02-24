@@ -403,7 +403,6 @@ class ShimmerReport extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(
-          horizontal: (16 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
           vertical: (16 / Sizer.slicingHeight) * SizeConfig.heightMultiplier),
       child: Row(
         children: [

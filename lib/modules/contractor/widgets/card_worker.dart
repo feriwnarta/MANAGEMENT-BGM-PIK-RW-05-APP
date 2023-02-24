@@ -1,3 +1,4 @@
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,8 @@ class _CardWorkerState extends State<CardWorker> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+      padding: EdgeInsets.symmetric(
+          horizontal: SizeConfig.width(16), vertical: SizeConfig.height(16)),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
@@ -54,20 +56,21 @@ class _CardWorkerState extends State<CardWorker> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
-                width: 148.w,
+                width: SizeConfig.width(148),
                 child: AutoSizeText(
                   widget.title,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 5,
                   style: TextStyle(
-                    fontSize: 19.sp,
+                    fontSize: SizeConfig.text(19),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
               Container(
-                width: 103.w,
-                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.width(8),
+                    vertical: SizeConfig.height(2)),
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: (widget.status
@@ -104,13 +107,12 @@ class _CardWorkerState extends State<CardWorker> {
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Center(
-                  child: AutoSizeText(
+                  child: Text(
                     widget.status,
                     overflow: TextOverflow.ellipsis,
-                    minFontSize: 10,
                     maxLines: 1,
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: SizeConfig.text(12),
                       fontWeight: FontWeight.w500,
                       color: (widget.status
                               .isCaseInsensitiveContainsAny('Menunggu'))
@@ -136,13 +138,13 @@ class _CardWorkerState extends State<CardWorker> {
             ],
           ),
           SizedBox(
-            height: 16.h,
+            height: SizeConfig.height(16),
           ),
           Divider(
             thickness: 1,
           ),
           SizedBox(
-            height: 16.h,
+            height: SizeConfig.height(16),
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,8 +154,8 @@ class _CardWorkerState extends State<CardWorker> {
                   () => ViewImage(urlImage: '${widget.image}'),
                 ),
                 child: Container(
-                  width: 70.w,
-                  height: 70.h,
+                  width: SizeConfig.width(70),
+                  height: SizeConfig.height(70),
                   child: CachedNetworkImage(
                     imageUrl: '${widget.image}',
                     fit: BoxFit.cover,
@@ -167,7 +169,7 @@ class _CardWorkerState extends State<CardWorker> {
                 ),
               ),
               SizedBox(
-                width: 16.w,
+                width: SizeConfig.width(16),
               ),
               Expanded(
                 child: Column(
@@ -178,25 +180,27 @@ class _CardWorkerState extends State<CardWorker> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SvgPicture.asset(
-                            'assets/img/estate_manager_menu/location-marker-em.svg'),
+                          'assets/img/estate_manager_menu/location-marker-em.svg',
+                          width: SizeConfig.width(16),
+                          height: SizeConfig.height(16),
+                        ),
                         SizedBox(
-                          width: 8.w,
+                          width: SizeConfig.width(8),
                         ),
                         Expanded(
-                          child: AutoSizeText(
+                          child: Text(
                             widget.address,
                             maxLines: 5,
                             style: TextStyle(
-                              fontSize: 14.sp,
+                              fontSize: SizeConfig.text(14),
                             ),
-                            minFontSize: 10,
                             overflow: TextOverflow.ellipsis,
                           ),
                         )
                       ],
                     ),
                     SizedBox(
-                      height: 8.h,
+                      height: SizeConfig.height(8),
                     ),
                     Material(
                       child: InkWell(
@@ -211,13 +215,15 @@ class _CardWorkerState extends State<CardWorker> {
                           children: [
                             SvgPicture.asset(
                               'assets/img/image-svg/Icon-map.svg',
+                              width: SizeConfig.width(16),
+                              height: SizeConfig.height(16),
                             ),
-                            SizedBox(width: 4.w),
-                            AutoSizeText(
+                            SizedBox(width: SizeConfig.width(4)),
+                            Text(
                               'Lihat peta lokasi',
                               maxLines: 1,
                               style: TextStyle(
-                                fontSize: 10.sp,
+                                fontSize: SizeConfig.text(10),
                                 color: Color(0xff2094F3),
                               ),
                             )
@@ -231,20 +237,20 @@ class _CardWorkerState extends State<CardWorker> {
             ],
           ),
           SizedBox(
-            height: 8.h,
+            height: SizeConfig.height(8),
           ),
-          AutoSizeText.rich(
+          Text.rich(
             TextSpan(
               text: 'Waktu laporan : ',
               style: TextStyle(
-                fontSize: 10.sp,
+                fontSize: SizeConfig.text(10),
                 fontWeight: FontWeight.w400,
               ),
               children: [
                 TextSpan(
                   text: widget.waktu,
                   style: TextStyle(
-                    fontSize: 12.sp,
+                    fontSize: SizeConfig.text(12),
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -252,20 +258,24 @@ class _CardWorkerState extends State<CardWorker> {
             ),
           ),
           SizedBox(
-            height: 16.h,
+            height: SizeConfig.height(16),
           ),
-          ElevatedButton(
-            onPressed: widget.onTap,
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50),
+          SizedBox(
+            width: SizeConfig.width(156),
+            height: SizeConfig.height(40),
+            child: ElevatedButton(
+              onPressed: widget.onTap,
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
               ),
-            ),
-            child: Text(
-              'Detail Laporan',
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
+              child: Text(
+                'Detail Laporan',
+                style: TextStyle(
+                  fontSize: SizeConfig.text(14),
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ),

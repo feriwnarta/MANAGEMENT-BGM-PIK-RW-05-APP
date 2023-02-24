@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:aplikasi_rw/modules/cordinator/controller/cordinator_controller.dart';
 import 'package:aplikasi_rw/modules/manager_contractor/screens/laporan_masuk_manager_con.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -64,19 +65,21 @@ class _CardReportProcessState extends State<LaporanDiprosesCordinator>
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16.h),
+          padding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.width(16),
+              vertical: SizeConfig.height(16)),
           child: Column(
             children: [
-              AutoSizeText(
+              Text(
                 'Jumlah laporan yang masuk dan sedang diproses oleh kontraktor lapangan.',
                 style: TextStyle(
-                  fontSize: 16.sp,
+                  fontSize: SizeConfig.text(16),
                   color: Color(0xff616161),
                 ),
                 maxLines: 2,
               ),
               SizedBox(
-                height: 32.h,
+                height: SizeConfig.height(32),
               ),
               GetX<CordinatorController>(
                   init: CordinatorController(),
@@ -86,8 +89,8 @@ class _CardReportProcessState extends State<LaporanDiprosesCordinator>
                     if (controller.isLoading.value) {
                       return Center(
                         child: SizedBox(
-                            height: 30,
-                            width: 30,
+                            height: SizeConfig.height(30),
+                            width: SizeConfig.width(30),
                             child: CircularProgressIndicator()),
                       );
                     } else {
@@ -104,15 +107,20 @@ class _CardReportProcessState extends State<LaporanDiprosesCordinator>
                                 0)
                             ? Center(
                                 child: Padding(
-                                  padding: EdgeInsets.only(top: 20.h),
-                                  child:
-                                      Text('Tidak ada laporan yang diproses'),
+                                  padding: EdgeInsets.only(
+                                      top: SizeConfig.height(20)),
+                                  child: Text(
+                                    'Tidak ada laporan yang diproses',
+                                    style: TextStyle(
+                                        fontSize: SizeConfig.text(16)),
+                                  ),
                                 ),
                               )
                             : (index < controller.listReport.length)
                                 ? Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 16.h),
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: SizeConfig.height(16),
+                                    ),
                                     child: CardListReportManagerCon(
                                       description: controller
                                           .listReport[index].description,
@@ -142,8 +150,8 @@ class _CardReportProcessState extends State<LaporanDiprosesCordinator>
                                     ? SizedBox()
                                     : Center(
                                         child: SizedBox(
-                                          height: 30,
-                                          width: 30,
+                                          height: SizeConfig.height(30),
+                                          width: SizeConfig.width(30),
                                           child: CircularProgressIndicator(
                                             strokeWidth: 1.5,
                                           ),

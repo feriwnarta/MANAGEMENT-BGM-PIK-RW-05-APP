@@ -1,17 +1,14 @@
 import 'dart:async';
-
-import 'package:aplikasi_rw/modules/contractor/controller/contractor_controller.dart';
 import 'package:aplikasi_rw/modules/contractor/screens/complaint/detail_report_screen.dart';
 import 'package:aplikasi_rw/modules/contractor/screens/complaint/finish_report_screen.dart';
 import 'package:aplikasi_rw/modules/contractor/widgets/detail_report_finished.dart';
 import 'package:aplikasi_rw/modules/estate_manager/services/status_peduli_lingkungan_services.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
+import 'package:aplikasi_rw/utils/string_utils.dart';
 import 'package:aplikasi_rw/utils/view_image.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -362,7 +359,6 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  width: SizeConfig.width(103),
                   padding: EdgeInsets.symmetric(
                     horizontal: SizeConfig.width(8),
                     vertical: SizeConfig.height(2),
@@ -589,13 +585,20 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
                                     Icons.phone,
                                     size: SizeConfig.height(20),
                                   ),
-                                  onTap: () {
-                                    launchUrl(
-                                      Uri(
-                                        scheme: 'tel',
-                                        path: '${item['no_telp']}',
-                                      ),
-                                    );
+                                  onTap: () async {
+                                    String noTelp =
+                                        StringUtils.replaceCountryNumberPhone(
+                                            item['no_telp']);
+
+                                    var whatsappAndroid = Uri.parse(
+                                        "whatsapp://send?phone=$noTelp");
+
+                                    if (await canLaunchUrl(whatsappAndroid)) {
+                                      await launchUrl(whatsappAndroid);
+                                    } else {
+                                      EasyLoading.showInfo(
+                                          'Aplikasi whatsapp tidak terinstal di perangkat anda');
+                                    }
                                   },
                                 ),
                               )
@@ -610,23 +613,21 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
                     borderRadius: BorderRadius.circular(50),
                   ),
                 ),
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Icon(
-                    Icons.phone,
-                    size: SizeConfig.height(16),
-                  ),
-                  SizedBox(
-                    width: SizeConfig.width(4),
-                  ),
-                  Text(
-                    'Hubungi Kordinator',
-                    style: TextStyle(
-                      fontSize: SizeConfig.text(14),
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ]),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(
+                        Icons.phone,
+                        size: SizeConfig.image(16),
+                      ),
+                      Text(
+                        'Hubungi Kordinator',
+                        style: TextStyle(
+                          fontSize: SizeConfig.text(14),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ]),
               ),
             ),
           ],

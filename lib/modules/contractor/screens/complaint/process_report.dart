@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:aplikasi_rw/modules/contractor/services/contractor_proses_complain_services.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -73,9 +74,7 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
         backgroundColor: Color(0xFF2094F3),
         title: Text(
           'Proses Laporan',
-          style: TextStyle(fontSize: 19.sp, fontWeight: FontWeight.w500),
         ),
-        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -85,19 +84,23 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
             Container(
               color: Colors.white,
               child: Container(
-                  margin: EdgeInsets.only(left: 16.w, right: 32.w),
+                  margin: EdgeInsets.only(
+                      left: SizeConfig.width(16), right: SizeConfig.width(32)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 24.h),
-                      Text('Detail Laporan'),
-                      SizedBox(height: 16.h),
+                      SizedBox(height: SizeConfig.height(24)),
+                      Text(
+                        'Detail Laporan',
+                        style: TextStyle(fontSize: SizeConfig.text(16)),
+                      ),
+                      SizedBox(height: SizeConfig.height(16)),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                            height: 88.h,
-                            width: 88.w,
+                            height: SizeConfig.height(88),
+                            width: SizeConfig.width(88),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(4),
                               child: CachedNetworkImage(
@@ -107,30 +110,41 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(left: 16.w),
+                            margin: EdgeInsets.only(left: SizeConfig.width(16)),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(
-                                    width: 208.w,
+                                    width: SizeConfig.width(208),
                                     child: (widget.title.contains(','))
                                         ? ListView.builder(
                                             itemCount: explodeTitle().length,
                                             shrinkWrap: true,
                                             itemBuilder: (context, index) =>
-                                                Text(explodeTitle()[index]))
-                                        : Text(widget.title)),
-                                SizedBox(height: 8.h),
+                                                Text(
+                                              explodeTitle()[index],
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      SizeConfig.text(12)),
+                                            ),
+                                          )
+                                        : Text(
+                                            widget.title,
+                                            style: TextStyle(
+                                              fontSize: SizeConfig.text(12),
+                                            ),
+                                          )),
+                                SizedBox(height: SizeConfig.height(8)),
                                 SizedBox(
-                                  width: 208.w,
+                                  width: SizeConfig.width(208),
                                   child: Text(
                                     widget.description,
                                     style: TextStyle(
-                                        fontSize: 10.sp,
+                                        fontSize: SizeConfig.text(10),
                                         color: Color(0xff757575)),
                                   ),
                                 ),
-                                SizedBox(height: 13.h),
+                                SizedBox(height: SizeConfig.height(13)),
                                 TextButton.icon(
                                   onPressed: () {
                                     ProcessReportScreen.navigateTo(
@@ -138,12 +152,15 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
                                         double.parse(widget.longitude));
                                   },
                                   icon: SvgPicture.asset(
-                                      'assets/img/image-svg/Icon-map.svg'),
+                                    'assets/img/image-svg/Icon-map.svg',
+                                    height: SizeConfig.height(16),
+                                  ),
                                   label: Text(
                                     'Lihat peta lokasi',
                                     style: TextStyle(
-                                        color: Color(0xff2094F3),
-                                        fontSize: 10.sp),
+                                      color: Color(0xff2094F3),
+                                      fontSize: SizeConfig.text(10),
+                                    ),
                                   ),
                                 )
                               ],
@@ -151,55 +168,62 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
                           )
                         ],
                       ),
-                      SizedBox(height: 24.h)
+                      SizedBox(height: SizeConfig.height(24))
                     ],
                   )),
             ),
-            SizedBox(height: 2.h),
+            SizedBox(height: SizeConfig.height(2)),
 
             // Informasi Pengerjaan
             Container(
               color: Colors.white,
               child: Container(
-                margin: EdgeInsets.only(left: 16.w),
+                margin: EdgeInsets.only(left: SizeConfig.width(16)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 16.h),
+                    SizedBox(height: SizeConfig.height(16)),
                     Text(
                       'Informasi Pengerjaan',
                       style: TextStyle(
-                          fontSize: 16.sp, fontWeight: FontWeight.w500),
+                          fontSize: SizeConfig.text(16),
+                          fontWeight: FontWeight.w500),
                     ),
-                    SizedBox(height: 24.h),
-                    Text('Foto Pengerjaan'),
-                    SizedBox(height: 31.h),
+                    SizedBox(height: SizeConfig.height(24)),
+                    Text(
+                      'Foto Pengerjaan',
+                      style: TextStyle(fontSize: SizeConfig.text(14)),
+                    ),
+                    SizedBox(height: SizeConfig.height(31)),
                     Row(
                       children: [
                         Stack(
                           children: [
                             Container(
-                                height: 156.h,
-                                width: 156.w,
-                                decoration: BoxDecoration(
-                                    color: Color(0xffE0E0E0),
-                                    borderRadius: BorderRadius.circular(4)),
-                                child: (imagePathCond1.isEmpty)
-                                    ? SvgPicture.asset(
-                                        'assets/img/image-svg/plus.svg',
-                                        color: Colors.grey,
-                                      )
-                                    : Image(
-                                        fit: BoxFit.cover,
-                                        height: 156.h,
-                                        width: 156.w,
-                                        image:
-                                            FileImage(File(imagePathCond1)))),
+                              height: SizeConfig.height(156),
+                              width: SizeConfig.width(156),
+                              decoration: BoxDecoration(
+                                  color: Color(0xffE0E0E0),
+                                  borderRadius: BorderRadius.circular(4)),
+                              child: (imagePathCond1.isEmpty)
+                                  ? SvgPicture.asset(
+                                      'assets/img/image-svg/plus.svg',
+                                      color: Colors.grey,
+                                    )
+                                  : Image(
+                                      fit: BoxFit.cover,
+                                      height: SizeConfig.height(156),
+                                      width: SizeConfig.width(156),
+                                      image: FileImage(
+                                        File(imagePathCond1),
+                                      ),
+                                    ),
+                            ),
                             Material(
                               color: Colors.transparent,
                               child: SizedBox(
-                                  height: 156.h,
-                                  width: 156.w,
+                                  height: SizeConfig.height(156),
+                                  width: SizeConfig.width(156),
                                   child: InkWell(
                                       borderRadius: BorderRadius.circular(5),
                                       splashColor:
@@ -214,12 +238,12 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
                             )
                           ],
                         ),
-                        SizedBox(width: 16.w),
+                        SizedBox(width: SizeConfig.width(16)),
                         Stack(
                           children: [
                             Container(
-                                height: 156.h,
-                                width: 156.w,
+                                height: SizeConfig.height(156),
+                                width: SizeConfig.width(156),
                                 decoration: BoxDecoration(
                                     color: Color(0xffE0E0E0),
                                     borderRadius: BorderRadius.circular(4)),
@@ -230,15 +254,15 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
                                       )
                                     : Image(
                                         fit: BoxFit.cover,
-                                        height: 156.h,
-                                        width: 156.w,
+                                        height: SizeConfig.height(156),
+                                        width: SizeConfig.width(156),
                                         image:
                                             FileImage(File(imagePathCond2)))),
                             Material(
                               color: Colors.transparent,
                               child: SizedBox(
-                                  height: 156.h,
-                                  width: 156.w,
+                                  height: SizeConfig.height(156),
+                                  width: SizeConfig.width(156),
                                   child: InkWell(
                                       borderRadius: BorderRadius.circular(5),
                                       splashColor:
@@ -256,12 +280,12 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 110.h),
+                    SizedBox(height: SizeConfig.height(110)),
                     Visibility(
                       visible: widget.isCon,
                       child: SizedBox(
-                        width: 328.w,
-                        height: 40.h,
+                        width: SizeConfig.width(328),
+                        height: SizeConfig.height(40),
                         child: TextButton(
                           style: TextButton.styleFrom(
                             backgroundColor: Color(0xff2094F3),
@@ -271,8 +295,10 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
                           ),
                           child: Text(
                             'Proses Laporan',
-                            style:
-                                TextStyle(fontSize: 16.sp, color: Colors.white),
+                            style: TextStyle(
+                              fontSize: SizeConfig.text(16),
+                              color: Colors.white,
+                            ),
                           ),
                           onPressed: () async {
                             // insert process work ke tb process
@@ -326,7 +352,7 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 32.h)
+                    SizedBox(height: SizeConfig.height(32))
                   ],
                 ),
               ),
@@ -359,14 +385,14 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
   }
 
   Widget bottomImagePicker(BuildContext context, String cond) => Container(
-        margin: EdgeInsets.only(top: 20),
+        margin: EdgeInsets.only(top: SizeConfig.height(20)),
         // width: MediaQuery.of(context).size.width,
-        height: 90.h,
+        height: SizeConfig.height(90),
         child: Column(
           children: [
             Text(
               'Pilih gambar',
-              style: TextStyle(fontSize: 13.0.sp, fontFamily: 'Pt Sans Narrow'),
+              style: TextStyle(fontSize: SizeConfig.text(13)),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -376,7 +402,8 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
                     label: Text(
                       'Kamera',
                       style: TextStyle(
-                          fontSize: 13.0.sp, fontFamily: 'Pt Sans Narrow'),
+                        fontSize: SizeConfig.text(13),
+                      ),
                     ),
                     onPressed: () {
                       getImage(ImageSource.camera, cond);
@@ -388,7 +415,8 @@ class _ProcessReportScreenState extends State<ProcessReportScreen> {
                   label: Text(
                     'Gallery',
                     style: TextStyle(
-                        fontSize: 13.0.sp, fontFamily: 'Pt Sans Narrow'),
+                      fontSize: SizeConfig.text(13),
+                    ),
                   ),
                   onPressed: () {
                     getImage(ImageSource.gallery, cond);

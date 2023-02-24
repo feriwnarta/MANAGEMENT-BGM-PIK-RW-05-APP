@@ -6,6 +6,8 @@ import 'package:aplikasi_rw/modules/contractor/widgets/detail_report_finished.da
 import 'package:aplikasi_rw/modules/cordinator/controller/cordinator_controller.dart';
 import 'package:aplikasi_rw/modules/cordinator/widgets/card_cordinator.dart';
 import 'package:aplikasi_rw/services/cordinator/process_report_services.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
+import 'package:aplikasi_rw/utils/string_utils.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -77,7 +79,6 @@ class _CardReportState extends State<LaporanMasukCordinator>
     return Scaffold(
       appBar: AppBar(
         title: Text('Laporan Masuk'),
-        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       body: SingleChildScrollView(
         child: GetX<CordinatorController>(
@@ -86,21 +87,25 @@ class _CardReportState extends State<LaporanMasukCordinator>
             if (controller.isLoading.value) {
               return Center(
                 child: SizedBox(
-                    height: 30, width: 30, child: CircularProgressIndicator()),
+                    height: SizeConfig.height(30),
+                    width: SizeConfig.width(30),
+                    child: CircularProgressIndicator()),
               );
             } else {
               return Container(
-                margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                margin: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.width(16),
+                    vertical: SizeConfig.height(16)),
                 child: Column(
                   children: [
-                    AutoSizeText(
+                    Text(
                       'Jumlah laporan yang masuk di lingkungan RW 05.',
-                      style: TextStyle(fontSize: 16.sp),
+                      style: TextStyle(fontSize: SizeConfig.text(16)),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(
-                      height: 16.h,
+                      height: SizeConfig.height(16),
                     ),
                     ListView.builder(
                         shrinkWrap: true,
@@ -114,12 +119,19 @@ class _CardReportState extends State<LaporanMasukCordinator>
                                 0)
                             ? Center(
                                 child: Padding(
-                                padding: EdgeInsets.only(top: 20.h),
-                                child: Text('Tidak ada laporan yang masuk'),
+                                padding:
+                                    EdgeInsets.only(top: SizeConfig.height(20)),
+                                child: Text(
+                                  'Tidak ada laporan yang masuk',
+                                  style: TextStyle(
+                                    fontSize: SizeConfig.text(16),
+                                  ),
+                                ),
                               ))
                             : (index < controller.listReport.length)
                                 ? Padding(
-                                    padding: EdgeInsets.only(bottom: 16.h),
+                                    padding: EdgeInsets.only(
+                                        bottom: SizeConfig.height(16)),
                                     child: CardListCordinator(
                                       description: controller
                                           .listReport[index].description,
@@ -147,8 +159,8 @@ class _CardReportState extends State<LaporanMasukCordinator>
                                     ? SizedBox()
                                     : Center(
                                         child: SizedBox(
-                                          height: 30.h,
-                                          width: 30.h,
+                                          height: SizeConfig.height(30),
+                                          width: SizeConfig.height(30),
                                           child: CircularProgressIndicator(
                                             strokeWidth: 1.5,
                                           ),
@@ -205,13 +217,13 @@ class CardListCordinator extends StatelessWidget {
 
   void onCardTap() async {
     Get.defaultDialog(
-      title: 'Pilih cordinator',
+      title: 'Pilih Manager Kontraktor',
       radius: 5,
       titleStyle: TextStyle(
-        fontSize: 14.sp,
+        fontSize: SizeConfig.text(14),
       ),
       content: Container(
-        height: 200.h,
+        height: SizeConfig.height(200),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
@@ -222,14 +234,14 @@ class CardListCordinator extends StatelessWidget {
                       text: TextSpan(
                         text: '${item['no_telp']}',
                         style: TextStyle(
-                          fontSize: 12.sp,
+                          fontSize: SizeConfig.text(12),
                           color: Colors.black,
                         ),
                         children: [
                           TextSpan(
                             text: '\t (${item['name_pic']})',
                             style: TextStyle(
-                              fontSize: 12.sp,
+                              fontSize: SizeConfig.text(12),
                               color: Colors.black,
                               fontWeight: FontWeight.w500,
                             ),
@@ -241,15 +253,21 @@ class CardListCordinator extends StatelessWidget {
                     ),
                     trailing: Icon(
                       Icons.phone,
-                      size: 20,
+                      size: SizeConfig.height(20),
                     ),
-                    onTap: () {
-                      launchUrl(
-                        Uri(
-                          scheme: 'tel',
-                          path: '${item['no_telp']}',
-                        ),
-                      );
+                    onTap: () async {
+                      String noTelp = StringUtils.replaceCountryNumberPhone(
+                          item['no_telp']);
+
+                      var whatsappAndroid =
+                          Uri.parse("whatsapp://send?phone=$noTelp");
+
+                      if (await canLaunchUrl(whatsappAndroid)) {
+                        await launchUrl(whatsappAndroid);
+                      } else {
+                        EasyLoading.showInfo(
+                            'Aplikasi whatsapp tidak terinstal di perangkat anda');
+                      }
                     },
                   ),
                 )

@@ -737,6 +737,7 @@ class _StepperRwState extends State<StepperRw> {
       child: GridView.count(
         shrinkWrap: true,
         crossAxisCount: 3,
+        childAspectRatio: 0.9,
         children: category
             .map<Widget>(
               (e) => GestureDetector(

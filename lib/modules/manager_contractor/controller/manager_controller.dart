@@ -29,8 +29,6 @@ class ManagerController extends GetxController {
     }
 
     listReport.assignAll(listBaru);
-
-    logger.i(listReport);
   }
 
   void realTimeComplaintDiproses() async {

@@ -2,6 +2,7 @@ import 'package:aplikasi_rw/modules/authentication/controllers/access_controller
 import 'package:aplikasi_rw/modules/contractor/screens/dashboard_cordinator_screen.dart';
 import 'package:aplikasi_rw/modules/home/widgets/header_screen.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/sub_menu_report.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -31,7 +32,9 @@ class _MenuFolderContractorState extends State<MenuFolderContractor> {
                     isEmOrCord: true,
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 16.w),
+                    margin: EdgeInsets.symmetric(
+                      horizontal: SizeConfig.width(16),
+                    ),
                     child: Column(
                       children: [
                         Row(
@@ -59,7 +62,7 @@ class _MenuFolderContractorState extends State<MenuFolderContractor> {
                                     text: 'Dashboard',
                                   ),
                             SizedBox(
-                              width: 16.w,
+                              width: SizeConfig.width(16),
                             ),
                             (accessController
                                     .statusPeduliLingkunganKepalaCon.value)
@@ -89,27 +92,6 @@ class _MenuFolderContractorState extends State<MenuFolderContractor> {
                             SizedBox(
                               width: 16.w,
                             ),
-                            // (accessController.absensiKepalaCon.value)
-                            //     ? Menu(
-                            //         icon:
-                            //             'assets/img/estate_manager_menu/absensi_cord.jpg',
-                            //         onTap: () {
-                            //           EasyLoading.showInfo(
-                            //             'Fitur ini sedang dalam pengembangan',
-                            //           );
-                            //         },
-                            //         text: 'Absensi',
-                            //       )
-                            //     : Menu(
-                            //         icon:
-                            //             'assets/img/estate_manager_menu/absensi_cord.jpg',
-                            //         onTap: () {
-                            //           EasyLoading.showInfo(
-                            //               'Fitur ini hanya bisa diakses oleh contractor',
-                            //               dismissOnTap: true);
-                            //         },
-                            //         text: 'Absensi',
-                            //       ),
                           ],
                         )
                       ],

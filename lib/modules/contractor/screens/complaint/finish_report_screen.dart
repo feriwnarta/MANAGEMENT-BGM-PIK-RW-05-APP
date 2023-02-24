@@ -4,6 +4,7 @@ import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/contractor/services/contractor_proses_complain_services.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/services/cordinator/process_report_services.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -81,10 +82,8 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle.light,
         title: Text(
           'Laporan Sedang Proses',
-          style: TextStyle(fontSize: 19.sp, fontWeight: FontWeight.w500),
         ),
       ),
       body: SingleChildScrollView(
@@ -92,19 +91,23 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              margin: EdgeInsets.only(bottom: 2.h),
+              margin: EdgeInsets.only(bottom: SizeConfig.height(2)),
               color: Colors.white,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 24.h, left: 16.w),
-                    child: Text('Laporan Sedang Di Proses'),
+                    margin: EdgeInsets.only(
+                        top: SizeConfig.height(24), left: SizeConfig.width(16)),
+                    child: Text(
+                      'Laporan Sedang Di Proses',
+                      style: TextStyle(fontSize: SizeConfig.text(16)),
+                    ),
                   ),
-                  SizedBox(height: 10.h),
+                  SizedBox(height: SizeConfig.height(10)),
                   Row(
                     children: [
-                      SizedBox(width: 16.w),
+                      SizedBox(width: SizeConfig.width(16)),
                       FutureBuilder<FinishWorkContractor>(
                           future: ContractorProcessComplaint.getFinishComplaint(
                             idReport: widget.idReport,
@@ -113,8 +116,8 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                               ? (snapshot.data.photo1 != null &&
                                       snapshot.data.photo1.isNotEmpty)
                                   ? Container(
-                                      height: 70.h,
-                                      width: 70.w,
+                                      height: SizeConfig.height(70),
+                                      width: SizeConfig.width(70),
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(4)),
@@ -125,8 +128,8 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                                       ),
                                     )
                                   : SizedBox()
-                              : CircularProgressIndicator()),
-                      SizedBox(width: 16.w),
+                              : CircularProgressIndicator.adaptive()),
+                      SizedBox(width: SizeConfig.width(16)),
                       FutureBuilder<FinishWorkContractor>(
                           future: ContractorProcessComplaint.getFinishComplaint(
                             idReport: widget.idReport,
@@ -135,8 +138,8 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                               ? (snapshot.data.photo2 != null &&
                                       snapshot.data.photo2.isNotEmpty)
                                   ? Container(
-                                      height: 70.h,
-                                      width: 70.w,
+                                      height: SizeConfig.height(70),
+                                      width: SizeConfig.width(70),
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(4)),
@@ -147,18 +150,21 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                                       ),
                                     )
                                   : SizedBox(
-                                      width: 16.w,
+                                      width: SizeConfig.width(16),
                                     )
                               : CircularProgressIndicator()),
-                      SizedBox(width: 16.w),
+                      SizedBox(width: SizeConfig.width(16)),
                       Container(
-                        width: 156.w,
-                        height: 70.h,
+                        width: SizeConfig.width(156),
+                        height: SizeConfig.height(70),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text('Waktu Kerja'),
-                            SizedBox(height: 14.h),
+                            Text(
+                              'Waktu Kerja',
+                              style: TextStyle(fontSize: SizeConfig.text(10)),
+                            ),
+                            SizedBox(height: SizeConfig.height(14)),
                             StreamBuilder<int>(
                               stream: widget._stopWatchTimer.rawTime,
                               initialData: 0,
@@ -176,7 +182,7 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                                     Text(
                                       widget.displayTime,
                                       style: TextStyle(
-                                          fontSize: 20.sp,
+                                          fontSize: SizeConfig.text(20),
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ],
@@ -188,7 +194,7 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                       )
                     ],
                   ),
-                  SizedBox(height: 42.h),
+                  SizedBox(height: SizeConfig.height(42)),
                 ],
               ),
             ),
@@ -196,31 +202,32 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
               color: Colors.white,
               width: double.infinity,
               child: Container(
-                margin: EdgeInsets.only(left: 16.w),
+                margin: EdgeInsets.only(left: SizeConfig.width(16)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 16.h),
+                    SizedBox(height: SizeConfig.height(16)),
                     Text(
                       'Konfirmasi Selesai',
                       style: TextStyle(
-                          fontSize: 16.sp, fontWeight: FontWeight.w500),
+                          fontSize: SizeConfig.text(16),
+                          fontWeight: FontWeight.w500),
                     ),
                     SizedBox(
-                      height: 24.h,
+                      height: SizeConfig.height(24),
                     ),
                     Text(
                       'Foto Pengerjaan',
-                      style: TextStyle(fontSize: 16.sp),
+                      style: TextStyle(fontSize: SizeConfig.text(16)),
                     ),
-                    SizedBox(height: 31.h),
+                    SizedBox(height: SizeConfig.height(31)),
                     Row(
                       children: [
                         Stack(
                           children: [
                             Container(
-                                height: 156.h,
-                                width: 156.w,
+                                height: SizeConfig.height(156),
+                                width: SizeConfig.width(156),
                                 decoration: BoxDecoration(
                                     color: Color(0xffE0E0E0),
                                     borderRadius: BorderRadius.circular(4)),
@@ -233,16 +240,16 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                                         borderRadius: BorderRadius.circular(4),
                                         child: Image(
                                             fit: BoxFit.cover,
-                                            height: 156.h,
-                                            width: 156.w,
+                                            height: SizeConfig.height(156),
+                                            width: SizeConfig.width(156),
                                             image: FileImage(
                                                 File(widget.imagePathCond1))),
                                       )),
                             Material(
                               color: Colors.transparent,
                               child: SizedBox(
-                                  height: 156.h,
-                                  width: 156.w,
+                                  height: SizeConfig.height(156),
+                                  width: SizeConfig.width(156),
                                   child: InkWell(
                                       borderRadius: BorderRadius.circular(5),
                                       splashColor:
@@ -257,12 +264,12 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                             )
                           ],
                         ),
-                        SizedBox(width: 16.w),
+                        SizedBox(width: SizeConfig.width(16)),
                         Stack(
                           children: [
                             Container(
-                                height: 156.h,
-                                width: 156.w,
+                                height: SizeConfig.height(156),
+                                width: SizeConfig.width(156),
                                 decoration: BoxDecoration(
                                     color: Color(0xffE0E0E0),
                                     borderRadius: BorderRadius.circular(4)),
@@ -275,16 +282,16 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                                         borderRadius: BorderRadius.circular(4),
                                         child: Image(
                                             fit: BoxFit.cover,
-                                            height: 156.h,
-                                            width: 156.w,
+                                            height: SizeConfig.height(156),
+                                            width: SizeConfig.width(156),
                                             image: FileImage(
                                                 File(widget.imagePathCond2))),
                                       )),
                             Material(
                               color: Colors.transparent,
                               child: SizedBox(
-                                  height: 156.h,
-                                  width: 156.w,
+                                  height: SizeConfig.height(156),
+                                  width: SizeConfig.width(156),
                                   child: InkWell(
                                       borderRadius: BorderRadius.circular(5),
                                       splashColor:
@@ -301,12 +308,12 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 110.h),
+                    SizedBox(height: SizeConfig.height(110)),
                     Visibility(
                       visible: widget.isCon,
                       child: SizedBox(
-                        width: 328.w,
-                        height: 40.h,
+                        width: SizeConfig.width(328),
+                        height: SizeConfig.height(40),
                         child: TextButton(
                           style: TextButton.styleFrom(
                             backgroundColor: Color(0xff2094F3),
@@ -316,8 +323,9 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                           ),
                           child: Text(
                             'Laporan selesai',
-                            style:
-                                TextStyle(fontSize: 16.sp, color: Colors.white),
+                            style: TextStyle(
+                                fontSize: SizeConfig.text(16),
+                                color: Colors.white),
                           ),
                           onPressed: () async {
                             if (widget.imagePathCond1.isNotEmpty ||
@@ -349,7 +357,10 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
-                                      'harap masukan foto terlebih dahulu'),
+                                    'harap masukan foto terlebih dahulu',
+                                    style: TextStyle(
+                                        fontSize: SizeConfig.text(16)),
+                                  ),
                                 ),
                               );
                             }
@@ -357,7 +368,7 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 32.h)
+                    SizedBox(height: SizeConfig.height(32))
                   ],
                 ),
               ),
@@ -369,14 +380,15 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
   }
 
   Widget bottomImagePicker(BuildContext context, String cond) => Container(
-        margin: EdgeInsets.only(top: 20),
+        margin: EdgeInsets.only(top: SizeConfig.height(20)),
         // width: MediaQuery.of(context).size.width,
-        height: 90.h,
+        height: SizeConfig.height(90),
         child: Column(
           children: [
             Text(
               'Pilih gambar',
-              style: TextStyle(fontSize: 13.0.sp, fontFamily: 'Pt Sans Narrow'),
+              style: TextStyle(
+                  fontSize: SizeConfig.text(13), fontFamily: 'Pt Sans Narrow'),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -386,7 +398,8 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                     label: Text(
                       'Kamera',
                       style: TextStyle(
-                          fontSize: 13.0.sp, fontFamily: 'Pt Sans Narrow'),
+                        fontSize: SizeConfig.text(13),
+                      ),
                     ),
                     onPressed: () {
                       getImage(ImageSource.camera, cond);
@@ -398,7 +411,8 @@ class _FinishReportScreenState extends State<FinishReportScreen> {
                   label: Text(
                     'Gallery',
                     style: TextStyle(
-                        fontSize: 13.0.sp, fontFamily: 'Pt Sans Narrow'),
+                      fontSize: SizeConfig.text(13),
+                    ),
                   ),
                   onPressed: () {
                     getImage(ImageSource.gallery, cond);

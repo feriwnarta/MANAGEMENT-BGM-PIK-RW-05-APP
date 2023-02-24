@@ -72,9 +72,6 @@ class _CardLineState extends State<CardLine> {
           height: SizeConfig.height(16),
         ),
         button(),
-        SizedBox(
-          height: SizeConfig.height(16),
-        ),
         buttonSearch(),
         SizedBox(
           height: SizeConfig.height(16),

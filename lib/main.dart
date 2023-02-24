@@ -141,7 +141,7 @@ void main() async {
 
   // runApp(MyApp());
   runApp(DevicePreview(
-    enabled: false,
+    enabled: true,
     builder: (ctx) => MyApp(),
   ));
   configLoading();

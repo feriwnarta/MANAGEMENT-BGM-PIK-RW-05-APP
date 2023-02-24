@@ -18,8 +18,6 @@ class ManagerConServices {
       'limit': limit,
       'status': type,
     };
-    final logger = Logger();
-    logger.e(data);
 
     Dio dio = Dio();
     dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
@@ -29,11 +27,7 @@ class ManagerConServices {
     var response = await dio.post(url, data: jsonEncode(data));
     if (response.statusCode >= 200 && response.statusCode <= 299) {
       if (response.data.isNotEmpty) {
-        logger.i(response.data);
         var message = jsonDecode(response.data) as List;
-
-        logger.i(message);
-        logger.e(response.data);
 
         List<ManagerContractorModel> model;
         List<Map<String, dynamic>> phone;

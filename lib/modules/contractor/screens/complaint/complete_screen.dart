@@ -1,3 +1,4 @@
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,30 +18,34 @@ class CompleteScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 104.22.h),
+            SizedBox(height: SizeConfig.height(104)),
             SizedBox(
-                width: 181.86.w,
-                height: 199.76.h,
+                width: SizeConfig.width(181),
+                height: SizeConfig.height(199),
                 child: SvgPicture.asset('assets/img/image-svg/pana.svg')),
-            SizedBox(height: 32.02.h),
+            SizedBox(height: SizeConfig.height(32)),
             Text(
               'Complaint berhasil diselesaikan',
-              style: TextStyle(fontSize: 16.sp),
+              style: TextStyle(
+                fontSize: SizeConfig.text(16),
+              ),
             ),
-            SizedBox(height: 24.h),
+            SizedBox(height: SizeConfig.height(24)),
             Text(
               'Waktu kerja : ',
-              style: TextStyle(fontSize: 16.sp),
+              style: TextStyle(
+                fontSize: SizeConfig.text(16),
+              ),
             ),
-            SizedBox(height: 8.h),
+            SizedBox(height: SizeConfig.height(8)),
             Text(
               time,
-              style: TextStyle(fontSize: 32.sp),
+              style: TextStyle(fontSize: SizeConfig.text(32)),
             ),
-            SizedBox(height: 211.h),
+            SizedBox(height: SizeConfig.height(211)),
             SizedBox(
-              width: 328.w,
-              height: 40.h,
+              width: SizeConfig.width(328),
+              height: SizeConfig.height(40),
               child: TextButton(
                 onPressed: () {
                   Get.back();
@@ -50,7 +55,8 @@ class CompleteScreen extends StatelessWidget {
                 ),
                 child: Text(
                   'Kembali ke home',
-                  style: TextStyle(fontSize: 16.sp, color: Colors.white),
+                  style: TextStyle(
+                      fontSize: SizeConfig.text(16), color: Colors.white),
                 ),
               ),
             )
