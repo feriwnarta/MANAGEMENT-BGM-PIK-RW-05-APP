@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:aplikasi_rw/modules/theme/sizer.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +11,9 @@ class AppTheme {
     scaffoldBackgroundColor: Colors.white,
     textTheme: lightTextTheme,
     appBarTheme: AppBarTheme(
-      systemOverlayStyle: SystemUiOverlayStyle.light,
+      systemOverlayStyle: (Platform.isAndroid)
+          ? SystemUiOverlayStyle.light
+          : SystemUiOverlayStyle.dark,
       backgroundColor: Color(0xff2196F3),
       titleTextStyle: TextStyle(
           fontSize: (19 / Sizer.slicingText) * SizeConfig.textMultiplier,

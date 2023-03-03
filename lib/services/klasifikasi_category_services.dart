@@ -40,8 +40,6 @@ class KlasifikasiCategoryServices {
 
     var response = await dio.post(url, data: jsonEncode(data));
     var obj = jsonDecode(response.data) as List;
-    final logger = Logger();
-    logger.e(obj);
 
     return obj
         .map(

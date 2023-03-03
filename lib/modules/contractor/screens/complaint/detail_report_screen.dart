@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/contractor/screens/complaint/process_report.dart';
 import 'package:aplikasi_rw/modules/contractor/services/contractor_proses_complain_services.dart';
@@ -270,7 +272,22 @@ class DetailReportScreen extends StatelessWidget {
   }
 
   static void navigateTo(double lat, double lng) async {
-    var uri = Uri.parse("google.navigation:q=$lat,$lng&mode=d");
+    // var uri = Uri.parse("google.navigation:q=$lat,$lng&mode=d");
+    // var uri = Uri.parse('geo:$lat,$lng');
+
+    String appleUrl =
+        'https://maps.apple.com/?saddr=&daddr=$lat,$lng&directionsmode=driving';
+    String googleUrl =
+        'https://www.google.com/maps/search/?api=1&query=$lat,$lng';
+
+    var uri;
+
+    if (Platform.isIOS) {
+      uri = Uri.parse(appleUrl);
+    } else if (Platform.isAndroid) {
+      uri = Uri.parse(googleUrl);
+    }
+
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {

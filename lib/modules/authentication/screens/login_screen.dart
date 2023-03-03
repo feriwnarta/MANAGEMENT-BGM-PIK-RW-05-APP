@@ -1031,14 +1031,8 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
             EasyLoading.dismiss();
             if (message['active_user'] == true) {
               EasyLoading.dismiss();
-              EasyLoading.showInfo(
-                'kami mendeteksi adanya login diperangkat baru, login diperangkat lain akan otomatis keluar',
-              );
-
-              await Future.delayed(Duration(seconds: 2));
             }
 
-            // check access otp untuk kebutuhan debugging
             var result = await CheckAccessOtp.checkAccess(
                 username: authController.controllerUsername.text);
 

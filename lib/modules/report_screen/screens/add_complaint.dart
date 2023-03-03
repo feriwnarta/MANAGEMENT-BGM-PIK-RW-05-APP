@@ -555,7 +555,8 @@ class _StepperRwState extends State<StepperRw> {
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
                     return Container(
-                        child: Center(child: CircularProgressIndicator()));
+                        child: Center(
+                            child: CircularProgressIndicator.adaptive()));
                     break;
                   case ConnectionState.done:
                     return Column(
@@ -695,94 +696,90 @@ class _StepperRwState extends State<StepperRw> {
               })
           : Column(
               children: [
-                SizedBox(height: 16.h),
-                Container(
-                  height: MediaQuery.of(context).size.height,
-                  child: FutureBuilder<List<CategoryModel>>(
-                      future: CategoryServices.getCategory(),
-                      builder: (_, snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.waiting:
-                            return Container(
-                                child:
-                                    Center(child: CircularProgressIndicator()));
-                          case ConnectionState.done:
-                            return Container(
-                              margin: EdgeInsets.symmetric(
-                                vertical: (16 / Sizer.slicingHeight) *
-                                    SizeConfig.heightMultiplier,
-                                horizontal: (16 / Sizer.slicingWidth) *
-                                    SizeConfig.widthMultiplier,
-                              ),
-                              child: gridViewCategory(snapshot.data),
-                            );
-                          default:
-                            if (snapshot.hasError)
-                              return new Text('Error: ${snapshot.error}');
-                            return Container(
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            );
-                        }
-                      }),
-                ),
+                FutureBuilder<List<CategoryModel>>(
+                    future: CategoryServices.getCategory(),
+                    builder: (_, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                          return Container(
+                            child: Center(
+                              child: CircularProgressIndicator.adaptive(),
+                            ),
+                          );
+                        case ConnectionState.done:
+                          return Container(
+                            margin: EdgeInsets.symmetric(
+                              vertical: (16 / Sizer.slicingHeight) *
+                                  SizeConfig.heightMultiplier,
+                              horizontal: (16 / Sizer.slicingWidth) *
+                                  SizeConfig.widthMultiplier,
+                            ),
+                            child: gridViewCategory(snapshot.data),
+                          );
+                        default:
+                          if (snapshot.hasError)
+                            return new Text('Error: ${snapshot.error}');
+                          return Container(
+                            child: Center(
+                              child: CircularProgressIndicator.adaptive(),
+                            ),
+                          );
+                      }
+                    }),
               ],
             ),
     );
   }
 
   Widget gridViewCategory(List<CategoryModel> category) {
-    return Flexible(
-      child: GridView.count(
-        shrinkWrap: true,
-        crossAxisCount: 3,
-        childAspectRatio: 0.9,
-        children: category
-            .map<Widget>(
-              (e) => GestureDetector(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: (96 / Sizer.slicingWidth) *
-                          SizeConfig.widthMultiplier,
-                      height: (96 / Sizer.slicingHeight) *
-                          SizeConfig.heightMultiplier,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CachedNetworkImage(
-                          imageUrl: '${ServerApp.url}/icon/${e.icon}',
-                        ),
+    return GridView.count(
+      shrinkWrap: true,
+      crossAxisCount: 3,
+      childAspectRatio: 0.9,
+      children: category
+          .map<Widget>(
+            (e) => GestureDetector(
+              child: Column(
+                children: [
+                  SizedBox(
+                    width:
+                        (96 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
+                    height: (96 / Sizer.slicingHeight) *
+                        SizeConfig.heightMultiplier,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CachedNetworkImage(
+                        imageUrl: '${ServerApp.url}/icon/${e.icon}',
                       ),
                     ),
-                    Text(
-                      '${e.category}',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: (10 / Sizer.slicingText) *
-                            SizeConfig.textMultiplier,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
+                  ),
+                  Text(
+                    '${e.category}',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize:
+                          (10 / Sizer.slicingText) * SizeConfig.textMultiplier,
+                      fontWeight: FontWeight.w500,
                     ),
-                  ],
-                ),
-                onTap: () {
-                  idCategory.update((val) {
-                    idCategory = e.idCategory.obs;
-                  });
-                  nameCategory.update((val) {
-                    nameCategory = e.category.obs;
-                  });
-                  isSelected.update((val) {
-                    isSelected = true.obs;
-                  });
-                },
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
+                ],
               ),
-            )
-            .toList(),
-      ),
+              onTap: () {
+                idCategory.update((val) {
+                  idCategory = e.idCategory.obs;
+                });
+                nameCategory.update((val) {
+                  nameCategory = e.category.obs;
+                });
+                isSelected.update((val) {
+                  isSelected = true.obs;
+                });
+              },
+            ),
+          )
+          .toList(),
     );
   }
 
@@ -1394,7 +1391,9 @@ class CompletedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
+      value: (Platform.isAndroid)
+          ? SystemUiOverlayStyle.light
+          : SystemUiOverlayStyle.dark,
       child: Scaffold(
         body: SingleChildScrollView(
           child: Center(
@@ -1403,29 +1402,29 @@ class CompletedScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: 124.h,
+                  height: SizeConfig.height(124),
                 ),
                 SvgPicture.asset('assets/img/image-svg/completed.svg'),
                 SizedBox(
-                  height: 16.h,
+                  height: SizeConfig.height(16),
                 ),
-                AutoSizeText(
+                Text(
                   'Yeayyy !!',
                   style: TextStyle(
-                    fontSize: 30.sp,
+                    fontSize: SizeConfig.text(30),
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(
-                  height: 24.h,
+                  height: SizeConfig.height(24),
                 ),
                 SizedBox(
-                  width: 259.w,
-                  child: AutoSizeText(
+                  width: SizeConfig.width(259),
+                  child: Text(
                     'Anda sudah menjadi warga yang peduli terhadap lingkungan disekitar.',
                     style: TextStyle(
-                      fontSize: 19.sp,
+                      fontSize: SizeConfig.text(19),
                     ),
                     textAlign: TextAlign.center,
                     maxLines: 3,
@@ -1433,10 +1432,10 @@ class CompletedScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 148.h,
+                  height: SizeConfig.height(148),
                 ),
                 SizedBox(
-                  width: 328.w,
+                  width: SizeConfig.width(328),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -1455,7 +1454,7 @@ class CompletedScreen extends StatelessWidget {
                     },
                     child: Text(
                       'Kembali Keberanda',
-                      style: TextStyle(fontSize: 16.sp),
+                      style: TextStyle(fontSize: SizeConfig.text(16)),
                     ),
                   ),
                 )

@@ -168,7 +168,7 @@ class _ListStatusPeduliLingkunganState
                         ),
                         Obx(
                           () => (controllerEm.isLoading.value)
-                              ? CircularProgressIndicator()
+                              ? CircularProgressIndicator.adaptive()
                               : ListView.builder(
                                   itemCount: (controllerEm.isMaxReached.value)
                                       ? controllerEm.listStatusPeduli.length
@@ -447,7 +447,7 @@ class CardStatusPeduliLingkunganEm extends StatelessWidget {
                       filterQuality: FilterQuality.low,
                       progressIndicatorBuilder:
                           (context, url, downloadProgress) =>
-                              CircularProgressIndicator(
+                              CircularProgressIndicator.adaptive(
                                   value: downloadProgress.progress),
                       errorWidget: (context, url, error) => Icon(Icons.error),
                     ),

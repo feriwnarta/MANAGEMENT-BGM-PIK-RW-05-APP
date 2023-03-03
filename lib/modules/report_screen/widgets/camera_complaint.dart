@@ -1,4 +1,5 @@
 import 'package:aplikasi_rw/modules/report_screen/screens/add_complaint.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -74,7 +75,7 @@ class _CameraComplaintState extends State<CameraComplaint> {
 
     return CircleAvatar(
       backgroundColor: Colors.blue,
-      radius: 30.h,
+      radius: SizeConfig.height(30),
       child: IconButton(
         onPressed: onCapture,
         icon: Icon(Icons.circle),
@@ -135,8 +136,12 @@ class _CameraComplaintState extends State<CameraComplaint> {
     // if (_cameraController != null) _cameraController.dispose();
 
     try {
-      _cameraController = CameraController(desc, ResolutionPreset.high,
-          imageFormatGroup: ImageFormatGroup.yuv420);
+      _cameraController = CameraController(
+        desc,
+        ResolutionPreset.high,
+        imageFormatGroup: ImageFormatGroup.yuv420,
+        enableAudio: false,
+      );
 
       if (_cameraController.value.hasError) logger.e('kamera error');
 
@@ -156,7 +161,7 @@ class _CameraComplaintState extends State<CameraComplaint> {
       return Text('loading');
     } else {
       return AspectRatio(
-        aspectRatio: _cameraController.value.aspectRatio,
+        aspectRatio: 1,
         child: CameraPreview(_cameraController),
       );
     }
@@ -168,7 +173,7 @@ class _CameraComplaintState extends State<CameraComplaint> {
       child: Column(
         children: [
           SizedBox(
-            height: 500.h,
+            height: SizeConfig.height(500),
             child: cameraPreview(),
           ),
 
@@ -177,20 +182,20 @@ class _CameraComplaintState extends State<CameraComplaint> {
             child: Column(
               children: [
                 SizedBox(
-                  height: 20.h,
+                  height: SizeConfig.height(20),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     cameraToggle(),
                     SizedBox(
-                      width: 10.w,
+                      width: SizeConfig.width(10),
                     ),
                     takePictureToogle(),
                   ],
                 ),
                 SizedBox(
-                  height: 20.h,
+                  height: SizeConfig.height(20),
                 ),
               ],
             ),

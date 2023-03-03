@@ -371,7 +371,8 @@ class _ReportScreen2State extends State<ReportScreen2> {
                                                         SizeConfig
                                                             .heightMultiplier,
                                                     child:
-                                                        CircularProgressIndicator(),
+                                                        CircularProgressIndicator
+                                                            .adaptive(),
                                                   ),
                                                 ],
                                               ),

@@ -134,7 +134,7 @@ class _SplashViewState extends State<SplashView> {
             _loginController.connect();
             await checkOtpWhenExit();
             await _loginController.checkLogin();
-            checkAccess();
+            await checkAccess();
             await checkMaintenance();
           } else if (message.isCaseInsensitiveContainsAny('FAILL')) {
             _loginController.logout();

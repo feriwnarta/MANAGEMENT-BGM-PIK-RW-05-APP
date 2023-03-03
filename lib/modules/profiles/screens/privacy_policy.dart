@@ -1,7 +1,5 @@
 import 'package:aplikasi_rw/utils/size_config.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PrivacyPolicy extends StatelessWidget {
@@ -14,6 +12,7 @@ class PrivacyPolicy extends StatelessWidget {
     ScreenUtil.init(context, designSize: const Size(360, 800));
     return Scaffold(
       appBar: AppBar(
+        systemOverlayStyle: Theme.of(context).appBarTheme.systemOverlayStyle,
         title: Text('Kebijakan Privasi'),
       ),
       body: SingleChildScrollView(
@@ -147,6 +146,7 @@ class PrivacyPolicy extends StatelessWidget {
                         Expanded(
                           child: Text(
                             'Data lokasi riil atau perkiraannya seperti alat IP, lokasi wifi, geolocation, dan sebagainya.',
+                            style: style,
                           ),
                         )
                       ],

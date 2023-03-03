@@ -72,6 +72,9 @@ class _CardLineState extends State<CardLine> {
           height: SizeConfig.height(16),
         ),
         button(),
+        SizedBox(
+          height: SizeConfig.height(16),
+        ),
         buttonSearch(),
         SizedBox(
           height: SizeConfig.height(16),
@@ -101,7 +104,7 @@ class _CardLineState extends State<CardLine> {
                       child: SizedBox(
                         width: SizeConfig.width(30),
                         height: SizeConfig.height(30),
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator.adaptive(),
                       ),
                     ),
         ),
@@ -197,9 +200,6 @@ class _CardLineState extends State<CardLine> {
           ),
           // buttonFiter(),
         ],
-      ),
-      SizedBox(
-        height: SizeConfig.height(16),
       ),
     ]);
   }

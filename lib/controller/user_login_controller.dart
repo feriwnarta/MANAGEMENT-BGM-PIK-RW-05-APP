@@ -8,7 +8,6 @@ import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:logger/logger.dart';
 
 import '../modules/home/controller/notification_controller.dart';
 
@@ -102,9 +101,6 @@ class UserLoginController extends GetxController {
         status = statusUser.obs;
         this.idUser = idUser.obs;
         UserModel userModel = await GetDataUserServices.getDataUser(idUser);
-        final logger = Logger();
-        logger.w(userModel);
-        logger.w(userModel.name);
 
         if (userModel != null) {
           this.urlProfile = userModel.urlProfile.obs;
@@ -121,91 +117,6 @@ class UserLoginController extends GetxController {
           UserSecureStorage.deleteIdUser();
           UserSecureStorage.deleteStatus();
         }
-        // switch (statusUser) {
-        //   case 'user':
-        //     status = 'user'.obs;
-        //     this.idUser = idUser.obs;
-        //     UserModel userModel = await GetDataUserServices.getDataUser(idUser);
-        //     final logger = Logger();
-        //     logger.w(statusUser);
-
-        //     if (userModel != null) {
-        //       this.urlProfile = userModel.urlProfile.obs;
-        //       this.username = userModel.username.obs;
-        //       this.name = userModel.name.obs;
-        //       this.email = userModel.email.obs;
-        //       this.houseNumber = userModel.houseNumber.obs;
-        //       this.cluster = userModel.cluster.obs;
-        //       this.rw = userModel.rw.obs;
-        //       this.noTelp = userModel.noTelp.obs;
-        //       this.subtitle.value = cluster.value + ' no' + houseNumber.value;
-        //     } else {
-        //       status = 'logout'.obs;
-        //       UserSecureStorage.deleteIdUser();
-        //       UserSecureStorage.deleteStatus();
-        //     }
-        //     break;
-
-        //   case 'estatemanager':
-        //     status = 'estatemanager'.obs;
-        //     this.idUser = idUser.obs;
-        //     UserModel userModel = await GetDataUserServices.getDataUser(idUser);
-        //     final logger = Logger();
-        //     logger.i(userModel.cluster);
-        //     if (userModel != null) {
-        //       this.urlProfile = userModel.urlProfile.obs;
-        //       this.username = userModel.username.obs;
-        //       this.name = userModel.name.obs;
-        //       this.email = userModel.email.obs;
-        //       this.houseNumber = userModel.houseNumber.obs;
-        //       this.cluster = userModel.cluster.obs;
-        //       this.rw = userModel.rw.obs;
-        //       this.noTelp = userModel.noTelp.obs;
-        //       this.subtitle.value = cluster.value + ' no' + houseNumber.value;
-        //     } else {
-        //       status = 'logout'.obs;
-        //       UserSecureStorage.deleteIdUser();
-        //       UserSecureStorage.deleteStatus();
-        //     }
-        //     break;
-
-        //   case 'cordinator':
-        //     status = 'user'.obs;
-        //     this.idUser = idUser.obs;
-        //     UserModel userModel = await GetDataUserServices.getDataUser(idUser);
-
-        //     if (userModel != null) {
-        //       this.urlProfile = userModel.urlProfile.obs;
-        //       this.username = userModel.username.obs;
-        //       this.name = userModel.name.obs;
-        //       this.email = userModel.email.obs;
-        //       this.houseNumber = userModel.houseNumber.obs;
-        //       this.cluster = userModel.cluster.obs;
-        //       this.rw = userModel.rw.obs;
-        //       this.noTelp = userModel.noTelp.obs;
-        //     } else {
-        //       status = 'logout'.obs;
-        //       UserSecureStorage.deleteIdUser();
-        //       UserSecureStorage.deleteStatus();
-        //     }
-        //     break;
-        //   case 'contractor':
-        //     status = 'contractor'.obs;
-        //     this.idUser = idUser.obs;
-        //     ContractorModel contractorModel =
-        //         await GetDataContractor.getDataContractor(idUser);
-        //     if (contractorModel != null) {
-        //       this.nameContractor = contractorModel.nameContractor.obs;
-        //       this.jobContractor = contractorModel.job.obs;
-        //     } else {
-        //       status = 'logout'.obs;
-        //       UserSecureStorage.deleteIdUser();
-        //       UserSecureStorage.deleteStatus();
-        //     }
-        //     break;
-        //   default:
-        //     status = 'logout'.obs;
-        // }
       } else {
         status = 'logout'.obs;
       }
@@ -240,8 +151,6 @@ class UserLoginController extends GetxController {
       // status = 'user'.obs;
       UserModel userModel = await GetDataUserServices.getDataUser(idUser);
 
-      final logger = Logger();
-      logger.i(userModel.username);
       this.name = userModel.name.obs;
       this.urlProfile = userModel.urlProfile.obs;
       this.username = userModel.username.obs;

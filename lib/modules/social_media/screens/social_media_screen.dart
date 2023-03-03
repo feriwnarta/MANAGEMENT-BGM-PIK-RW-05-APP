@@ -53,7 +53,7 @@ class _SocialMediaState extends State<SocialMedia> {
     ScreenUtil.init(context, designSize: const Size(360, 800));
     return Scaffold(
       appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle.light,
+        systemOverlayStyle: Theme.of(context).appBarTheme.systemOverlayStyle,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -217,65 +217,64 @@ class CardSocialMedia extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 328.w,
-          margin: EdgeInsets.symmetric(horizontal: 16.w),
+          width: SizeConfig.width(328),
+          margin: EdgeInsets.symmetric(horizontal: SizeConfig.width(16)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 8.h,
-              ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: 24.w,
-                    height: 24.h,
-                    child: CircleAvatar(
-                      backgroundImage: CachedNetworkImageProvider(
-                          '${ServerApp.url}$fotoProfile'),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 8.w,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 296.w,
-                        child: AutoSizeText(
-                          '$username',
-                          maxLines: 1,
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 296.w,
-                        child: AutoSizeText(
-                          '$uploadTime',
-                          maxLines: 1,
-                          style: TextStyle(
-                            fontSize: 10.sp,
-                            color: Color(
-                              0xff757575,
-                            ),
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 8.h,
+                height: SizeConfig.height(8),
               ),
               Container(
-                width: 296.w,
-                margin: EdgeInsets.only(left: 32.w),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: SizeConfig.width(24),
+                      height: SizeConfig.height(24),
+                      child: CircleAvatar(
+                        backgroundImage: CachedNetworkImageProvider(
+                            '${ServerApp.url}$fotoProfile'),
+                      ),
+                    ),
+                    SizedBox(
+                      width: SizeConfig.width(8),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: SizeConfig.width(296),
+                          child: Text(
+                            '$username',
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontSize: SizeConfig.text(12),
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        SizedBox(
+                          width: SizeConfig.width(296),
+                          child: Text(
+                            '$uploadTime',
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontSize: SizeConfig.text(10),
+                              color: Color(
+                                0xff757575,
+                              ),
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                width: SizeConfig.width(296),
+                margin: EdgeInsets.only(left: SizeConfig.width(32)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -285,19 +284,20 @@ class CardSocialMedia extends StatelessWidget {
                       trimMode: TrimMode.Line,
                       trimCollapsedText: ' Baca selengkapnya',
                       trimExpandedText: ' Baca lebih sedikit',
-                      lessStyle: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                      lessStyle: TextStyle(
+                          fontSize: SizeConfig.text(12), color: Colors.grey),
                       moreStyle: TextStyle(
-                        fontSize: 12.sp,
+                        fontSize: SizeConfig.text(12),
                         color: Colors.grey,
                       ),
                       textAlign: TextAlign.justify,
                       style: TextStyle(
-                        fontSize: 12.sp,
+                        fontSize: SizeConfig.text(12),
                         color: Color(0xff404040),
                       ),
                     ),
                     SizedBox(
-                      height: 8.h,
+                      height: SizeConfig.height(8),
                     ),
                     (urlStatusImage.isNotEmpty && urlStatusImage != null)
                         ? GestureDetector(
@@ -305,7 +305,7 @@ class CardSocialMedia extends StatelessWidget {
                               () => ViewImage(urlImage: '$urlStatusImage'),
                             ),
                             child: Container(
-                              width: 296.w,
+                              width: SizeConfig.width(296),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(6)),
                               child: ClipRRect(
@@ -319,7 +319,7 @@ class CardSocialMedia extends StatelessWidget {
                           )
                         : SizedBox(),
                     SizedBox(
-                      height: 8.h,
+                      height: SizeConfig.height(8),
                     ),
                     Row(
                       children: [
@@ -344,26 +344,26 @@ class CardSocialMedia extends StatelessWidget {
                           child: Material(
                             color: Colors.white,
                             child: SizedBox(
-                              width: 67.w,
-                              height: 20.h,
+                              width: SizeConfig.width(67),
+                              height: SizeConfig.height(20),
                               child: Row(
                                 children: [
                                   SvgPicture.asset(
                                       'assets/img/image-svg/comment-icon.svg'),
                                   SizedBox(
-                                    width: 4.w,
+                                    width: SizeConfig.width(4),
                                   ),
                                   (numberOfComments == '0')
                                       ? Text(
                                           'Komentar',
                                           style: TextStyle(
-                                              fontSize: 10.sp,
+                                              fontSize: SizeConfig.text(10),
                                               color: Color(0xff404040)),
                                         )
                                       : Text(
                                           '$numberOfComments',
                                           style: TextStyle(
-                                              fontSize: 10.sp,
+                                              fontSize: SizeConfig.text(10),
                                               color: Color(0xff404040)),
                                         )
                                 ],
@@ -372,10 +372,10 @@ class CardSocialMedia extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          width: 24.w,
+                          width: SizeConfig.width(24),
                         ),
                         LikeButton(
-                          size: 14.h,
+                          size: SizeConfig.height(14),
                           isLiked: isLike.value,
                           circleColor: CircleColor(
                               start: Color(0xff00ddff), end: Color(0xff0099cc)),
@@ -402,7 +402,9 @@ class CardSocialMedia extends StatelessWidget {
                             if (count == 0) {
                               result = Text(
                                 "Suka",
-                                style: TextStyle(color: color, fontSize: 10.sp),
+                                style: TextStyle(
+                                    color: color,
+                                    fontSize: SizeConfig.text(10)),
                               );
                             } else
                               result = Text(
@@ -441,13 +443,13 @@ class CardSocialMedia extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 12.h,
+                height: SizeConfig.height(12),
               ),
               Divider(
                 thickness: 1,
               ),
               SizedBox(
-                height: 12.h,
+                height: SizeConfig.height(12),
               )
             ],
           ),

@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:logger/logger.dart';
 
 class CountDownController extends GetxController {
   RxInt count = 60.obs;
@@ -36,8 +35,6 @@ class CountDownController extends GetxController {
       var response = await http.post(Uri.parse(url), body: jsonEncode(body));
       if (response.statusCode >= 200 && response.statusCode <= 399) {
         String message = jsonDecode(response.body);
-        final logger = Logger();
-        logger.d(message);
 
         if (message == 'success') {
         } else {

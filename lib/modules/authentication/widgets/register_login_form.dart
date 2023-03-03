@@ -222,15 +222,11 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                       ? (registerController.iplOrEmailSucces.value)
                           ? SvgPicture.asset(
                               'assets/img/image-svg/success.svg',
-                              height: SizeConfig.height(20),
-                              width: SizeConfig.width(20),
                             )
                           : null
                       : GestureDetector(
                           child: SvgPicture.asset(
                             'assets/img/image-svg/close.svg',
-                            height: SizeConfig.height(20),
-                            width: SizeConfig.width(20),
                           ),
                           onTap: () {
                             authController.controllerUsername.text = '';
@@ -281,8 +277,6 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                       decoration: InputDecoration(
                           icon: SvgPicture.asset(
                             'assets/img/image-svg/key.svg',
-                            height: SizeConfig.height(20),
-                            width: SizeConfig.width(20),
                           ),
                           suffixIcon: IconButton(
                             splashRadius: 10,
@@ -387,8 +381,6 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
               decoration: InputDecoration(
                   icon: SvgPicture.asset(
                     'assets/img/image-svg/user-login.svg',
-                    height: SizeConfig.width(20),
-                    width: SizeConfig.height(20),
                   ),
                   hintText: 'Masukan nomor IPL',
                   hintStyle: TextStyle(fontSize: SizeConfig.text(14)),
@@ -413,8 +405,6 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                   decoration: InputDecoration(
                       icon: SvgPicture.asset(
                         'assets/img/image-svg/email.svg',
-                        width: SizeConfig.width(20),
-                        height: SizeConfig.height(20),
                       ),
                       hintText: 'Masukan Email',
                       hintStyle: TextStyle(fontSize: SizeConfig.text(14)),
@@ -441,8 +431,6 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                   decoration: InputDecoration(
                       icon: SvgPicture.asset(
                         'assets/img/image-svg/handphone.svg',
-                        width: SizeConfig.width(20),
-                        height: SizeConfig.height(20),
                       ),
                       hintText: 'Masukan nomor telpon',
                       hintStyle: TextStyle(fontSize: SizeConfig.text(14)),
