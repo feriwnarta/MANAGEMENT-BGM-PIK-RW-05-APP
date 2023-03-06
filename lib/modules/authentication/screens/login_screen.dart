@@ -98,8 +98,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     authController = Get.put(AuthController(), permanent: false);
     accessController = Get.put(AccessController(), permanent: true);
 
-    logger.i('init state login');
-
     if (email != null && noTelp != null) {
       if (email.isNotEmpty && noTelp.isNotEmpty) {
         registerController.otpWhenExit = true.obs;

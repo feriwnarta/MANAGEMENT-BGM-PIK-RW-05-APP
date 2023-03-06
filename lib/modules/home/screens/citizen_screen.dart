@@ -50,14 +50,12 @@ class _MyWidgetState extends State<CitizenScreen> {
   void initState() {
     super.initState();
 
-    if (Platform.isIOS) {
-      controller.timer.value = Timer.periodic(
-        Duration(seconds: 5),
-        (_) {
-          controller.getCountNotif();
-        },
-      );
-    }
+    controller.timer.value = Timer.periodic(
+      Duration(seconds: 5),
+      (_) {
+        controller.getCountNotif();
+      },
+    );
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) async => await displayDialogPermission(),
@@ -301,6 +299,7 @@ class _MyWidgetState extends State<CitizenScreen> {
                 child: Badge(
                   badgeColor: Colors.red,
                   padding: EdgeInsets.all(3),
+                  showBadge: (controller.count.value == '0') ? false : true,
                   badgeContent: Text(
                     '${controller.count.value}',
                     style: TextStyle(

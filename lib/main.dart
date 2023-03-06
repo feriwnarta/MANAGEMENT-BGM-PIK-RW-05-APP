@@ -272,6 +272,11 @@ class _MainAppState extends State<MainApp> {
         ProfileSettings(),
       ];
     } else if (controller.status.value == 'BETA TEST') {
+      screens = [
+        HomeScreenFolder(),
+        UserProfileScreen(),
+        ProfileSettings(),
+      ];
     } else if (controller.status.value == 'ESTATEMANAGER') {
       screens = [
         MenuFolderEm(),
