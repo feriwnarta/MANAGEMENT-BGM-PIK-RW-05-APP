@@ -219,7 +219,9 @@ class _MyApp extends State<MyApp> {
               debugShowCheckedModeBanner: false,
               initialRoute: AppPage.INITIAL_ROUTE,
               getPages: AppPage.pages,
-              theme: AppTheme.lightTheme,
+              theme: AppTheme.lightTheme.copyWith(
+                  textTheme:
+                      Theme.of(context).textTheme.apply(fontFamily: 'Inter')),
               builder: (context, child) {
                 // do your initialization here
                 child = EasyLoading.init()(context, child);

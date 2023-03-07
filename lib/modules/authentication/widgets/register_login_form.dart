@@ -144,9 +144,9 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                     child: Text(
                       'Masuk',
                       style: TextStyle(
-                          color:
-                              (isLogin) ? Colors.white : Colors.lightBlue[400],
-                          fontSize: SizeConfig.text(14)),
+                        color: (isLogin) ? Colors.white : Colors.lightBlue[400],
+                        fontSize: SizeConfig.text(14),
+                      ),
                     ),
                   ),
                   TextButton(
