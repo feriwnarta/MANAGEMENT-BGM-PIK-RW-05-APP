@@ -2,11 +2,11 @@ import 'package:aplikasi_rw/modules/contractor/screens/peduli_lingkungan_cord.da
 import 'package:aplikasi_rw/modules/cordinator/screens/peduli_lingkunga_cordinator.dart';
 import 'package:aplikasi_rw/modules/estate_manager/screens/status_peduli_lingkungan_complaint.dart';
 import 'package:aplikasi_rw/modules/manager_contractor/screens/peduli_lingkungan_manager_con.dart';
+import 'package:aplikasi_rw/modules/pengurus/screens/status_peduli_lingkungan_pengurus.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/add_complaint.dart';
 import 'package:aplikasi_rw/modules/theme/sizer.dart';
 import 'package:aplikasi_rw/utils/screen_size.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -274,6 +274,19 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                   case 'peduli lingkungan umum':
                     Get.to(
                       () => StatusPeduliLingkunganComplaint(),
+                    );
+                    break;
+                  case 'peduli lingkungan pribadi':
+                    break;
+                  default:
+                    EasyLoading.showError('ada sesuatu yang salah');
+                    break;
+                }
+              } else if (widget.typeStatusPeduliLingkungan == 'pengelola') {
+                switch (typeStatus.value) {
+                  case 'peduli lingkungan umum':
+                    Get.to(
+                      () => StatusPeduliLingkunganPengurus(),
                     );
                     break;
                   case 'peduli lingkungan pribadi':

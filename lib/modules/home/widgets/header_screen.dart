@@ -3,8 +3,6 @@ import 'package:aplikasi_rw/modules/home/data/ShowCaseData.dart';
 import 'package:aplikasi_rw/modules/home/services/news_service.dart';
 import 'package:aplikasi_rw/modules/informasi_warga/screens/read_informasi_screen.dart';
 import 'package:aplikasi_rw/modules/theme/sizer.dart';
-import 'package:aplikasi_rw/modules/util_widgets/text_style_showcase.dart';
-import 'package:aplikasi_rw/utils/screen_size.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:aplikasi_rw/utils/view_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -89,7 +87,7 @@ class HeaderScreen extends StatelessWidget {
                     ),
                     (userLoginController.status.value
                             .isCaseInsensitiveContainsAny('WARGA'))
-                        ? AutoSizeText(
+                        ? Text(
                             '${userLoginController.cluster.value} ${userLoginController.houseNumber.value}',
                             style: TextStyle(
                               fontSize: (14 / Sizer.slicingText) *
@@ -100,7 +98,7 @@ class HeaderScreen extends StatelessWidget {
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           )
-                        : AutoSizeText(
+                        : Text(
                             '${userLoginController.status.value}',
                             style: TextStyle(
                               fontSize: (14 / Sizer.slicingText) *

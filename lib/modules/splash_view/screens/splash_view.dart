@@ -4,6 +4,7 @@ import 'package:aplikasi_rw/modules/authentication/controllers/access_controller
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
@@ -68,6 +69,34 @@ class _SplashViewState extends State<SplashView> {
 
   Future<void> initializeSettings() async {
     await checkConnectivity();
+
+    final logger = Logger();
+    logger.e('refresh');
+
+    await updateStatus();
+  }
+
+  Future<void> updateStatus() async {
+    // update status
+    String url = '${ServerApp.url}src/login/check_authorization.php';
+    String idUser = await UserSecureStorage.getIdUser();
+
+    var data = {'id_user': idUser};
+
+    Dio dio = Dio();
+
+    try {
+      var response = await dio.post(url, data: jsonEncode(data));
+
+      if (response.statusCode >= 200 && response.statusCode < 400) {
+        var result = jsonDecode(response.data);
+
+        await UserSecureStorage.setKeyValue(
+            key: 'status', value: result['status']);
+      }
+    } on DioError catch (ex) {
+      print(ex);
+    }
   }
 
   Future<String> checkLoginActive() async {

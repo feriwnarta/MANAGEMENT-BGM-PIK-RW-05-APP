@@ -29,6 +29,10 @@ class AccessController extends GetxController {
   RxBool statusPeduliLingkunganKepalaCon = false.obs;
   RxBool absensiKepalaCon = false.obs;
 
+  // access pengelola
+  RxBool dashboardPengelola = false.obs;
+  RxBool statusPeduliLingkunganPengelola = false.obs;
+
   void accessManagerCon() {
     dashboardManagerCon = true.obs;
     statusPeduliLingkunganManagerCord = true.obs;
@@ -62,5 +66,16 @@ class AccessController extends GetxController {
     absensiKepalaCon = true.obs;
   }
 
-  void accessAsPengelola() {}
+  void accessAsPengelola() {
+    statistikPeduliLindungi = true.obs;
+    peduliLingkungan = true.obs;
+    statusPeduliLingkungan = true.obs;
+    statusIpl = true.obs;
+    informasiWarga = true.obs;
+    informasiUmum = true.obs;
+    sosialMedia = true.obs;
+
+    dashboardPengelola = true.obs;
+    statusPeduliLingkunganPengelola = true.obs;
+  }
 }
