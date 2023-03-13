@@ -91,8 +91,7 @@ class _ReportScreen2State extends State<ReportScreen2> {
               Center(
                 child: Container(
                   width: SizeConfig.width(328),
-                  height:
-                      (36 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
+                  height: SizeConfig.height(36),
                   margin: EdgeInsets.only(
                     top: SizeConfig.height(16),
                   ),
@@ -116,17 +115,15 @@ class _ReportScreen2State extends State<ReportScreen2> {
                             borderSide: BorderSide.none),
                         hintText: 'Nomor Laporan',
                         hintStyle: TextStyle(
-                            fontSize: (14 / Sizer.slicingText) *
-                                SizeConfig.textMultiplier),
+                          fontSize: SizeConfig.text(14),
+                        ),
                         suffixIcon: Icon(
                           Icons.search,
                           size: (16 / Sizer.slicingImage) *
                               SizeConfig.imageSizeMultiplier,
                         ),
                       ),
-                      style: TextStyle(
-                          fontSize: (14 / Sizer.slicingText) *
-                              SizeConfig.textMultiplier),
+                      style: TextStyle(fontSize: SizeConfig.text(12)),
                       onChanged: (value) async {
                         if (value.isNotEmpty) {
                           reportController.listReport =
@@ -180,9 +177,8 @@ class _ReportScreen2State extends State<ReportScreen2> {
                                         child: Text(
                                           'Tidak ada laporan',
                                           style: TextStyle(
-                                              fontSize: (12 /
-                                                      Sizer.slicingText) *
-                                                  SizeConfig.textMultiplier),
+                                            fontSize: SizeConfig.text(12),
+                                          ),
                                         ),
                                       )
                                     : (index <

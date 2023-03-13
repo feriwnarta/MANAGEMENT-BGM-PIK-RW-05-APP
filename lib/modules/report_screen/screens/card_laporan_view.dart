@@ -9,7 +9,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -218,7 +217,9 @@ class _CardLaporanViewState extends State<CardLaporanView> {
           return AlertDialog(
             title: Text(
               title,
-              style: TextStyle(fontSize: 12.0.sp),
+              style: TextStyle(
+                fontSize: SizeConfig.text(12),
+              ),
             ),
             insetPadding: EdgeInsets.all(10.0.h),
             shape:

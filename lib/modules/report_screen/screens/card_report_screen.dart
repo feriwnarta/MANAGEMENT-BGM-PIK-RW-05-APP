@@ -115,8 +115,7 @@ class CardReportScreen extends StatelessWidget {
                               Text(
                                 noTicket,
                                 style: TextStyle(
-                                    fontSize: (10 / Sizer.slicingText) *
-                                        SizeConfig.textMultiplier,
+                                    fontSize: SizeConfig.text(10),
                                     color: Color(0xff2094F3),
                                     overflow: TextOverflow.clip),
                               ),
@@ -158,8 +157,7 @@ class CardReportScreen extends StatelessWidget {
                                 child: Text(
                                   status,
                                   style: TextStyle(
-                                    fontSize: (12 / Sizer.slicingText) *
-                                        SizeConfig.textMultiplier,
+                                    fontSize: SizeConfig.text(12),
                                     color: (status == 'Eskalasi tingkat 1' ||
                                             status == 'Eskalasi tingkat 2' ||
                                             status == 'Eskalasi tingkat 3')
@@ -191,9 +189,7 @@ class CardReportScreen extends StatelessWidget {
                                   : description,
                               maxLines: 3,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontSize: (12 / Sizer.slicingText) *
-                                      SizeConfig.textMultiplier),
+                              style: TextStyle(fontSize: SizeConfig.text(12)),
                             ),
                           ),
                           SizedBox(
@@ -202,8 +198,7 @@ class CardReportScreen extends StatelessWidget {
                             child: Text(
                               time,
                               style: TextStyle(
-                                fontSize: (10 / Sizer.slicingText) *
-                                    SizeConfig.textMultiplier,
+                                fontSize: SizeConfig.text(10),
                                 color: Color(0xff9E9E9E),
                               ),
                               maxLines: 1,

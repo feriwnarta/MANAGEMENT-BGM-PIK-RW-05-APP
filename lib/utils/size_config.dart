@@ -1,4 +1,4 @@
-import 'package:flutter/rendering.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart';
 
@@ -18,7 +18,7 @@ class SizeConfig {
   static double slicingHeight = 8.12;
   static double slicingWidth = 3.75;
   static double slicingImage = 3.75;
-  static double slicingText = 8.12;
+  static double slicingText = textMultiplier;
 
   static double width(double val) {
     return (val / slicingWidth) * widthMultiplier;

@@ -5,7 +5,6 @@ import 'package:aplikasi_rw/server-app.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
@@ -46,40 +45,38 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notification'),
-        systemOverlayStyle: SystemUiOverlayStyle.light,
+        title: Text('Notifikasi'),
+        systemOverlayStyle: Theme.of(context).appBarTheme.systemOverlayStyle,
       ),
       body: SingleChildScrollView(
         child: Obx(
           () => (controller.listNotif == null)
               ? LinearProgressIndicator()
-              : (controller.listNotif.length == 0)
-                  ? Center(child: Text('Tidak ada notifikasi'))
-                  : Container(
-                      margin: EdgeInsets.symmetric(
-                        horizontal: 16.w,
+              : Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                  ),
+                  width: double.infinity,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 16.h,
                       ),
-                      width: double.infinity,
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 16.h,
-                          ),
-                          Column(
-                            children: controller.listNotif
-                                .map<Widget>(
-                                  (e) => NotifiBody(
-                                    content: e.content,
-                                    time: e.time,
-                                    title: e.title,
-                                    urlProfile: e.urlImage,
-                                  ),
-                                )
-                                .toList(),
-                          )
-                        ],
-                      ),
-                    ),
+                      Column(
+                        children: controller.listNotif
+                            .map<Widget>(
+                              (e) => NotifiBody(
+                                content: e.content,
+                                time: e.time,
+                                title: e.title,
+                                urlProfile: e.urlImage,
+                              ),
+                            )
+                            .toList(),
+                      )
+                    ],
+                  ),
+                ),
         ),
       ),
     );

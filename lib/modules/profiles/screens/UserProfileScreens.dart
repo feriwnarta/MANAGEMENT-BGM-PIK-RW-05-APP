@@ -149,7 +149,6 @@ class UserProfileScreen extends StatelessWidget {
                             height: SizeConfig.height(4),
                           ),
                           Container(
-                            height: SizeConfig.height(28),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(100),
                               color: Color(0xffFDF4E4),
@@ -162,10 +161,12 @@ class UserProfileScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Image(
-                                  height: SizeConfig.height(20),
                                   width: SizeConfig.width(20),
                                   fit: BoxFit.cover,
                                   image: AssetImage('assets/img/isuser.png'),
+                                ),
+                                SizedBox(
+                                  width: SizeConfig.width(4),
                                 ),
                                 (userLoginController.status.value
                                         .isCaseInsensitiveContainsAny('WARGA'))

@@ -4,7 +4,6 @@ import 'package:aplikasi_rw/modules/profiles/screens/privacy_policy.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/security_screen.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/terms_and_conditions.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -43,7 +42,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
             Text(
               'Pengaturan',
               style: TextStyle(
-                fontSize: SizeConfig.text(19),
+                fontSize: SizeConfig.text(18),
                 color: Color(0xff2094F3),
               ),
               overflow: TextOverflow.ellipsis,

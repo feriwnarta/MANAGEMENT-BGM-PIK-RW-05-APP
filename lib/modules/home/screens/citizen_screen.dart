@@ -57,9 +57,9 @@ class _MyWidgetState extends State<CitizenScreen> {
       },
     );
 
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) async => await displayDialogPermission(),
-    );
+    // WidgetsBinding.instance.addPostFrameCallback(
+    //   (_) async => await displayDialogPermission(),
+    // );
   }
 
   /// tampikan dialog permision
@@ -264,7 +264,7 @@ class _MyWidgetState extends State<CitizenScreen> {
             Text(
               'BGM RW 05',
               style: TextStyle(
-                fontSize: (19 / Sizer.slicingText) * SizeConfig.textMultiplier,
+                fontSize: SizeConfig.text(19),
                 color: Colors.blue,
               ),
               maxLines: 1,
@@ -273,8 +273,8 @@ class _MyWidgetState extends State<CitizenScreen> {
           ],
         ),
         title: Image(
-          width: (34 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
-          height: (40 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
+          width: SizeConfig.width(34),
+          height: SizeConfig.height(40),
           image: image,
           fit: BoxFit.cover,
           repeat: ImageRepeat.noRepeat,
@@ -282,8 +282,7 @@ class _MyWidgetState extends State<CitizenScreen> {
         centerTitle: true,
         actions: [
           Padding(
-            padding: EdgeInsets.only(
-                right: (25 / Sizer.slicingWidth) * SizeConfig.widthMultiplier),
+            padding: EdgeInsets.only(right: SizeConfig.width(24)),
             child: Obx(
               () => InkWell(
                 splashColor: Colors.white,
@@ -328,20 +327,17 @@ class _MyWidgetState extends State<CitizenScreen> {
                       isEmOrCord: false,
                     )
                   : SizedBox(
-                      height: (32 / Sizer.slicingHeight) *
-                          SizeConfig.heightMultiplier,
+                      height: SizeConfig.height(32),
                     ),
               (Platform.isIOS) ? headerScreenIos() : SizedBox(),
               SizedBox(
-                height:
-                    (24 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
+                height: SizeConfig.height(24),
               ),
               Divider(
                 thickness: 1,
               ),
               SizedBox(
-                height:
-                    (24 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
+                height: SizeConfig.height(24),
               ),
               Obx(
                 () => Column(
@@ -351,9 +347,8 @@ class _MyWidgetState extends State<CitizenScreen> {
                 ),
               ),
               SizedBox(
-                height:
-                    (70 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
-              )
+                height: SizeConfig.height(70),
+              ),
             ],
           ),
         ),
@@ -483,8 +478,7 @@ class _MyWidgetState extends State<CitizenScreen> {
                     Text(
                       '${userLoginController.name.value}',
                       style: TextStyle(
-                        fontSize: (16 / Sizer.slicingText) *
-                            SizeConfig.textMultiplier,
+                        fontSize: SizeConfig.text(16),
                         fontWeight: FontWeight.w500,
                       ),
                       maxLines: 2,
@@ -495,8 +489,7 @@ class _MyWidgetState extends State<CitizenScreen> {
                         ? Text(
                             '${userLoginController.cluster.value} ${userLoginController.houseNumber.value}',
                             style: TextStyle(
-                              fontSize: (14 / Sizer.slicingText) *
-                                  SizeConfig.textMultiplier,
+                              fontSize: SizeConfig.text(14),
                               fontWeight: FontWeight.w500,
                               color: Color(0xff616161),
                             ),
@@ -506,8 +499,7 @@ class _MyWidgetState extends State<CitizenScreen> {
                         : Text(
                             '${userLoginController.status.value}',
                             style: TextStyle(
-                              fontSize: (14 / Sizer.slicingText) *
-                                  SizeConfig.textMultiplier,
+                              fontSize: SizeConfig.text(14),
                               fontWeight: FontWeight.w500,
                               color: Color(0xff616161),
                             ),
@@ -521,13 +513,13 @@ class _MyWidgetState extends State<CitizenScreen> {
           ),
         ),
         SizedBox(
-          height: (24 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
+          height: SizeConfig.height(24),
         ),
         Divider(
           thickness: 1,
         ),
         SizedBox(
-          height: (24 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
+          height: SizeConfig.height(24),
         ),
         carouselNews(),
       ],
@@ -559,18 +551,13 @@ class _MyWidgetState extends State<CitizenScreen> {
             return GestureDetector(
               onTap: () => Get.to(() => ReadInformation(),
                   transition: Transition.rightToLeft, arguments: [e.content]),
-              child: Showcase(
-                key: dataShowCase.news,
-                description: 'test',
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  margin: EdgeInsets.only(
-                    right:
-                        (16 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
-                  ),
-                  child: CachedNetworkImage(
-                    imageUrl: '${ServerApp.url}${e.url}',
-                  ),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.only(
+                  right: (16 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
+                ),
+                child: CachedNetworkImage(
+                  imageUrl: '${ServerApp.url}${e.url}',
                 ),
               ),
             );

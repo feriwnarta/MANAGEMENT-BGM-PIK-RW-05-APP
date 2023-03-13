@@ -1,4 +1,3 @@
-import 'package:aplikasi_rw/modules/theme/sizer.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/material.dart';
 
@@ -14,12 +13,12 @@ class Menu extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: (75 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
+        width: SizeConfig.width(75),
         child: Column(
           children: [
             Container(
-              width: (70 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
-              height: (72 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
+              width: SizeConfig.width(70),
+              height: SizeConfig.height(72),
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(icon),
@@ -27,13 +26,13 @@ class Menu extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: (8 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
+              height: SizeConfig.height(8),
             ),
             Text(
               text,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: (12 / Sizer.slicingText) * SizeConfig.textMultiplier,
+                fontSize: SizeConfig.text(12),
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,

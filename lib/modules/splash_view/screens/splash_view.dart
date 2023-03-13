@@ -69,11 +69,6 @@ class _SplashViewState extends State<SplashView> {
 
   Future<void> initializeSettings() async {
     await checkConnectivity();
-
-    final logger = Logger();
-    logger.e('refresh');
-
-    await updateStatus();
   }
 
   Future<void> updateStatus() async {
@@ -87,6 +82,8 @@ class _SplashViewState extends State<SplashView> {
 
     try {
       var response = await dio.post(url, data: jsonEncode(data));
+      final logger = Logger();
+      logger.d(response);
 
       if (response.statusCode >= 200 && response.statusCode < 400) {
         var result = jsonDecode(response.data);
@@ -166,6 +163,7 @@ class _SplashViewState extends State<SplashView> {
             await _loginController.checkLogin();
             await checkAccess();
             await checkMaintenance();
+            await updateStatus();
           } else if (message.isCaseInsensitiveContainsAny('FAILL')) {
             _loginController.logout();
             Get.snackbar('message', 'Akun anda telah keluar');

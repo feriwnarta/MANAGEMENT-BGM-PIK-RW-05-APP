@@ -151,7 +151,6 @@ class Onboarding1 extends StatelessWidget {
                 SizedBox(height: SizeConfig.height(32)),
                 SizedBox(
                   width: SizeConfig.width(156),
-                  height: SizeConfig.height(40),
                   child: TextButton(
                     style: TextButton.styleFrom(
                       // minWidth: 156.w,

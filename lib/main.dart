@@ -216,7 +216,7 @@ class _MyApp extends State<MyApp> {
           SizeConfig().init(constraints, orientation);
           return AppLifecycleManager(
             child: GetMaterialApp(
-              useInheritedMediaQuery: true,
+              useInheritedMediaQuery: false,
               locale: DevicePreview.locale(context),
               debugShowCheckedModeBanner: false,
               initialRoute: AppPage.INITIAL_ROUTE,

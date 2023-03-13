@@ -90,7 +90,6 @@ class CardHistoryPaymentIpl extends StatelessWidget {
         ),
         Container(
           margin: EdgeInsets.symmetric(horizontal: SizeConfig.width(16)),
-          height: SizeConfig.height(92),
           child: Card(
             elevation: 5,
             shape:
@@ -176,8 +175,7 @@ class CardHistoryPaymentIpl extends StatelessWidget {
                           ),
                         ),
                         SizedBox(width: SizeConfig.width(16.5)),
-                        SizedBox(
-                          width: SizeConfig.width(95),
+                        Flexible(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [

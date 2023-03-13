@@ -1,5 +1,4 @@
 import 'package:aplikasi_rw/utils/size_config.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +11,6 @@ class TermAndCondition extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(360, 800));
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Syarat dan ketentuan'),
@@ -28,7 +26,7 @@ class TermAndCondition extends StatelessWidget {
               ),
               Text(
                 'Syarat dan ketentuan yang ditetapkan di bawah ini mengatur Pengguna layanan yang disediakan oleh BGM PIK, baik berupa informasi, teks, grafik, atau data lain, unduhan, unggahan, atau menggunakan layanan. Pengguna disarankan membaca dengan seksama karena dapat berdampak kepada hak dan kewajiban Pengguna di bawah hukum. \n\nDengan mendaftar dan/ atau menggunakan aplikasi BGM PIK, maka pengguna dianggap telah membaca, mengerti, memahami dan menyetujui semua isi dalam syarat dan ketentuan. Syarat dan ketentuan ini merupakan bentuk kesepakatan yang dituangkan dalam sebuah perjanjian yang sah antara Pengguna dengan aplikasi BGM PIK. Jika Pengguna tidak menyetujui salah satu, sebagian, atau seluruh isi syarat dan ketentuan, makan Pengguna tidak diperkenankan menggunakan layanan di aplikasi BGM PIK. \n\nKami berhak untuk mengubah syarat dan ketentuan ini dari waktu ke waktu tanpa pemberitahuan. Pengguna mengakui dan menyetujui bahwa merupakan tanggung jawab Pengguna untuk meninjau Syarat dan Ketentuan ini secara berkala untuk mengetahui perubahan apa pun. Dengan tetap mengakses dan menggunakan layanan BGM PIK, maka pengguna di anggap menyetujui perubahan-perubahan dalam Syarat dan Ketentuan. \n\nLarangan \n\nPengguna dapat menggunakan layanan BGM PIK hanya untuk tujuan yang sah. Pengguna tidak dapat menggunakan layanan BGM PIK dengan cara apa pun yang :',
-                style: TextStyle(fontSize: SizeConfig.text(12)),
+                style: style,
               ),
               SizedBox(
                 height: SizeConfig.height(8),
