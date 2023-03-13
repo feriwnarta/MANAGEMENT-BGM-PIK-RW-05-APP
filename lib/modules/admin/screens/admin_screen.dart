@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
+import 'package:aplikasi_rw/modules/admin/screens/tulis_informasi_screen.dart';
 import 'package:aplikasi_rw/modules/authentication/controllers/access_controller.dart';
+import 'package:aplikasi_rw/modules/estate_manager/screens/menu_folder_create_account.dart';
 import 'package:aplikasi_rw/modules/home/controller/notification_controller.dart';
 import 'package:aplikasi_rw/modules/home/data/ShowCaseData.dart';
+import 'package:aplikasi_rw/modules/home/models/card_news.dart';
 import 'package:aplikasi_rw/modules/home/screens/notification_screen.dart';
 import 'package:aplikasi_rw/modules/home/services/news_service.dart';
+import 'package:aplikasi_rw/modules/home/widgets/header_screen.dart';
 import 'package:aplikasi_rw/modules/home/widgets/menu.dart';
 import 'package:aplikasi_rw/modules/informasi_warga/screens/informasi_warga_screen.dart';
 import 'package:aplikasi_rw/modules/payment_ipl/screens/history/payment_ipl_history.dart';
@@ -26,20 +30,17 @@ import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:showcaseview/showcaseview.dart';
-
 import '../../../server-app.dart';
 import '../../informasi_warga/screens/read_informasi_screen.dart';
-import '../models/card_news.dart';
-import '../widgets/header_screen.dart';
 
-class CitizenScreen extends StatefulWidget {
-  const CitizenScreen({Key key}) : super(key: key);
+class AdminScreen extends StatefulWidget {
+  const AdminScreen({Key key}) : super(key: key);
 
   @override
-  State<CitizenScreen> createState() => _MyWidgetState();
+  State<AdminScreen> createState() => _MyWidgetState();
 }
 
-class _MyWidgetState extends State<CitizenScreen> {
+class _MyWidgetState extends State<AdminScreen> {
   final userLoginController = Get.put(UserLoginController());
   final accesController = Get.put(AccessController());
   NotificationController controller = Get.put(NotificationController());
@@ -241,6 +242,9 @@ class _MyWidgetState extends State<CitizenScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final logger = Logger();
+    logger.i(userLoginController.accessCordinator.value);
+
     ScreenUtil.init(context,
         designSize: Size(MediaQuery.of(context).size.width,
             MediaQuery.of(context).size.height));
@@ -318,30 +322,20 @@ class _MyWidgetState extends State<CitizenScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               (Platform.isAndroid)
                   ? HeaderScreen(
-                      isEmOrCord: false,
+                      isEmOrCord: true,
                     )
                   : SizedBox(
                       height: SizeConfig.height(32),
                     ),
-              (Platform.isIOS) ? headerScreenIos() : SizedBox(),
-              SizedBox(
-                height: SizeConfig.height(24),
-              ),
-              Divider(
-                thickness: 1,
-              ),
-              SizedBox(
-                height: SizeConfig.height(24),
-              ),
-              Obx(
-                () => Column(
-                  children: [
-                    listOfMenu(),
-                  ],
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.width(16),
                 ),
+                child: listOfMenu(),
               ),
               SizedBox(
                 height: SizeConfig.height(70),
@@ -359,89 +353,26 @@ class _MyWidgetState extends State<CitizenScreen> {
       runSpacing: (16 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
       spacing: (13 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
       children: [
-        (accesController.statusPeduliLingkungan.value)
-            ? Menu(
-                icon: 'assets/img/citizen_menu/ipl.jpg',
-                text: 'Peduli lingkungan',
-                onTap: () => Get.to(
-                    () => SubMenuReport(
-                          typeStatusPeduliLingkungan: 'warga',
-                        ),
-                    transition: Transition.rightToLeft),
-              )
-            : Menu(
-                icon: 'assets/img/citizen_menu/ipl.jpg',
-                text: 'Peduli lingkungan',
-                onTap: () => EasyLoading.showInfo(
-                    'Fitur ini hanya bisa diakses oleh warga'),
-              ),
-        (accesController.statusPeduliLingkungan.value)
-            ? Menu(
-                icon: 'assets/img/citizen_menu/status-peduli-lingkungan.jpg',
-                text: 'Status peduli lingkungan',
-                onTap: () => Get.to(() => ReportScreen2(),
-                    transition: Transition.rightToLeft),
-              )
-            : Menu(
-                icon: 'assets/img/citizen_menu/status-peduli-lingkungan.jpg',
-                text: 'Status peduli lingkungan',
-                onTap: () => EasyLoading.showInfo(
-                    'Fitur ini hanya bisa diakses oleh warga'),
-              ),
-        (accesController.statusIpl.value)
-            ? Menu(
-                icon: 'assets/img/citizen_menu/ipl.jpg',
-                text: 'Status IPL\n',
-                onTap: () => Get.to(
-                  () => PaymentIplHistory(),
-                  transition: Transition.rightToLeft,
-                ),
-              )
-            : Menu(
-                icon: 'assets/img/citizen_menu/ipl.jpg',
-                text: 'Status IPL\n',
-                onTap: () => EasyLoading.showInfo(
-                    'Fitur ini hanya bisa diakses oleh warga'),
-              ),
-        (accesController.informasiWarga.value)
-            ? Menu(
-                icon: 'assets/img/citizen_menu/informasi-warga.jpg',
-                text: 'Informasi Warga',
-                onTap: () => Get.to(
-                  () => InformasiWargaScreen(),
-                  transition: Transition.rightToLeft,
-                ),
-              )
-            : Menu(
-                icon: 'assets/img/citizen_menu/informasi-warga.jpg',
-                text: 'Informasi Warga',
-                onTap: () => EasyLoading.showInfo(
-                    'Fitur ini hanya bisa diakses oleh warga')),
-        (accesController.informasiUmum.value)
-            ? Menu(
-                icon: 'assets/img/citizen_menu/informasi-umum.jpg',
-                text: 'Informasi Umum',
-                onTap: () {},
-              )
-            : Menu(
-                icon: 'assets/img/citizen_menu/informasi-umum.jpg',
-                text: 'Informasi Umum',
-                onTap: () => EasyLoading.showInfo(
-                    'Fitur ini hanya bisa diakses oleh warga'),
-              ),
-        (accesController.sosialMedia.value)
-            ? Menu(
-                icon: 'assets/img/citizen_menu/media.jpg',
-                text: 'Sosial Media',
-                onTap: () => Get.to(() => SocialMedia(),
-                    transition: Transition.rightToLeft),
-              )
-            : Menu(
-                icon: 'assets/img/citizen_menu/media.jpg',
-                text: 'Sosial Media',
-                onTap: () => EasyLoading.showInfo(
-                    'Fitur ini hanya bisa diakses oleh warga'),
-              ),
+        Menu(
+          icon: 'assets/img/estate_manager_menu/add_account.jpg',
+          onTap: () {
+            Get.to(
+              () => MenuFolderCreateAccout(),
+              transition: Transition.rightToLeft,
+            );
+          },
+          text: 'Tambah Akun',
+        ),
+        Menu(
+          icon: 'assets/img/tulis-informasi.png',
+          text: 'Tulis Informasi',
+          onTap: () {
+            Get.to(
+              () => TulisInformasiScreen(),
+              transition: Transition.cupertino,
+            );
+          },
+        ),
       ],
     );
   }
