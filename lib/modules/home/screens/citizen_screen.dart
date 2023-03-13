@@ -57,9 +57,9 @@ class _MyWidgetState extends State<CitizenScreen> {
       },
     );
 
-    // WidgetsBinding.instance.addPostFrameCallback(
-    //   (_) async => await displayDialogPermission(),
-    // );
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) async => await displayDialogPermission(),
+    );
   }
 
   /// tampikan dialog permision
