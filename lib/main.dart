@@ -408,10 +408,6 @@ class _MainAppState extends State<MainApp> {
                     currentIndex: indexScreen.index.value,
                     onTap: (index) {
                       indexScreen.index.value = index;
-                      if (indexScreen.index.value == 1) {
-                        reportController.refresReport();
-                        reportController.update();
-                      }
                     },
                     items: [
                       BottomNavigationBarItem(

@@ -1,26 +1,44 @@
 import 'dart:io';
 
 import 'package:aplikasi_rw/modules/admin/controllers/AdminController.dart';
-import 'package:aplikasi_rw/modules/admin/screens/informasi_warga/buat_informasi_warga_content.dart';
+import 'package:aplikasi_rw/modules/admin/services/admin_services.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
+import 'package:aplikasi_rw/utils/view_image.dart';
 import 'package:aplikasi_rw/utils/view_image_file.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
 
-class BuatInformasiWarga extends StatefulWidget {
-  BuatInformasiWarga({Key key}) : super(key: key);
+class EditInformasiWarga extends StatefulWidget {
+  EditInformasiWarga({Key key, this.id, this.url, this.title, this.content})
+      : super(key: key);
+
+  final String id, url, title, content;
 
   @override
-  State<BuatInformasiWarga> createState() => _BuatInformasiWargaState();
+  State<EditInformasiWarga> createState() => _EditInformasiWargaState();
 }
 
-class _BuatInformasiWargaState extends State<BuatInformasiWarga> {
+class _EditInformasiWargaState extends State<EditInformasiWarga> {
+  final _formKeyTitle = GlobalKey<FormState>();
+  final _formKeyContent = GlobalKey<FormState>();
+
+  final RxString imagePath = ''.obs;
+
+  TextEditingController controllerTitle;
+
+  TextEditingController controllerContent;
+
   final AdminController adminController = Get.put(AdminController());
 
-  final _formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    super.initState();
+    controllerTitle = TextEditingController(text: '${widget.title}');
+    controllerContent = TextEditingController(text: '${widget.content}');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,33 +85,18 @@ class _BuatInformasiWargaState extends State<BuatInformasiWarga> {
                       decoration: BoxDecoration(
                         color: Color(0xffEDEDED),
                         borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: (imagePath.value.isEmpty)
+                              ? CachedNetworkImageProvider(widget.url)
+                              : FileImage(File('${imagePath.value}')),
+                        ),
                       ),
-                      child: (adminController.imagePath.value.isEmpty)
-                          ? Center(
-                              child: SvgPicture.asset(
-                                'assets/img/admin/photograph.svg',
-                                fit: BoxFit.cover,
-                              ),
-                            )
-                          : InkWell(
-                              onTap: () => Get.to(
-                                ViewImageFile(
-                                  path: adminController.imagePath.value,
-                                ),
-                              ),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  image: DecorationImage(
-                                    repeat: ImageRepeat.noRepeat,
-                                    fit: BoxFit.cover,
-                                    image: FileImage(
-                                      File(adminController.imagePath.value),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -119,11 +122,10 @@ class _BuatInformasiWargaState extends State<BuatInformasiWarga> {
                   height: SizeConfig.height(4),
                 ),
                 Form(
-                  key: _formKey,
+                  key: _formKeyTitle,
                   child: TextFormField(
-                    controller: adminController.controllerTitle,
+                    controller: controllerTitle,
                     decoration: InputDecoration(
-                      hintText: 'Vaksinasi Booster ke-2',
                       hintStyle: TextStyle(
                         fontSize: SizeConfig.text(14),
                       ),
@@ -136,7 +138,7 @@ class _BuatInformasiWargaState extends State<BuatInformasiWarga> {
                     ),
                     onChanged: (value) {
                       if (value.isNotEmpty || value != null) {
-                        _formKey.currentState.validate();
+                        _formKeyTitle.currentState.validate();
                       }
                     },
                     validator: (String value) {
@@ -147,29 +149,82 @@ class _BuatInformasiWargaState extends State<BuatInformasiWarga> {
                   ),
                 ),
                 SizedBox(
-                  height: SizeConfig.height(172),
+                  height: SizeConfig.height(16),
+                ),
+                Text(
+                  'Masukan Isi Informasi',
+                  style: TextStyle(
+                    fontSize: SizeConfig.text(14),
+                  ),
+                ),
+                SizedBox(
+                  height: SizeConfig.height(4),
+                ),
+                Form(
+                  key: _formKeyContent,
+                  child: TextFormField(
+                    maxLines: 10,
+                    controller: controllerContent,
+                    decoration: InputDecoration(
+                      hintStyle: TextStyle(
+                        fontSize: SizeConfig.text(14),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: SizeConfig.height(6),
+                          horizontal: SizeConfig.width(12)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                    ),
+                    onChanged: (value) {
+                      if (value.isNotEmpty || value != null) {
+                        _formKeyTitle.currentState.validate();
+                      }
+                    },
+                    validator: (String value) {
+                      return (value != null && value.isEmpty)
+                          ? 'judul informasi tidak boleh kosong'
+                          : null;
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: SizeConfig.height(16),
                 ),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50))),
-                    onPressed: () {
-                      if (adminController.imagePath.value.isEmpty) {
-                        EasyLoading.showInfo(
-                            'Gambar thumbnail tidak boleh kosong');
-                      } else {
-                        if (_formKey.currentState.validate()) {
-                          Get.to(
-                            () => BuatInformasiWargaContent(),
-                            transition: Transition.cupertino,
-                          );
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                    onPressed: () async {
+                      if (_formKeyContent.currentState.validate() &&
+                          _formKeyTitle.currentState.validate()) {
+                        EasyLoading.show(status: 'loading');
+
+                        var result = await AdminServices.updateNews(
+                            caption: controllerTitle.text,
+                            content: controllerContent.text,
+                            idNews: widget.id,
+                            isNewImage:
+                                (imagePath.value.isNotEmpty) ? true : false,
+                            image: (imagePath.value.isEmpty)
+                                ? widget.url
+                                : imagePath.value);
+
+                        if (result.isCaseInsensitiveContainsAny('OK')) {
+                          EasyLoading.showSuccess('berhasil update');
+                          Get.back();
+                          adminController.refreshShow();
+                        } else {
+                          EasyLoading.showError('gagal update');
                         }
                       }
                     },
                     child: Text(
-                      'Mulai Menulis',
+                      'Perbarui',
                       style: TextStyle(
                         fontSize: SizeConfig.text(14),
                         fontWeight: FontWeight.w500,
@@ -237,7 +292,7 @@ class _BuatInformasiWargaState extends State<BuatInformasiWarga> {
         await _picker.pickImage(source: source, imageQuality: 50);
 
     if (imageOrPhoto != null) {
-      adminController.imagePath.value = imageOrPhoto.path;
+      imagePath.value = imageOrPhoto.path;
     }
   }
 

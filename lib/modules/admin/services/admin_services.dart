@@ -103,4 +103,53 @@ class AdminServices {
 
     return '';
   }
+
+  static Future<String> updateNews(
+      {String idNews,
+      String caption,
+      String content,
+      String image,
+      bool isNewImage}) async {
+    String url = '${ServerApp.url}src/news/update_news.php';
+
+    Dio dio = Dio();
+
+    try {
+      dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
+
+      String idUser = await UserSecureStorage.getIdUser();
+      var formData;
+      // form data
+      if (isNewImage) {
+        formData = FormData.fromMap({
+          'image': MultipartFileRecreatable.fromFileSync(
+            image,
+            filename: image,
+            contentType: MediaType("image", "jpeg"),
+          ),
+          'id_news': idNews,
+          'caption': caption,
+          'content': content,
+          'id_writer': idUser,
+        });
+      } else {
+        formData = FormData.fromMap({
+          'image': image,
+          'id_news': idNews,
+          'caption': caption,
+          'content': content,
+          'id_writer': idUser,
+        });
+      }
+
+      var response = await dio.post(url, data: formData);
+
+      if (response.statusCode >= 200 && response.statusCode <= 399) {
+        var result = jsonDecode(response.data);
+        return result;
+      }
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
 }

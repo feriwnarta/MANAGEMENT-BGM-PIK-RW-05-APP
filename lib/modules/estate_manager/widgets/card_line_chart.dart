@@ -1,6 +1,5 @@
 import 'package:aplikasi_rw/modules/estate_manager/services/chart_line_services.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -162,7 +161,7 @@ class _CardLineChartState extends State<CardLineChart> {
                                 ? Text(
                                     '${snapshot.data[index].pic[0].join(', ')}',
                                     overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
+                                    maxLines: 1,
                                     style: TextStyle(
                                       fontSize: SizeConfig.text(14),
                                     ),
@@ -176,7 +175,7 @@ class _CardLineChartState extends State<CardLineChart> {
                                 ? Text(
                                     '${dataUpdate['pic'].join(', ')}',
                                     overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
+                                    maxLines: 1,
                                     style: TextStyle(
                                       fontSize: SizeConfig.text(14),
                                     ),

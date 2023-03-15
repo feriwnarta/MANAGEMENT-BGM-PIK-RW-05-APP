@@ -68,6 +68,8 @@ class BuatInformasiWargaDetail extends StatelessWidget {
                               ..back();
 
                             adminController.refreshShow();
+
+                            Get.delete<AdminController>();
                           } else {
                             EasyLoading.showError('ada sesuatu yang salah');
                           }

@@ -1,9 +1,11 @@
 import 'package:aplikasi_rw/modules/admin/controllers/AdminController.dart';
 import 'package:aplikasi_rw/modules/admin/models/InformasiModel.dart';
 import 'package:aplikasi_rw/modules/admin/screens/informasi_warga/buat_informasi_warga_screen_title.dart';
+import 'package:aplikasi_rw/modules/admin/screens/informasi_warga/edit_informasi_warga.dart';
 import 'package:aplikasi_rw/modules/admin/services/admin_services.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
+import 'package:aplikasi_rw/utils/view_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -71,6 +73,8 @@ class _InformasiWargaState extends State<InformasiWarga> {
                                   url:
                                       '${ServerApp.url}/${informasiModel.urlImageNews}',
                                   id: '${informasiModel.idNews}',
+                                  content: '${informasiModel.content}',
+                                  title: '${informasiModel.caption}',
                                   refreshIndicatorKey:
                                       controller.refreshIndicatorKey,
                                 ))
@@ -101,127 +105,144 @@ class CardInformasi extends StatelessWidget {
     Key key,
     this.url,
     this.id,
+    this.content,
+    this.title,
     this.refreshIndicatorKey,
   }) : super(key: key);
 
   final url;
-  final String id;
+  final String id, title, content;
   final GlobalKey<RefreshIndicatorState> refreshIndicatorKey;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Slidable(
-          child: Container(
-            width: double.infinity,
-            height: SizeConfig.height(188),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: CachedNetworkImageProvider(
-                    url,
+    return InkWell(
+      onTap: () => Get.to(
+        ViewImage(urlImage: url),
+        transition: Transition.cupertino,
+      ),
+      child: Column(
+        children: [
+          Slidable(
+            child: Container(
+              width: double.infinity,
+              height: SizeConfig.height(188),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: CachedNetworkImageProvider(
+                      url,
+                    ),
+                  )),
+            ),
+            endActionPane: ActionPane(
+              motion: BehindMotion(),
+              extentRatio: SizeConfig.width(0.4),
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.width(16),
                   ),
-                )),
-          ),
-          endActionPane: ActionPane(
-            motion: BehindMotion(),
-            extentRatio: SizeConfig.width(0.4),
-            children: [
-              Container(
-                margin: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.width(16),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: SizeConfig.width(95),
-                      child: ElevatedButton.icon(
-                        onPressed: () {},
-                        icon: SvgPicture.asset(
-                          'assets/img/admin/pencil.svg',
-                          width: SizeConfig.image(16),
-                          fit: BoxFit.cover,
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          elevation: 0,
-                          alignment: Alignment.centerLeft,
-                        ),
-                        label: Text(
-                          'Edit',
-                          style: TextStyle(
-                            fontSize: SizeConfig.text(14),
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: SizeConfig.width(95),
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            Get.to(
+                              EditInformasiWarga(
+                                  id: id,
+                                  url: url,
+                                  content: content,
+                                  title: title),
+                              transition: Transition.cupertino,
+                            );
+                          },
+                          icon: SvgPicture.asset(
+                            'assets/img/admin/pencil.svg',
+                            width: SizeConfig.image(16),
+                            fit: BoxFit.cover,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            elevation: 0,
+                            alignment: Alignment.centerLeft,
+                          ),
+                          label: Text(
+                            'Edit',
+                            style: TextStyle(
+                              fontSize: SizeConfig.text(14),
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: SizeConfig.width(95),
-                      child: Divider(
-                        color: Color(0xffF5F5F5),
-                        thickness: 2,
+                      SizedBox(
+                        width: SizeConfig.width(95),
+                        child: Divider(
+                          color: Color(0xffF5F5F5),
+                          thickness: 2,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: SizeConfig.width(95),
-                      child: ElevatedButton.icon(
-                        onPressed: () async {
-                          EasyLoading.show(status: 'menghapus');
+                      SizedBox(
+                        width: SizeConfig.width(95),
+                        child: ElevatedButton.icon(
+                          onPressed: () async {
+                            EasyLoading.show(status: 'menghapus');
 
-                          var result = await AdminServices.deleteNews(id: id);
+                            var result = await AdminServices.deleteNews(id: id);
 
-                          if (result != null || result.isNotEmpty) {
-                            EasyLoading.showSuccess('berhasil menghapus');
-                            refreshIndicatorKey.currentState.show();
-                          } else {
-                            EasyLoading.showError('ada sesuatu yang salah');
-                          }
-                        },
-                        icon: SvgPicture.asset(
-                          'assets/img/admin/trash.svg',
-                          width: SizeConfig.image(16),
-                          fit: BoxFit.cover,
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          elevation: 0,
-                          alignment: Alignment.centerLeft,
-                        ),
-                        label: Text(
-                          'Hapus',
-                          style: TextStyle(
-                            fontSize: SizeConfig.text(14),
-                            fontWeight: FontWeight.w500,
-                            color: Colors.red,
+                            if (result != null || result.isNotEmpty) {
+                              EasyLoading.showSuccess('berhasil menghapus');
+                              refreshIndicatorKey.currentState.show();
+                            } else {
+                              EasyLoading.showError('ada sesuatu yang salah');
+                            }
+                          },
+                          icon: SvgPicture.asset(
+                            'assets/img/admin/trash.svg',
+                            width: SizeConfig.image(16),
+                            fit: BoxFit.cover,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            elevation: 0,
+                            alignment: Alignment.centerLeft,
+                          ),
+                          label: Text(
+                            'Hapus',
+                            style: TextStyle(
+                              fontSize: SizeConfig.text(14),
+                              fontWeight: FontWeight.w500,
+                              color: Colors.red,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        SizedBox(
-          height: SizeConfig.height(8),
-        ),
-        SizedBox(
-          width: double.infinity,
-          child: Divider(
-            color: Color(0xffF5F5F5),
-            thickness: 2,
+          SizedBox(
+            height: SizeConfig.height(8),
           ),
-        ),
-        SizedBox(
-          height: SizeConfig.height(8),
-        ),
-      ],
+          SizedBox(
+            width: double.infinity,
+            child: Divider(
+              color: Color(0xffF5F5F5),
+              thickness: 2,
+            ),
+          ),
+          SizedBox(
+            height: SizeConfig.height(8),
+          ),
+        ],
+      ),
     );
   }
 }
