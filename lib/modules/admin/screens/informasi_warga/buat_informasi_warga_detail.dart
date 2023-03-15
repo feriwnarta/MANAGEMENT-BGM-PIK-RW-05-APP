@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:aplikasi_rw/modules/admin/controllers/AdminController.dart';
+import 'package:aplikasi_rw/modules/admin/services/admin_services.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:aplikasi_rw/utils/view_image_file.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
@@ -34,7 +36,9 @@ class BuatInformasiWargaDetail extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.back();
+                      },
                       style: TextButton.styleFrom(
                         elevation: 0,
                       ),
@@ -47,14 +51,35 @@ class BuatInformasiWargaDetail extends StatelessWidget {
                       ),
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        EasyLoading.show(status: 'megirim');
+
+                        var result = await AdminServices.save(
+                            urlImage: adminController.imagePath.value,
+                            content: adminController.controllerContent.text,
+                            title: adminController.controllerTitle.text);
+
+                        if (result != null || result.isNotEmpty) {
+                          if (result.isCaseInsensitiveContainsAny('OK')) {
+                            EasyLoading.showSuccess('terkirim');
+                            Get
+                              ..back()
+                              ..back()
+                              ..back();
+
+                            adminController.refreshShow();
+                          } else {
+                            EasyLoading.showError('ada sesuatu yang salah');
+                          }
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(100),
                         ),
                       ),
                       child: Text(
-                        'Selesai',
+                        'Posting Informasi',
                         style: TextStyle(
                           fontSize: SizeConfig.text(10),
                         ),

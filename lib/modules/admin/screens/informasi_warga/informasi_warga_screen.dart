@@ -1,3 +1,4 @@
+import 'package:aplikasi_rw/modules/admin/controllers/AdminController.dart';
 import 'package:aplikasi_rw/modules/admin/models/InformasiModel.dart';
 import 'package:aplikasi_rw/modules/admin/screens/informasi_warga/buat_informasi_warga_screen_title.dart';
 import 'package:aplikasi_rw/modules/admin/services/admin_services.dart';
@@ -5,12 +6,28 @@ import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-class InformasiWarga extends StatelessWidget {
-  const InformasiWarga({Key key}) : super(key: key);
+class InformasiWarga extends StatefulWidget {
+  InformasiWarga({Key key}) : super(key: key);
+
+  @override
+  State<InformasiWarga> createState() => _InformasiWargaState();
+}
+
+class _InformasiWargaState extends State<InformasiWarga> {
+  Future future;
+
+  final AdminController controller = Get.put(AdminController());
+
+  @override
+  void initState() {
+    super.initState();
+    future = AdminServices.getInformasiWarga();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,41 +36,53 @@ class InformasiWarga extends StatelessWidget {
         title: Text('Tulis Informasi Warga'),
         systemOverlayStyle: Theme.of(context).appBarTheme.systemOverlayStyle,
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.symmetric(
-            vertical: SizeConfig.height(16),
-            horizontal: SizeConfig.width(16),
-          ),
-          child: FutureBuilder<List<InformasiModel>>(
-            future: AdminServices.getInformasiWarga(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Column(
-                  children: [
-                    Text(
-                      'Informasi warga yang sudah ditulisa dan dipublikasi kepada warga.',
-                      style: TextStyle(
-                        fontSize: SizeConfig.text(16),
+      body: RefreshIndicator(
+        key: controller.refreshIndicatorKey,
+        onRefresh: () async {
+          setState(() {
+            future = AdminServices.getInformasiWarga();
+          });
+        },
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Container(
+            margin: EdgeInsets.symmetric(
+              vertical: SizeConfig.height(16),
+              horizontal: SizeConfig.width(16),
+            ),
+            child: FutureBuilder<List<InformasiModel>>(
+              future: future,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Column(
+                    children: [
+                      Text(
+                        'Informasi warga yang sudah dituliskan dan dipublikasi kepada warga.',
+                        style: TextStyle(
+                          fontSize: SizeConfig.text(16),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: SizeConfig.height(32),
-                    ),
-                    Column(
-                      children: snapshot.data
-                          .map<Widget>((informasiModel) => CardInformasi(
-                                url:
-                                    '${ServerApp.url}/${informasiModel.urlImageNews}',
-                              ))
-                          .toList(),
-                    )
-                  ],
-                );
-              } else {
-                return Center(child: CircularProgressIndicator.adaptive());
-              }
-            },
+                      SizedBox(
+                        height: SizeConfig.height(32),
+                      ),
+                      Column(
+                        children: snapshot.data
+                            .map<Widget>((informasiModel) => CardInformasi(
+                                  url:
+                                      '${ServerApp.url}/${informasiModel.urlImageNews}',
+                                  id: '${informasiModel.idNews}',
+                                  refreshIndicatorKey:
+                                      controller.refreshIndicatorKey,
+                                ))
+                            .toList(),
+                      )
+                    ],
+                  );
+                } else {
+                  return Center(child: CircularProgressIndicator.adaptive());
+                }
+              },
+            ),
           ),
         ),
       ),
@@ -71,20 +100,30 @@ class CardInformasi extends StatelessWidget {
   const CardInformasi({
     Key key,
     this.url,
+    this.id,
+    this.refreshIndicatorKey,
   }) : super(key: key);
 
   final url;
+  final String id;
+  final GlobalKey<RefreshIndicatorState> refreshIndicatorKey;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Slidable(
-          child: SizedBox(
+          child: Container(
             width: double.infinity,
-            child: CachedNetworkImage(
-              imageUrl: url,
-            ),
+            height: SizeConfig.height(188),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: CachedNetworkImageProvider(
+                    url,
+                  ),
+                )),
           ),
           endActionPane: ActionPane(
             motion: BehindMotion(),
@@ -131,7 +170,18 @@ class CardInformasi extends StatelessWidget {
                     SizedBox(
                       width: SizeConfig.width(95),
                       child: ElevatedButton.icon(
-                        onPressed: () {},
+                        onPressed: () async {
+                          EasyLoading.show(status: 'menghapus');
+
+                          var result = await AdminServices.deleteNews(id: id);
+
+                          if (result != null || result.isNotEmpty) {
+                            EasyLoading.showSuccess('berhasil menghapus');
+                            refreshIndicatorKey.currentState.show();
+                          } else {
+                            EasyLoading.showError('ada sesuatu yang salah');
+                          }
+                        },
                         icon: SvgPicture.asset(
                           'assets/img/admin/trash.svg',
                           width: SizeConfig.image(16),

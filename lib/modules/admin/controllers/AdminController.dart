@@ -9,4 +9,14 @@ class AdminController extends GetxController {
 
   TextEditingController _controllerContent = TextEditingController();
   TextEditingController get controllerContent => _controllerContent;
+
+  GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+
+  GlobalKey<RefreshIndicatorState> get refreshIndicatorKey =>
+      _refreshIndicatorKey;
+
+  void refreshShow() {
+    refreshIndicatorKey.currentState.show();
+  }
 }

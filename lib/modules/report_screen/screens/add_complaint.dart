@@ -13,7 +13,6 @@ import 'package:aplikasi_rw/services/klasifikasi_category_services.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:aplikasi_rw/utils/screen_size.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart' as sidio;
 import 'package:dio_smart_retry/dio_smart_retry.dart';
@@ -469,6 +468,7 @@ class _StepperRwState extends State<StepperRw> {
                                 '${ServerApp.url}/src/report/add_report.php';
                             final sidio.FormData formData =
                                 sidio.FormData.fromMap({
+                                  
                               'image': MultipartFileRecreatable.fromFileSync(
                                 stepperController.imagePath.value,
                                 filename: stepperController.imagePath.value,
