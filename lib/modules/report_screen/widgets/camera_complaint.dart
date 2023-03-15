@@ -4,7 +4,6 @@ import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 //ignore: must_be_immutable
@@ -138,7 +137,7 @@ class _CameraComplaintState extends State<CameraComplaint> {
     try {
       _cameraController = CameraController(
         desc,
-        ResolutionPreset.high,
+        ResolutionPreset.medium,
         imageFormatGroup: ImageFormatGroup.yuv420,
         enableAudio: false,
       );
@@ -162,7 +161,35 @@ class _CameraComplaintState extends State<CameraComplaint> {
     } else {
       return AspectRatio(
         aspectRatio: 1,
-        child: CameraPreview(_cameraController),
+        child: CameraPreview(
+          _cameraController,
+          child: Positioned(
+            bottom: 30,
+            left: MediaQuery.of(context).size.width / 2.8,
+            child: Container(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: SizeConfig.height(40),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      cameraToggle(),
+                      SizedBox(
+                        width: SizeConfig.width(10),
+                      ),
+                      takePictureToogle(),
+                    ],
+                  ),
+                  // SizedBox(
+                  //   height: SizeConfig.height(20),
+                  // ),
+                ],
+              ),
+            ),
+          ),
+        ),
       );
     }
   }
@@ -170,91 +197,8 @@ class _CameraComplaintState extends State<CameraComplaint> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        children: [
-          SizedBox(
-            height: SizeConfig.height(500),
-            child: cameraPreview(),
-          ),
-
-          Container(
-            color: Colors.white,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: SizeConfig.height(20),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    cameraToggle(),
-                    SizedBox(
-                      width: SizeConfig.width(10),
-                    ),
-                    takePictureToogle(),
-                  ],
-                ),
-                SizedBox(
-                  height: SizeConfig.height(20),
-                ),
-              ],
-            ),
-          ),
-
-          // Obx(() => (statusCapture.value == 'true')
-          //     ? Container(
-          //         margin: EdgeInsets.symmetric(horizontal: 16.w),
-          //         child: Row(
-          //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //           children: [
-          //             SizedBox(
-          //               width: 97.w,
-          //               child: TextButton(
-          //                 onPressed: reCaputre,
-          //                 child: Text(
-          //                   'Ulangi',
-          //                   style: TextStyle(
-          //                     color: Colors.white,
-          //                     fontSize: 14.sp,
-          //                   ),
-          //                 ),
-          //                 style: TextButton.styleFrom(
-          //                   backgroundColor: Color(0xff2094F3),
-          //                   shape: RoundedRectangleBorder(
-          //                     borderRadius: BorderRadius.circular(50),
-          //                   ),
-          //                 ),
-          //               ),
-          //             ),
-          //             SizedBox(
-          //               width: 97.w,
-          //               child: TextButton(
-          //                 onPressed: () {
-          //                   if (picture != null) {
-          //                     widget.nextStep(picture.path);
-          //                   }
-          //                 },
-          //                 child: Text(
-          //                   'Lanjutkan',
-          //                   style: TextStyle(
-          //                     color: Colors.white,
-          //                     fontSize: 14.sp,
-          //                   ),
-          //                 ),
-          //                 style: TextButton.styleFrom(
-          //                   backgroundColor: Color(0xff2094F3),
-          //                   shape: RoundedRectangleBorder(
-          //                     borderRadius: BorderRadius.circular(50),
-          //                   ),
-          //                 ),
-          //               ),
-          //             ),
-          //           ],
-          //         ),
-          //       )
-          //     : Spacer())
-        ],
-      ),
+      height: SizeConfig.height(650),
+      child: cameraPreview(),
     );
   }
 }

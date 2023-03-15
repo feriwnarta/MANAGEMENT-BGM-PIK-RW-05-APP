@@ -52,10 +52,9 @@ class ManagementServices {
                 title: item['category_detail'],
                 address: item['address']))
             .toList();
-      } else {
-        return [];
       }
     }
+    return [];
   }
 }
 
@@ -94,10 +93,9 @@ class CordinatorReportServices {
                 title: item['category_detail'],
                 address: item['address']))
             .toList();
-      } else {
-        return [];
       }
     }
+    return [];
   }
 
   static Future<List<CordinatorReportModel>> getReportCordinatorProcess(
@@ -129,10 +127,9 @@ class CordinatorReportServices {
                 title: item['category_detail'],
                 address: item['address']))
             .toList();
-      } else {
-        return [];
       }
     }
+    return [];
   }
 
   static Future<List<CordinatorReportModel>> getReportCordinatorFinish(
@@ -167,9 +164,8 @@ class CordinatorReportServices {
                 title: item['category_detail'],
                 address: item['address']))
             .toList();
-      } else {
-        return [];
       }
     }
+    return [];
   }
 }

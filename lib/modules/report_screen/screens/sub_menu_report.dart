@@ -15,6 +15,7 @@ import 'package:get/get.dart';
 
 enum SubMenu { Request, Complaint }
 
+//ignore: must_be_immutable
 class SubMenuReport extends StatelessWidget {
   String typeStatusPeduliLingkungan;
 

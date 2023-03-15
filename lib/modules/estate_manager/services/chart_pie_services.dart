@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
-import 'package:logger/logger.dart';
 
 import '../../../server-app.dart';
 
@@ -28,7 +27,6 @@ class ChartPieServices {
         '${ServerApp.url}/src/estate_manager/get_pie_chart.php',
         data: jsonEncode(data));
 
-    final logger = Logger();
     if (response.statusCode == 200) {
       var obj = jsonDecode(response.data) as List;
       return obj.map<ChartPieModel>((e) {
@@ -46,5 +44,6 @@ class ChartPieServices {
         );
       }).toList();
     }
+    return [];
   }
 }

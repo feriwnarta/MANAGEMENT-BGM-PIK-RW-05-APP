@@ -191,11 +191,16 @@ class _StepperRwState extends State<StepperRw> {
                               Text(
                                 'Laporan ini bersifat ',
                                 style: TextStyle(
-                                    color: Color(0xffC2C2C2),
-                                    fontSize: (16 / Sizer.slicingText) *
-                                        SizeConfig.textMultiplier),
+                                  color: Color(0xffC2C2C2),
+                                  fontSize: SizeConfig.text(16),
+                                ),
                               ),
-                              Text('${controllerWrite.type.value}')
+                              Text(
+                                '${controllerWrite.type.value}',
+                                style: TextStyle(
+                                  fontSize: SizeConfig.text(16),
+                                ),
+                              )
                             ],
                           ),
                         ],
@@ -249,8 +254,7 @@ class _StepperRwState extends State<StepperRw> {
                                       '${selectLoc.value}',
                                       style: TextStyle(
                                           color: Color(0xff9E9E9E),
-                                          fontSize: (12 / Sizer.slicingText) *
-                                              SizeConfig.textMultiplier),
+                                          fontSize: SizeConfig.text(12)),
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
@@ -263,8 +267,7 @@ class _StepperRwState extends State<StepperRw> {
                             Text(
                               '${nameCategory.value}',
                               style: TextStyle(
-                                fontSize: (16 / Sizer.slicingText) *
-                                    SizeConfig.textMultiplier,
+                                fontSize: SizeConfig.text(16),
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -275,16 +278,14 @@ class _StepperRwState extends State<StepperRw> {
                               children: [
                                 Text('Keluhan',
                                     style: TextStyle(
-                                        fontSize: (14 / Sizer.slicingText) *
-                                            SizeConfig.textMultiplier,
+                                        fontSize: SizeConfig.text(14),
                                         color: Color(0xff616161))),
                                 SizedBox(width: 200.w),
                                 Text(
                                   'Date',
                                   style: TextStyle(
                                     color: Color(0xff616161),
-                                    fontSize: (14 / Sizer.slicingText) *
-                                        SizeConfig.textMultiplier,
+                                    fontSize: SizeConfig.text(14),
                                   ),
                                 ),
                               ],
@@ -319,9 +320,7 @@ class _StepperRwState extends State<StepperRw> {
                                                 '${selectedIndex[index]}',
                                                 style: TextStyle(
                                                   color: Color(0xff9E9E9E),
-                                                  fontSize: (14 /
-                                                          Sizer.slicingText) *
-                                                      SizeConfig.textMultiplier,
+                                                  fontSize: SizeConfig.text(14),
                                                 ),
                                                 overflow: TextOverflow.ellipsis,
                                               ),
@@ -366,11 +365,10 @@ class _StepperRwState extends State<StepperRw> {
                                                               style: TextStyle(
                                                                 color: Color(
                                                                     0xff9E9E9E),
-                                                                fontSize: (14 /
-                                                                        Sizer
-                                                                            .slicingText) *
+                                                                fontSize:
                                                                     SizeConfig
-                                                                        .textMultiplier,
+                                                                        .text(
+                                                                            14),
                                                               ),
                                                               overflow:
                                                                   TextOverflow
@@ -395,8 +393,7 @@ class _StepperRwState extends State<StepperRw> {
                             Text(
                               'Catatan',
                               style: TextStyle(
-                                fontSize: (14 / Sizer.slicingText) *
-                                    SizeConfig.textMultiplier,
+                                fontSize: SizeConfig.text(14),
                               ),
                             ),
                             SizedBox(
@@ -468,7 +465,6 @@ class _StepperRwState extends State<StepperRw> {
                                 '${ServerApp.url}/src/report/add_report.php';
                             final sidio.FormData formData =
                                 sidio.FormData.fromMap({
-                                  
                               'image': MultipartFileRecreatable.fromFileSync(
                                 stepperController.imagePath.value,
                                 filename: stepperController.imagePath.value,
@@ -505,19 +501,6 @@ class _StepperRwState extends State<StepperRw> {
                                 () => CompletedScreen(),
                                 transition: Transition.rightToLeft,
                               );
-                              // EasyLoading.showToast('Laporan terkirim');
-                              // final indexHome =
-                              //     Get.put(IndexScreenHomeController());
-                              // final reportController =
-                              //     Get.put(ReportUserController());
-                              // reportController.refresReport();
-                              // reportController.update();
-                              // indexHome.index.value = 1;
-
-                              // Get
-                              //   ..back()
-                              //   ..back()
-                              //   ..back();
                             }
                           } else {
                             EasyLoading.showError(
@@ -529,8 +512,7 @@ class _StepperRwState extends State<StepperRw> {
                           'Kirim Laporan',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: (16 / Sizer.slicingText) *
-                                SizeConfig.textMultiplier,
+                            fontSize: SizeConfig.text(16),
                           ),
                         ),
                       ),
@@ -581,8 +563,7 @@ class _StepperRwState extends State<StepperRw> {
                                   child: Text(
                                     '${nameCategory.value}',
                                     style: TextStyle(
-                                      fontSize: (19 / Sizer.slicingText) *
-                                          SizeConfig.textMultiplier,
+                                      fontSize: SizeConfig.text(19),
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -605,9 +586,7 @@ class _StepperRwState extends State<StepperRw> {
                                           child: Text(
                                             '${data.name}',
                                             style: TextStyle(
-                                              fontSize:
-                                                  (16 / Sizer.slicingText) *
-                                                      SizeConfig.textMultiplier,
+                                              fontSize: SizeConfig.text(16),
                                               fontWeight: FontWeight.w500,
                                               color: Color(0xff616161),
                                             ),
@@ -618,8 +597,7 @@ class _StepperRwState extends State<StepperRw> {
                                     children: [
                                       CheckboxGroup(
                                         labelStyle: TextStyle(
-                                          fontSize: (14 / Sizer.slicingText) *
-                                              SizeConfig.textMultiplier,
+                                          fontSize: SizeConfig.text(14),
                                           color: Color(0xff757575),
                                         ),
                                         checked: selectedIndex,
@@ -666,7 +644,6 @@ class _StepperRwState extends State<StepperRw> {
                             ),
                             onPressed: () {
                               if (selectedIndex.isEmpty) {
-                                print('asdas');
                                 errorToast(
                                     error:
                                         'silahkan ceklis salah satu masalah');
@@ -679,8 +656,7 @@ class _StepperRwState extends State<StepperRw> {
                               'Selanjutnya',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: (16 / Sizer.slicingText) *
-                                    SizeConfig.textMultiplier,
+                                fontSize: SizeConfig.text(16),
                               ),
                             ),
                           ),
@@ -757,8 +733,7 @@ class _StepperRwState extends State<StepperRw> {
                     '${e.category}',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize:
-                          (10 / Sizer.slicingText) * SizeConfig.textMultiplier,
+                      fontSize: SizeConfig.text(10),
                       fontWeight: FontWeight.w500,
                     ),
                     overflow: TextOverflow.ellipsis,
@@ -905,8 +880,7 @@ class _StepperRwState extends State<StepperRw> {
                               hintText: 'Catatan',
                               hintStyle: TextStyle(
                                   color: Colors.grey,
-                                  fontSize: (14 / Sizer.slicingText) *
-                                      SizeConfig.textMultiplier),
+                                  fontSize: SizeConfig.text(14)),
                             ),
                           ),
                         ),
@@ -918,15 +892,12 @@ class _StepperRwState extends State<StepperRw> {
                             SvgPicture.asset(
                               'assets/img/image-svg/mark-question.svg',
                             ),
-                            SizedBox(
-                                width: (4 / Sizer.slicingWidth) *
-                                    SizeConfig.widthMultiplier),
+                            SizedBox(width: SizeConfig.width(4)),
                             Text(
                               'Perhatikan cara penyampaian laporan yang baik\ndan benar',
                               style: TextStyle(
                                 color: Colors.grey,
-                                fontSize: (12 / Sizer.slicingText) *
-                                    SizeConfig.textMultiplier,
+                                fontSize: SizeConfig.text(12),
                               ),
                             ),
                           ],
@@ -952,15 +923,14 @@ class _StepperRwState extends State<StepperRw> {
                                       height: (20 / Sizer.slicingHeight) *
                                           SizeConfig.heightMultiplier,
                                     ),
-                                    SizedBox(width: 8.w),
+                                    SizedBox(width: SizeConfig.width(8)),
                                     Obx(
                                       () => Text(
                                         (selectDate.value.isEmpty)
                                             ? 'Tanggal kejadian'
                                             : selectDate.value,
                                         style: TextStyle(
-                                          fontSize: (14 / Sizer.slicingText) *
-                                              SizeConfig.textMultiplier,
+                                          fontSize: SizeConfig.text(14),
                                           color: Colors.black,
                                         ),
                                       ),
@@ -976,8 +946,8 @@ class _StepperRwState extends State<StepperRw> {
                                           context,
                                           titleText: '',
                                           cancelText: 'Batal',
-                                          itemTextStyle:
-                                              TextStyle(fontSize: 16.sp),
+                                          itemTextStyle: TextStyle(
+                                              fontSize: SizeConfig.text(16)),
                                           confirmText: 'Oke',
                                           firstDate: DateTime(1960),
                                           dateFormat: 'dd-MMMM-yyyy',
@@ -1033,15 +1003,14 @@ class _StepperRwState extends State<StepperRw> {
                                       height: (20 / Sizer.slicingHeight) *
                                           SizeConfig.heightMultiplier,
                                     ),
-                                    SizedBox(width: 8.w),
+                                    SizedBox(width: SizeConfig.width(8)),
                                     Expanded(
                                       child: Text(
                                         (selectLoc.isEmpty)
                                             ? 'Pilih lokasi kejadian'
                                             : selectLoc.value,
                                         style: TextStyle(
-                                          fontSize: (14 / Sizer.slicingText) *
-                                              SizeConfig.textMultiplier,
+                                          fontSize: SizeConfig.text(14),
                                           color:
                                               (whenLocationEmpty.value.isEmpty)
                                                   ? Colors.black
@@ -1101,8 +1070,7 @@ class _StepperRwState extends State<StepperRw> {
                               ? 'Nama anda bersifat rahasia'
                               : 'Nama dan laporan anda bersifat rahasia'),
                           style: TextStyle(
-                              fontSize: (14 / Sizer.slicingText) *
-                                  SizeConfig.textMultiplier,
+                              fontSize: SizeConfig.text(14),
                               color: Color(0xffE0E0E0)),
                         ),
                       ),
@@ -1128,9 +1096,7 @@ class _StepperRwState extends State<StepperRw> {
                               dense: true,
                               title: Text(
                                 'Anonim',
-                                style: TextStyle(
-                                    fontSize: (14 / Sizer.slicingText) *
-                                        SizeConfig.textMultiplier),
+                                style: TextStyle(fontSize: SizeConfig.text(14)),
                               ),
                               groupValue: _radio.value,
                               value: RadioComplaint.Anonim,
@@ -1154,9 +1120,7 @@ class _StepperRwState extends State<StepperRw> {
                             child: RadioListTile<RadioComplaint>(
                               title: Text(
                                 'Rahasia',
-                                style: TextStyle(
-                                    fontSize: (14 / Sizer.slicingText) *
-                                        SizeConfig.textMultiplier),
+                                style: TextStyle(fontSize: SizeConfig.text(14)),
                               ),
                               groupValue: _radio.value,
                               value: RadioComplaint.Rahasia,
@@ -1236,8 +1200,7 @@ class _StepperRwState extends State<StepperRw> {
                   'Lanjutkan',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize:
-                        (14 / Sizer.slicingText) * SizeConfig.textMultiplier,
+                    fontSize: SizeConfig.text(14),
                   ),
                 ),
               ),
@@ -1267,9 +1230,7 @@ class _StepperRwState extends State<StepperRw> {
           text,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-              fontSize: (16 / Sizer.slicingText) * SizeConfig.textMultiplier,
-              color: colorText),
+          style: TextStyle(fontSize: SizeConfig.text(16), color: colorText),
         ),
       ],
     );
@@ -1443,11 +1404,9 @@ class CompletedScreen extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      final indexHome = Get.put(IndexScreenHomeController());
                       final reportController = Get.put(ReportUserController());
                       reportController.refresReport();
                       reportController.update();
-                      indexHome.index.value = 1;
 
                       Get.back();
                       Get.back();

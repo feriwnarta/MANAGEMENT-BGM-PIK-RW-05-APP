@@ -9,16 +9,16 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-class BuatInformasiWargaDetail extends StatelessWidget {
-  BuatInformasiWargaDetail({Key key}) : super(key: key);
+class BuatInformasiUmumDetail extends StatelessWidget {
+  BuatInformasiUmumDetail({Key key}) : super(key: key);
 
-  final adminController = Get.find<AdminController>();
+  final adminController = Get.put(AdminController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tulis Informasi Warga'),
+        title: Text('Tulis Informasi Umum'),
         systemOverlayStyle: Theme.of(context).appBarTheme.systemOverlayStyle,
       ),
       body: SafeArea(
@@ -54,7 +54,7 @@ class BuatInformasiWargaDetail extends StatelessWidget {
                       onPressed: () async {
                         EasyLoading.show(status: 'megirim');
 
-                        var result = await AdminServices.save(
+                        var result = await AdminServices.saveInformasiUmum(
                             urlImage: adminController.imagePath.value,
                             content: adminController.controllerContent.text,
                             title: adminController.controllerTitle.text);
@@ -67,9 +67,11 @@ class BuatInformasiWargaDetail extends StatelessWidget {
                               ..back()
                               ..back();
 
-                            adminController.refreshShow();
+                            adminController.refreshShow2();
 
                             adminController.reset();
+
+                            // Get.delete<AdminController>();
                           } else {
                             EasyLoading.showError('ada sesuatu yang salah');
                           }

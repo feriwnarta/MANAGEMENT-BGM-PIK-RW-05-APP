@@ -8,7 +8,8 @@ class ContractorReportServices {
       String idContractor, int start, int limit) async {
     String url = '${ServerApp.url}src/contractor/report_pull/report_pull.php';
     var data = {'id_contractor': idContractor, 'start': start, 'limit': limit};
-    http.Response response = await http.post(Uri.parse(url), body: jsonEncode(data));
+    http.Response response =
+        await http.post(Uri.parse(url), body: jsonEncode(data));
     if (response.statusCode >= 200 && response.statusCode <= 299) {
       if (response.body.isNotEmpty) {
         var message = jsonDecode(response.body) as List;
@@ -27,6 +28,7 @@ class ContractorReportServices {
         return [];
       }
     }
+    return [];
   }
 
   static Future<List<CordinatorReportModel>> getReportContractorFinish(
@@ -34,7 +36,8 @@ class ContractorReportServices {
     String url =
         '${ServerApp.url}src/contractor/report_pull/report_pull_finish.php';
     var data = {'id_contractor': idCordinator, 'start': start, 'limit': limit};
-    http.Response response = await http.post(Uri.parse(url), body: jsonEncode(data));
+    http.Response response =
+        await http.post(Uri.parse(url), body: jsonEncode(data));
     if (response.statusCode >= 200 && response.statusCode <= 299) {
       if (response.body.isNotEmpty) {
         var message = jsonDecode(response.body) as List;
@@ -49,10 +52,9 @@ class ContractorReportServices {
                 title: item['category_detail'],
                 address: item['address']))
             .toList();
-      } else {
-        return [];
       }
     }
+    return [];
   }
 
   static Future<List<CordinatorReportModel>> getReportContractorProcess(
@@ -60,7 +62,8 @@ class ContractorReportServices {
     String url =
         '${ServerApp.url}src/contractor/report_pull/report_pull_process.php';
     var data = {'id_contractor': idCordinator, 'start': start, 'limit': limit};
-    http.Response response = await http.post(Uri.parse(url), body: jsonEncode(data));
+    http.Response response =
+        await http.post(Uri.parse(url), body: jsonEncode(data));
     if (response.statusCode >= 200 && response.statusCode <= 299) {
       if (response.body.isNotEmpty) {
         var message = jsonDecode(response.body) as List;
@@ -75,9 +78,8 @@ class ContractorReportServices {
                 title: item['category_detail'],
                 address: item['address']))
             .toList();
-      } else {
-        return [];
       }
     }
+    return [];
   }
 }

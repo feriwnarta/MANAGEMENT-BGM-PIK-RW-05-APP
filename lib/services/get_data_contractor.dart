@@ -23,5 +23,6 @@ class GetDataContractor {
           job: job);
       return model;
     }
+    return ContractorModel();
   }
 }

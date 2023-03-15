@@ -10,17 +10,17 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
 
-class EditInformasiWarga extends StatefulWidget {
-  EditInformasiWarga({Key key, this.id, this.url, this.title, this.content})
+class EditInformasiUmum extends StatefulWidget {
+  EditInformasiUmum({Key key, this.id, this.url, this.title, this.content})
       : super(key: key);
 
   final String id, url, title, content;
 
   @override
-  State<EditInformasiWarga> createState() => _EditInformasiWargaState();
+  State<EditInformasiUmum> createState() => _EditInformasiUmumState();
 }
 
-class _EditInformasiWargaState extends State<EditInformasiWarga> {
+class _EditInformasiUmumState extends State<EditInformasiUmum> {
   final _formKeyTitle = GlobalKey<FormState>();
   final _formKeyContent = GlobalKey<FormState>();
 
@@ -204,10 +204,10 @@ class _EditInformasiWargaState extends State<EditInformasiWarga> {
                           _formKeyTitle.currentState.validate()) {
                         EasyLoading.show(status: 'loading');
 
-                        var result = await AdminServices.updateNews(
+                        var result = await AdminServices.updateInformasiUmum(
                             caption: controllerTitle.text,
                             content: controllerContent.text,
-                            idNews: widget.id,
+                            idInformasiUmum: widget.id,
                             isNewImage:
                                 (imagePath.value.isNotEmpty) ? true : false,
                             image: (imagePath.value.isEmpty)
@@ -217,7 +217,7 @@ class _EditInformasiWargaState extends State<EditInformasiWarga> {
                         if (result.isCaseInsensitiveContainsAny('OK')) {
                           EasyLoading.showSuccess('berhasil update');
                           Get.back();
-                          adminController.refreshShow();
+                          adminController.refreshShow2();
                         } else {
                           EasyLoading.showError('gagal update');
                         }

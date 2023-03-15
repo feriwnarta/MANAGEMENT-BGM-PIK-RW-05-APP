@@ -8,7 +8,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -520,7 +519,8 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
       );
 
   Future<void> getImage(ImageSource source) async {
-    final pickedFile = await _picker.getImage(source: source, imageQuality: 50);
+    final pickedFile =
+        await _picker.pickImage(source: source, imageQuality: 50);
 
     if (pickedFile != null) {
       String message = await UserChangeServices.changeFoto(

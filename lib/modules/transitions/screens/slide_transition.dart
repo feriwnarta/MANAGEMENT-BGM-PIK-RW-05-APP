@@ -28,7 +28,9 @@ class SlideTranstionRoute extends PageRouteBuilder {
       case AxisDirection.right:
         return Offset(-1, 0);
       case AxisDirection.left:
-        return Offset(1, 0);   
-    }    
+        return Offset(1, 0);
+      default:
+        return Offset(1, 0);
+    }
   }
 }

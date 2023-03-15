@@ -16,7 +16,23 @@ class AdminController extends GetxController {
   GlobalKey<RefreshIndicatorState> get refreshIndicatorKey =>
       _refreshIndicatorKey;
 
+  GlobalKey<RefreshIndicatorState> _refreshIndicatorKey2 =
+      GlobalKey<RefreshIndicatorState>();
+
+  GlobalKey<RefreshIndicatorState> get refreshIndicatorKey2 =>
+      _refreshIndicatorKey2;
+
+  void reset() {
+    imagePath = ''.obs;
+    _controllerContent = TextEditingController();
+    _controllerTitle = TextEditingController();
+  }
+
   void refreshShow() {
     refreshIndicatorKey.currentState.show();
+  }
+
+  void refreshShow2() {
+    refreshIndicatorKey2.currentState.show();
   }
 }

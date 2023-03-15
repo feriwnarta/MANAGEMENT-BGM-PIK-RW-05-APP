@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:aplikasi_rw/modules/manager_contractor/models/manager_contractor_model.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
-import 'package:logger/logger.dart';
 import '../../../server-app.dart';
 import '../../../utils/UserSecureStorage.dart';
 

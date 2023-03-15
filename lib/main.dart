@@ -9,7 +9,6 @@ import 'package:aplikasi_rw/modules/admin/screens/admin_screen.dart';
 import 'package:aplikasi_rw/modules/contractor/screens/cordinator_home_folder_screen.dart';
 import 'package:aplikasi_rw/modules/cordinator/screens/home_folder_cordinator.dart';
 import 'package:aplikasi_rw/modules/estate_manager/screens/menu_folder_screens_em.dart';
-import 'package:aplikasi_rw/modules/home/screens/citizen_screen.dart';
 import 'package:aplikasi_rw/modules/home/screens/home_folder_screen.dart';
 import 'package:aplikasi_rw/modules/manager_contractor/screens/home_folder_manager_contractor.dart';
 import 'package:aplikasi_rw/modules/pengurus/screens/pengurus_screen.dart';

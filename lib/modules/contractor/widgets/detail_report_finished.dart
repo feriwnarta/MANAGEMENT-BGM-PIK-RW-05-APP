@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:aplikasi_rw/modules/contractor/data/detail_laporan_selesai_model.dart';
 import 'package:aplikasi_rw/modules/contractor/services/detail_laporan_selesai_service.dart';
 import 'package:aplikasi_rw/server-app.dart';

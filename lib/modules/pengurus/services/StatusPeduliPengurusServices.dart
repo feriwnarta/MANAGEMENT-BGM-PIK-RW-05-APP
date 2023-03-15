@@ -109,6 +109,7 @@ class StatusPeduliPengurusServices {
       EasyLoading.showError(
           'Ada kesalahan saat mengambil laporan terbaru, silahakan hubungi admin');
     }
+    return [];
   }
 
   static Future<Map<String, dynamic>> getDataReportCard(

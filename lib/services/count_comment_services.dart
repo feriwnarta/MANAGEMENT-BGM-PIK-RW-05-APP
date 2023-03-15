@@ -17,5 +17,6 @@ class CountCommentServices {
         return message;
       }
     }
+    return '';
   }
 }

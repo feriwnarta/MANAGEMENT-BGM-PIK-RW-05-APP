@@ -33,6 +33,7 @@ class ProcessReportServices {
     } else {
       print('error insert proses');
     }
+    return '';
   }
 
   static Future<Map<String, dynamic>> checkExistProcess(String idReport) async {
@@ -49,6 +50,7 @@ class ProcessReportServices {
     } else {
       print('error chek xsist');
     }
+    return {};
   }
 
   static Future<Map<String, dynamic>> insertProcessWork(
@@ -139,6 +141,7 @@ class ProcessReportServices {
     } else {
       print('error insert proses');
     }
+    return FinishWorkCordinator();
   }
 
   static Future<String> completeWorks(

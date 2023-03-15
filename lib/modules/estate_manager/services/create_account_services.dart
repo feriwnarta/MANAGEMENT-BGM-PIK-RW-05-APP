@@ -398,6 +398,7 @@ class CreateAccountServices {
           response.map<Map<String, dynamic>>((e) => e).toList();
       return data;
     }
+    return [];
   }
 
   static Future<List<Map<String, dynamic>>> getKepalaBagian() async {
@@ -421,6 +422,7 @@ class CreateAccountServices {
 
       return dataReturn;
     }
+    return [];
   }
 
   static Future<List<Map<String, dynamic>>> getKepalaKontraktor() async {
@@ -445,5 +447,6 @@ class CreateAccountServices {
 
       return dataReturn;
     }
+    return [];
   }
 }

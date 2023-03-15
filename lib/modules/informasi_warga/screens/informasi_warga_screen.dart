@@ -3,7 +3,6 @@ import 'package:aplikasi_rw/modules/informasi_warga/screens/read_informasi_scree
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../server-app.dart';
 import '../../home/models/card_news.dart';
@@ -50,13 +49,13 @@ class InformasiWargaScreen extends StatelessWidget {
                                   children: [
                                     Container(
                                       height: SizeConfig.image(188),
+                                      width: double.infinity,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Image(
-                                        fit: BoxFit.cover,
-                                        image: CachedNetworkImageProvider(
-                                          '${ServerApp.url}${snapshot.data[index].url}',
+                                        image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: CachedNetworkImageProvider(
+                                              '${ServerApp.url}${snapshot.data[index].url}'),
                                         ),
                                       ),
                                     ),

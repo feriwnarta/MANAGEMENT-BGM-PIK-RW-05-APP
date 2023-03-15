@@ -42,6 +42,7 @@ class NotificationServices {
     } on Exception catch (e) {
       print(e);
     }
+    return [];
   }
 
   static Future<String> countNotif() async {
@@ -67,6 +68,6 @@ class NotificationServices {
       print(e);
     }
 
-    // return response.data['count'];
+    return '';
   }
 }

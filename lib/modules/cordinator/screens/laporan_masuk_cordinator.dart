@@ -8,8 +8,6 @@ import 'package:aplikasi_rw/modules/cordinator/widgets/card_cordinator.dart';
 import 'package:aplikasi_rw/services/cordinator/process_report_services.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:aplikasi_rw/utils/string_utils.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +17,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../controller/user_login_controller.dart';
 import '../../../../server-app.dart';
 
+//ignore: must_be_immutable
 class LaporanMasukCordinator extends StatefulWidget {
   LaporanMasukCordinator({Key key, this.name, this.status}) : super(key: key);
 

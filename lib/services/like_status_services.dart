@@ -14,6 +14,7 @@ class LikeStatusService {
       String message = json.decode(response.data);
       return message;
     }
+    return '';
   }
 
   static Future<String> addLike({String idUser, String idStatus}) async {
@@ -26,6 +27,7 @@ class LikeStatusService {
       String message = json.decode(response.data);
       return message;
     }
+    return '';
   }
 
   static Future<int> isLike({String idUser, String idStatus}) async {
@@ -38,6 +40,7 @@ class LikeStatusService {
       int message = json.decode(response.data);
       return message;
     }
+    return 0;
   }
 
   static Future<String> deleteLike({String idUser, String idStatus}) async {
@@ -50,5 +53,6 @@ class LikeStatusService {
       String message = json.decode(response.data);
       return message;
     }
+    return '';
   }
 }

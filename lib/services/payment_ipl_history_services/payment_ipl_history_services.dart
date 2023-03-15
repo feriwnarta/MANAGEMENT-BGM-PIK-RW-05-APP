@@ -40,5 +40,6 @@ class HistoryPaymentIplServices {
       final logger = Logger();
       logger.e('server error');
     }
+    return [];
   }
 }

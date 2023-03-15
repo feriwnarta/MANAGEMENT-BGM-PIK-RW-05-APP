@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:aplikasi_rw/modules/home/controller/notification_controller.dart';
 import 'package:aplikasi_rw/modules/home/screens/notification_screen.dart';
 import 'package:aplikasi_rw/modules/theme/sizer.dart';
-import 'package:aplikasi_rw/utils/screen_size.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';

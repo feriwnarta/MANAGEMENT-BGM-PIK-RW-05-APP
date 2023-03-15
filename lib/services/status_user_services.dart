@@ -46,6 +46,7 @@ class StatusUserServices extends StatusUserModel {
 
       return request.data;
     }
+    return '';
   }
 
   static Future<List<StatusUserModel>> getDataApi(

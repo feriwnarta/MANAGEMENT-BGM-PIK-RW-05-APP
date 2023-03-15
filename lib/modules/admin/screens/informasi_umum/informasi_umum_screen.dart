@@ -1,7 +1,7 @@
 import 'package:aplikasi_rw/modules/admin/controllers/AdminController.dart';
 import 'package:aplikasi_rw/modules/admin/models/InformasiModel.dart';
-import 'package:aplikasi_rw/modules/admin/screens/informasi_warga/buat_informasi_warga_screen_title.dart';
-import 'package:aplikasi_rw/modules/admin/screens/informasi_warga/edit_informasi_warga.dart';
+import 'package:aplikasi_rw/modules/admin/screens/informasi_umum/buat_informasi_umum_screen_title.dart';
+import 'package:aplikasi_rw/modules/admin/screens/informasi_umum/edit_informasi_umum.dart';
 import 'package:aplikasi_rw/modules/admin/services/admin_services.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
@@ -13,14 +13,14 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-class InformasiWarga extends StatefulWidget {
-  InformasiWarga({Key key}) : super(key: key);
+class InformasiUmum extends StatefulWidget {
+  InformasiUmum({Key key}) : super(key: key);
 
   @override
-  State<InformasiWarga> createState() => _InformasiWargaState();
+  State<InformasiUmum> createState() => _InformasiWargaState();
 }
 
-class _InformasiWargaState extends State<InformasiWarga> {
+class _InformasiWargaState extends State<InformasiUmum> {
   Future future;
 
   final AdminController controller = Get.put(AdminController());
@@ -28,21 +28,21 @@ class _InformasiWargaState extends State<InformasiWarga> {
   @override
   void initState() {
     super.initState();
-    future = AdminServices.getInformasiWarga();
+    future = AdminServices.getInformasiUmum();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tulis Informasi Warga'),
+        title: Text('Tulis Informasi Umum'),
         systemOverlayStyle: Theme.of(context).appBarTheme.systemOverlayStyle,
       ),
       body: RefreshIndicator(
-        key: controller.refreshIndicatorKey,
+        key: controller.refreshIndicatorKey2,
         onRefresh: () async {
           setState(() {
-            future = AdminServices.getInformasiWarga();
+            future = AdminServices.getInformasiUmum();
           });
         },
         child: SingleChildScrollView(
@@ -52,7 +52,7 @@ class _InformasiWargaState extends State<InformasiWarga> {
               vertical: SizeConfig.height(16),
               horizontal: SizeConfig.width(16),
             ),
-            child: FutureBuilder<List<InformasiModel>>(
+            child: FutureBuilder<List<InformasiUmumModel>>(
               future: future,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
@@ -75,7 +75,7 @@ class _InformasiWargaState extends State<InformasiWarga> {
                                   content: '${informasiModel.content}',
                                   title: '${informasiModel.caption}',
                                   refreshIndicatorKey:
-                                      controller.refreshIndicatorKey,
+                                      controller.refreshIndicatorKey2,
                                 ))
                             .toList(),
                       )
@@ -91,7 +91,7 @@ class _InformasiWargaState extends State<InformasiWarga> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.to(() => BuatInformasiWarga());
+          Get.to(() => BuatInformasiUmum());
         },
         child: Image.asset('assets/img/admin/Group 127.png'),
       ),
@@ -117,7 +117,7 @@ class CardInformasi extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => Get.to(
-        ViewImage(urlImage: '${ServerApp.url}/$url'),
+        ViewImage(urlImage: '${ServerApp.url}/${url}'),
         transition: Transition.cupertino,
       ),
       child: Column(
@@ -151,8 +151,8 @@ class CardInformasi extends StatelessWidget {
                         child: ElevatedButton.icon(
                           onPressed: () {
                             Get.to(
-                              EditInformasiWarga(
-                                  id: '$id',
+                              EditInformasiUmum(
+                                  id: id,
                                   url: url,
                                   content: content,
                                   title: title),
@@ -192,7 +192,8 @@ class CardInformasi extends StatelessWidget {
                           onPressed: () async {
                             EasyLoading.show(status: 'menghapus');
 
-                            var result = await AdminServices.deleteNews(id: id);
+                            var result =
+                                await AdminServices.deleteInformasiUmum(id: id);
 
                             if (result != null || result.isNotEmpty) {
                               EasyLoading.showSuccess('berhasil menghapus');

@@ -1,3 +1,4 @@
+import 'package:aplikasi_rw/modules/admin/screens/informasi_umum/informasi_umum_screen.dart';
 import 'package:aplikasi_rw/modules/admin/screens/informasi_warga/informasi_warga_screen.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/material.dart';
@@ -77,7 +78,9 @@ class TulisInformasiScreen extends StatelessWidget {
                   height: SizeConfig.height(16),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(InformasiUmum(), transition: Transition.cupertino);
+                  },
                   child: Container(
                     padding: EdgeInsets.symmetric(
                         horizontal: SizeConfig.width(6),

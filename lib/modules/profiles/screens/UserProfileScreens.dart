@@ -3,7 +3,6 @@ import 'package:aplikasi_rw/modules/authentication/controllers/access_controller
 import 'package:aplikasi_rw/modules/profiles/screens/change_data_user.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/statistik_peduli_screens.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

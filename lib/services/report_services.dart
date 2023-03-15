@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:aplikasi_rw/model/ReportModel.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
@@ -50,6 +48,8 @@ class ReportServices extends ReportModel {
     } on Exception {
       print('error decode');
     }
+
+    return [];
   }
 
   static Future<http.MultipartRequest> sendDataReport(
@@ -124,5 +124,6 @@ class ReportServices extends ReportModel {
               dataKlasifikasi: item['category_detail']))
           .toList();
     }
+    return [];
   }
 }

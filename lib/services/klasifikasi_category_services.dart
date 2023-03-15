@@ -1,5 +1,4 @@
 import 'package:dio_smart_retry/dio_smart_retry.dart';
-import 'package:logger/logger.dart';
 import '../server-app.dart';
 import 'dart:convert';
 import 'package:dio/dio.dart';

@@ -6,7 +6,6 @@ import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../home/widgets/menu.dart';
 
 class MenuFolderCordinator extends StatefulWidget {

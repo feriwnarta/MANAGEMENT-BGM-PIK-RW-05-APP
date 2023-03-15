@@ -1,4 +1,3 @@
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart';
 

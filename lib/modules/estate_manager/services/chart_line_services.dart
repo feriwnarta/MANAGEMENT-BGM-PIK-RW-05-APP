@@ -45,6 +45,7 @@ class ChartLineServices {
         return model;
       }).toList();
     }
+    return [];
   }
 
   static Future<Map<String, dynamic>> updateChart(
@@ -66,5 +67,7 @@ class ChartLineServices {
       var result = jsonDecode(response.data);
       return result;
     }
+
+    return {};
   }
 }

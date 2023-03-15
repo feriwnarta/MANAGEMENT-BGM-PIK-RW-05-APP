@@ -32,6 +32,8 @@ class ContractorProcessComplaint {
     } else {
       print('error insert proses');
     }
+
+    return '';
   }
 
   static Future<Map<String, dynamic>> checkExistProcess(String idReport) async {
@@ -48,6 +50,7 @@ class ContractorProcessComplaint {
     } else {
       print('error chek xsist');
     }
+    return {};
   }
 
   static Future<Map<String, dynamic>> processComplaint(
@@ -135,6 +138,8 @@ class ContractorProcessComplaint {
     } else {
       print('error insert proses');
     }
+
+    return FinishWorkContractor();
   }
 
   static Future<String> finishComplaint(

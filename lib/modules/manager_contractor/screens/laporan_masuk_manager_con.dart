@@ -7,17 +7,17 @@ import 'package:aplikasi_rw/modules/manager_contractor/controller/manager_contro
 import 'package:aplikasi_rw/modules/manager_contractor/widget/card_manager_con.dart';
 import 'package:aplikasi_rw/services/cordinator/process_report_services.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/services.dart';
+
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:url_launcher/url_launcher.dart';
+
 import '../../../../controller/user_login_controller.dart';
 import '../../../../server-app.dart';
 
+//ignore: must_be_immutable
 class LaporanMasukManagerCon extends StatefulWidget {
   LaporanMasukManagerCon({Key key, this.name, this.status}) : super(key: key);
 
@@ -251,9 +251,7 @@ class CardListReportManagerCon extends StatelessWidget {
                       Icons.phone,
                       size: SizeConfig.height(20),
                     ),
-                    onTap: () async {
-                      
-                    },
+                    onTap: () async {},
                   ),
                 )
                 .toList(),

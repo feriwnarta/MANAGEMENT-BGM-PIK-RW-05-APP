@@ -1,5 +1,4 @@
 import 'package:aplikasi_rw/utils/size_config.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +8,7 @@ import 'package:get/get.dart';
 import '../../../utils/view_image.dart';
 import '../../contractor/screens/complaint/process_report.dart';
 
+//ignore: must_be_immutable
 class CardCordinator extends StatefulWidget {
   CardCordinator({
     Key key,

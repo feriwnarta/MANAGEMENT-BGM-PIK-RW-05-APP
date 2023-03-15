@@ -1,8 +1,6 @@
 import 'package:aplikasi_rw/modules/contractor/screens/complaint/laporan_selesai.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'complaint/laporan_diproses.dart';

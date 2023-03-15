@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:aplikasi_rw/model/user_location.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocoder/geocoder.dart';
@@ -66,6 +67,8 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
                 'Pilih lokasi kejadian',
                 style: Theme.of(context).appBarTheme.titleTextStyle,
               ),
+              systemOverlayStyle:
+                  Theme.of(context).appBarTheme.systemOverlayStyle,
             ),
             body: (snapshot.hasData)
                 ? Stack(
@@ -195,7 +198,7 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
                               label: Text(
                                 'Lokasi terkini',
                                 style: TextStyle(
-                                  fontSize: 10.sp,
+                                  fontSize: SizeConfig.text(10),
                                   color: Colors.white,
                                 ),
                               ))),
@@ -203,15 +206,17 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
                         () => SlidingUpPanel(
                           color: Colors.transparent,
                           boxShadow: null,
-                          minHeight: 170.h,
+                          minHeight: SizeConfig.height(170),
                           panel: Container(
                             child: SingleChildScrollView(
                               physics: NeverScrollableScrollPhysics(),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 10.w),
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                      right: SizeConfig.width(26),
+                                    ),
                                     child: TextButton.icon(
                                       onPressed: () {
                                         _goToUserCurrentLocation(
@@ -221,10 +226,14 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
                                       icon: Icon(
                                         Icons.location_on,
                                         color: Colors.white,
+                                        size: SizeConfig.height(16),
                                       ),
                                       label: Text(
                                         'Lokasi terkini',
-                                        style: TextStyle(color: Colors.white),
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: SizeConfig.text(10),
+                                        ),
                                       ),
                                       style: TextButton.styleFrom(
                                         backgroundColor: Colors.blue,
@@ -239,10 +248,10 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
                                     color: Colors.white,
                                     child: Column(
                                       children: [
-                                        SizedBox(height: 16.h),
+                                        SizedBox(height: SizeConfig.height(16)),
                                         Container(
-                                          width: 40.w,
-                                          height: 4.h,
+                                          width: SizeConfig.width(40),
+                                          height: SizeConfig.height(4),
                                           decoration: BoxDecoration(
                                             color: Color(0xffE0E0E0),
                                             borderRadius:
@@ -250,7 +259,7 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
                                           ),
                                         ),
                                         SizedBox(
-                                          height: 16.h,
+                                          height: SizeConfig.height(16),
                                         ),
                                         GestureDetector(
                                           onTap: () {
@@ -263,21 +272,24 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
                                           child: Container(
                                             width: double.infinity,
                                             margin: EdgeInsets.symmetric(
-                                                horizontal: 16.w),
+                                                horizontal:
+                                                    SizeConfig.width(16)),
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
                                                 SvgPicture.asset(
                                                     'assets/img/image-svg/location-maps.svg'),
-                                                SizedBox(width: 4.w),
+                                                SizedBox(
+                                                    width: SizeConfig.width(4)),
                                                 Expanded(
                                                     child: Text(
                                                   '${jalan.value}',
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: TextStyle(
-                                                      fontSize: 12.sp,
+                                                      fontSize:
+                                                          SizeConfig.text(12),
                                                       color: Color(0xff2094F3)),
                                                 ))
                                               ],
@@ -285,24 +297,25 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
                                           ),
                                         ),
                                         SizedBox(
-                                          height: 11.h,
+                                          height: SizeConfig.height(11),
                                         ),
                                         Container(
                                           color: Color(0xffF5F5F5),
                                           width: double.infinity,
                                           padding: EdgeInsets.only(
-                                              top: 4.h, left: 48.w),
-                                          height: 24.h,
+                                              top: SizeConfig.height(4),
+                                              left: SizeConfig.width(38)),
+                                          height: SizeConfig.height(24),
                                           child: Text(
                                             'Tempat terdekat',
                                             style: TextStyle(
-                                                fontSize: 12.sp,
+                                                fontSize: SizeConfig.text(12),
                                                 color: Color(0xff9E9E9E)),
                                           ),
                                         ),
                                         Container(
                                           color: Colors.white,
-                                          height: 365.h,
+                                          height: SizeConfig.height(365),
                                           child: SingleChildScrollView(
                                             child: ListView.builder(
                                               physics:
@@ -313,11 +326,13 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
                                                   Container(
                                                 width: double.infinity,
                                                 margin: EdgeInsets.symmetric(
-                                                    horizontal: 16.w),
+                                                    horizontal:
+                                                        SizeConfig.width(16)),
                                                 child: Column(
                                                   children: [
                                                     SizedBox(
-                                                      height: 8,
+                                                      height:
+                                                          SizeConfig.height(8),
                                                     ),
                                                     GestureDetector(
                                                       child: Row(
@@ -328,12 +343,17 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
                                                           SvgPicture.asset(
                                                             'assets/img/image-svg/unselected-maps.svg',
                                                           ),
-                                                          SizedBox(width: 4.w),
+                                                          SizedBox(
+                                                              width: SizeConfig
+                                                                  .width(4)),
                                                           Expanded(
                                                               child: Text(
                                                             '${nearbyPlaces[index].name} ',
                                                             style: TextStyle(
-                                                                fontSize: 12.sp,
+                                                                fontSize:
+                                                                    SizeConfig
+                                                                        .text(
+                                                                            12),
                                                                 color: Color(
                                                                     0xff9E9E9E)),
                                                           ))
@@ -365,16 +385,8 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
                     ],
                   )
                 : Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator.adaptive(),
                   ),
-            // floatingActionButton: FloatingActionButton.extended(
-            //   onPressed: () {
-            //     _goToUserCurrentLocation(
-            //         snapshot.data.latitude, snapshot.data.longitude);
-            //   },
-            //   label: Text('Lokasi terkini'),
-            //   icon: Icon(Icons.location_on_sharp),
-            // ),
           );
         });
   }
@@ -423,6 +435,7 @@ class NewGoogleMapsState extends State<NewGoogleMaps> {
 
       return <double>[lat, lng];
     }
+    return [];
   }
 
   Future<void> _goToUserCurrentLocation(

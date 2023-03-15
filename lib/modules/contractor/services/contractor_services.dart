@@ -46,10 +46,9 @@ class ContractorServices {
               ),
             )
             .toList();
-      } else {
-        return [];
       }
     }
+    return [];
   }
 
   static Future<List<ContractorModel>> getComplaintContractorProcess(
@@ -87,10 +86,9 @@ class ContractorServices {
               ),
             )
             .toList();
-      } else {
-        return [];
       }
     }
+    return [];
   }
 
   static Future<List<ContractorModel>> getComplaintContractorFinish(
@@ -129,9 +127,8 @@ class ContractorServices {
               ),
             )
             .toList();
-      } else {
-        return [];
       }
     }
+    return [];
   }
 }

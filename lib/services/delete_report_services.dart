@@ -34,5 +34,6 @@ class DeleteReportServices {
     } on HttpException {
       Get.snackbar('Message', 'Error On Server, Please Contact Administrator');
     }
+    return '';
   }
 }
