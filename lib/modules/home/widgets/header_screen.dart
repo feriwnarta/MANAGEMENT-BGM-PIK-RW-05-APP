@@ -63,7 +63,8 @@ class HeaderScreen extends StatelessWidget {
                   width: (48 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
                   child: CircleAvatar(
                     backgroundImage: CachedNetworkImageProvider(
-                        '${ServerApp.url}${userLoginController.urlProfile.value}'),
+                      '${ServerApp.url}${userLoginController.urlProfile.value}',
+                    ),
                   ),
                 ),
               ),

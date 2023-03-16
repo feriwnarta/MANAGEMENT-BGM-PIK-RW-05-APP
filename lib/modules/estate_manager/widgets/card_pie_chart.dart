@@ -1,7 +1,6 @@
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../contractor/screens/home_screen_cordinator.dart';
@@ -94,9 +93,6 @@ class _CardPieChartState extends State<CardPieChart> {
                           yValueMapper: (ChartData data, _) => data.point,
                           pointColorMapper: (chart, index) {
                             for (int i = 0; i < widget.dataPie.length; i++) {
-                              final logger = Logger();
-                              logger.i(widget.dataPie[i]['color']);
-
                               if (chart.label
                                   .contains(widget.dataPie[i]['unit'])) {
                                 return Color(

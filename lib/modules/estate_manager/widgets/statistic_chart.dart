@@ -75,10 +75,10 @@ class _CardLineState extends State<CardLine> {
         SizedBox(
           height: SizeConfig.height(16),
         ),
-        buttonSearch(),
-        SizedBox(
-          height: SizeConfig.height(16),
-        ),
+        // buttonSearch(),
+        // SizedBox(
+        //   height: SizeConfig.height(16),
+        // ),
         FutureBuilder<List<LineChartModel>>(
           future: future,
           builder: (context, snapshot) =>
@@ -88,9 +88,8 @@ class _CardLineState extends State<CardLine> {
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: snapshot.data.length,
                       itemBuilder: (context, index) => Container(
-                        width: SizeConfig.width(328),
                         margin: EdgeInsets.only(
-                          bottom: SizeConfig.height(34),
+                          bottom: SizeConfig.height(24),
                         ),
                         child: CardLineChart(
                           index: index,
@@ -116,10 +115,15 @@ class _CardLineState extends State<CardLine> {
                       itemCount: snapshot.data.length,
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) => CardPieChart(
-                        title: snapshot.data[index].title,
-                        total: snapshot.data[index].total,
-                        dataPie: snapshot.data[index].dataPie,
+                      itemBuilder: (context, index) => Container(
+                        margin: EdgeInsets.only(
+                          bottom: SizeConfig.height(24),
+                        ),
+                        child: CardPieChart(
+                          title: snapshot.data[index].title,
+                          total: snapshot.data[index].total,
+                          dataPie: snapshot.data[index].dataPie,
+                        ),
                       ),
                     )
                   : SizedBox(),

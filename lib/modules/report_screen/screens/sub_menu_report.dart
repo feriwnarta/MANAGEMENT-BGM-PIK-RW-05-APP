@@ -91,14 +91,13 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
             : Container(
                 margin: EdgeInsets.symmetric(
                   horizontal: SizeConfig.width(16),
-                  vertical: SizeConfig.height(16),
+                ).copyWith(
+                  top: SizeConfig.height(16),
+                  bottom: SizeConfig.height(32),
                 ),
                 child: Text(
                   'Laporan masuk dan belum mendapat penanganan segera terima dan lakukan penanganan.',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      .copyWith(color: Color(0xff616161)),
+                  style: TextStyle(fontSize: SizeConfig.text(16)),
                   maxLines: 5,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -248,7 +247,7 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                 height: SizeConfig.height(360),
               )
             : SizedBox(
-                height: SizeConfig.height(248),
+                height: SizeConfig.height(320),
               ),
         SizedBox(
           width: (328 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,

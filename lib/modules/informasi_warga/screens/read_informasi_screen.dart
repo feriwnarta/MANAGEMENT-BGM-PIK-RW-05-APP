@@ -1,4 +1,7 @@
+import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
+import 'package:aplikasi_rw/utils/view_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,12 +27,49 @@ class ReadInformation extends StatelessWidget {
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: SizeConfig.width(16)),
+            padding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.width(16),
+              vertical: SizeConfig.height(16),
+            ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Html(
-                  data: argumentData[0],
-                )
+                InkWell(
+                  onTap: () => Get.to(
+                    ViewImage(
+                      urlImage: '${ServerApp.url}${argumentData[2]}',
+                    ),
+                  ),
+                  child: Container(
+                    height: SizeConfig.image(188),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: CachedNetworkImageProvider(
+                            '${ServerApp.url}${argumentData[2]}'),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: SizeConfig.height(16),
+                ),
+                Text(
+                  '${argumentData[0]}',
+                  style: TextStyle(
+                    fontSize: SizeConfig.text(22),
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                SizedBox(
+                  height: SizeConfig.height(16),
+                ),
+                Text(
+                  '${argumentData[1]}',
+                  style: TextStyle(fontSize: SizeConfig.text(16)),
+                ),
               ],
             ),
           ),

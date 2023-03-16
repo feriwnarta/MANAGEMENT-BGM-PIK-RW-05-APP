@@ -39,6 +39,8 @@ class InformasiWargaScreen extends StatelessWidget {
                                 transition: Transition.rightToLeft,
                                 arguments: [
                                   snapshot.data[index].content,
+                                  snapshot.data[index].title,
+                                  snapshot.data[index].url,
                                 ],
                               ),
                               child: Container(
@@ -47,15 +49,23 @@ class InformasiWargaScreen extends StatelessWidget {
                                 ).copyWith(top: SizeConfig.height(16)),
                                 child: Column(
                                   children: [
-                                    Container(
-                                      height: SizeConfig.image(188),
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        image: DecorationImage(
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Container(
+                                        height: SizeConfig.image(188),
+                                        width: double.infinity,
+                                        child: CachedNetworkImage(
                                           fit: BoxFit.cover,
-                                          image: CachedNetworkImageProvider(
-                                              '${ServerApp.url}${snapshot.data[index].url}'),
+                                          imageUrl:
+                                              '${ServerApp.url}${snapshot.data[index].url}',
+                                          progressIndicatorBuilder: (context,
+                                                  url, downloadProgress) =>
+                                              CircularProgressIndicator
+                                                  .adaptive(
+                                                      value: downloadProgress
+                                                          .progress),
+                                          errorWidget: (context, url, error) =>
+                                              Icon(Icons.error),
                                         ),
                                       ),
                                     ),
@@ -63,7 +73,7 @@ class InformasiWargaScreen extends StatelessWidget {
                                       height: SizeConfig.height(8),
                                     ),
                                     Divider(
-                                      thickness: 1,
+                                      thickness: 3,
                                     ),
                                   ],
                                 ),

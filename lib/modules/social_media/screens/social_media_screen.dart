@@ -114,18 +114,6 @@ class _SocialMediaState extends State<SocialMedia> {
                         idStatus: controller.listStatus[index].idStatus,
                         idUser: '${controllerLogin.idUser}',
                       );
-                    } else if (controller.listStatus.length == 0) {
-                      return Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
-                        child: Center(
-                          child: Text(
-                            'Tidak ada status',
-                            style: TextStyle(
-                              fontSize: SizeConfig.text(12),
-                            ),
-                          ),
-                        ),
-                      );
                     } else if (controller.listStatus.length > index) {
                       return Container(
                         margin: EdgeInsets.symmetric(
@@ -158,24 +146,20 @@ class _SocialMediaState extends State<SocialMedia> {
           ),
         ),
       ),
-      floatingActionButton: SizedBox(
-        width: SizeConfig.width(40),
-        height: SizeConfig.height(40),
-        child: FloatingActionButton(
-          onPressed: () {
-            showModalBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              builder: (context) {
-                return CreateStatus();
-              },
-            );
-          },
-          child: SvgPicture.asset(
-            'assets/img/image-svg/pencil.svg',
-            width: SizeConfig.width(20),
-            height: SizeConfig.height(20),
-          ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) {
+              return CreateStatus();
+            },
+          );
+        },
+        child: SvgPicture.asset(
+          'assets/img/image-svg/pencil.svg',
+          width: SizeConfig.width(20),
+          height: SizeConfig.height(20),
         ),
       ),
     );

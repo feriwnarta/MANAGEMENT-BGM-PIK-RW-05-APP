@@ -59,7 +59,7 @@ class _PaymentIplHistoryState extends State<PaymentIplHistory> {
                                   bulanTagihan:
                                       snapshot.data[index].bulanTagihan),
                         )
-                  : Center(child: CircularProgressIndicator())),
+                  : Center(child: CircularProgressIndicator.adaptive())),
         ),
       ),
     );

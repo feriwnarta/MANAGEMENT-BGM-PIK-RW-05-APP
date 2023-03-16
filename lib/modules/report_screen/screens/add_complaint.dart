@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:aplikasi_rw/controller/indexscreen_home_controller.dart';
 import 'package:aplikasi_rw/controller/report_user_controller.dart';
 import 'package:aplikasi_rw/model/category_model.dart';
 import 'package:aplikasi_rw/modules/report_screen/controllers/write_page_controller.dart';

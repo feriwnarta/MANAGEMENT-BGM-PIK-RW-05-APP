@@ -126,14 +126,17 @@ class CardInformasi extends StatelessWidget {
             child: Container(
               width: double.infinity,
               height: SizeConfig.height(188),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: CachedNetworkImageProvider(
-                      '${ServerApp.url}/$url',
-                    ),
-                  )),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  imageUrl: '${ServerApp.url}/$url',
+                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                      CircularProgressIndicator.adaptive(
+                          value: downloadProgress.progress),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
+              ),
             ),
             endActionPane: ActionPane(
               motion: BehindMotion(),

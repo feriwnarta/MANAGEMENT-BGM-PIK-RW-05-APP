@@ -51,7 +51,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       body: SingleChildScrollView(
         child: Obx(
           () => (controller.listNotif == null)
-              ? LinearProgressIndicator()
+              ? CircularProgressIndicator.adaptive()
               : Container(
                   margin: EdgeInsets.symmetric(
                     horizontal: 16.w,

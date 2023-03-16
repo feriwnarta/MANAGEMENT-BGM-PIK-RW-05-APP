@@ -10,6 +10,7 @@ import 'package:aplikasi_rw/modules/home/screens/notification_screen.dart';
 import 'package:aplikasi_rw/modules/home/services/news_service.dart';
 import 'package:aplikasi_rw/modules/home/widgets/header_screen.dart';
 import 'package:aplikasi_rw/modules/home/widgets/menu.dart';
+import 'package:aplikasi_rw/modules/informasi_umum/informasi_umum_screen.dart';
 import 'package:aplikasi_rw/modules/informasi_warga/screens/informasi_warga_screen.dart';
 import 'package:aplikasi_rw/modules/payment_ipl/screens/history/payment_ipl_history.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/report_screen_2.dart';
@@ -452,7 +453,9 @@ class _PengurusScreenState extends State<PengurusScreen> {
             ? Menu(
                 icon: 'assets/img/citizen_menu/informasi-umum.jpg',
                 text: 'Informasi Umum',
-                onTap: () {},
+                onTap: () {
+                  Get.to(InformasiUmum(), transition: Transition.cupertino);
+                },
               )
             : Menu(
                 icon: 'assets/img/citizen_menu/informasi-umum.jpg',

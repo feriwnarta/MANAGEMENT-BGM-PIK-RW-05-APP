@@ -1,5 +1,5 @@
 class CardNews {
-  String url, content;
+  String url, content, title;
 
-  CardNews({this.url, this.content});
+  CardNews({this.url, this.content, this.title});
 }

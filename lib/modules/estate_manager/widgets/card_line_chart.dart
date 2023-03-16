@@ -231,10 +231,9 @@ class _CardLineChartState extends State<CardLineChart> {
                     ),
                     (!isUpdate)
                         ? SizedBox(
-                            height: SizeConfig.height(20),
-                            width: SizeConfig.width(60),
+                            width: SizeConfig.width(96),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 (snapshot.data[index].status[0] == 'plus' &&
                                         snapshot.data[index].persentase[0] ==
@@ -242,30 +241,44 @@ class _CardLineChartState extends State<CardLineChart> {
                                     ? Spacer()
                                     : SvgPicture.asset(
                                         'assets/img/image-svg/low.svg',
-                                        width: SizeConfig.width(20),
-                                        height: SizeConfig.height(20),
+                                        width: SizeConfig.width(16),
+                                        height: SizeConfig.height(16),
                                       ),
-                                Text(
-                                  '${snapshot.data[index].persentase[0]}',
-                                  style:
-                                      TextStyle(fontSize: SizeConfig.text(14)),
-                                )
+                                SizedBox(
+                                  width: SizeConfig.width(6),
+                                ),
+                                (snapshot.data[index].status[0] == 'plus')
+                                    ? Text(
+                                        '${snapshot.data[index].persentase[0]}',
+                                        style: TextStyle(
+                                          fontSize: SizeConfig.text(14),
+                                        ),
+                                      )
+                                    : Text(
+                                        '${snapshot.data[index].persentase[0]}',
+                                        style: TextStyle(
+                                          fontSize: SizeConfig.text(14),
+                                          color: Colors.red,
+                                        ),
+                                      )
                               ],
                             ))
                         : SizedBox(
-                            height: SizeConfig.height(20),
-                            width: SizeConfig.width(60),
+                            width: SizeConfig.width(96),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 (dataUpdate['status'] == 'plus' &&
                                         dataUpdate['persentase'] == '100 %')
                                     ? Spacer()
                                     : SvgPicture.asset(
                                         'assets/img/image-svg/low.svg',
-                                        width: SizeConfig.width(20),
-                                        height: SizeConfig.height(20),
+                                        width: SizeConfig.width(16),
+                                        height: SizeConfig.height(16),
                                       ),
+                                SizedBox(
+                                  width: SizeConfig.width(6),
+                                ),
                                 Text(
                                   dataUpdate['persentase'],
                                   style:
