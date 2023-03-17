@@ -46,27 +46,7 @@ import 'modules/management/screens/management_screen.dart';
 // import 'package:sizer/sizer.dart' as s;
 import 'firebase_options.dart';
 
-@pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
-  AwesomeNotifications().createNotification(
-      content: NotificationContent(
-          id: 10,
-          channelKey: 'basic_channel',
-          title: '${message.notification.title}',
-          body: '${message.notification.body}',
-          actionType: ActionType.Default));
-
-  print("Handling a background message: ${message.messageId}");
-}
-
-void main() async {
-  // runApp(DevicePreview(enabled: !kReleaseMode, builder: (context) => MyApp()));
+Future<void> notificationInit() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
   await ScreenUtil.ensureScreenSize();
@@ -97,45 +77,10 @@ void main() async {
             channelGroupName: 'Basic group')
       ],
       debug: false);
+}
 
-  FirebaseMessaging m = FirebaseMessaging.instance;
-
-  FirebaseMessaging.onMessage.listen((event) {
-    AwesomeNotifications().createNotification(
-      content: NotificationContent(
-        id: 10,
-        channelKey: 'basic_channel',
-        title: '${event.notification.title}',
-        body: '${event.notification.body}',
-        actionType: ActionType.Default,
-        wakeUpScreen: true,
-        displayOnBackground: true,
-        displayOnForeground: true,
-      ),
-    );
-  });
-
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-  m.getToken().then((token) => print(token));
-
-  NotificationSettings settings = await m.requestPermission(
-    alert: true,
-    announcement: false,
-    badge: true,
-    carPlay: false,
-    criticalAlert: false,
-    provisional: false,
-    sound: true,
-  );
-
-  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-    print('User granted permission');
-  } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
-    print('User granted provisional permission');
-  } else {
-    print('User declined or has not accepted permission');
-  }
+void main() async {
+  notificationInit();
 
   ByteData data =
       await PlatformAssetBundle().load('assets/ca/lets-encrypt-r3.pem');
@@ -144,7 +89,7 @@ void main() async {
 
   // runApp(MyApp());
   runApp(DevicePreview(
-    enabled: true,
+    enabled: false,
     builder: (ctx) => MyApp(),
   ));
   configLoading();
@@ -377,7 +322,7 @@ class _MainAppState extends State<MainApp> {
         builder: Builder(builder: (context) {
           return SafeArea(
             top: false,
-            bottom: true,
+            bottom: false,
             child: Scaffold(
               key: scaffoldKey,
               // membuat sidebar dan drawer
@@ -388,72 +333,126 @@ class _MainAppState extends State<MainApp> {
               ),
 
               bottomNavigationBar: Obx(
-                () => Container(
-                  height:
-                      (56 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
-                  child: BottomNavigationBar(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    type: BottomNavigationBarType.fixed,
-                    showSelectedLabels: true,
-                    showUnselectedLabels: true,
-                    selectedItemColor: Colors.white,
-                    unselectedItemColor: Colors.white,
-                    selectedLabelStyle: TextStyle(
-                        fontSize: (12 / Sizer.slicingText) *
-                            SizeConfig.textMultiplier),
-                    unselectedLabelStyle: TextStyle(
-                        fontSize: (12 / Sizer.slicingText) *
-                            SizeConfig.textMultiplier),
-                    currentIndex: indexScreen.index.value,
-                    onTap: (index) {
-                      indexScreen.index.value = index;
-                    },
-                    items: [
-                      BottomNavigationBarItem(
-                        icon: SvgPicture.asset(
-                            'assets/img/image-svg/home-deactive.svg',
-                            height: (24 / Sizer.slicingImage) *
-                                SizeConfig.imageSizeMultiplier),
-                        activeIcon: SvgPicture.asset(
-                          'assets/img/image-svg/home-active.svg',
-                          color: Colors.white,
-                          height: (24 / Sizer.slicingImage) *
-                              SizeConfig.imageSizeMultiplier,
-                        ),
-                        label: 'Beranda',
-                      ),
-                      BottomNavigationBarItem(
-                          icon: SvgPicture.asset(
-                              'assets/img/image-svg/user-deactive.svg',
-                              color: Colors.white,
-                              height: (24 / Sizer.slicingImage) *
-                                  SizeConfig.imageSizeMultiplier),
-                          activeIcon: SvgPicture.asset(
-                              'assets/img/image-svg/user-active.svg',
-                              color: Colors.white,
-                              height: (24 / Sizer.slicingImage) *
-                                  SizeConfig.imageSizeMultiplier),
-                          label: 'Profil'),
-                      BottomNavigationBarItem(
-                          icon: SvgPicture.asset(
-                              'assets/img/image-svg/setting-deactive.svg',
-                              color: Colors.white,
-                              height: (24 / Sizer.slicingImage) *
-                                  SizeConfig.imageSizeMultiplier),
-                          activeIcon: SvgPicture.asset(
-                              'assets/img/image-svg/setting-active.svg',
-                              color: Colors.white,
-                              height: (24 / Sizer.slicingImage) *
-                                  SizeConfig.imageSizeMultiplier),
-                          label: 'Pengaturan'),
-                    ],
-                  ),
-                ),
+                () => (Platform.isAndroid)
+                    ? bottomNavigationBarAndroid(context)
+                    : bottomNavigationBarIos(context),
               ),
             ),
           );
         }),
       ),
+    );
+  }
+
+  Container bottomNavigationBarAndroid(BuildContext context) {
+    return Container(
+      height: (56 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
+      child: BottomNavigationBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white,
+        selectedLabelStyle: TextStyle(
+            fontSize: (12 / Sizer.slicingText) * SizeConfig.textMultiplier),
+        unselectedLabelStyle: TextStyle(
+            fontSize: (12 / Sizer.slicingText) * SizeConfig.textMultiplier),
+        currentIndex: indexScreen.index.value,
+        onTap: (index) {
+          indexScreen.index.value = index;
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset('assets/img/image-svg/home-deactive.svg',
+                height:
+                    (24 / Sizer.slicingImage) * SizeConfig.imageSizeMultiplier),
+            activeIcon: SvgPicture.asset(
+              'assets/img/image-svg/home-active.svg',
+              color: Colors.white,
+              height:
+                  (24 / Sizer.slicingImage) * SizeConfig.imageSizeMultiplier,
+            ),
+            label: 'Beranda',
+          ),
+          BottomNavigationBarItem(
+              icon: SvgPicture.asset('assets/img/image-svg/user-deactive.svg',
+                  color: Colors.white,
+                  height: (24 / Sizer.slicingImage) *
+                      SizeConfig.imageSizeMultiplier),
+              activeIcon: SvgPicture.asset(
+                  'assets/img/image-svg/user-active.svg',
+                  color: Colors.white,
+                  height: (24 / Sizer.slicingImage) *
+                      SizeConfig.imageSizeMultiplier),
+              label: 'Profil'),
+          BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                  'assets/img/image-svg/setting-deactive.svg',
+                  color: Colors.white,
+                  height: (24 / Sizer.slicingImage) *
+                      SizeConfig.imageSizeMultiplier),
+              activeIcon: SvgPicture.asset(
+                  'assets/img/image-svg/setting-active.svg',
+                  color: Colors.white,
+                  height: (24 / Sizer.slicingImage) *
+                      SizeConfig.imageSizeMultiplier),
+              label: 'Pengaturan'),
+        ],
+      ),
+    );
+  }
+
+  BottomNavigationBar bottomNavigationBarIos(BuildContext context) {
+    return BottomNavigationBar(
+      backgroundColor: Theme.of(context).primaryColor,
+      type: BottomNavigationBarType.fixed,
+      showSelectedLabels: true,
+      showUnselectedLabels: true,
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.white,
+      selectedLabelStyle: TextStyle(
+          fontSize: (12 / Sizer.slicingText) * SizeConfig.textMultiplier),
+      unselectedLabelStyle: TextStyle(
+          fontSize: (12 / Sizer.slicingText) * SizeConfig.textMultiplier),
+      currentIndex: indexScreen.index.value,
+      onTap: (index) {
+        indexScreen.index.value = index;
+      },
+      items: [
+        BottomNavigationBarItem(
+          icon: SvgPicture.asset('assets/img/image-svg/home-deactive.svg',
+              height:
+                  (24 / Sizer.slicingImage) * SizeConfig.imageSizeMultiplier),
+          activeIcon: SvgPicture.asset(
+            'assets/img/image-svg/home-active.svg',
+            color: Colors.white,
+            height: (24 / Sizer.slicingImage) * SizeConfig.imageSizeMultiplier,
+          ),
+          label: 'Beranda',
+        ),
+        BottomNavigationBarItem(
+            icon: SvgPicture.asset('assets/img/image-svg/user-deactive.svg',
+                color: Colors.white,
+                height:
+                    (24 / Sizer.slicingImage) * SizeConfig.imageSizeMultiplier),
+            activeIcon: SvgPicture.asset('assets/img/image-svg/user-active.svg',
+                color: Colors.white,
+                height:
+                    (24 / Sizer.slicingImage) * SizeConfig.imageSizeMultiplier),
+            label: 'Profil'),
+        BottomNavigationBarItem(
+            icon: SvgPicture.asset('assets/img/image-svg/setting-deactive.svg',
+                color: Colors.white,
+                height:
+                    (24 / Sizer.slicingImage) * SizeConfig.imageSizeMultiplier),
+            activeIcon: SvgPicture.asset(
+                'assets/img/image-svg/setting-active.svg',
+                color: Colors.white,
+                height:
+                    (24 / Sizer.slicingImage) * SizeConfig.imageSizeMultiplier),
+            label: 'Pengaturan'),
+      ],
     );
   }
 

@@ -3,6 +3,7 @@ import 'package:aplikasi_rw/modules/estate_manager/screens/dashboard.dart';
 import 'package:aplikasi_rw/modules/estate_manager/screens/menu_folder_create_account.dart';
 import 'package:aplikasi_rw/modules/home/widgets/menu.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/sub_menu_report.dart';
+import 'package:aplikasi_rw/modules/util_widgets/init_permission.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,6 +22,20 @@ class MenuFolderEm extends StatefulWidget {
 
 class _MenuFolderEmState extends State<MenuFolderEm> {
   final accessController = Get.find<AccessController>();
+
+  // permisiion app
+  InitPermissionApp initPermissionApp;
+
+  @override
+  void initState() {
+    super.initState();
+
+    initPermissionApp = InitPermissionApp();
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) async => await initPermissionApp.initPermissionApp(context),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

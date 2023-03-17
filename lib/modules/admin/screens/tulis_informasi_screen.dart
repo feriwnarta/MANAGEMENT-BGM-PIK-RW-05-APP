@@ -18,8 +18,8 @@ class TulisInformasiScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Container(
             margin: EdgeInsets.symmetric(
-              vertical: SizeConfig.height(16),
-            ),
+                vertical: SizeConfig.height(16),
+                horizontal: SizeConfig.width(16)),
             child: Column(
               children: [
                 InkWell(

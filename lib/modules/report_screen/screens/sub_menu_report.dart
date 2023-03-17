@@ -247,7 +247,7 @@ class _MenuPeduliLingkunganState extends State<MenuPeduliLingkungan> {
                 height: SizeConfig.height(360),
               )
             : SizedBox(
-                height: SizeConfig.height(320),
+                height: SizeConfig.height(290),
               ),
         SizedBox(
           width: (328 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,

@@ -61,11 +61,12 @@ class _MyWidgetState extends State<CitizenScreen> {
     );
   }
 
-  /// tampikan dialog permision
   Future<void> displayDialogPermission() async {
     bool cameraPermission = await Permission.camera.status.isDenied;
     bool locationPermission = await Permission.location.status.isDenied;
-    bool storagePermission = await Permission.storage.status.isDenied;
+    bool storagePermission = (Platform.isAndroid)
+        ? await Permission.storage.status.isDenied
+        : await Permission.photos.isDenied;
 
     // dialog akses kamera
     if (cameraPermission) {
@@ -78,6 +79,19 @@ class _MyWidgetState extends State<CitizenScreen> {
         },
         yes: () async {
           await initPermisionCamera();
+          Get.back();
+        },
+      );
+    } else if (await Permission.camera.status.isPermanentlyDenied) {
+      await dialogRequirePermissions(
+        title: 'Berikan Akses Kamera',
+        content:
+            'Untuk menggunakan fitur yang membutuhkan kamera, kami memerlukan izin akses kamera Anda. Apakah Anda ingin memberikan izin akses sekarang?',
+        no: () {
+          Get.back();
+        },
+        yes: () async {
+          await openAppSettings();
           Get.back();
         },
       );
@@ -97,6 +111,19 @@ class _MyWidgetState extends State<CitizenScreen> {
           Get.back();
         },
       );
+    } else if (await Permission.location.isPermanentlyDenied) {
+      await dialogRequirePermissions(
+        title: 'Berikan Akses Lokasi',
+        content:
+            'Untuk menggunakan fitur yang membutuhkan lokasi, kami memerlukan izin akses lokasi Anda. Apakah Anda ingin memberikan izin akses sekarang?',
+        no: () {
+          Get.back();
+        },
+        yes: () async {
+          await openAppSettings();
+          Get.back();
+        },
+      );
     }
 
     // dialog akses Media
@@ -110,6 +137,19 @@ class _MyWidgetState extends State<CitizenScreen> {
         },
         yes: () async {
           await initPermisionStorage();
+          Get.back();
+        },
+      );
+    } else if (await Permission.photos.isPermanentlyDenied) {
+      await dialogRequirePermissions(
+        title: 'Berikan Akses Media',
+        content:
+            'Untuk menggunakan fitur yang membutuhkan akses media, kami memerlukan izin akses media Anda. Apakah Anda ingin memberikan izin akses sekarang?',
+        no: () {
+          Get.back();
+        },
+        yes: () async {
+          await openAppSettings();
           Get.back();
         },
       );

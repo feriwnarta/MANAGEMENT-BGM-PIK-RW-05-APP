@@ -2,6 +2,7 @@ import 'package:aplikasi_rw/modules/authentication/controllers/access_controller
 import 'package:aplikasi_rw/modules/contractor/screens/dashboard_cordinator_screen.dart';
 import 'package:aplikasi_rw/modules/home/widgets/header_screen.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/sub_menu_report.dart';
+import 'package:aplikasi_rw/modules/util_widgets/init_permission.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -20,6 +21,19 @@ class MenuFolderManagerContractor extends StatefulWidget {
 class _CordinatorHomeFolderScreenState
     extends State<MenuFolderManagerContractor> {
   final accessController = Get.find<AccessController>();
+
+  InitPermissionApp initPermissionApp;
+
+  @override
+  void initState() {
+    super.initState();
+
+    initPermissionApp = InitPermissionApp();
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) async => await initPermissionApp.initPermissionApp(context),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
