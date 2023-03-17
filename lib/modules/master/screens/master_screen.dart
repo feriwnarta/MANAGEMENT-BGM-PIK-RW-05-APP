@@ -9,8 +9,8 @@ import 'package:aplikasi_rw/modules/home/controller/notification_controller.dart
 import 'package:aplikasi_rw/modules/home/data/ShowCaseData.dart';
 import 'package:aplikasi_rw/modules/home/models/card_news.dart';
 import 'package:aplikasi_rw/modules/home/screens/notification_screen.dart';
+import 'package:aplikasi_rw/modules/home/screens/show_case_widget.dart';
 import 'package:aplikasi_rw/modules/home/services/news_service.dart';
-import 'package:aplikasi_rw/modules/home/widgets/header_screen.dart';
 import 'package:aplikasi_rw/modules/home/widgets/menu.dart';
 import 'package:aplikasi_rw/modules/informasi_umum/informasi_umum_screen.dart';
 import 'package:aplikasi_rw/modules/informasi_warga/screens/informasi_warga_screen.dart';
@@ -20,12 +20,12 @@ import 'package:aplikasi_rw/modules/report_screen/screens/sub_menu_report.dart';
 import 'package:aplikasi_rw/modules/social_media/screens/social_media_screen.dart';
 import 'package:aplikasi_rw/modules/theme/sizer.dart';
 import 'package:aplikasi_rw/modules/util_widgets/init_permission.dart';
+import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -51,6 +51,18 @@ class _MasterScreenState extends State<MasterScreen> {
 
   final ShowCaseData dataShowCase = ShowCaseData();
 
+  final GlobalKey dashboard = GlobalKey();
+  final GlobalKey statusPeduliPengurus = GlobalKey();
+  final GlobalKey tambahAkun = GlobalKey();
+  final GlobalKey tulisInformasi = GlobalKey();
+  final GlobalKey peduliLingkunganKey = GlobalKey();
+  final GlobalKey statusPeduliLingkuganKey = GlobalKey();
+  final GlobalKey statusIplKey = GlobalKey();
+  final GlobalKey informasiWarga = GlobalKey();
+  final GlobalKey informasiUmum = GlobalKey();
+  final GlobalKey sosialMedia = GlobalKey();
+  final GlobalKey dashboardKey = GlobalKey();
+
   // init permission
   InitPermissionApp initPermissionApp;
 
@@ -67,25 +79,36 @@ class _MasterScreenState extends State<MasterScreen> {
 
     initPermissionApp = InitPermissionApp();
 
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) async => await initPermissionApp.initPermissionApp(context),
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await initPermissionApp.initPermissionApp(context);
+
+      var value = await UserSecureStorage.readKey(key: 'runOnFirst');
+
+      if (value == null) {
+        await ShowCaseWidget.of(context).startShowCase(
+          [
+            dashboardKey,
+            statusPeduliPengurus,
+            peduliLingkunganKey,
+            statusPeduliLingkuganKey,
+            statusIplKey,
+            informasiWarga,
+            informasiUmum,
+            sosialMedia,
+            tambahAkun,
+            tulisInformasi,
+          ],
+        );
+      }
+
+      await UserSecureStorage.setKeyValue(key: 'runOnFirst', value: 'true');
+    });
   }
 
   @override
   void didChangeDependencies() {
     precacheImage(image, context);
     super.didChangeDependencies();
-  }
-
-  void initShowCase(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => ShowCaseWidget.of(context).startShowCase(
-        [
-          dataShowCase.news,
-        ],
-      ),
-    );
   }
 
   @override
@@ -191,91 +214,151 @@ class _MasterScreenState extends State<MasterScreen> {
       runSpacing: (16 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
       spacing: (13 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
       children: [
-        Menu(
-          icon: 'assets/img/estate_manager_menu/dashboard-em.jpg',
-          onTap: () {
-            Get.to(
-              () => DashboardEm(),
-              transition: Transition.rightToLeft,
-            );
-          },
-          text: 'Dashboard',
-        ),
-        Menu(
-          icon: 'assets/img/estate_manager_menu/status_peduli_lingkungan.jpg',
-          onTap: () {
-            Get.to(
-              () => SubMenuReport(
-                typeStatusPeduliLingkungan: 'pengelola',
-              ),
-              transition: Transition.rightToLeft,
-            );
-          },
-          text: 'Status Peduli Lingkungan',
-        ),
-        Menu(
-          icon: 'assets/img/citizen_menu/ipl.jpg',
-          text: 'Peduli lingkungan',
-          onTap: () => Get.to(
-              () => SubMenuReport(
-                    typeStatusPeduliLingkungan: 'warga',
-                  ),
-              transition: Transition.rightToLeft),
-        ),
-        Menu(
-          icon: 'assets/img/citizen_menu/status-peduli-lingkungan.jpg',
-          text: 'Status peduli lingkungan',
-          onTap: () =>
-              Get.to(() => ReportScreen2(), transition: Transition.rightToLeft),
-        ),
-        Menu(
-          icon: 'assets/img/citizen_menu/ipl.jpg',
-          text: 'Status IPL\n',
-          onTap: () => Get.to(
-            () => PaymentIplHistory(),
-            transition: Transition.rightToLeft,
+        ShowCaseWrapper(
+          gKey: dashboardKey,
+          title: 'Dashboard',
+          description:
+              'Dengan fitur dashboard pengurus dapat melihat jumlah laporan selesai, dikerjakan, dan sedang diproses beserta grafik yang dipresentasikan',
+          child: Menu(
+            icon: 'assets/img/estate_manager_menu/dashboard-em.jpg',
+            onTap: () {
+              Get.to(
+                () => DashboardEm(),
+                transition: Transition.rightToLeft,
+              );
+            },
+            text: 'Dashboard',
           ),
         ),
-        Menu(
-          icon: 'assets/img/citizen_menu/informasi-warga.jpg',
-          text: 'Informasi Warga',
-          onTap: () => Get.to(
-            () => InformasiWargaScreen(),
-            transition: Transition.rightToLeft,
+        ShowCaseWrapper(
+          gKey: statusPeduliPengurus,
+          title: 'Status peduli lingkungan pengurus',
+          description:
+              'Kini, dengan fitur peduli lingkungan pengurus yang terdapat pada aplikasi ini. menampilkan laporan masuk dan belum mendapatkan penanganan kordinator terkait',
+          child: Menu(
+            icon: 'assets/img/estate_manager_menu/status_peduli_lingkungan.jpg',
+            onTap: () {
+              Get.to(
+                () => SubMenuReport(
+                  typeStatusPeduliLingkungan: 'pengelola',
+                ),
+                transition: Transition.rightToLeft,
+              );
+            },
+            text: 'Status Peduli Lingkungan Pengurus',
           ),
         ),
-        Menu(
-          icon: 'assets/img/citizen_menu/informasi-umum.jpg',
-          text: 'Informasi Umum',
-          onTap: () {
-            Get.to(InformasiUmum(), transition: Transition.cupertino);
-          },
+        ShowCaseWrapper(
+          gKey: peduliLingkunganKey,
+          title: 'Peduli Lingkungan',
+          description:
+              'Kini, dengan fitur peduli lingkungan yang terdapat pada aplikasi ini, warga perumahan dapat turut serta dalam menjaga kebersihan dan keindahan lingkungan sekitar',
+          child: Menu(
+            icon: 'assets/img/citizen_menu/ipl.jpg',
+            text: 'Peduli lingkungan',
+            onTap: () => Get.to(
+                () => SubMenuReport(
+                      typeStatusPeduliLingkungan: 'warga',
+                    ),
+                transition: Transition.rightToLeft),
+          ),
         ),
-        Menu(
-          icon: 'assets/img/citizen_menu/media.jpg',
-          text: 'Sosial Media',
-          onTap: () =>
-              Get.to(() => SocialMedia(), transition: Transition.rightToLeft),
+        ShowCaseWrapper(
+          gKey: statusPeduliLingkuganKey,
+          title: 'Status Peduli Linkungan',
+          description:
+              'Dengan fitur status peduli lingkungan pada aplikasi ini, pengguna dapat dengan mudah melihat daftar laporan warga yang terkait dengan lingkungan sekitar. Pengguna dapat mengecek status laporan,memberikan penilaian pekerja',
+          child: Menu(
+            icon: 'assets/img/citizen_menu/status-peduli-lingkungan.jpg',
+            text: 'Status peduli lingkungan',
+            onTap: () => Get.to(() => ReportScreen2(),
+                transition: Transition.rightToLeft),
+          ),
         ),
-        Menu(
-          icon: 'assets/img/estate_manager_menu/add_account.jpg',
-          onTap: () {
-            Get.to(
-              () => MenuFolderCreateAccout(),
+        ShowCaseWrapper(
+          gKey: statusIplKey,
+          title: 'Status Ipl',
+          description:
+              'Dengan fitur status peduli lingkungan pada aplikasi ini, pengguna dapat dengan mudah melihat daftar laporan warga yang terkait dengan lingkungan sekitar. Pengguna dapat mengecek status laporan,memberikan penilaian pekerja',
+          child: Menu(
+            icon: 'assets/img/citizen_menu/ipl.jpg',
+            text: 'Status IPL\n',
+            onTap: () => Get.to(
+              () => PaymentIplHistory(),
               transition: Transition.rightToLeft,
-            );
-          },
-          text: 'Tambah Akun',
+            ),
+          ),
         ),
-        Menu(
-          icon: 'assets/img/tulis-informasi.png',
-          text: 'Tulis Informasi',
-          onTap: () {
-            Get.to(
-              () => TulisInformasiScreen(),
-              transition: Transition.cupertino,
-            );
-          },
+        ShowCaseWrapper(
+          gKey: informasiWarga,
+          title: 'Informasi Warga',
+          description:
+              'Dengan fitur informasi warga pada aplikasi ini, pengguna dapat menerima informasi terbaru dari pengelola melalui aplikasi. Informasi yang disampaikan dapat berupa pengumuman penting, jadwal acara, atau perubahan kebijakan. Dengan adanya fitur ini, pengguna tidak perlu khawatir ketinggalan informasi terbaru yang terkait dengan kehidupan di lingkungan sekitar mereka.',
+          child: Menu(
+            icon: 'assets/img/citizen_menu/informasi-warga.jpg',
+            text: 'Informasi Warga',
+            onTap: () => Get.to(
+              () => InformasiWargaScreen(),
+              transition: Transition.rightToLeft,
+            ),
+          ),
+        ),
+        ShowCaseWrapper(
+          gKey: informasiUmum,
+          title: 'Informasi Umum',
+          description:
+              'Terima Informasi Permasalahan Sekitar Perumahan Dengan fitur informasi umum pada aplikasi ini, Anda dapat menerima informasi mengenai permasalahan yang terjadi di sekitar perumahan Anda.',
+          child: Menu(
+            icon: 'assets/img/citizen_menu/informasi-umum.jpg',
+            text: 'Informasi Umum',
+            onTap: () {
+              Get.to(InformasiUmum(), transition: Transition.cupertino);
+            },
+          ),
+        ),
+        ShowCaseWrapper(
+          gKey: sosialMedia,
+          title: 'Sosial Media',
+          description:
+              'Dengan fitur sosial media pada aplikasi ini, Anda dapat terhubung dengan tetangga dan warga perumahan lainnya. Memudahkan Anda untuk berkomunikasi dan berbagi informasi mengenai aktivitas atau acara yang diadakan di perumahan. Selain itu, fitur ini juga dapat membantu memperkuat hubungan antara warga perumahan, sehingga menciptakan rasa kebersamaan dan keakraban.',
+          child: Menu(
+            icon: 'assets/img/citizen_menu/media.jpg',
+            text: 'Sosial Media',
+            onTap: () =>
+                Get.to(() => SocialMedia(), transition: Transition.rightToLeft),
+          ),
+        ),
+        ShowCaseWrapper(
+          gKey: tambahAkun,
+          title: 'Tambah Akun',
+          description:
+              'Buat akun untuk pekerja lapangan, sehingga lingkungan perumahan dapat terkontrol dengan penggabungan pekerjaan lapangan dan aplikasi',
+          child: Menu(
+            icon: 'assets/img/estate_manager_menu/add_account.jpg',
+            onTap: () {
+              Get.to(
+                () => MenuFolderCreateAccout(),
+                transition: Transition.rightToLeft,
+              );
+            },
+            text: 'Tambah Akun',
+          ),
+        ),
+        ShowCaseWrapper(
+          gKey: tulisInformasi,
+          title: 'Tulis Informasi',
+          description:
+              'Segera buat informasi warga maupun umum, sampaikan kepada warga mengenai informasi terbaru dari pengelola serta permasalahan yang terjadi di sekitar perumahan',
+          child: Menu(
+            icon: 'assets/img/tulis-informasi.png',
+            text: 'Tulis Informasi',
+            onTap: () {
+              Get.to(
+                () => TulisInformasiScreen(),
+                transition: Transition.cupertino,
+              );
+            },
+          ),
         ),
       ],
     );

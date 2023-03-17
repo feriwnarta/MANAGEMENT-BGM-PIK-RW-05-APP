@@ -307,7 +307,7 @@ class _MyWidgetState extends State<CitizenScreen> {
                 gKey: informasiWarga,
                 title: 'Informasi Warga',
                 description:
-                    'Dengan fitur informasi warga pada aplikasi ini, pengguna dapat menerima informasi terbaru dari pengelola melalui aplikasi. Informasi yang disampaikan dapat berupa pengumuman penting, jadwal acara, atau perubahan kebijakan. Dengan adanya fitur ini, pengguna tidak perlu khawatir ketinggalan informasi terbaru yang terkait dengan kehidupan di lingkungan sekitar mereka. ',
+                    'Dengan fitur informasi warga pada aplikasi ini, pengguna dapat menerima informasi terbaru dari pengelola melalui aplikasi. Informasi yang disampaikan dapat berupa pengumuman penting, jadwal acara, atau perubahan kebijakan. Dengan adanya fitur ini, pengguna tidak perlu khawatir ketinggalan informasi terbaru yang terkait dengan kehidupan di lingkungan sekitar mereka.',
                 child: Menu(
                   icon: 'assets/img/citizen_menu/informasi-warga.jpg',
                   text: 'Informasi Warga',

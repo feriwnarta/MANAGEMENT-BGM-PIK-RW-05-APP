@@ -34,7 +34,7 @@ class Menu extends StatelessWidget {
               style: TextStyle(
                 fontSize: SizeConfig.text(12),
               ),
-              maxLines: 2,
+              maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),
           ],
