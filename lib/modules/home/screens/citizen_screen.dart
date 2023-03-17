@@ -8,12 +8,14 @@ import 'package:aplikasi_rw/modules/home/screens/notification_screen.dart';
 import 'package:aplikasi_rw/modules/home/screens/show_case_widget.dart';
 import 'package:aplikasi_rw/modules/home/services/news_service.dart';
 import 'package:aplikasi_rw/modules/home/widgets/menu.dart';
+import 'package:aplikasi_rw/modules/informasi_umum/informasi_umum_screen.dart';
 import 'package:aplikasi_rw/modules/informasi_warga/screens/informasi_warga_screen.dart';
 import 'package:aplikasi_rw/modules/payment_ipl/screens/history/payment_ipl_history.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/report_screen_2.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/sub_menu_report.dart';
 import 'package:aplikasi_rw/modules/social_media/screens/social_media_screen.dart';
 import 'package:aplikasi_rw/modules/theme/sizer.dart';
+import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -21,6 +23,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -52,6 +55,8 @@ class _MyWidgetState extends State<CitizenScreen> {
   final GlobalKey statusPeduliLingkuganKey = GlobalKey();
   final GlobalKey statusIplKey = GlobalKey();
   final GlobalKey informasiWarga = GlobalKey();
+  final GlobalKey informasiUmum = GlobalKey();
+  final GlobalKey sosialMedia = GlobalKey();
 
   @override
   void initState() {
@@ -68,13 +73,25 @@ class _MyWidgetState extends State<CitizenScreen> {
       (_) async => await displayDialogPermission(),
     );
 
-    WidgetsBinding.instance.addPostFrameCallback((_) =>
-        ShowCaseWidget.of(context).startShowCase([
-          newsKey,
-          peduliLingkunganKey,
-          statusPeduliLingkuganKey,
-          statusIplKey
-        ]));
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      var result = await UserSecureStorage.readKey(key: 'runOnFirst');
+
+      if (result == null) {
+        await UserSecureStorage.setKeyValue(key: 'runOnFirst', value: 'true');
+
+        return ShowCaseWidget.of(context).startShowCase(
+          [
+            newsKey,
+            peduliLingkunganKey,
+            statusPeduliLingkuganKey,
+            statusIplKey,
+            informasiWarga,
+            informasiUmum,
+            sosialMedia,
+          ],
+        );
+      }
+    });
   }
 
   Future<void> displayDialogPermission() async {
@@ -495,44 +512,86 @@ class _MyWidgetState extends State<CitizenScreen> {
                 ),
               ),
         (accesController.informasiWarga.value)
-            ? Menu(
-                icon: 'assets/img/citizen_menu/informasi-warga.jpg',
-                text: 'Informasi Warga',
-                onTap: () => Get.to(
-                  () => InformasiWargaScreen(),
-                  transition: Transition.rightToLeft,
+            ? ShowCaseWrapper(
+                gKey: informasiWarga,
+                title: 'Informasi Warga',
+                description:
+                    'Dengan fitur informasi warga pada aplikasi ini, pengguna dapat menerima informasi terbaru dari pengelola melalui aplikasi. Informasi yang disampaikan dapat berupa pengumuman penting, jadwal acara, atau perubahan kebijakan. Dengan adanya fitur ini, pengguna tidak perlu khawatir ketinggalan informasi terbaru yang terkait dengan kehidupan di lingkungan sekitar mereka. ',
+                child: Menu(
+                  icon: 'assets/img/citizen_menu/informasi-warga.jpg',
+                  text: 'Informasi Warga',
+                  onTap: () => Get.to(
+                    () => InformasiWargaScreen(),
+                    transition: Transition.rightToLeft,
+                  ),
                 ),
               )
-            : Menu(
-                icon: 'assets/img/citizen_menu/informasi-warga.jpg',
-                text: 'Informasi Warga',
-                onTap: () => EasyLoading.showInfo(
-                    'Fitur ini hanya bisa diakses oleh warga')),
+            : ShowCaseWrapper(
+                gKey: informasiWarga,
+                title: 'Informasi Warga',
+                description:
+                    'Dengan fitur informasi warga pada aplikasi ini, pengguna dapat menerima informasi terbaru dari pengelola melalui aplikasi. Informasi yang disampaikan dapat berupa pengumuman penting, jadwal acara, atau perubahan kebijakan. Dengan adanya fitur ini, pengguna tidak perlu khawatir ketinggalan informasi terbaru yang terkait dengan kehidupan di lingkungan sekitar mereka. ',
+                child: Menu(
+                  icon: 'assets/img/citizen_menu/informasi-warga.jpg',
+                  text: 'Informasi Warga',
+                  onTap: () => EasyLoading.showInfo(
+                    'Fitur ini hanya bisa diakses oleh warga',
+                  ),
+                ),
+              ),
         (accesController.informasiUmum.value)
-            ? Menu(
-                icon: 'assets/img/citizen_menu/informasi-umum.jpg',
-                text: 'Informasi Umum',
-                onTap: () {},
+            ? ShowCaseWrapper(
+                gKey: informasiUmum,
+                title: 'Informasi Umum',
+                description:
+                    'Terima Informasi Permasalahan Sekitar Perumahan Dengan fitur informasi umum pada aplikasi ini, Anda dapat menerima informasi mengenai permasalahan yang terjadi di sekitar perumahan Anda.',
+                child: Menu(
+                  icon: 'assets/img/citizen_menu/informasi-umum.jpg',
+                  text: 'Informasi Umum',
+                  onTap: () {
+                    Get.to(InformasiUmum(), transition: Transition.cupertino);
+                  },
+                ),
               )
-            : Menu(
-                icon: 'assets/img/citizen_menu/informasi-umum.jpg',
-                text: 'Informasi Umum',
-                onTap: () => EasyLoading.showInfo(
-                    'Fitur ini hanya bisa diakses oleh warga'),
+            : ShowCaseWrapper(
+                gKey: informasiUmum,
+                title: 'Informasi Umum',
+                description:
+                    'Terima Informasi Permasalahan Sekitar Perumahan Dengan fitur informasi umum pada aplikasi ini, Anda dapat menerima informasi mengenai permasalahan yang terjadi di sekitar perumahan Anda.',
+                child: Menu(
+                  icon: 'assets/img/citizen_menu/informasi-umum.jpg',
+                  text: 'Informasi Umum',
+                  onTap: () => EasyLoading.showInfo(
+                    'Fitur ini hanya bisa diakses oleh warga',
+                  ),
+                ),
               ),
         (accesController.sosialMedia.value)
-            ? Menu(
-                icon: 'assets/img/citizen_menu/media.jpg',
-                text: 'Sosial Media',
-                onTap: () => Get.to(() => SocialMedia(),
-                    transition: Transition.rightToLeft),
+            ? ShowCaseWrapper(
+                gKey: sosialMedia,
+                title: 'Sosial Media',
+                description:
+                    'Dengan fitur sosial media pada aplikasi ini, Anda dapat terhubung dengan tetangga dan warga perumahan lainnya. Memudahkan Anda untuk berkomunikasi dan berbagi informasi mengenai aktivitas atau acara yang diadakan di perumahan. Selain itu, fitur ini juga dapat membantu memperkuat hubungan antara warga perumahan, sehingga menciptakan rasa kebersamaan dan keakraban.',
+                child: Menu(
+                  icon: 'assets/img/citizen_menu/media.jpg',
+                  text: 'Sosial Media',
+                  onTap: () => Get.to(() => SocialMedia(),
+                      transition: Transition.rightToLeft),
+                ),
               )
-            : Menu(
-                icon: 'assets/img/citizen_menu/media.jpg',
-                text: 'Sosial Media',
-                onTap: () => EasyLoading.showInfo(
-                    'Fitur ini hanya bisa diakses oleh warga'),
-              ),
+            : ShowCaseWrapper(
+                gKey: sosialMedia,
+                title: 'Sosial Media',
+                description:
+                    'Dengan fitur sosial media pada aplikasi ini, Anda dapat terhubung dengan tetangga dan warga perumahan lainnya. Memudahkan Anda untuk berkomunikasi dan berbagi informasi mengenai aktivitas atau acara yang diadakan di perumahan. Selain itu, fitur ini juga dapat membantu memperkuat hubungan antara warga perumahan, sehingga menciptakan rasa kebersamaan dan keakraban.',
+                child: Menu(
+                  icon: 'assets/img/citizen_menu/media.jpg',
+                  text: 'Sosial Media',
+                  onTap: () => EasyLoading.showInfo(
+                    'Fitur ini hanya bisa diakses oleh warga',
+                  ),
+                ),
+              )
       ],
     );
   }
