@@ -10,7 +10,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:showcaseview/showcaseview.dart';
 import '../../../server-app.dart';
 import '../models/card_news.dart';
 import 'package:get/get.dart';
@@ -22,20 +21,8 @@ class HeaderScreen extends StatelessWidget {
   bool isEmOrCord = false;
   final userLoginController = Get.put(UserLoginController());
 
-  void initShowCase(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => ShowCaseWidget.of(context).startShowCase(
-        [
-          dataShowCase.news,
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    initShowCase(context);
-
     return Column(
       children: [
         SizedBox(
@@ -158,8 +145,17 @@ class HeaderScreen extends StatelessWidget {
                 margin: EdgeInsets.only(
                   right: (16 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
                 ),
-                child: CachedNetworkImage(
-                  imageUrl: '${ServerApp.url}${e.url}',
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    imageUrl: '${ServerApp.url}${e.url}',
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) =>
+                            CircularProgressIndicator.adaptive(
+                                value: downloadProgress.progress),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  ),
                 ),
               ),
             );

@@ -12,6 +12,7 @@ import 'package:aplikasi_rw/modules/estate_manager/screens/menu_folder_screens_e
 import 'package:aplikasi_rw/modules/home/screens/citizen_screen.dart';
 import 'package:aplikasi_rw/modules/home/screens/home_folder_screen.dart';
 import 'package:aplikasi_rw/modules/manager_contractor/screens/home_folder_manager_contractor.dart';
+import 'package:aplikasi_rw/modules/master/screens/master_screen.dart';
 import 'package:aplikasi_rw/modules/pengurus/screens/pengurus_screen.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/UserProfileScreens.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/profile_settings_screen.dart';
@@ -267,6 +268,12 @@ class _MainAppState extends State<MainApp> {
     } else if (controller.status.value == 'ADMIN') {
       screens = [
         AdminScreen(),
+        UserProfileScreen(),
+        ProfileSettings(),
+      ];
+    } else if (controller.status.value == 'MASTER') {
+      screens = [
+        MasterScreen(),
         UserProfileScreen(),
         ProfileSettings(),
       ];
