@@ -5,6 +5,7 @@ import 'package:aplikasi_rw/modules/authentication/controllers/access_controller
 import 'package:aplikasi_rw/modules/home/controller/notification_controller.dart';
 import 'package:aplikasi_rw/modules/home/data/ShowCaseData.dart';
 import 'package:aplikasi_rw/modules/home/screens/notification_screen.dart';
+import 'package:aplikasi_rw/modules/home/screens/show_case_widget.dart';
 import 'package:aplikasi_rw/modules/home/services/news_service.dart';
 import 'package:aplikasi_rw/modules/home/widgets/menu.dart';
 import 'package:aplikasi_rw/modules/informasi_warga/screens/informasi_warga_screen.dart';
@@ -45,6 +46,13 @@ class _MyWidgetState extends State<CitizenScreen> {
   final AssetImage image = AssetImage('assets/img/logo_rw.png');
   final ShowCaseData dataShowCase = ShowCaseData();
 
+  // Global key for showcase
+  final GlobalKey newsKey = GlobalKey();
+  final GlobalKey peduliLingkunganKey = GlobalKey();
+  final GlobalKey statusPeduliLingkuganKey = GlobalKey();
+  final GlobalKey statusIplKey = GlobalKey();
+  final GlobalKey informasiWarga = GlobalKey();
+
   @override
   void initState() {
     super.initState();
@@ -59,6 +67,14 @@ class _MyWidgetState extends State<CitizenScreen> {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) async => await displayDialogPermission(),
     );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) =>
+        ShowCaseWidget.of(context).startShowCase([
+          newsKey,
+          peduliLingkunganKey,
+          statusPeduliLingkuganKey,
+          statusIplKey
+        ]));
   }
 
   Future<void> displayDialogPermission() async {
@@ -399,48 +415,84 @@ class _MyWidgetState extends State<CitizenScreen> {
       spacing: (13 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
       children: [
         (accesController.statusPeduliLingkungan.value)
-            ? Menu(
-                icon: 'assets/img/citizen_menu/ipl.jpg',
-                text: 'Peduli lingkungan',
-                onTap: () => Get.to(
-                    () => SubMenuReport(
-                          typeStatusPeduliLingkungan: 'warga',
-                        ),
-                    transition: Transition.rightToLeft),
-              )
-            : Menu(
-                icon: 'assets/img/citizen_menu/ipl.jpg',
-                text: 'Peduli lingkungan',
-                onTap: () => EasyLoading.showInfo(
-                    'Fitur ini hanya bisa diakses oleh warga'),
-              ),
-        (accesController.statusPeduliLingkungan.value)
-            ? Menu(
-                icon: 'assets/img/citizen_menu/status-peduli-lingkungan.jpg',
-                text: 'Status peduli lingkungan',
-                onTap: () => Get.to(() => ReportScreen2(),
-                    transition: Transition.rightToLeft),
-              )
-            : Menu(
-                icon: 'assets/img/citizen_menu/status-peduli-lingkungan.jpg',
-                text: 'Status peduli lingkungan',
-                onTap: () => EasyLoading.showInfo(
-                    'Fitur ini hanya bisa diakses oleh warga'),
-              ),
-        (accesController.statusIpl.value)
-            ? Menu(
-                icon: 'assets/img/citizen_menu/ipl.jpg',
-                text: 'Status IPL\n',
-                onTap: () => Get.to(
-                  () => PaymentIplHistory(),
-                  transition: Transition.rightToLeft,
+            ? ShowCaseWrapper(
+                gKey: peduliLingkunganKey,
+                title: 'Peduli Lingkungan',
+                description:
+                    'Kini, dengan fitur peduli lingkungan yang terdapat pada aplikasi ini, warga perumahan dapat turut serta dalam menjaga kebersihan dan keindahan lingkungan sekitar',
+                child: Menu(
+                  icon: 'assets/img/citizen_menu/ipl.jpg',
+                  text: 'Peduli lingkungan',
+                  onTap: () => Get.to(
+                      () => SubMenuReport(
+                            typeStatusPeduliLingkungan: 'warga',
+                          ),
+                      transition: Transition.rightToLeft),
                 ),
               )
-            : Menu(
-                icon: 'assets/img/citizen_menu/ipl.jpg',
-                text: 'Status IPL\n',
-                onTap: () => EasyLoading.showInfo(
-                    'Fitur ini hanya bisa diakses oleh warga'),
+            : ShowCaseWrapper(
+                gKey: peduliLingkunganKey,
+                title: 'Peduli Lingkungan',
+                description:
+                    'Kini, dengan fitur peduli lingkungan yang terdapat pada aplikasi ini, warga perumahan dapat turut serta dalam menjaga kebersihan dan keindahan lingkungan sekitar',
+                child: Menu(
+                  icon: 'assets/img/citizen_menu/ipl.jpg',
+                  text: 'Peduli lingkungan',
+                  onTap: () => EasyLoading.showInfo(
+                      'Fitur ini hanya bisa diakses oleh warga'),
+                ),
+              ),
+        (accesController.statusPeduliLingkungan.value)
+            ? ShowCaseWrapper(
+                gKey: statusPeduliLingkuganKey,
+                title: 'Status peduli lingkungan',
+                description:
+                    'Dengan fitur status peduli lingkungan pada aplikasi ini, pengguna dapat dengan mudah melihat daftar laporan warga yang terkait dengan lingkungan sekitar. Pengguna dapat mengecek status laporan,memberikan penilaian pekerja',
+                child: Menu(
+                  icon: 'assets/img/citizen_menu/status-peduli-lingkungan.jpg',
+                  text: 'Status peduli lingkungan',
+                  onTap: () => Get.to(() => ReportScreen2(),
+                      transition: Transition.rightToLeft),
+                ),
+              )
+            : ShowCaseWrapper(
+                gKey: statusPeduliLingkuganKey,
+                title: 'Status peduli lingkungan',
+                description:
+                    'Dengan fitur status peduli lingkungan pada aplikasi ini, pengguna dapat dengan mudah melihat daftar laporan warga yang terkait dengan lingkungan sekitar. Pengguna dapat mengecek status laporan,memberikan penilaian pekerja',
+                child: Menu(
+                  icon: 'assets/img/citizen_menu/status-peduli-lingkungan.jpg',
+                  text: 'Status peduli lingkungan',
+                  onTap: () => EasyLoading.showInfo(
+                      'Fitur ini hanya bisa diakses oleh warga'),
+                ),
+              ),
+        (accesController.statusIpl.value)
+            ? ShowCaseWrapper(
+                gKey: statusIplKey,
+                title: 'Status Ipl',
+                description:
+                    'Dengan fitur riwayat pembayaran IPL pada aplikasi ini, pengguna dapat dengan mudah melihat status pembayaran iuran IPL mereka. Pengguna dapat melacak apakah pembayaran IPL telah dilakukan, berapa besar biaya yang dikeluarkan.',
+                child: Menu(
+                  icon: 'assets/img/citizen_menu/ipl.jpg',
+                  text: 'Status IPL\n',
+                  onTap: () => Get.to(
+                    () => PaymentIplHistory(),
+                    transition: Transition.rightToLeft,
+                  ),
+                ),
+              )
+            : ShowCaseWrapper(
+                gKey: statusIplKey,
+                title: 'Status Ipl',
+                description:
+                    'Dengan fitur riwayat pembayaran IPL pada aplikasi ini, pengguna dapat dengan mudah melihat status pembayaran iuran IPL mereka. Pengguna dapat melacak apakah pembayaran IPL telah dilakukan, berapa besar biaya yang dikeluarkan.',
+                child: Menu(
+                  icon: 'assets/img/citizen_menu/ipl.jpg',
+                  text: 'Status IPL\n',
+                  onTap: () => EasyLoading.showInfo(
+                      'Fitur ini hanya bisa diakses oleh warga'),
+                ),
               ),
         (accesController.informasiWarga.value)
             ? Menu(
@@ -557,7 +609,13 @@ class _MyWidgetState extends State<CitizenScreen> {
         SizedBox(
           height: SizeConfig.height(24),
         ),
-        carouselNews(),
+        ShowCaseWrapper(
+          gKey: newsKey,
+          title: 'Informasi Warga',
+          description:
+              'warga sekitar dapat dengan mudah memperoleh informasi terkini seputar lingkungan sekitar mereka. Dari informasi keamanan, pelayanan publik, acara komunitas, hingga pengumuman penting lainnya dapat diakses secara real-time dan terupdate',
+          child: carouselNews(),
+        ),
       ],
     );
   }
@@ -586,14 +644,24 @@ class _MyWidgetState extends State<CitizenScreen> {
           builder: (BuildContext context) {
             return GestureDetector(
               onTap: () => Get.to(() => ReadInformation(),
-                  transition: Transition.rightToLeft, arguments: [e.content]),
+                  transition: Transition.rightToLeft,
+                  arguments: [e.content, e.title, e.url]),
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 margin: EdgeInsets.only(
                   right: (16 / Sizer.slicingWidth) * SizeConfig.widthMultiplier,
                 ),
-                child: CachedNetworkImage(
-                  imageUrl: '${ServerApp.url}${e.url}',
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    imageUrl: '${ServerApp.url}${e.url}',
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) =>
+                            CircularProgressIndicator.adaptive(
+                                value: downloadProgress.progress),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  ),
                 ),
               ),
             );
