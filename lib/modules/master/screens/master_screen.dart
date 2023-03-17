@@ -48,6 +48,7 @@ class _MasterScreenState extends State<MasterScreen> {
   final accesController = Get.put(AccessController());
   NotificationController controller = Get.put(NotificationController());
   final AssetImage image = AssetImage('assets/img/logo_rw.png');
+
   final ShowCaseData dataShowCase = ShowCaseData();
 
   // init permission
