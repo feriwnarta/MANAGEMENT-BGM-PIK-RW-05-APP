@@ -2,6 +2,7 @@ import 'package:aplikasi_rw/modules/authentication/controllers/access_controller
 import 'package:aplikasi_rw/modules/contractor/screens/dashboard_cordinator_screen.dart';
 import 'package:aplikasi_rw/modules/home/widgets/header_screen.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/sub_menu_report.dart';
+import 'package:aplikasi_rw/modules/templates/app_bar.dart';
 import 'package:aplikasi_rw/modules/util_widgets/init_permission.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,7 @@ class _MenuFolderContractorState extends State<MenuFolderContractor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: RwAppBar(),
       body: SafeArea(
         child: SafeArea(
           child: SingleChildScrollView(

@@ -230,16 +230,22 @@ class InitPermissionApp {
   /// inisialisasi ijin akses storage
   Future<bool> _initPermisionStorage() async {
     // akses storage
-    bool permissionStorage = await Permission.storage.status.isGranted;
+    bool permissionStorage = (Platform.isAndroid)
+        ? await Permission.storage.status.isGranted
+        : await Permission.photos.isGranted;
 
-    if (!permissionStorage) {
+    if (!permissionStorage && Platform.isAndroid) {
       PermissionStatus accessStorage = await Permission.storage.request();
 
       if (accessStorage.isGranted) {
         return true;
       }
+    } else if (!permissionStorage && Platform.isIOS) {
+      PermissionStatus accessStorage = await Permission.photos.request();
 
-      return false;
+      if (accessStorage.isGranted) {
+        return true;
+      }
     }
 
     return false;

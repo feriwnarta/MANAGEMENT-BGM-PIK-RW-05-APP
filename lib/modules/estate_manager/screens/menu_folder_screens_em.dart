@@ -3,6 +3,7 @@ import 'package:aplikasi_rw/modules/estate_manager/screens/dashboard.dart';
 import 'package:aplikasi_rw/modules/estate_manager/screens/menu_folder_create_account.dart';
 import 'package:aplikasi_rw/modules/home/widgets/menu.dart';
 import 'package:aplikasi_rw/modules/report_screen/screens/sub_menu_report.dart';
+import 'package:aplikasi_rw/modules/templates/app_bar.dart';
 import 'package:aplikasi_rw/modules/util_widgets/init_permission.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -41,6 +42,7 @@ class _MenuFolderEmState extends State<MenuFolderEm> {
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(360, 800));
     return Scaffold(
+      appBar: RwAppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Obx(
