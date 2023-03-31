@@ -18,6 +18,8 @@ class SizeConfig {
   static double slicingWidth = 3.75;
   static double slicingImage = 3.75;
   static double slicingText = textMultiplier;
+  static double realText = 8.12;
+  final logger = Logger();
 
   static double width(double val) {
     return (val / slicingWidth) * widthMultiplier;
@@ -34,8 +36,6 @@ class SizeConfig {
   static double image(double val) {
     return (val / slicingImage) * imageSizeMultiplier;
   }
-
-  final logger = Logger();
 
   void init(BoxConstraints constraints, Orientation orientation) {
     if (orientation == Orientation.portrait) {

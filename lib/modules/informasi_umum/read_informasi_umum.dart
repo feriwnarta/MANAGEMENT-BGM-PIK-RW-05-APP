@@ -3,23 +3,19 @@ import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:aplikasi_rw/utils/view_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 //ignore: must_be_immutable
-class ReadInformation extends StatelessWidget {
-  ReadInformation({Key key}) : super(key: key);
-  var argumentData = Get.arguments;
+class ReadInformasiUmum extends StatelessWidget {
+  ReadInformasiUmum({Key key, this.url, this.content, this.title})
+      : super(key: key);
+  String url, title, content;
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(360, 800));
-
-    print(argumentData);
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('Informasi Warga'),
+        title: Text('Informasi Umum'),
         titleTextStyle: Theme.of(context).appBarTheme.titleTextStyle,
         systemOverlayStyle: Theme.of(context).appBarTheme.systemOverlayStyle,
       ),
@@ -36,7 +32,7 @@ class ReadInformation extends StatelessWidget {
                 InkWell(
                   onTap: () => Get.to(
                     ViewImage(
-                      urlImage: '${ServerApp.url}${argumentData[2]}',
+                      urlImage: '${ServerApp.url}$url',
                     ),
                   ),
                   child: Container(
@@ -46,8 +42,8 @@ class ReadInformation extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: CachedNetworkImageProvider(
-                            '${ServerApp.url}${argumentData[2]}'),
+                        image:
+                            CachedNetworkImageProvider('${ServerApp.url}$url'),
                       ),
                     ),
                   ),
@@ -56,17 +52,18 @@ class ReadInformation extends StatelessWidget {
                   height: SizeConfig.height(16),
                 ),
                 Text(
-                  '${argumentData[1]}',
+                  '$title',
                   style: TextStyle(
                     fontSize: SizeConfig.text(22),
                     fontWeight: FontWeight.w700,
+                    fontFamily: 'inter',
                   ),
                 ),
                 SizedBox(
                   height: SizeConfig.height(16),
                 ),
                 Text(
-                  '${argumentData[0]}',
+                  '$content',
                   style: TextStyle(fontSize: SizeConfig.text(16)),
                 ),
               ],

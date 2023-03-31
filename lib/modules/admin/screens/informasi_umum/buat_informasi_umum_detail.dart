@@ -52,7 +52,7 @@ class BuatInformasiUmumDetail extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () async {
-                        EasyLoading.show(status: 'megirim');
+                        EasyLoading.show(status: 'mengirim');
 
                         var result = await AdminServices.saveInformasiUmum(
                             urlImage: adminController.imagePath.value,

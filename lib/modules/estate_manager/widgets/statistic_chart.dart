@@ -102,7 +102,7 @@ class _CardLineState extends State<CardLine> {
                   : Center(
                       child: SizedBox(
                         width: SizeConfig.width(30),
-                        height: SizeConfig.height(30),
+                        height: SizeConfig.height(35),
                         child: CircularProgressIndicator.adaptive(),
                       ),
                     ),

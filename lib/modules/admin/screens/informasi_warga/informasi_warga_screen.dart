@@ -82,7 +82,11 @@ class _InformasiWargaState extends State<InformasiWarga> {
                     ],
                   );
                 } else {
-                  return Center(child: CircularProgressIndicator.adaptive());
+                  return Center(
+                      child: SizedBox(
+                          width: SizeConfig.width(30),
+                          height: SizeConfig.height(35),
+                          child: CircularProgressIndicator.adaptive()));
                 }
               },
             ),
@@ -132,8 +136,14 @@ class CardInformasi extends StatelessWidget {
                   fit: BoxFit.cover,
                   imageUrl: '${ServerApp.url}/$url',
                   progressIndicatorBuilder: (context, url, downloadProgress) =>
-                      CircularProgressIndicator.adaptive(
+                      Center(
+                    child: SizedBox(
+                      width: SizeConfig.width(30),
+                      height: SizeConfig.height(35),
+                      child: CircularProgressIndicator.adaptive(
                           value: downloadProgress.progress),
+                    ),
+                  ),
                   errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
               ),

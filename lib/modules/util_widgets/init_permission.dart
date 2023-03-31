@@ -1,13 +1,12 @@
 import 'dart:io';
-
 import 'package:aplikasi_rw/firebase_options.dart';
-import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class InitPermissionApp {
@@ -81,6 +80,7 @@ class InitPermissionApp {
 
   Future<void> _displayDialogPermission(BuildContext ctx) async {
     bool cameraPermission = await Permission.camera.status.isDenied;
+
     bool locationPermission = await Permission.location.status.isDenied;
     bool storagePermission = (Platform.isAndroid)
         ? await Permission.storage.status.isDenied
@@ -126,7 +126,12 @@ class InitPermissionApp {
           Get.back();
         },
         yes: () async {
-          await _initPermisionCamera();
+          bool reqCamera = await _initPermisionCamera();
+
+          if (!reqCamera) {
+            await openAppSettings();
+          }
+
           Get.back();
         },
         context: ctx,

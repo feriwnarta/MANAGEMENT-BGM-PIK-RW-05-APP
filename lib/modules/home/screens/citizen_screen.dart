@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/authentication/controllers/access_controller.dart';
 import 'package:aplikasi_rw/modules/home/controller/notification_controller.dart';
@@ -26,14 +25,12 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 import '../../../server-app.dart';
 import '../../informasi_warga/screens/read_informasi_screen.dart';
 import '../models/card_news.dart';
-import '../widgets/header_screen.dart';
 
 class CitizenScreen extends StatefulWidget {
   const CitizenScreen({Key key}) : super(key: key);
@@ -507,9 +504,14 @@ class _MyWidgetState extends State<CitizenScreen> {
                     fit: BoxFit.cover,
                     imageUrl: '${ServerApp.url}${e.url}',
                     progressIndicatorBuilder:
-                        (context, url, downloadProgress) =>
-                            CircularProgressIndicator.adaptive(
-                                value: downloadProgress.progress),
+                        (context, url, downloadProgress) => Center(
+                      child: SizedBox(
+                        width: SizeConfig.width(30),
+                        height: SizeConfig.height(35),
+                        child: CircularProgressIndicator.adaptive(
+                            value: downloadProgress.progress),
+                      ),
+                    ),
                     errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
                 ),

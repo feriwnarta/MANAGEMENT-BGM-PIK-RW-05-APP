@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 //ignore: must_be_immutable
 class CameraComplaint extends StatefulWidget {
@@ -137,22 +138,152 @@ class _CameraComplaintState extends State<CameraComplaint> {
     try {
       _cameraController = CameraController(
         desc,
-        ResolutionPreset.medium,
+        ResolutionPreset.ultraHigh,
         imageFormatGroup: ImageFormatGroup.yuv420,
         enableAudio: false,
       );
 
-      if (_cameraController.value.hasError) logger.e('kamera error');
+      await _cameraController.initialize().then((_) {
+        if (_cameraController.value.hasError) logger.e('kamera error');
 
-      _cameraController.addListener(() {
-        if (mounted) setState(() {});
+        _cameraController.addListener(() {
+          if (mounted) setState(() {});
+        });
+      }).catchError((Object e) {
+        logger.e(e);
+        if (e is CameraException) {
+          switch (e.code) {
+            case 'CameraAccessDenied':
+              requestCameraPermission(context);
+              break;
+            default:
+              // Handle other errors here.
+              break;
+          }
+        }
       });
 
-      await _cameraController.initialize();
-      _cameraController.setFlashMode(FlashMode.off);
+      // _cameraController.setFlashMode(FlashMode.off);
     } catch (e) {
       logger.e(e);
     }
+  }
+
+  Future<void> requestCameraPermission(BuildContext ctx) async {
+    bool cameraPermission = await Permission.camera.status.isDenied;
+
+    // dialog akses kamera
+    if (cameraPermission) {
+      await _dialogRequirePermissions(
+        title: 'Berikan Akses Kamera',
+        content:
+            'Untuk menggunakan fitur yang membutuhkan kamera, kami memerlukan izin akses kamera Anda. Apakah Anda ingin memberikan izin akses sekarang?',
+        no: () {
+          Get.back();
+          Get.back();
+        },
+        yes: () async {
+          bool reqCamera = await _initPermisionCamera();
+
+          if (!reqCamera) {
+            await openAppSettings();
+          }
+
+          Get.back();
+        },
+        context: ctx,
+      );
+    } else if (await Permission.camera.status.isPermanentlyDenied) {
+      await _dialogRequirePermissions(
+        title: 'Berikan Akses Kamera',
+        content:
+            'Untuk menggunakan fitur yang membutuhkan kamera, kami memerlukan izin akses kamera Anda. Apakah Anda ingin memberikan izin akses sekarang?',
+        no: () {
+          Get.back();
+        },
+        yes: () async {
+          await openAppSettings();
+          Get.back();
+        },
+        context: ctx,
+      );
+    }
+  }
+
+  Future<dynamic> _dialogRequirePermissions(
+      {String title,
+      String content,
+      Function yes,
+      Function no,
+      BuildContext context}) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      useSafeArea: true,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            title,
+            style: TextStyle(
+              fontSize: SizeConfig.text(16),
+            ),
+          ),
+          content: Text(
+            content,
+            textAlign: TextAlign.left,
+            style: TextStyle(fontSize: SizeConfig.text(12), color: Colors.grey),
+          ),
+          titlePadding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.width(16),
+            vertical: SizeConfig.height(8),
+          ),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.width(16),
+            vertical: SizeConfig.height(8),
+          ),
+          actions: [
+            TextButton(
+              onPressed: no,
+              child: Text(
+                'Tidak',
+                style: TextStyle(fontSize: SizeConfig.text(14)),
+              ),
+            ),
+            TextButton(
+              onPressed: yes,
+              child: Text(
+                'Ya',
+                style: TextStyle(fontSize: SizeConfig.text(14)),
+              ),
+            ),
+          ],
+          actionsPadding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.width(16),
+            vertical: 0,
+          ),
+        );
+      },
+    );
+  }
+
+  /// inisialisasi ijin akses camera
+  Future<bool> _initPermisionCamera() async {
+    // akses kamera
+    bool permissionCamera = await Permission.camera.status.isDenied;
+
+    if (permissionCamera) {
+      PermissionStatus statusCamera = await Permission.camera.request();
+
+      if (statusCamera.isGranted) {
+        return true;
+      }
+
+      return false;
+    } else if (await Permission.camera.status.isPermanentlyDenied) {
+      await openAppSettings();
+    }
+
+    return false;
   }
 
   Widget cameraPreview() {

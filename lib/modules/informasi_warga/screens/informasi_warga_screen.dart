@@ -26,61 +26,71 @@ class InformasiWargaScreen extends StatelessWidget {
           child: Column(
             children: [
               FutureBuilder<List<CardNews>>(
-                  future: NewsServices.getNews(),
-                  builder: (context, snapshot) => (snapshot.hasData)
-                      ? ListView.builder(
-                          itemCount: snapshot.data.length,
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (_, index) {
-                            return GestureDetector(
-                              onTap: () => Get.to(
-                                () => ReadInformation(),
-                                transition: Transition.rightToLeft,
-                                arguments: [
-                                  snapshot.data[index].content,
-                                  snapshot.data[index].title,
-                                  snapshot.data[index].url,
-                                ],
-                              ),
-                              child: Container(
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: SizeConfig.width(16),
-                                ).copyWith(top: SizeConfig.height(16)),
-                                child: Column(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Container(
-                                        height: SizeConfig.image(188),
-                                        width: double.infinity,
-                                        child: CachedNetworkImage(
-                                          fit: BoxFit.cover,
-                                          imageUrl:
-                                              '${ServerApp.url}${snapshot.data[index].url}',
-                                          progressIndicatorBuilder: (context,
-                                                  url, downloadProgress) =>
-                                              CircularProgressIndicator
-                                                  .adaptive(
-                                                      value: downloadProgress
-                                                          .progress),
-                                          errorWidget: (context, url, error) =>
-                                              Icon(Icons.error),
+                future: NewsServices.getNews(),
+                builder: (context, snapshot) => (snapshot.hasData)
+                    ? ListView.builder(
+                        itemCount: snapshot.data.length,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (_, index) {
+                          return GestureDetector(
+                            onTap: () => Get.to(
+                              () => ReadInformation(),
+                              transition: Transition.rightToLeft,
+                              arguments: [
+                                snapshot.data[index].content,
+                                snapshot.data[index].title,
+                                snapshot.data[index].url,
+                              ],
+                            ),
+                            child: Container(
+                              margin: EdgeInsets.symmetric(
+                                horizontal: SizeConfig.width(16),
+                              ).copyWith(top: SizeConfig.height(16)),
+                              child: Column(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Container(
+                                      height: SizeConfig.image(188),
+                                      width: double.infinity,
+                                      child: CachedNetworkImage(
+                                        fit: BoxFit.cover,
+                                        imageUrl:
+                                            '${ServerApp.url}${snapshot.data[index].url}',
+                                        progressIndicatorBuilder:
+                                            (context, url, downloadProgress) =>
+                                                Center(
+                                          child: SizedBox(
+                                            width: SizeConfig.width(30),
+                                            height: SizeConfig.height(35),
+                                            child: CircularProgressIndicator
+                                                .adaptive(
+                                                    value: downloadProgress
+                                                        .progress),
+                                          ),
                                         ),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
                                       ),
                                     ),
-                                    SizedBox(
-                                      height: SizeConfig.height(8),
-                                    ),
-                                    Divider(
-                                      thickness: 3,
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                  SizedBox(
+                                    height: SizeConfig.height(8),
+                                  ),
+                                  Divider(
+                                    thickness: 3,
+                                  ),
+                                ],
                               ),
-                            );
-                          })
-                      : CircularProgressIndicator.adaptive()),
+                            ),
+                          );
+                        })
+                    : SizedBox(
+                        width: SizeConfig.width(30),
+                        height: SizeConfig.height(35),
+                        child: CircularProgressIndicator.adaptive()),
+              ),
               Container(
                 height: SizeConfig.height(20),
               )

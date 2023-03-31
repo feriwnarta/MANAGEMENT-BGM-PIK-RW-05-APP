@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/admin/screens/tulis_informasi_screen.dart';
 import 'package:aplikasi_rw/modules/authentication/controllers/access_controller.dart';
@@ -113,9 +112,6 @@ class _MasterScreenState extends State<MasterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final logger = Logger();
-    logger.i(userLoginController.accessCordinator.value);
-
     ScreenUtil.init(context,
         designSize: Size(MediaQuery.of(context).size.width,
             MediaQuery.of(context).size.height));
@@ -136,7 +132,7 @@ class _MasterScreenState extends State<MasterScreen> {
             Text(
               'BGM RW 05',
               style: TextStyle(
-                fontSize: (19 / Sizer.slicingText) * SizeConfig.textMultiplier,
+                fontSize: SizeConfig.text(19),
                 color: Colors.blue,
               ),
               maxLines: 1,

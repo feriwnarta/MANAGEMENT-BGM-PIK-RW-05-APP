@@ -52,7 +52,7 @@ class BuatInformasiWargaDetail extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () async {
-                        EasyLoading.show(status: 'megirim');
+                        EasyLoading.show(status: 'mengirim');
 
                         var result = await AdminServices.save(
                             urlImage: adminController.imagePath.value,

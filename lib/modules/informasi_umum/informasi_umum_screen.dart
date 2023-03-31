@@ -1,9 +1,11 @@
 import 'package:aplikasi_rw/modules/admin/models/InformasiModel.dart';
+import 'package:aplikasi_rw/modules/informasi_umum/read_informasi_umum.dart';
 import 'package:aplikasi_rw/modules/informasi_warga/services/informasi_umum_services.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class InformasiUmum extends StatelessWidget {
   const InformasiUmum({Key key}) : super(key: key);
@@ -31,21 +33,39 @@ class InformasiUmum extends StatelessWidget {
                           .map<Widget>(
                             (informasi) => Column(
                               children: [
-                                Container(
-                                  width: double.infinity,
-                                  height: SizeConfig.height(188),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: CachedNetworkImage(
-                                      fit: BoxFit.cover,
-                                      imageUrl:
-                                          '${ServerApp.url}/${informasi.urlImageNews}',
-                                      progressIndicatorBuilder: (context, url,
-                                              downloadProgress) =>
-                                          CircularProgressIndicator.adaptive(
-                                              value: downloadProgress.progress),
-                                      errorWidget: (context, url, error) =>
-                                          Icon(Icons.error),
+                                InkWell(
+                                  onTap: () => Get.to(
+                                    ReadInformasiUmum(
+                                      content: informasi.content,
+                                      title: informasi.caption,
+                                      url: informasi.urlImageNews,
+                                    ),
+                                    transition: Transition.cupertino,
+                                  ),
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: SizeConfig.height(188),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: CachedNetworkImage(
+                                        fit: BoxFit.cover,
+                                        imageUrl:
+                                            '${ServerApp.url}/${informasi.urlImageNews}',
+                                        progressIndicatorBuilder:
+                                            (context, url, downloadProgress) =>
+                                                Center(
+                                          child: SizedBox(
+                                            width: SizeConfig.width(30),
+                                            height: SizeConfig.height(35),
+                                            child: CircularProgressIndicator
+                                                .adaptive(
+                                                    value: downloadProgress
+                                                        .progress),
+                                          ),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -66,7 +86,11 @@ class InformasiUmum extends StatelessWidget {
                           )
                           .toList(),
                     )
-                  : Center(child: CircularProgressIndicator.adaptive())),
+                  : Center(
+                      child: SizedBox(
+                          width: SizeConfig.width(30),
+                          height: SizeConfig.height(35),
+                          child: CircularProgressIndicator.adaptive()))),
         ),
       ),
     );

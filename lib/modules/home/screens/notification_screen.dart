@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:aplikasi_rw/modules/home/controller/notification_controller.dart';
 import 'package:aplikasi_rw/server-app.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -97,65 +97,64 @@ class NotifiBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 8.h),
+      padding: EdgeInsets.only(top: SizeConfig.height(8)),
       child: Column(
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width: 24.w,
-                height: 24.h,
+                width: SizeConfig.width(24),
+                height: SizeConfig.height(24),
                 child: CircleAvatar(
                   backgroundImage: CachedNetworkImageProvider(
                       '${ServerApp.url}/$urlProfile'),
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 8.w),
+                padding: EdgeInsets.only(left: SizeConfig.width(8)),
                 child: Column(
                   children: [
                     SizedBox(
-                      width: 296.w,
-                      child: AutoSizeText(
+                      width: SizeConfig.width(296),
+                      child: Text(
                         '$title',
-                        style: TextStyle(fontSize: 12.sp),
-                        maxLines: 1,
-                        minFontSize: 10,
+                        style: TextStyle(fontSize: SizeConfig.text(12)),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     SizedBox(
-                      width: 296.w,
-                      child: AutoSizeText(
+                      width: SizeConfig.width(296),
+                      child: Text(
                         '$time',
                         style: TextStyle(
-                          fontSize: 10.sp,
+                          fontSize: SizeConfig.text(10),
                           color: Color(0xff9E9E9E),
                         ),
                         maxLines: 1,
-                        minFontSize: 10,
                       ),
                     ),
                     SizedBox(
-                      height: 8.h,
+                      height: SizeConfig.height(8),
                     ),
                     SizedBox(
-                      width: 296.w,
+                      width: SizeConfig.width(296),
                       child: ReadMoreText(
                         '$content',
                         trimLines: 3,
                         trimMode: TrimMode.Line,
                         trimCollapsedText: ' Baca selengkapnya',
                         trimExpandedText: ' Baca lebih sedikit',
-                        lessStyle:
-                            TextStyle(fontSize: 10.sp, color: Colors.blue),
+                        lessStyle: TextStyle(
+                            fontSize: SizeConfig.text(10), color: Colors.blue),
                         moreStyle: TextStyle(
-                          fontSize: 10.sp,
+                          fontSize: SizeConfig.text(10),
                           color: Colors.blue,
                         ),
                         textAlign: TextAlign.justify,
                         style: TextStyle(
-                          fontSize: 10.sp,
+                          fontSize: SizeConfig.text(10),
                           color: Color(0xff616161),
                         ),
                       ),
@@ -166,7 +165,7 @@ class NotifiBody extends StatelessWidget {
             ],
           ),
           SizedBox(
-            height: 8.h,
+            height: SizeConfig.height(8),
           ),
           Divider(
             thickness: 2,
