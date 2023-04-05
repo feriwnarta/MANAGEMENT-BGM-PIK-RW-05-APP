@@ -163,7 +163,7 @@ class _CameraComplaintState extends State<CameraComplaint> {
         }
       });
 
-      // _cameraController.setFlashMode(FlashMode.off);
+      _cameraController.setFlashMode(FlashMode.off);
     } catch (e) {
       logger.e(e);
     }
