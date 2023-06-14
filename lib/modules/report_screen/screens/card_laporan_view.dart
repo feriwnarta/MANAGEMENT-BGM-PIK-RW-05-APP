@@ -917,30 +917,48 @@ class _GoogleMapViewReportState extends State<GoogleMapViewReport> {
 
   @override
   Widget build(BuildContext context) {
+    return buildMapContainer();
+  }
+
+  Widget buildGoogleMap() {
+    return GoogleMap(
+      liteModeEnabled: (Platform.isAndroid) ? true : false,
+      compassEnabled: false,
+      myLocationButtonEnabled: false,
+      initialCameraPosition: CameraPosition(
+        bearing: 192.8334901395799,
+        target: LatLng(
+          double.parse(widget.latitude),
+          double.parse(widget.longitude),
+        ),
+        tilt: 0,
+        zoom: 12.151926040649414,
+      ),
+      zoomControlsEnabled: false,
+      zoomGesturesEnabled: false,
+      onMapCreated: (controller) => _controller = controller,
+      mapType: MapType.normal,
+      buildingsEnabled: false,
+      markers: buildMarkers(),
+    );
+  }
+
+  Set<Marker> buildMarkers() {
+    return {
+      Marker(
+        markerId: MarkerId('1'),
+        position: LatLng(
+          double.parse(widget.latitude),
+          double.parse(widget.longitude),
+        ),
+      ),
+    };
+  }
+
+  Container buildMapContainer() {
     return Container(
       height: SizeConfig.height(300),
-      child: GoogleMap(
-        liteModeEnabled: (Platform.isAndroid) ? true : false,
-        compassEnabled: false,
-        myLocationButtonEnabled: false,
-        initialCameraPosition: CameraPosition(
-            bearing: 192.8334901395799,
-            target: LatLng(
-                double.parse(widget.latitude), double.parse(widget.longitude)),
-            tilt: 0,
-            zoom: 12.151926040649414),
-        zoomControlsEnabled: false,
-        zoomGesturesEnabled: false,
-        onMapCreated: (controller) => _controller = controller,
-        mapType: MapType.normal,
-        buildingsEnabled: false,
-        markers: {
-          Marker(
-              markerId: MarkerId('1'),
-              position: LatLng(double.parse(widget.latitude),
-                  double.parse(widget.longitude)))
-        },
-      ),
+      child: buildGoogleMap(),
     );
   }
 }

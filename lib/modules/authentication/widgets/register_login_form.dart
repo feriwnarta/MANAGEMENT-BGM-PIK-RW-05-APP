@@ -436,7 +436,7 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                       hintStyle: TextStyle(fontSize: SizeConfig.text(14)),
                       border: UnderlineInputBorder()),
                   validator: (value) {
-                    print('${ValidationForm.isValidPhone(value)}');
+                    // print('${ValidationForm.isValidPhone(value)}');
                     if (value.isEmpty) {
                       return 'Nomor telpon tidak boleh kosong';
                     } else {

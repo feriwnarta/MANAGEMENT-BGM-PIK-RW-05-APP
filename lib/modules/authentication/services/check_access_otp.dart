@@ -15,6 +15,8 @@ class CheckAccessOtp {
 
     var data = {'username': username};
 
+    print(data);
+
     Map<String, dynamic> result = {};
 
     var response = await dio.post(url, data: jsonEncode(data));

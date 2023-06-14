@@ -38,8 +38,8 @@ class _HomeScreenFolderState extends State<HomeScreenFolder> {
               height: 24.h,
             ),
             Container(
-              height: 224.h,
-              margin: EdgeInsets.symmetric(horizontal: 16.w),
+              // height: 224.h,
+              margin: EdgeInsets.symmetric(horizontal: 12.w),
               child: Column(
                 children: [
                   Row(

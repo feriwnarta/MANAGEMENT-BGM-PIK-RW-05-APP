@@ -107,10 +107,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     }
 
     final storage = FlutterSecureStorage();
-    storage.read(key: 'successotp').then((value) {
-      final logger = Logger();
-      logger.e(registerController.otpWhenExit.value);
-    });
+    storage.read(key: 'successotp').then((value) {});
   }
 
   @override
@@ -891,16 +888,8 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
               // registerController.update();
               registerController.update();
               // setState(() {});
-              final logger = Logger();
-              logger.d(registerController.toOtp.value);
-              logger.i(message);
               registerController.email.value = email;
               registerController.noTelp.value = noTelp;
-
-              logger.e('whatsapp');
-              logger.e(registerController.email.value);
-              logger.e(registerController.noTelp.value);
-              logger.e(registerController.methodVerifChose.value);
             } else {
               registerController.toOtpVerif = false.obs;
               registerController.toOtp = true.obs;
@@ -1146,10 +1135,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
             // Navigator.of(context).pop();
             EasyLoading.dismiss();
             final storage = new FlutterSecureStorage();
-            // FlutterSecureStorage().write(key: 'successotp', value: 'false');
-            // FlutterSecureStorage().write(key: 'noipl', value: noIpl);
-            // FlutterSecureStorage().write(key: 'email', value: email);
-            // FlutterSecureStorage().write(key: 'notelp', value: noTelp);
+
             await storage.write(key: 'successotp', value: 'false');
             await storage.write(key: 'noipl', value: noIpl);
             await storage.write(key: 'email', value: email);

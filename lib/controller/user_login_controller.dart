@@ -8,6 +8,7 @@ import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
 import '../modules/home/controller/notification_controller.dart';
 
@@ -95,13 +96,17 @@ class UserLoginController extends GetxController {
     String idUser = await UserSecureStorage.getIdUser();
     String statusUser = await UserSecureStorage.getStatus();
 
+    Logger logger = Logger();
+
     if (idUser != null && statusUser != null) {
       // cek status user apakah empty
+
       if (statusUser.isNotEmpty) {
         status = statusUser.obs;
         this.idUser = idUser.obs;
-        UserModel userModel = await GetDataUserServices.getDataUser(idUser);
 
+        UserModel userModel = await GetDataUserServices.getDataUser(idUser);
+        logger.e(statusUser);
         if (userModel != null) {
           this.urlProfile = userModel.urlProfile.obs;
           this.username = userModel.username.obs;

@@ -6,11 +6,11 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class CountDownController extends GetxController {
-  RxInt count = 60.obs;
+  RxInt count = 900.obs;
   Timer timer;
 
   void countDown({String iplOrEmail}) async {
-    count = 60.obs;
+    count = 900.obs;
     timer = Timer.periodic(Duration(seconds: 1), (timer) async {
       if (count.value != 0) {
         count.value--;
@@ -24,7 +24,7 @@ class CountDownController extends GetxController {
 
   void reset() {
     timer.cancel();
-    this.count = 60.obs;
+    this.count = 900.obs;
   }
 
   Future<void> expiredOtp(String iplOrEmail) async {

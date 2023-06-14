@@ -156,6 +156,8 @@ class _SplashViewState extends State<SplashView> {
         } else {
           String message = await checkLoginActive();
 
+          await checkOtpWhenExit();
+
           if (message.isCaseInsensitiveContainsAny('OKE') ||
               message.isCaseInsensitiveContainsAny('RELOG')) {
             _loginController.connect();
@@ -166,8 +168,7 @@ class _SplashViewState extends State<SplashView> {
             await updateStatus();
           } else if (message.isCaseInsensitiveContainsAny('FAILL')) {
             _loginController.logout();
-            Get.snackbar('message', 'Akun anda telah keluar');
-          } else {}
+          }
         }
       } else {
         await _loginController.noConnection();

@@ -25,6 +25,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -78,6 +79,9 @@ class _MyWidgetState extends State<CitizenScreen> {
       await initPermissionApp.initPermissionApp(context);
 
       var value = await UserSecureStorage.readKey(key: 'runOnFirst');
+
+      Logger logger = Logger();
+      logger.d(value);
 
       if (value == null) {
         await ShowCaseWidget.of(context).startShowCase(

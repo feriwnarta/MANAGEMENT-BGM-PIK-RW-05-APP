@@ -4,6 +4,7 @@ import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:logger/logger.dart';
 
 class GetDataUserServices {
   static Future<UserModel> getDataUser(String idUser) async {
@@ -16,6 +17,9 @@ class GetDataUserServices {
     var data = {"id_user": idUser, "status_user": statusUser};
 
     var response = await dio.post(url, data: jsonEncode(data));
+
+    Logger logger = Logger();
+    logger.e(response);
 
     if (response.statusCode >= 200 && response.data.isNotEmpty) {
       var result = jsonDecode(response.data);

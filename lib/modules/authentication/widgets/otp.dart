@@ -188,7 +188,8 @@ class _OtpState extends State<Otp> {
                     children: [
                       TextSpan(
                         text:
-                            '00 :${(countDownController.count.value < 10) ? 0 : ''}${countDownController.count.value}',
+                            formatDetikKeMenit(countDownController.count.value),
+                        // '00 :${(countDownController.count.value < 10) ? 0 : ''}${countDownController.count.value}',
                         style: TextStyle(
                             fontWeight: FontWeight.w700, color: Colors.blue),
                       ),
@@ -309,5 +310,13 @@ class _OtpState extends State<Otp> {
         SizedBox(height: SizeConfig.height(41))
       ],
     );
+  }
+
+  String formatDetikKeMenit(int detik) {
+    int menit = detik ~/ 60;
+    int detikSisa = detik % 60;
+    String menitString = menit.toString().padLeft(2, '0');
+    String detikString = detikSisa.toString().padLeft(2, '0');
+    return '$menitString:$detikString';
   }
 }
