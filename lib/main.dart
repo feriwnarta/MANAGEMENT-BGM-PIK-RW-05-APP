@@ -45,7 +45,10 @@ import 'modules/management/screens/management_screen.dart';
 // import 'package:sizer/sizer.dart' as s;
 import 'firebase_options.dart';
 
-// before refactoring
+/**
+ * ADD CRASHLYTIC
+ */
+
 Future<void> notificationInit() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
