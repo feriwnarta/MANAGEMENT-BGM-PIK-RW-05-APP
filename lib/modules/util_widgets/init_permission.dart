@@ -6,30 +6,29 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class InitPermissionApp {
   /// FIREBASE BACKGROUND NOTIFICATION
-  @pragma('vm:entry-point')
-  Future<void> _firebaseMessagingBackgroundHandler(
-      RemoteMessage message) async {
-    // If you're going to use other Firebase services in the background, such as Firestore,
-    // make sure you call `initializeApp` before using other Firebase services.
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+  // @pragma('vm:entry-point')
+  // Future<void> _firebaseMessagingBackgroundHandler(
+  //     RemoteMessage message) async {
+  //   // If you're going to use other Firebase services in the background, such as Firestore,
+  //   // make sure you call `initializeApp` before using other Firebase services.
+  //   await Firebase.initializeApp(
+  //     options: DefaultFirebaseOptions.currentPlatform,
+  //   );
 
-    AwesomeNotifications().createNotification(
-        content: NotificationContent(
-            id: 10,
-            channelKey: 'basic_channel',
-            title: '${message.notification.title}',
-            body: '${message.notification.body}',
-            actionType: ActionType.Default));
+  //   AwesomeNotifications().createNotification(
+  //       content: NotificationContent(
+  //           id: 10,
+  //           channelKey: 'basic_channel',
+  //           title: '${message.notification.title}',
+  //           body: '${message.notification.body}',
+  //           actionType: ActionType.Default));
 
-    print("Handling a background message: ${message.messageId}");
-  }
+  //   print("Handling a background message: ${message.messageId}");
+  // }
 
   Future<void> _initPermissionNotification() async {
     FirebaseMessaging m = FirebaseMessaging.instance;
@@ -49,7 +48,7 @@ class InitPermissionApp {
       );
     });
 
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     m.getToken().then((token) => print(token));
 
@@ -82,9 +81,7 @@ class InitPermissionApp {
     bool cameraPermission = await Permission.camera.status.isDenied;
 
     bool locationPermission = await Permission.location.status.isDenied;
-    bool storagePermission = (Platform.isAndroid)
-        ? await Permission.storage.status.isDenied
-        : await Permission.photos.isDenied;
+    bool storagePermission = await Permission.photos.isDenied;
 
     if (await Permission.notification.isDenied) {
       await _dialogRequirePermissions(
@@ -184,35 +181,35 @@ class InitPermissionApp {
     }
 
     // dialog akses Media
-    if (storagePermission) {
-      await _dialogRequirePermissions(
-        title: 'Berikan Akses Media',
-        content:
-            'Untuk menggunakan fitur yang membutuhkan akses media, kami memerlukan izin akses media Anda. Apakah Anda ingin memberikan izin akses sekarang?',
-        no: () {
-          Get.back();
-        },
-        yes: () async {
-          await _initPermisionStorage();
-          Get.back();
-        },
-        context: ctx,
-      );
-    } else if (await Permission.photos.isPermanentlyDenied) {
-      await _dialogRequirePermissions(
-        title: 'Berikan Akses Media',
-        content:
-            'Untuk menggunakan fitur yang membutuhkan akses media, kami memerlukan izin akses media Anda. Apakah Anda ingin memberikan izin akses sekarang?',
-        no: () {
-          Get.back();
-        },
-        yes: () async {
-          await openAppSettings();
-          Get.back();
-        },
-        context: ctx,
-      );
-    }
+    // if (storagePermission) {
+    //   await _dialogRequirePermissions(
+    //     title: 'Berikan Akses Media',
+    //     content:
+    //         'Untuk menggunakan fitur yang membutuhkan akses media, kami memerlukan izin akses media Anda. Apakah Anda ingin memberikan izin akses sekarang?',
+    //     no: () {
+    //       Get.back();
+    //     },
+    //     yes: () async {
+    //       await _initPermisionStorage();
+    //       Get.back();
+    //     },
+    //     context: ctx,
+    //   );
+    // } else if (await Permission.photos.isPermanentlyDenied) {
+    //   await _dialogRequirePermissions(
+    //     title: 'Berikan Akses Media',
+    //     content:
+    //         'Untuk menggunakan fitur yang membutuhkan akses media, kami memerlukan izin akses media Anda. Apakah Anda ingin memberikan izin akses sekarang?',
+    //     no: () {
+    //       Get.back();
+    //     },
+    //     yes: () async {
+    //       await openAppSettings();
+    //       Get.back();
+    //     },
+    //     context: ctx,
+    //   );
+    // }
   }
 
   /// inisialisasi ijin akses camera
@@ -236,17 +233,9 @@ class InitPermissionApp {
   /// inisialisasi ijin akses storage
   Future<bool> _initPermisionStorage() async {
     // akses storage
-    bool permissionStorage = (Platform.isAndroid)
-        ? await Permission.storage.status.isGranted
-        : await Permission.photos.isGranted;
+    bool permissionStorage = await Permission.photos.isGranted;
 
-    if (!permissionStorage && Platform.isAndroid) {
-      PermissionStatus accessStorage = await Permission.storage.request();
-
-      if (accessStorage.isGranted) {
-        return true;
-      }
-    } else if (!permissionStorage && Platform.isIOS) {
+    if (!permissionStorage) {
       PermissionStatus accessStorage = await Permission.photos.request();
 
       if (accessStorage.isGranted) {
