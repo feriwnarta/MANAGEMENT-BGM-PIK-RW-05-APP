@@ -23,7 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  
+
   #font awes
   font_awesome_flutter: ^10.2.1
   # image picker tanpa null safety
@@ -36,7 +36,7 @@ dependencies:
   cached_network_image: ^3.2.3
   # flutter bloc
   flutter_bloc: ^8.1.1
-  # http 
+  # http
   http: ^0.13.5
   # readmore
   readmore: ^2.2.0
@@ -92,7 +92,7 @@ dependencies:
   dio: ^4.0.6
   http_parser: ^4.0.2
   flutter_easyloading: ^3.0.5
-  camera: ^0.10.3+2
+  camera: ^0.10.5+2
   dio_smart_retry: ^1.4.0
   auto_size_text: ^3.0.0
   like_button: ^2.0.5
@@ -101,6 +101,7 @@ dependencies:
   package_info_plus: ^3.0.2
   upgrader: ^5.1.0
   permission_handler: ^10.2.0
+  firebase_crashlytics: ^3.3.3
 
 
 
@@ -109,12 +110,12 @@ dependencies:
   cupertino_icons: ^1.0.5
 
 
-dependency_overrides:
-  camera:
-    git:
-      url: https://github.com/bottlepay/plugins.git
-      path: packages/camera/camera
-      ref: e1a4dba770da9bc3cf9f858bac6837083f8b9059
+#dependency_overrides:
+#  camera:
+#    git:
+#      url: https://github.com/bottlepay/plugins.git
+#      path: packages/camera/camera
+#      ref: e1a4dba770da9bc3cf9f858bac6837083f8b9059
 
 dev_dependencies:
   flutter_test:
@@ -163,13 +164,13 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  
+
   fonts:
     - family: Poppins
       fonts:
         - asset: assets/fonts/Poppins-Bold.ttf
           weight: 700
-  #         style: italic
+    #         style: italic
     - family: Roboto
       fonts:
         - asset: assets/fonts/Roboto-Regular.ttf
@@ -184,17 +185,17 @@ flutter:
         - asset: assets/fonts/Inter-Bold.ttf
           weight: 700
 
-    
 
-    - family: Montserrat 
+
+    - family: Montserrat
       fonts:
         - asset: assets/fonts/Montserrat-Regular.ttf
 
-    - family: NewsCycle 
+    - family: NewsCycle
       fonts:
         - asset: assets/fonts/NewsCycle-Regular.ttf
 
-    
+
 
 
   #       - asset: fonts/TrajanPro_Bold.ttf
