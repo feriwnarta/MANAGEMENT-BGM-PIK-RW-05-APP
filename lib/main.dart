@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:aplikasi_rw/controller/home_screen_controller.dart';
 import 'package:aplikasi_rw/controller/indexscreen_home_controller.dart';
@@ -29,6 +30,8 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -45,7 +48,30 @@ import 'modules/management/screens/management_screen.dart';
 // import 'package:sizer/sizer.dart' as s;
 import 'firebase_options.dart';
 
-// before refactoring
+/**
+ * ADD CRASHLYTIC
+ */
+
+/// FIREBASE BACKGROUND NOTIFICATION
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  AwesomeNotifications().createNotification(
+      content: NotificationContent(
+          id: 10,
+          channelKey: 'basic_channel',
+          title: '${message.notification.title}',
+          body: '${message.notification.body}',
+          actionType: ActionType.Default));
+
+  print("Handling a background message: ${message.messageId}");
+}
+
 Future<void> notificationInit() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
@@ -53,6 +79,16 @@ Future<void> notificationInit() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+
+  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
 
   AwesomeNotifications().initialize(
       // set the icon to null if you want to use the default app icon
@@ -77,6 +113,8 @@ Future<void> notificationInit() async {
             channelGroupName: 'Basic group')
       ],
       debug: false);
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 }
 
 void main() async {
