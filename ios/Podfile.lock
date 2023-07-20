@@ -144,6 +144,7 @@ DEPENDENCIES:
   - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
+  - Firebase/Messaging
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
@@ -268,6 +269,10 @@ SPEC CHECKSUMS:
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
 
+<<<<<<< HEAD
 PODFILE CHECKSUM: 72841c58ddf4d11a2721e84e00a2919262f26260
+=======
+PODFILE CHECKSUM: 7562b4e1e933f306d6f1fb557dcb69343cd56d39
+>>>>>>> cea1e9d (update fix error ios)
 
 COCOAPODS: 1.11.3
