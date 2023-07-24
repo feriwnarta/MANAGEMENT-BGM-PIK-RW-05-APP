@@ -357,7 +357,7 @@ class _MainAppState extends State<MainApp> {
         debugDisplayAlways: false,
         languageCode: 'id',
         durationUntilAlertAgain: Duration(days: 1),
-        minAppVersion: '1.0.3',
+        minAppVersion: '1.0.4',
         shouldPopScope: () => true,
         canDismissDialog: true,
         debugLogging: false,

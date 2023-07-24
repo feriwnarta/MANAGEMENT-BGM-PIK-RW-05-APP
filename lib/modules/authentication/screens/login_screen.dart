@@ -726,13 +726,18 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     } else {
       data = {'iplOrEmail': controllerIpl.text, 'otp': otpKey};
     }
+
     final logger = Logger();
-    logger.d(otpKey);
-    logger.d(authController.controllerUsername.text);
+    logger.d(data);
+    // logger.d(otpKey);
+    // logger.d(authController.controllerUsername.text);
+
     try {
       EasyLoading.show(status: 'loading');
       http.Response response =
           await http.post(Uri.parse(url), body: json.encode(data));
+
+      logger.d(response.body);
       if (response.body != null && response.body.isNotEmpty) {
         if (response.body.contains('OKE')) {
           // jika otp dari login berhasil
@@ -746,7 +751,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
               value: rs['no_ipl'],
             );
             String idUser = await UserSecureStorage.getIdUser();
-            logger.w(status);
+            // logger.w(status);
             // countDownController.reset();
             countDownController.reset();
             if (idUser.isNotEmpty) {
@@ -806,6 +811,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
       registerController.toOtpVerif = false.obs;
       registerController.toOtp = true.obs;
       registerController.methodVerifChose = methodChose.obs;
+      registerController.email.value = email;
       registerController.update();
       countDownController.countDown(
           iplOrEmail: (controllerIpl.text.isEmpty)
@@ -863,7 +869,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
       String noTelp}) {
     return GestureDetector(
       onTap: () async {
-        print('on tap');
         if (methodChose.isCaseInsensitiveContainsAny('EMAIL')) {
           emailServices(email, noTelp, methodChose);
           // countDownController.count = 60.obs;
