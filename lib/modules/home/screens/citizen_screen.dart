@@ -3,6 +3,7 @@ import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/authentication/controllers/access_controller.dart';
 import 'package:aplikasi_rw/modules/home/controller/notification_controller.dart';
 import 'package:aplikasi_rw/modules/home/data/ShowCaseData.dart';
+import 'package:aplikasi_rw/modules/home/screens/garbage_collection_screen.dart';
 import 'package:aplikasi_rw/modules/home/screens/notification_screen.dart';
 import 'package:aplikasi_rw/modules/home/screens/show_case_widget.dart';
 import 'package:aplikasi_rw/modules/home/services/news_service.dart';
@@ -57,6 +58,7 @@ class _MyWidgetState extends State<CitizenScreen> {
   final GlobalKey informasiWarga = GlobalKey();
   final GlobalKey informasiUmum = GlobalKey();
   final GlobalKey sosialMedia = GlobalKey();
+  final GlobalKey plastikSampah = GlobalKey();
 
   @override
   void initState() {
@@ -383,7 +385,19 @@ class _MyWidgetState extends State<CitizenScreen> {
                     'Fitur ini hanya bisa diakses oleh warga',
                   ),
                 ),
-              )
+              ),
+        ShowCaseWrapper(
+          gKey: plastikSampah,
+          title: 'Pengambilan kanton sampah',
+          description:
+              'Dengan fitur ini anda perlu melakukan verifikasi pembayaran IPL untuk pengambilan kantong sampah',
+          child: Menu(
+            icon: 'assets/img/citizen_menu/plastik_sampah.jpg',
+            text: 'Kantong Sampah',
+            onTap: () => Get.to(() => GarbageCollectionScreen(),
+                transition: Transition.rightToLeft),
+          ),
+        )
       ],
     );
   }

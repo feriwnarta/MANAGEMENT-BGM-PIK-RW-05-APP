@@ -359,7 +359,6 @@ class _MainAppState extends State<MainApp> {
         durationUntilAlertAgain: Duration(days: 1),
         minAppVersion: '1.0.4',
         shouldPopScope: () => true,
-        canDismissDialog: true,
         debugLogging: false,
       ),
       child: ShowCaseWidget(
