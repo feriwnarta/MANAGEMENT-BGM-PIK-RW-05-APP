@@ -57,6 +57,8 @@ class UploadPaymentIplScreen extends StatelessWidget {
                     child: (imgPath.value == '')
                         ? Image(
                             height: SizeConfig.height(420),
+                            width: MediaQuery.of(context).size.width,
+                            fit: BoxFit.cover,
                             image: AssetImage(
                               'assets/img/citizen_menu/shimmer_upload.png',
                             ))

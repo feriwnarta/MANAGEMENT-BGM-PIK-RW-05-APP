@@ -4,7 +4,6 @@ import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 
 class GarbageCollectionScreen extends StatelessWidget {
   const GarbageCollectionScreen({Key key}) : super(key: key);
@@ -139,10 +138,12 @@ class GarbageCollectionScreen extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           SizedBox(
-            height: SizeConfig.height(90),
+            height: SizeConfig.height(134),
           ),
           Image(
-              width: SizeConfig.width(254),
+              height: SizeConfig.height(160),
+              width: SizeConfig.width(170),
+              fit: BoxFit.cover,
               image: AssetImage('assets/img/citizen_menu/reject-pay.png')),
           SizedBox(
             height: SizeConfig.height(40),
@@ -195,16 +196,39 @@ class NoPayIpl extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
+        SizedBox(
+          height: SizeConfig.height(134),
+        ),
         Center(
           child: Column(
             children: [
-              SvgPicture.asset(
-                'assets/img/citizen_menu/upload_plastik_sampah.svg',
+              Image(
+                height: SizeConfig.height(200),
+                width: SizeConfig.width(188),
+                image: AssetImage('assets/img/citizen_menu/one-step.png'),
               ),
+              SizedBox(
+                height: SizeConfig.height(40),
+              ),
+              Text(
+                'Satu Langkah Lagi!',
+                style: TextStyle(
+                    fontSize: SizeConfig.text(30), fontWeight: FontWeight.w500),
+              ),
+              SizedBox(
+                height: SizeConfig.height(12),
+              ),
+              Text(
+                'Unggah Bukti Pembayaran IPL Anda untuk Mengambil Kantong Sampah',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: SizeConfig.text(12)),
+              )
             ],
           ),
+        ),
+        SizedBox(
+          height: SizeConfig.height(142),
         ),
         SizedBox(
           width: MediaQuery.of(context).size.width,
