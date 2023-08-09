@@ -2,7 +2,6 @@ import 'package:aplikasi_rw/modules/home/screens/upload_payment_ipl_screen.dart'
 import 'package:aplikasi_rw/modules/home/services/upload_ipl_services.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class GarbageCollectionScreen extends StatelessWidget {
@@ -18,18 +17,20 @@ class GarbageCollectionScreen extends StatelessWidget {
       ),
       body: SafeArea(
           child: SingleChildScrollView(
-        child: FutureBuilder<String>(
+        child: FutureBuilder<Map<String, dynamic>>(
             future: UploadIplServices.checkPayment(),
             builder: (context, snapshot) {
+              // return Text('${snapshot.data['status']}');
+
               if (snapshot.hasData) {
-                switch (snapshot.data) {
-                  case '"permintaan sedang diproses"':
+                switch (snapshot.data['status']) {
+                  case 'Diproses':
                     return onProcess(context);
-                  case '"permintaan diterima"':
+                  case 'Diterima':
                     return accept(context);
-                  case '"permintaan ditolak"':
-                    return reject(context);
-                  case '"tidak ada pembayaran dibulan ini"':
+                  case 'Ditolak':
+                    return reject(context, snapshot.data['message']);
+                  case 'tidak ada pembayaran dibulan ini':
                     return Container(
                       padding: EdgeInsets.symmetric(
                           horizontal: SizeConfig.width(16)),
@@ -128,7 +129,7 @@ class GarbageCollectionScreen extends StatelessWidget {
     );
   }
 
-  Widget reject(BuildContext context) {
+  Widget reject(BuildContext context, String note) {
     return Container(
       height: MediaQuery.of(context).size.height -
           MediaQuery.of(context).padding.top,
@@ -158,7 +159,7 @@ class GarbageCollectionScreen extends StatelessWidget {
             height: SizeConfig.height(12),
           ),
           Text(
-            'Foto yang anda kirimkan tidak jelas dan buram, silahkan kirim kembali untuk bisa mengambil kantong sampah',
+            note,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: SizeConfig.text(12),

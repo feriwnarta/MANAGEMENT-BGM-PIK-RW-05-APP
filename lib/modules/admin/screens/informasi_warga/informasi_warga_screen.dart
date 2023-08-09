@@ -5,7 +5,6 @@ import 'package:aplikasi_rw/modules/admin/screens/informasi_warga/edit_informasi
 import 'package:aplikasi_rw/modules/admin/services/admin_services.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
-import 'package:aplikasi_rw/utils/view_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';

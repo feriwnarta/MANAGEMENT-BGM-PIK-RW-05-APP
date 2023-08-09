@@ -34,8 +34,12 @@ class _CreateStatusState extends State<CreateStatus> {
   final contol = Get.put(StatusUserController());
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(360, 800));
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(

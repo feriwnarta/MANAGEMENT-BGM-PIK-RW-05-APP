@@ -32,6 +32,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -39,7 +40,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:logger/logger.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:upgrader/upgrader.dart';
 import 'dart:io';
@@ -127,7 +127,7 @@ void main() async {
 
   // runApp(MyApp());
   runApp(DevicePreview(
-    enabled: true,
+    enabled: !kReleaseMode,
     builder: (ctx) => MyApp(),
   ));
   configLoading();
@@ -315,8 +315,6 @@ class _MainAppState extends State<MainApp> {
       ];
     }
 
-    final logger = Logger();
-    logger.d(controller.status.value);
     super.initState();
   }
 
@@ -356,7 +354,7 @@ class _MainAppState extends State<MainApp> {
             : UpgradeDialogStyle.cupertino,
         debugDisplayAlways: false,
         languageCode: 'id',
-        durationUntilAlertAgain: Duration(days: 1),
+        durationUntilAlertAgain: Duration(seconds: 5),
         minAppVersion: '1.0.4',
         shouldPopScope: () => true,
         debugLogging: false,

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:dio/dio.dart';
@@ -48,7 +47,7 @@ class UploadIplServices {
     return 'failed';
   }
 
-  static Future<String> checkPayment() async {
+  static Future<Map<String, dynamic>> checkPayment() async {
     dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
 
     String idUser = await UserSecureStorage.getIdUser();
@@ -60,12 +59,11 @@ class UploadIplServices {
     var data = {'id_user': idUser};
 
     var response = await dio.post(url, data: jsonEncode(data));
+    var result = jsonDecode(response.data);
 
     final logger = Logger();
+    logger.i(result['']);
 
-    if (response.data == '"ada sesuatu yang salah hubungi administrator"') {
-      return 'failed';
-    }
-    return response.data;
+    return result;
   }
 }

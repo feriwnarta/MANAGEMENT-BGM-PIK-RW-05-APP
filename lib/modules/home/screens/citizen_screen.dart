@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/authentication/controllers/access_controller.dart';
 import 'package:aplikasi_rw/modules/home/controller/notification_controller.dart';
@@ -71,36 +72,33 @@ class _MyWidgetState extends State<CitizenScreen> {
       },
     );
 
-    initPermissionApp = InitPermissionApp();
+    if (Platform.isAndroid) {
+      initPermissionApp = InitPermissionApp();
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await initPermissionApp.initPermissionApp(context);
 
-    // WidgetsBinding.instance.addPostFrameCallback(
-    //   (_) async => await initPermissionApp.initPermissionApp(context),
-    // );
+        var value = await UserSecureStorage.readKey(key: 'runOnFirst');
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await initPermissionApp.initPermissionApp(context);
+        Logger logger = Logger();
+        logger.d(value);
 
-      var value = await UserSecureStorage.readKey(key: 'runOnFirst');
+        if (value == null) {
+          await ShowCaseWidget.of(context).startShowCase(
+            [
+              newsKey,
+              peduliLingkunganKey,
+              statusPeduliLingkuganKey,
+              statusIplKey,
+              informasiWarga,
+              informasiUmum,
+              sosialMedia,
+            ],
+          );
+        }
 
-      Logger logger = Logger();
-      logger.d(value);
-
-      if (value == null) {
-        await ShowCaseWidget.of(context).startShowCase(
-          [
-            newsKey,
-            peduliLingkunganKey,
-            statusPeduliLingkuganKey,
-            statusIplKey,
-            informasiWarga,
-            informasiUmum,
-            sosialMedia,
-          ],
-        );
-      }
-
-      await UserSecureStorage.setKeyValue(key: 'runOnFirst', value: 'true');
-    });
+        await UserSecureStorage.setKeyValue(key: 'runOnFirst', value: 'true');
+      });
+    }
   }
 
   @override

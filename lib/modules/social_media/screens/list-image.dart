@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:get/get.dart';
 import 'package:aplikasi_rw/modules/social_media/controllers/social_media_controllers.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:lottie/lottie.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -42,6 +44,13 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
 
   Future<void> _requestAssets() async {
     _isLoading.value = true;
+
+    bool permissionLocation =
+        await Permission.photos.status.isPermanentlyDenied;
+
+    if (permissionLocation) {
+      await initPermissionGallery(permissionLocation);
+    }
 
     // Request permissions.
     final PermissionState ps = await PhotoManager.requestPermissionExtend();
@@ -85,6 +94,134 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
     _entities.value = entities;
     _isLoading.value = false;
     _hasMoreToLoad.value = _entities.length < _totalEntitiesCount;
+  }
+
+  Future initPermissionGallery(bool permissionLocation) async {
+    if (permissionLocation) {
+      await _dialogRequirePermissionsOpenSettings(
+        title: 'Berikan Akses Gallery',
+        content:
+            'Untuk menggunakan fitur yang membutuhkan akses galeri, kami memerlukan izin akses galeri Anda. Apakah Anda ingin memberikan izin akses sekarang?',
+        no: () async {
+          await Get.back();
+
+          await _dialogMessage(
+              title: 'Berikan Akses Gallery',
+              content:
+                  'Anda tidak bisa membuat status sosial media dengan gambar tanpa ijin akses Gallery. Kami mengerti bahwa Anda ingin mengatur izin secara manual. Jika Anda berubah pikiran atau ingin memberikan izin nanti, Anda dapat membuka pengaturan aplikasi di perangkat Anda dan mengatur izin dengan mudah.',
+              yes: () {
+                Get.back();
+              },
+              context: context);
+        },
+        yes: () async {
+          await openAppSettings();
+          Get.back();
+        },
+        context: context,
+      );
+    }
+  }
+
+  Future<dynamic> _dialogMessage(
+      {String title, String content, Function yes, BuildContext context}) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      useSafeArea: true,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            title,
+            style: TextStyle(
+              fontSize: SizeConfig.text(16),
+            ),
+          ),
+          content: Text(
+            content,
+            textAlign: TextAlign.left,
+            style: TextStyle(fontSize: SizeConfig.text(12), color: Colors.grey),
+          ),
+          titlePadding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.width(16),
+            vertical: SizeConfig.height(8),
+          ),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.width(16),
+            vertical: SizeConfig.height(8),
+          ),
+          actions: [
+            TextButton(
+              onPressed: yes,
+              child: Text(
+                'OKE',
+                style: TextStyle(fontSize: SizeConfig.text(14)),
+              ),
+            ),
+          ],
+          actionsPadding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.width(16),
+            vertical: 0,
+          ),
+        );
+      },
+    );
+  }
+
+  Future<dynamic> _dialogRequirePermissionsOpenSettings(
+      {String title,
+      String content,
+      Function yes,
+      Function no,
+      BuildContext context}) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      useSafeArea: true,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            title,
+            style: TextStyle(
+              fontSize: SizeConfig.text(16),
+            ),
+          ),
+          content: Text(
+            content,
+            textAlign: TextAlign.left,
+            style: TextStyle(fontSize: SizeConfig.text(12), color: Colors.grey),
+          ),
+          titlePadding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.width(16),
+            vertical: SizeConfig.height(8),
+          ),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.width(16),
+            vertical: SizeConfig.height(8),
+          ),
+          actions: [
+            TextButton(
+              onPressed: no,
+              child: Text(
+                'Tidak',
+                style: TextStyle(fontSize: SizeConfig.text(14)),
+              ),
+            ),
+            TextButton(
+              onPressed: yes,
+              child: Text(
+                (Platform.isIOS) ? 'Pengaturan' : 'Pengaturan',
+                style: TextStyle(fontSize: SizeConfig.text(14)),
+              ),
+            ),
+          ],
+          actionsPadding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.width(16),
+            vertical: 0,
+          ),
+        );
+      },
+    );
   }
 
   Future<void> _loadMoreAsset() async {

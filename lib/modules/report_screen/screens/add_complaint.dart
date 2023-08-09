@@ -29,6 +29,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:lottie/lottie.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../server-app.dart';
 
@@ -1018,7 +1019,41 @@ class _StepperRwState extends State<StepperRw> {
                                     )
                                   ],
                                 ),
-                                onTap: () {
+                                onTap: () async {
+                                  // ijin akses lokasi
+
+                                  bool permissionLocation = await Permission
+                                      .location.status.isPermanentlyDenied;
+
+                                  if (permissionLocation) {
+                                    await _dialogRequirePermissionsOpenSettings(
+                                      title: 'Berikan Akses Lokasi',
+                                      content:
+                                          'Untuk menggunakan fitur yang membutuhkan lokasi, kami memerlukan izin akses lokasi Anda. Kami akan membuka pengaturan sekarang. Apakah Anda ingin memberikan izin akses sekarang?',
+                                      no: () async {
+                                        await Get.back();
+
+                                        await _dialogMessage(
+                                            title: 'Berikan Akses Lokasi',
+                                            content:
+                                                'Anda tidak bisa melanjutkan penggunaan fitur ini tanpa ijin akses lokasi. Kami mengerti bahwa Anda ingin mengatur izin secara manual. Jika Anda berubah pikiran atau ingin memberikan izin nanti, Anda dapat membuka pengaturan aplikasi di perangkat Anda dan mengatur izin dengan mudah.',
+                                            yes: () {
+                                              Get
+                                                ..back()
+                                                ..back();
+                                            },
+                                            context: context);
+                                        return;
+                                      },
+                                      yes: () async {
+                                        await openAppSettings();
+                                        Get.back();
+                                      },
+                                      context: context,
+                                    );
+                                    return;
+                                  }
+
                                   FocusScope.of(context).unfocus();
                                   fToastOnWritePage.removeCustomToast();
 
@@ -1206,6 +1241,107 @@ class _StepperRwState extends State<StepperRw> {
           ])
         ],
       ),
+    );
+  }
+
+  Future<dynamic> _dialogMessage(
+      {String title, String content, Function yes, BuildContext context}) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      useSafeArea: true,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            title,
+            style: TextStyle(
+              fontSize: SizeConfig.text(16),
+            ),
+          ),
+          content: Text(
+            content,
+            textAlign: TextAlign.left,
+            style: TextStyle(fontSize: SizeConfig.text(12), color: Colors.grey),
+          ),
+          titlePadding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.width(16),
+            vertical: SizeConfig.height(8),
+          ),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.width(16),
+            vertical: SizeConfig.height(8),
+          ),
+          actions: [
+            TextButton(
+              onPressed: yes,
+              child: Text(
+                'OKE',
+                style: TextStyle(fontSize: SizeConfig.text(14)),
+              ),
+            ),
+          ],
+          actionsPadding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.width(16),
+            vertical: 0,
+          ),
+        );
+      },
+    );
+  }
+
+  Future<dynamic> _dialogRequirePermissionsOpenSettings(
+      {String title,
+      String content,
+      Function yes,
+      Function no,
+      BuildContext context}) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      useSafeArea: true,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            title,
+            style: TextStyle(
+              fontSize: SizeConfig.text(16),
+            ),
+          ),
+          content: Text(
+            content,
+            textAlign: TextAlign.left,
+            style: TextStyle(fontSize: SizeConfig.text(12), color: Colors.grey),
+          ),
+          titlePadding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.width(16),
+            vertical: SizeConfig.height(8),
+          ),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.width(16),
+            vertical: SizeConfig.height(8),
+          ),
+          actions: [
+            TextButton(
+              onPressed: no,
+              child: Text(
+                'Tidak',
+                style: TextStyle(fontSize: SizeConfig.text(14)),
+              ),
+            ),
+            TextButton(
+              onPressed: yes,
+              child: Text(
+                (Platform.isIOS) ? 'Pengaturan' : 'Pengaturan',
+                style: TextStyle(fontSize: SizeConfig.text(14)),
+              ),
+            ),
+          ],
+          actionsPadding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.width(16),
+            vertical: 0,
+          ),
+        );
+      },
     );
   }
 

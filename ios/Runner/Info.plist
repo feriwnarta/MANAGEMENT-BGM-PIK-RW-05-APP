@@ -30,15 +30,15 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Aplikasi membutuhkan ijin kamera untuk menambahkan foto</string>
+	<string>Untuk menggunakan fitur yang membutuhkan kamera, kami memerlukan izin akses kamera Anda. Kami akan membuka pengaturan sekarang. Apakah Anda ingin memberikan izin akses sekarang?</string>
 	<key>NSLocationUsageDescription</key>
 	<string>Perangkat lama membutuhkan lokasi</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Aplikasi membutuhkan ijin lokasi untuk mengambil lokasi laporan</string>
+	<string>Untuk menggunakan fitur yang membutuhkan lokasi, kami memerlukan izin akses lokasi Anda. Apakah Anda ingin memberikan izin akses sekarang?</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Aplikasi membutuhkan ijin mikrofon</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Aplikasi membutuhkan ijin galeri untuk menambahkan gambar</string>
+	<string>Untuk menggunakan fitur yang membutuhkan akses galeri, kami memerlukan izin akses galeri Anda. Apakah Anda ingin memberikan izin akses sekarang?</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

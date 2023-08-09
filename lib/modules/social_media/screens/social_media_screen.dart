@@ -148,13 +148,7 @@ class _SocialMediaState extends State<SocialMedia> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            builder: (context) {
-              return CreateStatus();
-            },
-          );
+          Get.to(CreateStatus(), transition: Transition.downToUp);
         },
         child: SvgPicture.asset(
           'assets/img/image-svg/pencil.svg',
