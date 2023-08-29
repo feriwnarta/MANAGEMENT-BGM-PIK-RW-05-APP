@@ -136,13 +136,8 @@ class _OtpState extends State<Otp> {
               style:
                   TextStyle(fontSize: SizeConfig.text(11), color: Colors.red),
             );
-          } else {
-            return Text(
-              'OTP yang kamu masukan salah. silahkan coba lagi.',
-              style:
-                  TextStyle(fontSize: SizeConfig.text(11), color: Colors.white),
-            );
           }
+          return SizedBox();
         }),
         SizedBox(height: SizeConfig.text(16)),
         SizedBox(

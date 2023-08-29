@@ -127,7 +127,7 @@ void main() async {
 
   // runApp(MyApp());
   runApp(DevicePreview(
-    enabled: !kReleaseMode,
+    enabled: false,
     builder: (ctx) => MyApp(),
   ));
   configLoading();

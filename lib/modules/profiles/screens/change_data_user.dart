@@ -7,6 +7,7 @@ import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -17,6 +18,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 //ignore: must_be_immutable
 class ChangeDataUser extends StatefulWidget {
@@ -495,9 +497,7 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                           fontSize: 13.0.sp, fontFamily: 'Pt Sans Narrow'),
                     ),
                     onPressed: () {
-                      getImage(ImageSource.camera);
-                      Navigator.of(context)
-                          .pop(); // -> digunakan untuk menutup show modal bottom sheet secara programatic
+                      getImage(ImageSource.camera, context);
                     }),
                 TextButton.icon(
                   icon: Icon(Icons.image),
@@ -507,9 +507,7 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
                         fontSize: 13.0.sp, fontFamily: 'Pt Sans Narrow'),
                   ),
                   onPressed: () {
-                    getImage(ImageSource.gallery);
-                    Navigator.of(context)
-                        .pop(); // -> digunakan untuk menutup show modal bottom sheet secara programatic
+                    getImage(ImageSource.gallery, context);
                   },
                 )
               ],
@@ -518,7 +516,7 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
         ),
       );
 
-  Future<void> getImage(ImageSource source) async {
+  Future<void> imagePicker(ImageSource source) async {
     final pickedFile =
         await _picker.pickImage(source: source, imageQuality: 50);
 
@@ -533,6 +531,226 @@ class _ChangeDataUserState extends State<ChangeDataUser> {
 
       status = 'refresh';
     }
+  }
+
+  Future getImage(ImageSource source, BuildContext context) async {
+    if (source == ImageSource.camera) {
+      if (Navigator.canPop(context)) {
+        Get.back();
+        if (await Permission.camera.status.isDenied) {
+          await _showDialogReqCamera(context, source);
+        } else if (await Permission.camera.status.isPermanentlyDenied) {
+          await _showDialogReqCameraOpenSetting(context, source);
+        } else if (await Permission.camera.status.isGranted) {
+          requestImageOrPhoto(source);
+        }
+      }
+    } else if (source == ImageSource.gallery) {
+      if (Navigator.canPop(context)) {
+        if (await Permission.photos.status.isDenied) {
+          await _showDialogReqGallery(context, source);
+        } else if (await Permission.photos.status.isPermanentlyDenied) {
+          await _showDialogReqGalleryOpenSetting(context, source);
+        } else if (await Permission.photos.status.isGranted) {
+          requestImageOrPhoto(source);
+        } else if (await Permission.photos.status.isLimited) {
+          await _showDialogReqGalleryOpenSetting(context, source);
+        }
+      }
+    }
+  }
+
+  Future<void> requestImageOrPhoto(ImageSource source) async {
+    imagePicker(source);
+  }
+
+  void showConfirmationDialog(BuildContext context) async {
+    await showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text('Izin Akses'),
+        content: Column(
+          children: [
+            const Text(
+                'Kami mengerti bahwa Anda ingin mengatur izin secara manual. Jika Anda berubah pikiran atau ingin memberikan izin nanti, Anda dapat membuka pengaturan aplikasi di perangkat Anda dan mengatur izin dengan mudah.'),
+          ],
+        ),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () async {
+              Get
+                ..back()
+                ..back()
+                ..back();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _showDialogReqCamera(
+      BuildContext context, ImageSource source) async {
+    bool permissionGranted = false;
+
+    await showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text('Izin Kamera'),
+        content: Column(
+          children: [
+            const Text(
+                'Untuk mengganti foto profile anda, kami perlu mengakses kamera pada perangkat Anda. Tolong beri izin akses kamera.'),
+          ],
+        ),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            onPressed: () {
+              Navigator.pop(context);
+
+              showConfirmationDialog(context);
+            },
+            child: const Text('Tolak'),
+          ),
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () async {
+              var status = await Permission.camera.request();
+              permissionGranted = status.isGranted;
+              if (permissionGranted) {
+                Get.back();
+                requestImageOrPhoto(source);
+              } else if (status.isPermanentlyDenied) {
+                showConfirmationDialog(context);
+              }
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _showDialogReqGallery(
+      BuildContext context, ImageSource source) async {
+    bool permissionGranted = false;
+
+    await showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text('Izin Gallery'),
+        content: Column(
+          children: [
+            const Text(
+                'Untuk mengganti foto profile anda, kami perlu mengakses gallery pada perangkat Anda. Tolong beri izin akses gallery.'),
+          ],
+        ),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            onPressed: () {
+              Navigator.pop(context);
+
+              showConfirmationDialog(context);
+            },
+            child: const Text('Tolak'),
+          ),
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () async {
+              var status = await Permission.photos.request();
+              permissionGranted = status.isGranted;
+              if (permissionGranted) {
+                Get.back();
+                requestImageOrPhoto(source);
+              } else if (status.isPermanentlyDenied) {
+                showConfirmationDialog(context);
+              }
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<bool> _showDialogReqCameraOpenSetting(
+      BuildContext context, ImageSource source) async {
+    bool permissionGranted = false;
+
+    await showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text('Izin Gallery'),
+        content: Column(
+          children: [
+            const Text(
+                'Untuk menggunakan fitur yang membutuhkan kamera, kami memerlukan izin akses kamera Anda. Kami akan membuka pengaturan sekarang. Apakah Anda ingin memberikan izin akses sekarang?'),
+          ],
+        ),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            onPressed: () {
+              Navigator.pop(context);
+              showConfirmationDialog(context);
+            },
+            child: const Text('Tidak'),
+          ),
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await openAppSettings();
+            },
+            child: const Text('Pengaturan'),
+          ),
+        ],
+      ),
+    );
+
+    return permissionGranted;
+  }
+
+  Future<bool> _showDialogReqGalleryOpenSetting(
+      BuildContext context, ImageSource source) async {
+    bool permissionGranted = false;
+
+    await showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text('Izin Gallery'),
+        content: Column(
+          children: [
+            const Text(
+                'Untuk menggunakan fitur yang membutuhkan gallery, kami memerlukan izin akses gallery Anda. Kami akan membuka pengaturan sekarang. Apakah Anda ingin memberikan izin akses sekarang?'),
+          ],
+        ),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            onPressed: () {
+              Navigator.pop(context);
+              showConfirmationDialog(context);
+            },
+            child: const Text('Tidak'),
+          ),
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await openAppSettings();
+            },
+            child: const Text('Pengaturan'),
+          ),
+        ],
+      ),
+    );
+
+    return permissionGranted;
   }
 }
 

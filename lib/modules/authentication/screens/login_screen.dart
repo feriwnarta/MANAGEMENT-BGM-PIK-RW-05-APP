@@ -375,6 +375,9 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
             onPressed: () async {
               // registerController.toSucces = false.obs;
               registerController.resetController();
+
+              final logger = Logger();
+              logger.i(registerController.isWrong.value);
               // final storage = FlutterSecureStorage();
               // await storage.delete(key: 'successotp');
               // await storage.delete(key: 'noipl');
@@ -668,7 +671,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
           registerController.update();
           // registerController.resetController();
           // email
-          Get.delete<RegisterController>();
           Get.delete<AuthController>();
           final storage = FlutterSecureStorage();
           await storage.delete(key: 'successotp');
@@ -761,7 +763,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
               registerController.resetController();
               registerController.update();
               Get.offAllNamed(RouteName.home);
-              Get.delete<RegisterController>();
               Get.delete<AuthController>();
             }
           } else {
@@ -1047,7 +1048,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
                 registerController.resetController();
                 registerController.update();
                 Get.offAllNamed(RouteName.home);
-                Get.delete<RegisterController>();
                 Get.delete<AuthController>();
               }
               loginController.loginCitizen();
@@ -1123,9 +1123,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidationForm {
     // buildShowDialogAnimation(
     //     '', '', 'assets/animation/loading-plane.json', 2.0.h);
     EasyLoading.show(status: 'loading', dismissOnTap: false);
-
-    // ! DEPRECATED
-    // String result = await checkNumberPhone(noTelp);
 
     String url = '${ServerApp.url}src/login/register.php';
     var request = http.MultipartRequest('POST', Uri.parse(url));

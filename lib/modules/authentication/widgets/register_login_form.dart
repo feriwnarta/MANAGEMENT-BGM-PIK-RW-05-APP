@@ -254,11 +254,16 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                       await checkEmailIpl(
                           authController.controllerUsername.text);
                       await cancelableOperation.cancel();
-                      setState(() {});
+
+                      if (mounted) {
+                        setState(() {});
+                      }
                     } else {
                       registerController.iplOrEmailValid = false.obs;
                       registerController.iplOrEmailSucces = false.obs;
-                      setState(() {});
+                      if (mounted) {
+                        setState(() {});
+                      }
                     }
                   }));
                 },
