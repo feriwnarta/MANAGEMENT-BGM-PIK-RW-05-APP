@@ -203,7 +203,7 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                 decoration: InputDecoration(
                   errorText: !registerController.iplOrEmailValid.value
                       ? null
-                      : 'Nomor email / ipl anda salah',
+                      : 'Nomor email / ipl anda salah atau belum terdaftar',
                   icon: SvgPicture.asset(
                     'assets/img/image-svg/user-login.svg',
                     height: SizeConfig.image(20),
@@ -212,6 +212,7 @@ class _RegisterLoginFormState extends State<RegisterLoginForm> {
                   hintText: 'Masukan email / nomor IPL',
                   hintStyle: TextStyle(fontSize: SizeConfig.text(14)),
                   border: UnderlineInputBorder(),
+                  errorMaxLines: 2,
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                         color: (registerController.iplOrEmailSucces.value)

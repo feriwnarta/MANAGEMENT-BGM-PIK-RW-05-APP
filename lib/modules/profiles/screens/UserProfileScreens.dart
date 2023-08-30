@@ -2,6 +2,7 @@ import 'package:aplikasi_rw/controller/user_login_controller.dart';
 import 'package:aplikasi_rw/modules/authentication/controllers/access_controller.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/change_data_user.dart';
 import 'package:aplikasi_rw/modules/profiles/screens/statistik_peduli_screens.dart';
+import 'package:aplikasi_rw/modules/profiles/services/delete_account_services.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -267,6 +268,65 @@ class UserProfileScreen extends StatelessWidget {
                   height: SizeConfig.height(40),
                   child: OutlinedButton(
                       onPressed: () async {
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: Text(
+                              'Konfirmasi Penghapusan',
+                              style: TextStyle(
+                                  fontSize: SizeConfig.text(16),
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            content: Text(
+                              'Apakah Anda yakin ingin menghapus akun Anda? Semua data yang terkait dengan akun ini akan dihapus dan tidak dapat dikembalikan.',
+                              style: TextStyle(fontSize: SizeConfig.text(14)),
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Get.back(),
+                                child: const Text('Batal'),
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  String result = await DeleteAccount.delete();
+                                  if (result == 'success') {
+                                    await UserSecureStorage.deleteIdUser();
+                                    await UserSecureStorage.deleteStatus();
+                                    userLoginController.logout();
+                                    Get.delete<AccessController>();
+                                    Get.offAllNamed(RouteName.home);
+                                  }
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(
+                          color: Color(0xffED1C24),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                      ),
+                      child: Text(
+                        'Hapus Akun',
+                        style: TextStyle(
+                          fontSize: SizeConfig.text(16),
+                          color: Color(0xffED1C24),
+                        ),
+                      )),
+                ),
+                SizedBox(
+                  height: SizeConfig.height(10),
+                ),
+                SizedBox(
+                  width: SizeConfig.width(328),
+                  height: SizeConfig.height(40),
+                  child: OutlinedButton(
+                      onPressed: () async {
                         await UserSecureStorage.deleteIdUser();
                         await UserSecureStorage.deleteStatus();
                         userLoginController.logout();
@@ -288,7 +348,10 @@ class UserProfileScreen extends StatelessWidget {
                           color: Color(0xffED1C24),
                         ),
                       )),
-                )
+                ),
+                SizedBox(
+                  height: SizeConfig.height(10),
+                ),
               ],
             ),
           ),
