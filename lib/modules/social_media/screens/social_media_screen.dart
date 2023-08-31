@@ -298,121 +298,138 @@ class CardSocialMedia extends StatelessWidget {
                       height: SizeConfig.height(8),
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                              barrierColor: Colors.black.withOpacity(0.4),
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(16),
-                                  topRight: Radius.circular(16),
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                  barrierColor: Colors.black.withOpacity(0.4),
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(16),
+                                      topRight: Radius.circular(16),
+                                    ),
+                                  ),
+                                  isScrollControlled: true,
+                                  context: context,
+                                  // push id comment
+                                  builder: (context) => CommentScreen(
+                                    idStatus: idStatus,
+                                  ),
+                                );
+                              },
+                              child: Material(
+                                color: Colors.white,
+                                child: SizedBox(
+                                  width: SizeConfig.width(67),
+                                  height: SizeConfig.height(20),
+                                  child: Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                          'assets/img/image-svg/comment-icon.svg'),
+                                      SizedBox(
+                                        width: SizeConfig.width(4),
+                                      ),
+                                      (numberOfComments == '0')
+                                          ? Text(
+                                              'Komentar',
+                                              style: TextStyle(
+                                                  fontSize: SizeConfig.text(10),
+                                                  color: Color(0xff404040)),
+                                            )
+                                          : Text(
+                                              '$numberOfComments',
+                                              style: TextStyle(
+                                                  fontSize: SizeConfig.text(10),
+                                                  color: Color(0xff404040)),
+                                            )
+                                    ],
+                                  ),
                                 ),
                               ),
-                              isScrollControlled: true,
-                              context: context,
-                              // push id comment
-                              builder: (context) => CommentScreen(
-                                idStatus: idStatus,
-                              ),
-                            );
-                          },
-                          child: Material(
-                            color: Colors.white,
-                            child: SizedBox(
-                              width: SizeConfig.width(67),
-                              height: SizeConfig.height(20),
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(
-                                      'assets/img/image-svg/comment-icon.svg'),
-                                  SizedBox(
-                                    width: SizeConfig.width(4),
-                                  ),
-                                  (numberOfComments == '0')
-                                      ? Text(
-                                          'Komentar',
-                                          style: TextStyle(
-                                              fontSize: SizeConfig.text(10),
-                                              color: Color(0xff404040)),
-                                        )
-                                      : Text(
-                                          '$numberOfComments',
-                                          style: TextStyle(
-                                              fontSize: SizeConfig.text(10),
-                                              color: Color(0xff404040)),
-                                        )
-                                ],
-                              ),
                             ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: SizeConfig.width(24),
-                        ),
-                        LikeButton(
-                          size: SizeConfig.height(14),
-                          isLiked: isLike.value,
-                          circleColor: CircleColor(
-                              start: Color(0xff00ddff), end: Color(0xff0099cc)),
-                          bubblesColor: BubblesColor(
-                            dotPrimaryColor: Color(0xff33b5e5),
-                            dotSecondaryColor: Color(0xff0099cc),
-                          ),
-                          likeBuilder: (bool isLiked) {
-                            this.isLike.value = isLiked;
+                            SizedBox(
+                              width: SizeConfig.width(24),
+                            ),
+                            LikeButton(
+                              size: SizeConfig.height(14),
+                              isLiked: isLike.value,
+                              circleColor: CircleColor(
+                                  start: Color(0xff00ddff),
+                                  end: Color(0xff0099cc)),
+                              bubblesColor: BubblesColor(
+                                dotPrimaryColor: Color(0xff33b5e5),
+                                dotSecondaryColor: Color(0xff0099cc),
+                              ),
+                              likeBuilder: (bool isLiked) {
+                                this.isLike.value = isLiked;
 
-                            return SvgPicture.asset(
-                              'assets/img/image-svg/like-icon.svg',
-                              color: isLiked
-                                  ? Colors.redAccent
-                                  : Color(0xff404040),
-                            );
-                          },
-                          likeCount: numberOfLikes,
-                          countBuilder: (int count, bool isLiked, String text) {
-                            var color = isLiked
-                                ? Colors.deepPurpleAccent
-                                : Color(0xff404040);
-                            Widget result;
-                            if (count == 0) {
-                              result = Text(
-                                "Suka",
-                                style: TextStyle(
-                                    color: color,
-                                    fontSize: SizeConfig.text(10)),
-                              );
-                            } else
-                              result = Text(
-                                text,
-                                style: TextStyle(color: color),
-                              );
-                            return result;
-                          },
-                          bubblesSize: 50,
-                          onTap: (isLiked) async {
-                            if (this.isLike.value == false) {
-                              String result = await LikeStatusService.addLike(
-                                  idStatus: idStatus, idUser: idUser);
-                              final logger = Logger();
-                              logger.i(result);
-                              if (result == 'success') {
-                                isLike.value = true;
-                                return Future.value(true);
-                              }
-                            } else {
-                              String result =
-                                  await LikeStatusService.deleteLike(
-                                      idStatus: idStatus, idUser: idUser);
-                              if (result == 'OK') {
+                                return SvgPicture.asset(
+                                  'assets/img/image-svg/like-icon.svg',
+                                  color: isLiked
+                                      ? Colors.redAccent
+                                      : Color(0xff404040),
+                                );
+                              },
+                              likeCount: numberOfLikes,
+                              countBuilder:
+                                  (int count, bool isLiked, String text) {
+                                var color = isLiked
+                                    ? Colors.deepPurpleAccent
+                                    : Color(0xff404040);
+                                Widget result;
+                                if (count == 0) {
+                                  result = Text(
+                                    "Suka",
+                                    style: TextStyle(
+                                        color: color,
+                                        fontSize: SizeConfig.text(10)),
+                                  );
+                                } else
+                                  result = Text(
+                                    text,
+                                    style: TextStyle(color: color),
+                                  );
+                                return result;
+                              },
+                              bubblesSize: 50,
+                              onTap: (isLiked) async {
+                                if (this.isLike.value == false) {
+                                  String result =
+                                      await LikeStatusService.addLike(
+                                          idStatus: idStatus, idUser: idUser);
+                                  final logger = Logger();
+                                  logger.i(result);
+                                  if (result == 'success') {
+                                    isLike.value = true;
+                                    return Future.value(true);
+                                  }
+                                } else {
+                                  String result =
+                                      await LikeStatusService.deleteLike(
+                                          idStatus: idStatus, idUser: idUser);
+                                  if (result == 'OK') {
+                                    return Future.value(false);
+                                  } else {
+                                    return Future.value(true);
+                                  }
+                                }
                                 return Future.value(false);
-                              } else {
-                                return Future.value(true);
-                              }
-                            }
-                            return Future.value(false);
-                          },
+                              },
+                            ),
+                          ],
                         ),
+                        IconButton(
+                          onPressed: () => showDialog(
+                            context: context,
+                            builder: (context) => alertDialog(context),
+                          ),
+                          icon: SvgPicture.asset(
+                            'assets/img/image-svg/Dots Vertical.svg',
+                          ),
+                        )
                       ],
                     ),
                   ],
@@ -433,4 +450,67 @@ class CardSocialMedia extends StatelessWidget {
       ],
     );
   }
+}
+
+Widget alertDialog(BuildContext context) {
+  return AlertDialog(
+    contentPadding: EdgeInsets.zero,
+    content: SingleChildScrollView(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        IconButton(
+          onPressed: null,
+          icon: Icon(
+            Icons.close,
+            color: Color(0xff404040),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: SizeConfig.width(16)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextButton.icon(
+                onPressed: null,
+                icon: SvgPicture.asset('assets/img/image-svg/eye-off.svg'),
+                label: Text(
+                  'Tidak Tertarik',
+                  style: TextStyle(
+                    color: Color(0xff404040),
+                    fontSize: SizeConfig.text(14),
+                  ),
+                ),
+              ),
+              TextButton.icon(
+                onPressed: null,
+                icon: SvgPicture.asset(
+                  'assets/img/image-svg/exclamation.svg',
+                ),
+                label: Text(
+                  'Laporkan',
+                  style: TextStyle(
+                    color: Color(0xff404040),
+                    fontSize: SizeConfig.text(14),
+                  ),
+                ),
+              ),
+              TextButton.icon(
+                onPressed: null,
+                icon: SvgPicture.asset('assets/img/image-svg/adjustments.svg'),
+                label: Text(
+                  'Kelola konten yang disarankan',
+                  style: TextStyle(
+                    color: Color(0xff404040),
+                    fontSize: SizeConfig.text(14),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
+    )),
+    actions: <Widget>[],
+  );
 }
