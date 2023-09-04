@@ -8,6 +8,6 @@ class ServerApp {
   // static String url = 'https://$ip/app_test/';
 
   // server lokal
-  static String ip = '192.168.3.71';
+  static String ip = '192.168.3.137';
   static String url = 'http://$ip/nextg_mobileapp/';
 }
