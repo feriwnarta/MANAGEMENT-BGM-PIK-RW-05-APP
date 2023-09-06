@@ -464,14 +464,15 @@ Widget alertDialog(BuildContext context, String idStatus,
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(left: SizeConfig.width(16)),
+          padding: EdgeInsets.symmetric(horizontal: SizeConfig.width(16)),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextButton.icon(
                 onPressed: () async {
                   await notInterseted(idStatus, refreshIndicatorKey, context);
                 },
+                style: TextButton.styleFrom(alignment: Alignment.centerLeft),
                 icon: SvgPicture.asset('assets/img/image-svg/eye-off.svg'),
                 label: Text(
                   'Tidak Tertarik',
@@ -483,12 +484,14 @@ Widget alertDialog(BuildContext context, String idStatus,
               ),
               TextButton.icon(
                 onPressed: () async {
+                  Navigator.of(context).pop();
                   showDialog(
                     context: context,
                     builder: (context) =>
                         reportDialog(context, idStatus, refreshIndicatorKey),
                   );
                 },
+                style: TextButton.styleFrom(alignment: Alignment.centerLeft),
                 icon: SvgPicture.asset(
                   'assets/img/image-svg/exclamation.svg',
                 ),
@@ -680,7 +683,7 @@ Widget reportDialog(
                 height: SizeConfig.height(32),
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextButton(
                     onPressed: () async {
@@ -710,7 +713,7 @@ Widget reportDialog(
                 ],
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextButton(
                     onPressed: () async {
@@ -737,7 +740,7 @@ Widget reportDialog(
                 ],
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextButton(
                     onPressed: () async {
@@ -767,7 +770,7 @@ Widget reportDialog(
                 ],
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextButton(
                     onPressed: () async {
@@ -797,7 +800,7 @@ Widget reportDialog(
                 ],
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextButton(
                     onPressed: () async {
@@ -827,7 +830,7 @@ Widget reportDialog(
                 ],
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextButton(
                     onPressed: () async {
@@ -854,7 +857,7 @@ Widget reportDialog(
                 ],
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextButton(
                     onPressed: () async {
@@ -884,7 +887,7 @@ Widget reportDialog(
                 ],
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextButton(
                     onPressed: () async {
@@ -935,13 +938,11 @@ Future<void> reportService(
   String idUser = await UserSecureStorage.getIdUser();
   var data = {'id_status': idStatus, 'id_reporter': idUser, 'type': type};
 
-  Get.back();
-  Get.back();
   EasyLoading.show(status: 'loading');
 
   var response = await dio.post(url, data: jsonEncode(data));
   // Get.back();
-  print(response.data);
+  Navigator.of(context).pop();
 
   EasyLoading.dismiss();
 
@@ -1120,12 +1121,11 @@ Future<void> notInterseted(
     'not_interested': '1'
   };
 
-  Get.back();
   EasyLoading.show(status: 'loading');
 
   var response = await dio.post(url, data: jsonEncode(data));
-  // Get.back();
-  print(response.data);
+
+  Navigator.of(context).pop();
 
   EasyLoading.dismiss();
 
