@@ -30,15 +30,24 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Untuk menggunakan fitur yang membutuhkan kamera, kami memerlukan izin akses kamera Anda. Kami akan membuka pengaturan sekarang. Apakah Anda ingin memberikan izin akses sekarang?</string>
+	<string>Aplikasi ini memerlukan akses ke kamera Anda untuk berbagai fitur, termasuk:
+- Mengambil atau memperbarui foto profil Anda.
+- Mengambil gambar untuk mengunggah bukti transfer IPL.
+- Membuat laporan komplain lingkungan dengan mengambil foto bukti.
+- Mengambil gambar  untuk berbagi di fitur media sosial kami.
+Kami tidak akan mengakses kamera anda tanpa izin Anda.</string>
 	<key>NSLocationUsageDescription</key>
 	<string>Perangkat lama membutuhkan lokasi</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Untuk menggunakan fitur yang membutuhkan lokasi, kami memerlukan izin akses lokasi Anda. Apakah Anda ingin memberikan izin akses sekarang?</string>
+	<string>Aplikasi ini memerlukan akses lokasi Anda saat digunakan untuk melaporkan masalah lingkungan. Ini akan membantu kami menentukan lokasi pasti masalah yang Anda laporkan.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Aplikasi membutuhkan ijin mikrofon</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Untuk menggunakan fitur yang membutuhkan akses galeri, kami memerlukan izin akses galeri Anda. Apakah Anda ingin memberikan izin akses sekarang?</string>
+	<string>Aplikasi ini memerlukan akses ke galeri Anda untuk berbagai fitur, termasuk:
+- Memperbarui foto profil Anda.
+- Memilih gambar dari galeri untuk mengunggah bukti transfer IPL
+- Memilih gambar  untuk berbagi di fitur media sosial kami.
+Kami tidak akan mengakses galeri anda tanpa izin Anda.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
