@@ -197,8 +197,8 @@ class UploadPaymentIplScreen extends StatelessWidget {
                         fontSize: SizeConfig.text(13),
                       ),
                     ),
-                    onPressed: () {
-                      getImage(ImageSource.camera, context);
+                    onPressed: () async {
+                      await getImage(ImageSource.camera, context);
                     }),
                 TextButton.icon(
                   icon: Icon(Icons.image),
@@ -208,10 +208,8 @@ class UploadPaymentIplScreen extends StatelessWidget {
                       fontSize: SizeConfig.text(13),
                     ),
                   ),
-                  onPressed: () {
-                    getImage(ImageSource.gallery, context);
-                    Navigator.of(context)
-                        .pop(); // -> digunakan untuk menutup show modal bottom sheet secara programatic
+                  onPressed: () async {
+                    await getImage(ImageSource.gallery, context);
                   },
                 )
               ],
@@ -223,7 +221,7 @@ class UploadPaymentIplScreen extends StatelessWidget {
   Future getImage(ImageSource source, BuildContext context) async {
     if (source == ImageSource.camera) {
       if (Navigator.canPop(context)) {
-        Get.back();
+        Navigator.of(context).pop();
         if (await Permission.camera.status.isDenied) {
           await _showDialogReqCamera(context, source);
         } else if (await Permission.camera.status.isPermanentlyDenied) {
@@ -234,6 +232,7 @@ class UploadPaymentIplScreen extends StatelessWidget {
       }
     } else if (source == ImageSource.gallery) {
       if (Navigator.canPop(context)) {
+        Navigator.of(context).pop();
         if (await Permission.photos.status.isDenied) {
           await _showDialogReqGallery(context, source);
         } else if (await Permission.photos.status.isPermanentlyDenied) {
@@ -248,10 +247,8 @@ class UploadPaymentIplScreen extends StatelessWidget {
   }
 
   Future<void> requestImageOrPhoto(ImageSource source) async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile imageOrPhoto =
-        await _picker.pickImage(source: source, imageQuality: 50);
-
+    final ImagePicker picker = ImagePicker();
+    final XFile imageOrPhoto = await picker.pickImage(source: source);
     if (imageOrPhoto != null) {
       this.imgPath.value = imageOrPhoto.path;
     }

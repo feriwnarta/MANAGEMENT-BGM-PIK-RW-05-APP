@@ -25,9 +25,9 @@ class GarbageCollectionScreen extends StatelessWidget {
               if (snapshot.hasData) {
                 switch (snapshot.data['status']) {
                   case 'Diproses':
-                    return onProcess(context);
+                    return onProcess(context, snapshot.data['message']);
                   case 'Diterima':
-                    return accept(context);
+                    return accept(context, snapshot.data['message']);
                   case 'Ditolak':
                     return reject(context, snapshot.data['message']);
                   case 'tidak ada pembayaran dibulan ini':
@@ -47,7 +47,7 @@ class GarbageCollectionScreen extends StatelessWidget {
     );
   }
 
-  Widget onProcess(BuildContext context) {
+  Widget onProcess(BuildContext context, String message) {
     return Container(
       height: MediaQuery.of(context).size.height -
           MediaQuery.of(context).padding.top,
@@ -66,7 +66,7 @@ class GarbageCollectionScreen extends StatelessWidget {
             height: SizeConfig.height(40),
           ),
           Text(
-            'Permintaan sedang diproses',
+            message,
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: SizeConfig.text(30), fontWeight: FontWeight.w500),
@@ -88,7 +88,7 @@ class GarbageCollectionScreen extends StatelessWidget {
     );
   }
 
-  Widget accept(BuildContext context) {
+  Widget accept(BuildContext context, String message) {
     return Container(
       height: MediaQuery.of(context).size.height -
           MediaQuery.of(context).padding.top,
@@ -107,7 +107,7 @@ class GarbageCollectionScreen extends StatelessWidget {
             height: SizeConfig.height(40),
           ),
           Text(
-            'Permintaan anda sudah diterima',
+            message,
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: SizeConfig.text(30), fontWeight: FontWeight.w500),
