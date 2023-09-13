@@ -273,9 +273,7 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
           final AssetEntity entity = _entities[index];
           return GestureDetector(
             onTap: () {
-              final logger = Logger();
               entity.file.then((value) {
-                logger.i(value.path);
                 socialMediaControllers.imagePath.value = value.path;
               });
             },
@@ -283,18 +281,18 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
                 future: entity.file,
                 builder: (context, snapshot) => (snapshot.hasData)
                     ? Container(
-                        width: 64.w,
+                        width: SizeConfig.width(64),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(6),
                             color: Colors.grey),
-                        margin: EdgeInsets.only(right: 16.w),
+                        margin: EdgeInsets.only(right: SizeConfig.width(16)),
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(6),
                             child: AssetEntityImage(
                               entity,
                               fit: BoxFit.cover,
                               isOriginal: false, // Defaults to `true`.
-                              filterQuality: FilterQuality.medium,
+                              filterQuality: FilterQuality.low,
                               thumbnailSize: const ThumbnailSize.square(
                                   200), // Preferred value.
                               thumbnailFormat:
@@ -311,11 +309,9 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
   ScrollController controller = ScrollController();
 
   void onScroll() async {
-    final logger = Logger();
     if (controller.position.haveDimensions) {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         if (!_isLoadingMore.value && _hasMoreToLoad.value) {
-          logger.e('load dari on scroll');
           _loadMoreAsset();
         }
       }
@@ -521,35 +517,39 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
   }
 
   Future getImage(ImageSource source, BuildContext context) async {
-    if (source == ImageSource.camera) {
-      if (Navigator.canPop(context)) {
-        Navigator.of(context).pop();
-        if (await Permission.camera.status.isDenied) {
-          await _showDialogReqCamera(context, source);
-        } else if (await Permission.camera.status.isPermanentlyDenied) {
-          await _showDialogReqCameraOpenSetting(context, source);
-        } else if (await Permission.camera.status.isGranted) {
-          requestImageOrPhoto(source);
+    if (Platform.isIOS) {
+      if (source == ImageSource.camera) {
+        if (Navigator.canPop(context)) {
+          Navigator.of(context).pop();
+          if (await Permission.camera.status.isDenied) {
+            await _showDialogReqCamera(context, source);
+          } else if (await Permission.camera.status.isPermanentlyDenied) {
+            await _showDialogReqCameraOpenSetting(context, source);
+          } else if (await Permission.camera.status.isGranted) {
+            requestImageOrPhoto(source);
+          }
+        }
+      } else if (source == ImageSource.gallery) {
+        if (Navigator.canPop(context)) {
+          Navigator.of(context).pop();
+          if (await Permission.photos.status.isDenied) {
+            await _showDialogReqGallery(context, source);
+          } else if (await Permission.photos.status.isPermanentlyDenied) {
+            await _showDialogReqGalleryOpenSetting(context, source);
+          } else if (await Permission.photos.status.isGranted) {
+            requestImageOrPhoto(source);
+          } else if (await Permission.photos.status.isLimited) {
+            await _showDialogReqGalleryOpenSetting(context, source);
+          }
         }
       }
-    } else if (source == ImageSource.gallery) {
-      if (Navigator.canPop(context)) {
-        Navigator.of(context).pop();
-        if (await Permission.photos.status.isDenied) {
-          await _showDialogReqGallery(context, source);
-        } else if (await Permission.photos.status.isPermanentlyDenied) {
-          await _showDialogReqGalleryOpenSetting(context, source);
-        } else if (await Permission.photos.status.isGranted) {
-          requestImageOrPhoto(source);
-        } else if (await Permission.photos.status.isLimited) {
-          await _showDialogReqGalleryOpenSetting(context, source);
-        }
-      }
+    } else {
+      requestImageOrPhoto(source);
     }
   }
 
   Future<void> requestImageOrPhoto(ImageSource source) async {
-    imagePicker(source);
+    await imagePicker(source);
   }
 
   void showConfirmationDialog(BuildContext context) async {

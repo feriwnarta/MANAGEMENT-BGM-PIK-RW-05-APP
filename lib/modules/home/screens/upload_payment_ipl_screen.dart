@@ -219,31 +219,34 @@ class UploadPaymentIplScreen extends StatelessWidget {
       );
 
   Future getImage(ImageSource source, BuildContext context) async {
-    if (source == ImageSource.camera) {
-      if (Navigator.canPop(context)) {
-        Navigator.of(context).pop();
-        if (await Permission.camera.status.isDenied) {
-          await _showDialogReqCamera(context, source);
-        } else if (await Permission.camera.status.isPermanentlyDenied) {
-          await _showDialogReqCameraOpenSetting(context, source);
-        } else if (await Permission.camera.status.isGranted) {
-          requestImageOrPhoto(source);
+    if (Platform.isIOS) {
+      if (source == ImageSource.camera) {
+        if (Navigator.canPop(context)) {
+          Navigator.of(context).pop();
+          if (await Permission.camera.status.isDenied) {
+            await _showDialogReqCamera(context, source);
+          } else if (await Permission.camera.status.isPermanentlyDenied) {
+            await _showDialogReqCameraOpenSetting(context, source);
+          } else if (await Permission.camera.status.isGranted) {
+            requestImageOrPhoto(source);
+          }
         }
-      }
-    } else if (source == ImageSource.gallery) {
-      if (Navigator.canPop(context)) {
-        Navigator.of(context).pop();
-        if (await Permission.photos.status.isDenied) {
-          await _showDialogReqGallery(context, source);
-        } else if (await Permission.photos.status.isPermanentlyDenied) {
-          await _showDialogReqGalleryOpenSetting(context, source);
-        } else if (await Permission.photos.status.isGranted) {
-          requestImageOrPhoto(source);
-        } else if (await Permission.photos.status.isLimited) {
-          await _showDialogReqGalleryOpenSetting(context, source);
+      } else if (source == ImageSource.gallery) {
+        if (Navigator.canPop(context)) {
+          Navigator.of(context).pop();
+          if (await Permission.photos.status.isDenied) {
+            await _showDialogReqGallery(context, source);
+          } else if (await Permission.photos.status.isPermanentlyDenied) {
+            await _showDialogReqGalleryOpenSetting(context, source);
+          } else if (await Permission.photos.status.isGranted) {
+            requestImageOrPhoto(source);
+          } else if (await Permission.photos.status.isLimited) {
+            await _showDialogReqGalleryOpenSetting(context, source);
+          }
         }
       }
     }
+    requestImageOrPhoto(source);
   }
 
   Future<void> requestImageOrPhoto(ImageSource source) async {
