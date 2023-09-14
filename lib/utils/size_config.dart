@@ -60,8 +60,8 @@ class SizeConfig {
     heightMultiplier = _blockHeight;
     widthMultiplier = _blockWidth;
 
-    logger.i(
-      'width = $widthMultiplier \nheight = $heightMultiplier \ntext = $textMultiplier \nimage = $imageSizeMultiplier',
-    );
+    // logger.i(
+    //   'width = $widthMultiplier \nheight = $heightMultiplier \ntext = $textMultiplier \nimage = $imageSizeMultiplier',
+    // );
   }
 }

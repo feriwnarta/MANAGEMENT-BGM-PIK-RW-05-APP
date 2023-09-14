@@ -27,11 +27,16 @@ class CreateStatus extends StatefulWidget {
 
 class _CreateStatusState extends State<CreateStatus> {
   RxString location = ''.obs;
-  SocialMediaControllers socialMediaControllers =
-      Get.put(SocialMediaControllers());
-  UserLoginController userLoginController =
-      Get.put(UserLoginController(), permanent: true);
+  SocialMediaControllers socialMediaControllers;
+  UserLoginController userLoginController;
   final contol = Get.put(StatusUserController());
+
+  @override
+  void initState() {
+    socialMediaControllers = Get.put(SocialMediaControllers());
+    userLoginController = Get.put(UserLoginController(), permanent: true);
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -154,9 +159,8 @@ class _CreateStatusState extends State<CreateStatus> {
                             height: SizeConfig.height(8),
                           ),
                           TextField(
-                            maxLines: 15,
+                            maxLines: 5,
                             minLines: 1,
-                            autofocus: true,
                             controller: socialMediaControllers.controller,
                             decoration: InputDecoration(
                               border: InputBorder.none,

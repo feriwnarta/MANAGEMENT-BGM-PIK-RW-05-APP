@@ -13,7 +13,6 @@ import 'package:logger/logger.dart';
 import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_manager/photo_manager.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SimpleExamplePage extends StatefulWidget {
   const SimpleExamplePage({Key key}) : super(key: key);
@@ -226,8 +225,8 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
   }
 
   Future<void> _loadMoreAsset() async {
-    _page += 5;
-    _sizePerPage += 5;
+    _page += 3;
+    _sizePerPage += 3;
 
     final List<AssetEntity> entities = await _path.value.getAssetListRange(
       start: _page,
@@ -249,8 +248,8 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
 
   @override
   didChangeDependencies() {
-    _requestAssets();
     super.didChangeDependencies();
+    _requestAssets();
   }
 
   Widget _buildBody(BuildContext context) {
@@ -264,13 +263,8 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
       if (_entities?.isNotEmpty != true) {
         return const Center(child: Text('No assets found on this device.'));
       }
-      return ListView.builder(
-        scrollDirection: Axis.horizontal,
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        itemCount: _entities.length,
-        itemBuilder: (context, index) {
-          final AssetEntity entity = _entities[index];
+      return Row(
+        children: _entities.map((AssetEntity entity) {
           return GestureDetector(
             onTap: () {
               entity.file.then((value) {
@@ -278,30 +272,35 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
               });
             },
             child: FutureBuilder<File>(
-                future: entity.file,
-                builder: (context, snapshot) => (snapshot.hasData)
-                    ? Container(
-                        width: SizeConfig.width(64),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            color: Colors.grey),
-                        margin: EdgeInsets.only(right: SizeConfig.width(16)),
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.circular(6),
-                            child: AssetEntityImage(
-                              entity,
-                              fit: BoxFit.cover,
-                              isOriginal: false, // Defaults to `true`.
-                              filterQuality: FilterQuality.low,
-                              thumbnailSize: const ThumbnailSize.square(
-                                  200), // Preferred value.
-                              thumbnailFormat:
-                                  ThumbnailFormat.jpeg, // Defaults to `jpeg`.
-                            )),
-                      )
-                    : CircularProgressIndicator.adaptive()),
+              future: entity.file,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Container(
+                    width: SizeConfig.width(64),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      color: Colors.grey,
+                    ),
+                    margin: EdgeInsets.only(right: SizeConfig.width(16)),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(6),
+                      child: AssetEntityImage(
+                        entity,
+                        fit: BoxFit.cover,
+                        isOriginal: false,
+                        filterQuality: FilterQuality.low,
+                        thumbnailSize: const ThumbnailSize.square(200),
+                        thumbnailFormat: ThumbnailFormat.jpeg,
+                      ),
+                    ),
+                  );
+                } else {
+                  return CircularProgressIndicator.adaptive();
+                }
+              },
+            ),
           );
-        },
+        }).toList(),
       );
     });
   }
@@ -345,16 +344,16 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
                   );
                 },
                 child: Container(
-                  width: 64.w,
-                  height: 64.h,
+                  width: SizeConfig.width(64),
+                  height: SizeConfig.height(64),
                   child: Card(
                     elevation: 5,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                            width: 24.w,
-                            height: 24.h,
+                            width: SizeConfig.width(24),
+                            height: SizeConfig.height(24),
                             child: SvgPicture.asset(
                                 'assets/img/image-svg/camera-status.svg')),
                       ],
@@ -363,23 +362,21 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
                 ),
               ),
               SizedBox(
-                width: 16.w,
+                width: SizeConfig.width(16),
               ),
               GestureDetector(
                 onTap: () {
                   locationDialog();
                 },
                 child: SizedBox(
-                  width: 64.w,
-                  height: 64.h,
+                  width: SizeConfig.width(64),
                   child: Card(
                     elevation: 5,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                            width: 24.w,
-                            height: 24.h,
+                            width: SizeConfig.width(24),
                             child: SvgPicture.asset(
                                 'assets/img/image-svg/location-status.svg')),
                       ],
@@ -388,25 +385,26 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
                 ),
               ),
               SizedBox(
-                width: 16.w,
+                width: SizeConfig.width(16),
               ),
-              _buildBody(context),
             ],
           ),
+          // _buildBody(context),
         ],
       ),
     );
   }
 
   Widget bottomImagePicker(BuildContext context) => Container(
-        margin: EdgeInsets.only(top: 20),
+        margin: EdgeInsets.only(top: SizeConfig.height(20)),
         width: MediaQuery.of(context).size.width,
-        height: 100.h,
+        height: SizeConfig.height(100),
         child: Column(
           children: [
             Text(
               'Pilih gambar',
-              style: TextStyle(fontSize: 13.0.sp, fontFamily: 'Pt Sans Narrow'),
+              style: TextStyle(
+                  fontSize: SizeConfig.text(13), fontFamily: 'Pt Sans Narrow'),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -416,7 +414,8 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
                     label: Text(
                       'Kamera',
                       style: TextStyle(
-                          fontSize: 13.0.sp, fontFamily: 'Pt Sans Narrow'),
+                          fontSize: SizeConfig.text(13),
+                          fontFamily: 'Pt Sans Narrow'),
                     ),
                     onPressed: () async {
                       await getImage(ImageSource.camera, context);
@@ -426,7 +425,8 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
                   label: Text(
                     'Gallery',
                     style: TextStyle(
-                        fontSize: 13.0.sp, fontFamily: 'Pt Sans Narrow'),
+                        fontSize: SizeConfig.text(13),
+                        fontFamily: 'Pt Sans Narrow'),
                   ),
                   onPressed: () async {
                     await getImage(ImageSource.gallery, context);
@@ -444,7 +444,7 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
     Get.defaultDialog(
       title: 'Mendapatkan lokasi',
       titleStyle: TextStyle(
-        fontSize: 12.sp,
+        fontSize: SizeConfig.text(12),
       ),
       content: Column(
         children: [
@@ -480,7 +480,7 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
       Get.defaultDialog(
         title: 'Mendapatkan lokasi',
         titleStyle: TextStyle(
-          fontSize: 12.sp,
+          fontSize: SizeConfig.text(12),
         ),
         content: Column(
           children: [
@@ -491,7 +491,7 @@ class _SimpleExamplePageState extends State<SimpleExamplePage> {
             Text(
               '${address[0].addressLine}',
               style: TextStyle(
-                fontSize: 11.sp,
+                fontSize: SizeConfig.text(11),
               ),
             ),
           ],

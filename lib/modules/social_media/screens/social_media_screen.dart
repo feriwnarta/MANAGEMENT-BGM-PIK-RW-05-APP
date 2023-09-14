@@ -140,7 +140,7 @@ class _SocialMediaState extends State<SocialMedia> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.to(CreateStatus(), transition: Transition.downToUp);
+          Get.to(() => CreateStatus(), transition: Transition.downToUp);
         },
         child: SvgPicture.asset(
           'assets/img/image-svg/pencil.svg',
