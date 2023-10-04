@@ -6,6 +6,7 @@ import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/state_manager.dart';
 
 class RiwayatPermintaan extends StatefulWidget {
   RiwayatPermintaan({Key key}) : super(key: key);
@@ -26,6 +27,8 @@ class _RiwayatPermintaanState extends State<RiwayatPermintaan> {
   final List<HistoryPayment> _historyData = [];
   int _start = 0;
   int _limit = 10;
+
+  RxString valueType = ''.obs;
 
   @override
   void initState() {
@@ -119,51 +122,56 @@ class _RiwayatPermintaanState extends State<RiwayatPermintaan> {
                     builder: (ctx, snapshot) {
                       if (snapshot.hasData) {
                         final reversedData = snapshot.data.reversed.toList();
+                        valueType.value = reversedData[0].id;
 
-                        return Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            border: Border.all(
-                              color: Color(0xffEDEDED),
-                              width: 1.0,
+                        return Obx(
+                          () => Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                color: Color(0xffEDEDED),
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                          child: DropdownButton(
-                            style: TextStyle(
-                              fontSize: SizeConfig.text(14),
-                              color: Color(0xff757575),
-                            ),
-                            value: snapshot.data[0].id,
-                            isDense: true,
-                            underline: Container(
-                              height: 0, // Tinggi underline 0
-                            ),
-                            icon: const Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Color(0xff757575),
-                            ),
-                            // Array list of items
-                            items: reversedData.map((items) {
-                              return DropdownMenuItem(
-                                value: items.id,
-                                child: SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width / 3.5,
-                                  child: Text(
-                                    reversedData[0].category,
-                                    maxLines: 2,
-                                    style: TextStyle(
-                                      fontSize: SizeConfig.text(14),
+                            child: DropdownButton(
+                              style: TextStyle(
+                                fontSize: SizeConfig.text(14),
+                                color: Color(0xff757575),
+                              ),
+                              value: valueType.value,
+                              isDense: true,
+                              underline: Container(
+                                height: 0, // Tinggi underline 0
+                              ),
+                              icon: const Icon(
+                                Icons.keyboard_arrow_down,
+                                color: Color(0xff757575),
+                              ),
+                              // Array list of items
+                              items: reversedData.map((category) {
+                                return DropdownMenuItem(
+                                  value: category.id,
+                                  child: SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 3.5,
+                                    child: Text(
+                                      category.category,
+                                      maxLines: 2,
+                                      style: TextStyle(
+                                        fontSize: SizeConfig.text(14),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-                            }).toList(),
-                            // After selecting the desired option,it will
-                            // change button value to selected value
-                            onChanged: (String newValue) {},
+                                );
+                              }).toList(),
+                              // After selecting the desired option,it will
+                              // change button value to selected value
+                              onChanged: (String newValue) {
+                                valueType.value = newValue;
+                              },
+                            ),
                           ),
                         );
                       }
