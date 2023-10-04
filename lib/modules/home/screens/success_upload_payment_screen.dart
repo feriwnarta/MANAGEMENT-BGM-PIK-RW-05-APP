@@ -54,6 +54,8 @@ class SuccessUploadPaymentScreen extends StatelessWidget {
                       Get
                         ..back()
                         ..back()
+                        ..back()
+                        ..back()
                         ..back();
                     },
                     style: ElevatedButton.styleFrom(

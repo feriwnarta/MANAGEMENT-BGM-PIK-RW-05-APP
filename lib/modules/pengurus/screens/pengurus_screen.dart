@@ -178,17 +178,6 @@ class _PengurusScreenState extends State<PengurusScreen> {
                           SizeConfig.heightMultiplier,
                     ),
               (Platform.isIOS) ? headerScreenIos() : SizedBox(),
-              // SizedBox(
-              //   height:
-              //       (24 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
-              // ),
-              // Divider(
-              //   thickness: 1,
-              // ),
-              // SizedBox(
-              //   height:
-              //       (24 / Sizer.slicingHeight) * SizeConfig.heightMultiplier,
-              // ),
               Obx(
                 () => Column(
                   children: [

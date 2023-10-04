@@ -10,7 +10,8 @@ import 'package:logger/logger.dart';
 class UploadIplServices {
   static Dio dio = Dio();
 
-  static Future<String> uploadIpl(String image) async {
+  static Future<String> uploadIpl(
+      String image, String address, String latitude, String longitude) async {
     dio.interceptors.add(RetryInterceptor(dio: dio, retries: 100));
 
     String idUser = await UserSecureStorage.getIdUser();
@@ -26,6 +27,9 @@ class UploadIplServices {
         filename: image,
         contentType: MediaType("image", "jpeg"),
       ),
+      'address': address,
+      'latitude': latitude,
+      'longitude': longitude,
     });
 
     EasyLoading.show(status: 'mengirim');

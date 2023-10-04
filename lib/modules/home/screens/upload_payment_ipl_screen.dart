@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:aplikasi_rw/modules/home/screens/success_upload_payment_screen.dart';
 import 'package:aplikasi_rw/modules/home/services/upload_ipl_services.dart';
+import 'package:aplikasi_rw/modules/report_screen/screens/new_google_maps_screen.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,8 @@ class UploadPaymentIplScreen extends StatelessWidget {
   UploadPaymentIplScreen({Key key}) : super(key: key);
 
   final RxString imgPath = ''.obs;
+
+  RxString address = ''.obs, latitude = ''.obs, longitude = ''.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -98,27 +101,93 @@ class UploadPaymentIplScreen extends StatelessWidget {
                               ),
                             ],
                           )
-                        : Row(
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SvgPicture.asset(
-                                'assets/img/image-svg/information-circle.svg',
-                                color: Color(0xffF7C36A),
+                              Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/img/image-svg/information-circle.svg',
+                                    color: Color(0xffF7C36A),
+                                  ),
+                                  SizedBox(
+                                    width: SizeConfig.width(8),
+                                  ),
+                                  Text(
+                                    'Sentuh foto untuk mengganti foto yang lain.',
+                                    style: TextStyle(
+                                      fontSize: SizeConfig.text(12),
+                                      color: Color(0xff757575),
+                                    ),
+                                  )
+                                ],
                               ),
-                              SizedBox(
-                                width: SizeConfig.width(8),
-                              ),
-                              Text(
-                                'Sentuh foto untuk mengganti foto yang lain.',
-                                style: TextStyle(
-                                  fontSize: SizeConfig.text(12),
-                                  color: Color(0xff757575),
+                              TextButton.icon(
+                                onPressed: () async {
+                                  // ijin akses lokasi
+                                  bool permissionLocation = await Permission
+                                      .location.status.isPermanentlyDenied;
+
+                                  if (permissionLocation) {
+                                    await _dialogRequirePermissionsOpenSettings(
+                                      title: 'Berikan Akses Lokasi',
+                                      content:
+                                          'Untuk menggunakan fitur yang membutuhkan lokasi, kami memerlukan izin akses lokasi Anda. Kami akan membuka pengaturan sekarang. Apakah Anda ingin memberikan izin akses sekarang?',
+                                      no: () async {
+                                        await Get.back();
+
+                                        await _dialogMessage(
+                                            title: 'Berikan Akses Lokasi',
+                                            content:
+                                                'Anda tidak bisa melanjutkan penggunaan fitur ini tanpa ijin akses lokasi. Kami mengerti bahwa Anda ingin mengatur izin secara manual. Jika Anda berubah pikiran atau ingin memberikan izin nanti, Anda dapat membuka pengaturan aplikasi di perangkat Anda dan mengatur izin dengan mudah.',
+                                            yes: () {
+                                              Get
+                                                ..back()
+                                                ..back();
+                                            },
+                                            context: context);
+                                        return;
+                                      },
+                                      yes: () async {
+                                        await openAppSettings();
+                                        Get.back();
+                                      },
+                                      context: context,
+                                    );
+                                    return;
+                                  }
+
+                                  Get.to<Map<String, dynamic>>(
+                                      () => NewGoogleMaps()).then((value) {
+                                    if (value != null) {
+                                      // dapatkan google data alamat dari  maps
+                                      address.value = value['data'];
+                                      latitude.value =
+                                          value['latitude'].toString();
+                                      longitude.value =
+                                          value['longitude'].toString();
+                                    }
+                                  });
+                                },
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Color(0xff404040),
+                                  padding: EdgeInsets.zero,
                                 ),
-                              )
+                                icon: Icon(Icons.location_on),
+                                label: Text(
+                                  (address.value == '')
+                                      ? 'Pilih lokasi pengiriman'
+                                      : '${address.value}',
+                                  style: TextStyle(
+                                    fontSize: SizeConfig.text(14),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                   ),
                   SizedBox(
-                    height: SizeConfig.height(80),
+                    height: SizeConfig.height(64),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
@@ -130,9 +199,20 @@ class UploadPaymentIplScreen extends StatelessWidget {
                           return;
                         }
 
+                        if (address == '' ||
+                            longitude == '' ||
+                            latitude == '') {
+                          EasyLoading.showError(
+                              'Lokasi pengiriman belum ditentukan / gagal mengambil lokasi');
+                          return;
+                        }
+
                         // proses upload ipl
-                        var result =
-                            await UploadIplServices.uploadIpl(imgPath.value);
+                        var result = await UploadIplServices.uploadIpl(
+                            imgPath.value,
+                            address.value,
+                            latitude.value,
+                            longitude.value);
 
                         if (result == 'bukti pembayaran sudah terupload') {
                           EasyLoading.showInfo(
@@ -218,6 +298,51 @@ class UploadPaymentIplScreen extends StatelessWidget {
         ),
       );
 
+  Future<dynamic> _dialogMessage(
+      {String title, String content, Function yes, BuildContext context}) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      useSafeArea: true,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            title,
+            style: TextStyle(
+              fontSize: SizeConfig.text(16),
+            ),
+          ),
+          content: Text(
+            content,
+            textAlign: TextAlign.left,
+            style: TextStyle(fontSize: SizeConfig.text(12), color: Colors.grey),
+          ),
+          titlePadding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.width(16),
+            vertical: SizeConfig.height(8),
+          ),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.width(16),
+            vertical: SizeConfig.height(8),
+          ),
+          actions: [
+            TextButton(
+              onPressed: yes,
+              child: Text(
+                'OKE',
+                style: TextStyle(fontSize: SizeConfig.text(14)),
+              ),
+            ),
+          ],
+          actionsPadding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.width(16),
+            vertical: 0,
+          ),
+        );
+      },
+    );
+  }
+
   Future getImage(ImageSource source, BuildContext context) async {
     if (Platform.isIOS) {
       if (source == ImageSource.camera) {
@@ -247,6 +372,62 @@ class UploadPaymentIplScreen extends StatelessWidget {
       }
     }
     requestImageOrPhoto(source);
+  }
+
+  Future<dynamic> _dialogRequirePermissionsOpenSettings(
+      {String title,
+      String content,
+      Function yes,
+      Function no,
+      BuildContext context}) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      useSafeArea: true,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            title,
+            style: TextStyle(
+              fontSize: SizeConfig.text(16),
+            ),
+          ),
+          content: Text(
+            content,
+            textAlign: TextAlign.left,
+            style: TextStyle(fontSize: SizeConfig.text(12), color: Colors.grey),
+          ),
+          titlePadding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.width(16),
+            vertical: SizeConfig.height(8),
+          ),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.width(16),
+            vertical: SizeConfig.height(8),
+          ),
+          actions: [
+            TextButton(
+              onPressed: no,
+              child: Text(
+                'Tidak',
+                style: TextStyle(fontSize: SizeConfig.text(14)),
+              ),
+            ),
+            TextButton(
+              onPressed: yes,
+              child: Text(
+                (Platform.isIOS) ? 'Pengaturan' : 'Pengaturan',
+                style: TextStyle(fontSize: SizeConfig.text(14)),
+              ),
+            ),
+          ],
+          actionsPadding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.width(16),
+            vertical: 0,
+          ),
+        );
+      },
+    );
   }
 
   Future<void> requestImageOrPhoto(ImageSource source) async {

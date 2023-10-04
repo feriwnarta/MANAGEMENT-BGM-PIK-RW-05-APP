@@ -6,6 +6,7 @@ import 'package:aplikasi_rw/modules/home/controller/notification_controller.dart
 import 'package:aplikasi_rw/modules/home/data/ShowCaseData.dart';
 import 'package:aplikasi_rw/modules/home/screens/garbage_collection_screen.dart';
 import 'package:aplikasi_rw/modules/home/screens/notification_screen.dart';
+import 'package:aplikasi_rw/modules/home/screens/permintaan_khusus/sub_permintaan_khusus.dart';
 import 'package:aplikasi_rw/modules/home/screens/show_case_widget.dart';
 import 'package:aplikasi_rw/modules/home/services/news_service.dart';
 import 'package:aplikasi_rw/modules/home/widgets/menu.dart';
@@ -59,7 +60,7 @@ class _MyWidgetState extends State<CitizenScreen> {
   final GlobalKey informasiWarga = GlobalKey();
   final GlobalKey informasiUmum = GlobalKey();
   final GlobalKey sosialMedia = GlobalKey();
-  final GlobalKey plastikSampah = GlobalKey();
+  final GlobalKey permintaaKhusus = GlobalKey();
 
   @override
   void initState() {
@@ -385,14 +386,13 @@ class _MyWidgetState extends State<CitizenScreen> {
                 ),
               ),
         ShowCaseWrapper(
-          gKey: plastikSampah,
-          title: 'Pengambilan kanton sampah',
-          description:
-              'Dengan fitur ini anda perlu melakukan verifikasi pembayaran IPL untuk pengambilan kantong sampah',
+          gKey: permintaaKhusus,
+          title: 'Permintaan Khusus',
+          description: '',
           child: Menu(
-            icon: 'assets/img/citizen_menu/plastik_sampah.jpg',
-            text: 'Kantong Sampah',
-            onTap: () => Get.to(() => GarbageCollectionScreen(),
+            icon: 'assets/img/citizen_menu/permintaan-khusus.png',
+            text: 'Permintaan khusus',
+            onTap: () => Get.to(() => SubPermintaanKhusus(),
                 transition: Transition.rightToLeft),
           ),
         )
