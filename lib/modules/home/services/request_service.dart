@@ -1,14 +1,17 @@
 import 'dart:convert';
+import 'dart:developer';
 
-import 'package:aplikasi_rw/modules/home/models/history_payment.dart';
+import 'package:aplikasi_rw/modules/home/models/request.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/UserSecureStorage.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
+import 'package:logger/logger.dart';
 
-class HistoryPaymentService {
-  static Future<List<HistoryPayment>> getHistory({int start, int limit}) async {
-    String url = '${ServerApp.url}src/payment_ipl/get_history_payment.php';
+class RequestService {
+  static Future<List<Request>> getHistory(
+      {int start, int limit, String type, String category}) async {
+    String url = '${ServerApp.url}src/request/get_history.php';
 
     if (start != null && limit != null) {
       String idUser = await UserSecureStorage.getIdUser();
@@ -18,8 +21,18 @@ class HistoryPaymentService {
 
       try {
         var result = await dio.post(url,
-            data: jsonEncode(
-                {'id_user': idUser, 'start': start, 'limit': limit}));
+            data: jsonEncode({
+              'id_user': idUser,
+              'start': start,
+              'limit': limit,
+              'type': type,
+              'category': category
+            }));
+
+        final logger = Logger();
+        logger.i(result);
+        logger.i(type);
+        logger.i(category);
 
         if (result == 'something went wrong') {
           return [];
@@ -28,8 +41,8 @@ class HistoryPaymentService {
         var response = jsonDecode(result.data) as List;
 
         response = response
-            .map<HistoryPayment>(
-              (history) => HistoryPayment(
+            .map<Request>(
+              (history) => Request(
                   id: history['id'],
                   idUser: history['id_user'],
                   image: history['image'],

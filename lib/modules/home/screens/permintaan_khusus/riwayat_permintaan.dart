@@ -1,12 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/state_manager.dart';
 import 'package:aplikasi_rw/modules/home/models/category_request.dart';
-import 'package:aplikasi_rw/modules/home/models/history_payment.dart';
+import 'package:aplikasi_rw/modules/home/models/request.dart';
 import 'package:aplikasi_rw/modules/home/services/category_request_service.dart';
-import 'package:aplikasi_rw/modules/home/services/history_payment_services.dart';
+import 'package:aplikasi_rw/modules/home/services/request_service.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:get/state_manager.dart';
 
 class RiwayatPermintaan extends StatefulWidget {
   RiwayatPermintaan({Key key}) : super(key: key);
@@ -24,11 +25,12 @@ class _RiwayatPermintaanState extends State<RiwayatPermintaan> {
   ];
 
   final ScrollController _scrollController = ScrollController();
-  final List<HistoryPayment> _historyData = [];
+  final RxList<Request> _historyData = <Request>[].obs;
   int _start = 0;
   int _limit = 10;
 
-  RxString valueType = ''.obs;
+  RxString categoryType = 'Kantong Sampah'.obs;
+  RxString valueType = 'All'.obs;
 
   @override
   void initState() {
@@ -55,16 +57,16 @@ class _RiwayatPermintaanState extends State<RiwayatPermintaan> {
 
   Future<void> _loadHistoryData() async {
     try {
-      final newData = await HistoryPaymentService.getHistory(
+      final newData = await RequestService.getHistory(
         start: _start,
         limit: _limit,
+        category: categoryType.value,
+        type: valueType.value,
       );
 
       if (newData.isNotEmpty) {
-        setState(() {
-          _historyData.addAll(newData);
-          _start += _limit;
-        });
+        _historyData.addAll(newData);
+        _start += _limit;
       }
     } catch (error) {
       // Handle error
@@ -122,7 +124,7 @@ class _RiwayatPermintaanState extends State<RiwayatPermintaan> {
                     builder: (ctx, snapshot) {
                       if (snapshot.hasData) {
                         final reversedData = snapshot.data.reversed.toList();
-                        valueType.value = reversedData[0].id;
+                        categoryType.value = reversedData[0].id;
 
                         return Obx(
                           () => Container(
@@ -140,7 +142,7 @@ class _RiwayatPermintaanState extends State<RiwayatPermintaan> {
                                 fontSize: SizeConfig.text(14),
                                 color: Color(0xff757575),
                               ),
-                              value: valueType.value,
+                              value: categoryType.value,
                               isDense: true,
                               underline: Container(
                                 height: 0, // Tinggi underline 0
@@ -166,10 +168,19 @@ class _RiwayatPermintaanState extends State<RiwayatPermintaan> {
                                   ),
                                 );
                               }).toList(),
-                              // After selecting the desired option,it will
+                              // After selecting the desired option, it will
                               // change button value to selected value
                               onChanged: (String newValue) {
-                                valueType.value = newValue;
+                                if (newValue != 'Kantong Sampah') {
+                                  EasyLoading.showInfo(
+                                      'Kategori ini sedang dalam pengembangan');
+                                  return;
+                                }
+
+                                categoryType.value = newValue;
+                                _start = 0;
+                                _historyData.clear();
+                                _loadHistoryData();
                               },
                             ),
                           ),
@@ -180,41 +191,48 @@ class _RiwayatPermintaanState extends State<RiwayatPermintaan> {
                         value: 0.5,
                       );
                     }),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(
-                      color: Color(0xffEDEDED),
-                      width: 1.0,
+                Obx(
+                  () => Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(
+                        color: Color(0xffEDEDED),
+                        width: 1.0,
+                      ),
                     ),
-                  ),
-                  child: DropdownButton(
-                    style: TextStyle(
-                      fontSize: SizeConfig.text(14),
-                      color: Color(0xff757575),
+                    child: DropdownButton(
+                      style: TextStyle(
+                        fontSize: SizeConfig.text(14),
+                        color: Color(0xff757575),
+                      ),
+                      isDense: true,
+                      underline: Container(
+                        height: 0, // Tinggi underline 0
+                      ),
+                      icon: const Icon(
+                        Icons.keyboard_arrow_down,
+                        color: Color(0xff757575),
+                      ),
+                      value: valueType.value,
+                      // Array list of items
+                      items: items.map((String items) {
+                        return DropdownMenuItem(
+                          value: items,
+                          child: SizedBox(
+                              width: MediaQuery.of(context).size.width / 3.5,
+                              child: Text(items)),
+                        );
+                      }).toList(),
+                      // After selecting the desired option, it will
+                      // change button value to selected value
+                      onChanged: (String newValue) {
+                        valueType.value = newValue;
+                        _start = 0;
+                        _historyData.clear();
+                        _loadHistoryData();
+                      },
                     ),
-                    isDense: true,
-                    underline: Container(
-                      height: 0, // Tinggi underline 0
-                    ),
-                    icon: const Icon(
-                      Icons.keyboard_arrow_down,
-                      color: Color(0xff757575),
-                    ),
-                    value: items[0],
-                    // Array list of items
-                    items: items.reversed.toList().map((String items) {
-                      return DropdownMenuItem(
-                        value: items,
-                        child: SizedBox(
-                            width: MediaQuery.of(context).size.width / 3.5,
-                            child: Text(items)),
-                      );
-                    }).toList(),
-                    // After selecting the desired option,it will
-                    // change button value to selected value
-                    onChanged: (String newValue) {},
                   ),
                 ),
               ],
@@ -223,32 +241,42 @@ class _RiwayatPermintaanState extends State<RiwayatPermintaan> {
               height: SizeConfig.height(16),
             ),
             Expanded(
-              child: ListView.builder(
-                controller: _scrollController,
-                itemCount: _historyData.length + 1,
-                itemBuilder: (context, index) {
-                  if (index < _historyData.length) {
-                    final data = _historyData[index];
-                    return CardRequest(
-                      imageUrl: data.image,
-                      id: data.id,
-                      dateCreated: data.createAt,
-                      idUser: data.idUser,
-                      periode: data.periode,
-                      statusReq: data.status,
-                      title: 'Pengambilan Kantong Sampah',
-                    );
-                  } else {
-                    if (_historyData.length % _limit == 0) {
-                      // Tampilkan loading indicator jika masih ada data untuk dimuat.
+              child: Obx(
+                () => ListView.builder(
+                  controller: _scrollController,
+                  itemCount: _historyData.length + 1,
+                  itemBuilder: (context, index) {
+                    if (_historyData.length == 0) {
                       return Center(
-                        child: CircularProgressIndicator.adaptive(value: 0.5),
+                          child: Text(
+                        'Tidak ada data',
+                        style: TextStyle(
+                          fontSize: SizeConfig.text(14),
+                        ),
+                      ));
+                    } else if (index < _historyData.length) {
+                      final data = _historyData[index];
+                      return CardRequest(
+                        imageUrl: data.image,
+                        id: data.id,
+                        dateCreated: data.createAt,
+                        idUser: data.idUser,
+                        periode: data.periode,
+                        statusReq: data.status,
+                        title: 'Pengambilan Kantong Sampah',
                       );
                     } else {
-                      return SizedBox(); // Tampilkan widget kosong jika tidak ada data lagi untuk dimuat.
+                      if (_historyData.length % _limit == 0) {
+                        // Tampilkan loading indicator jika masih ada data untuk dimuat.
+                        return Center(
+                          child: CircularProgressIndicator.adaptive(value: 0.5),
+                        );
+                      } else {
+                        return SizedBox(); // Tampilkan widget kosong jika tidak ada data lagi untuk dimuat.
+                      }
                     }
-                  }
-                },
+                  },
+                ),
               ),
             ),
           ],
@@ -259,16 +287,16 @@ class _RiwayatPermintaanState extends State<RiwayatPermintaan> {
 }
 
 class CardRequest extends StatelessWidget {
-  CardRequest(
-      {Key key,
-      this.imageUrl,
-      this.periode,
-      this.title,
-      this.dateCreated,
-      this.statusReq,
-      this.id,
-      this.idUser})
-      : super(key: key);
+  CardRequest({
+    Key key,
+    this.imageUrl,
+    this.periode,
+    this.title,
+    this.dateCreated,
+    this.statusReq,
+    this.id,
+    this.idUser,
+  }) : super(key: key);
 
   final String imageUrl, periode, title, dateCreated, statusReq, id, idUser;
 
