@@ -1,4 +1,6 @@
+import 'package:aplikasi_rw/modules/home/models/category_request.dart';
 import 'package:aplikasi_rw/modules/home/models/history_payment.dart';
+import 'package:aplikasi_rw/modules/home/services/category_request_service.dart';
 import 'package:aplikasi_rw/modules/home/services/history_payment_services.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
@@ -14,11 +16,10 @@ class RiwayatPermintaan extends StatefulWidget {
 
 class _RiwayatPermintaanState extends State<RiwayatPermintaan> {
   final items = [
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
+    'All',
+    'Diproses',
+    'Terkirim',
+    'Ditolak',
   ];
 
   final ScrollController _scrollController = ScrollController();
@@ -113,40 +114,64 @@ class _RiwayatPermintaanState extends State<RiwayatPermintaan> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(
-                      color: Color(0xffEDEDED),
-                      width: 1.0,
-                    ),
-                  ),
-                  child: DropdownButton(
-                    style: TextStyle(
-                      fontSize: SizeConfig.text(14),
-                      color: Color(0xff757575),
-                    ),
-                    isDense: true,
-                    underline: Container(
-                      height: 0, // Tinggi underline 0
-                    ),
-                    icon: const Icon(
-                      Icons.keyboard_arrow_down,
-                      color: Color(0xff757575),
-                    ),
-                    // Array list of items
-                    items: items.map((String items) {
-                      return DropdownMenuItem(
-                        value: items,
-                        child: Text(items),
+                FutureBuilder<List<CategoryRequest>>(
+                    future: CategoryRequestService.getCategoryRequest(),
+                    builder: (ctx, snapshot) {
+                      if (snapshot.hasData) {
+                        final reversedData = snapshot.data.reversed.toList();
+
+                        return Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(
+                              color: Color(0xffEDEDED),
+                              width: 1.0,
+                            ),
+                          ),
+                          child: DropdownButton(
+                            style: TextStyle(
+                              fontSize: SizeConfig.text(14),
+                              color: Color(0xff757575),
+                            ),
+                            value: snapshot.data[0].id,
+                            isDense: true,
+                            underline: Container(
+                              height: 0, // Tinggi underline 0
+                            ),
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Color(0xff757575),
+                            ),
+                            // Array list of items
+                            items: reversedData.map((items) {
+                              return DropdownMenuItem(
+                                value: items.id,
+                                child: SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width / 3.5,
+                                  child: Text(
+                                    reversedData[0].category,
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                      fontSize: SizeConfig.text(14),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                            // After selecting the desired option,it will
+                            // change button value to selected value
+                            onChanged: (String newValue) {},
+                          ),
+                        );
+                      }
+
+                      return CircularProgressIndicator.adaptive(
+                        value: 0.5,
                       );
-                    }).toList(),
-                    // After selecting the desired option,it will
-                    // change button value to selected value
-                    onChanged: (String newValue) {},
-                  ),
-                ),
+                    }),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
@@ -169,11 +194,14 @@ class _RiwayatPermintaanState extends State<RiwayatPermintaan> {
                       Icons.keyboard_arrow_down,
                       color: Color(0xff757575),
                     ),
+                    value: items[0],
                     // Array list of items
-                    items: items.map((String items) {
+                    items: items.reversed.toList().map((String items) {
                       return DropdownMenuItem(
                         value: items,
-                        child: Text(items),
+                        child: SizedBox(
+                            width: MediaQuery.of(context).size.width / 3.5,
+                            child: Text(items)),
                       );
                     }).toList(),
                     // After selecting the desired option,it will
