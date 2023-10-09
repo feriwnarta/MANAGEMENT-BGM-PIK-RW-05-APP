@@ -1,6 +1,6 @@
+import 'package:aplikasi_rw/modules/home/screens/permintaan_khusus/detail_card_request.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:get/state_manager.dart';
 import 'package:aplikasi_rw/modules/home/models/category_request.dart';
 import 'package:aplikasi_rw/modules/home/models/request.dart';
 import 'package:aplikasi_rw/modules/home/services/category_request_service.dart';
@@ -8,6 +8,7 @@ import 'package:aplikasi_rw/modules/home/services/request_service.dart';
 import 'package:aplikasi_rw/server-app.dart';
 import 'package:aplikasi_rw/utils/size_config.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:get/get.dart';
 
 class RiwayatPermintaan extends StatefulWidget {
   RiwayatPermintaan({Key key}) : super(key: key);
@@ -74,6 +75,19 @@ class _RiwayatPermintaanState extends State<RiwayatPermintaan> {
     }
   }
 
+  Future<void> searchPayment({String content}) async {
+    try {
+      final newData = await RequestService.search(content: content);
+
+      _historyData.clear();
+      _historyData.addAll(newData);
+      _start += _limit;
+    } catch (error) {
+      // Handle error
+      print('Error: $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,7 +124,9 @@ class _RiwayatPermintaanState extends State<RiwayatPermintaan> {
                 ),
               ),
               style: TextStyle(fontSize: SizeConfig.text(14)),
-              onChanged: (value) async {},
+              onChanged: (value) async {
+                searchPayment(content: value);
+              },
             ),
             SizedBox(
               height: SizeConfig.height(16),
@@ -307,7 +323,10 @@ class CardRequest extends StatelessWidget {
         bottom: SizeConfig.height(16),
       ),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Get.to(() => DetailCardRequest(id: id),
+              transition: Transition.rightToLeft);
+        },
         child: Container(
           width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.symmetric(
